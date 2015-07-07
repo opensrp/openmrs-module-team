@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+	<!-- See http://wiki.openmrs.org/display/docs/Module+liquibase+File for 
+		documentation on this file. See http://www.liquibase.org/manual/home#available_database_refactorings 
+		for a list of supported elements and attributes -->
+
+	<!-- Uncomment this and edit the values below to use this file -->
+	<!-- <changeSet id="1" author="bwolfe"> <preConditions onFail="MARK_RAN"> 
+		<not> <tableExists tableName="teammodule_team" /> </not> </preConditions> 
+		<comment> Creating the mymoduleid_myobject table </comment> <createTable 
+		tableName="teammodule_team"> <column name=teammodule_team_id" type="int"> 
+		<constraints primaryKey="true" nullable="false" /> </column> <column name="firstname" 
+		type="varchar(255)" /> <column name="lastname" type="varchar(255)" /> <column 
+		name="username" type="varchar(255)"> <constraints unique="true" nullable="false" 
+		/> </column> <column name="testid" type="int" /> </createTable> </changeSet> -->
+
+	<changeSet id="teammodule-1.1.0A" author="Muhammad Safwan">
+		<createTable tableName="team">
+			<column name="team_id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="identifier" type="varchar(45)" />
+			<column name="name" type="varchar(45)" />
+			<column name="location_id" type="int(11)" />
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int(11)">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int(11)" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="tinyint(1)">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int(11)" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+			<column name="uuid" type="varchar(255)" />
+		</createTable>
+	</changeSet>
+
+	<changeSet id="teammodule-2.1.0A" author="Muhammad Safwan">
+		<createTable tableName="team_member">
+			<column name="team_member_id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="identifier" type="varchar(45)" />
+			<column name="team_id" type="int(11)" />
+			<column name="person_id" type="int(11)" />
+			<column name="join_date" type="date" />
+			<column name="leave_date" type="date" />
+			<column name="is_team_lead" type="tinyint(4)">
+				<constraints nullable="false" />
+			</column>
+			<!-- <column name="location_id" type="int(11)" /> -->
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int(11)">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int(11)" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="tinyint(1)">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int(11)" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+			<column name="uuid" type="varchar(255)" />
+		</createTable>
+	</changeSet>
+
+	<changeSet id="teammodule-3.1.0A" author="Muhammad Safwan">
+		<createTable tableName="team_lead">
+			<column name="team_lead_id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="team_member_id" type="int(11)" />
+			<column name="team_id" type="int(11)" />
+			<column name="join_date" type="date" />
+			<column name="leave_date" type="date" />
+
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int(11)">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int(11)" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="tinyint(1)">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int(11)" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+			<column name="uuid" type="varchar(255)" />
+		</createTable>
+	</changeSet>
+
+	<changeSet id="teammodule-4.1.0A" author="Muhammad Safwan">
+		<addForeignKeyConstraint constraintName="fk_teamId"
+			baseTableName="team_member" baseColumnNames="team_id"
+			referencedTableName="team" referencedColumnNames="team_id" />
+	</changeSet>
+
+	<changeSet id="teammodule-5.1.0A" author="Muhammad Safwan">
+		<addForeignKeyConstraint constraintName="fk_team_lead_team_id"
+			baseTableName="team_lead" baseColumnNames="team_id"
+			referencedTableName="team" referencedColumnNames="team_id" />
+
+		<addForeignKeyConstraint constraintName="fk_team_lead_team_member_id"
+			baseTableName="team_lead" baseColumnNames="team_member_id"
+			referencedTableName="team_member" referencedColumnNames="team_member_id" />
+	</changeSet>
+
+	<changeSet id="teammodule-6.1.0A" author="Muhammad Safwan">
+		<addForeignKeyConstraint constraintName="fk_team_location_id"
+			baseTableName="team" baseColumnNames="location_id"
+			referencedTableName="location" referencedColumnNames="location_id" />
+
+		<addForeignKeyConstraint constraintName="fk_team_member_person_id"
+			baseTableName="team_member" baseColumnNames="person_id"
+			referencedTableName="person" referencedColumnNames="person_id" />
+	</changeSet>
+
+	<changeSet id="teammodule-7.1.0A" author="Muhammad Safwan">
+		<createTable tableName="member_location">
+			<column name="team_member_id" type="int(11)" >
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="location_id" type="int(11)" >
+				<constraints foreignKeyName="fk_member_location_id" references="location(location_id)"  />
+			</column>
+		</createTable>
+	</changeSet>
+	
+    <changeSet id="teammodule-8.1.0A" author="Muhammad Safwan">
+	   <dropPrimaryKey tableName="member_location" />
+	   <addPrimaryKey tableName="member_location" columnNames="team_member_id, location_id" />
+	</changeSet>
+	
+     <changeSet id="teammodule-9.1.0A" author="Muhammad Safwan">
+	   <addForeignKeyConstraint constraintName="fk_location_member_id"
+			baseTableName="member_location" baseColumnNames="team_member_id"
+			referencedTableName="team_member" referencedColumnNames="team_member_id" />
+	</changeSet>
+
+</databaseChangeLog>

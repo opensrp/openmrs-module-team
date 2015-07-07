@@ -1,0 +1,95 @@
+.general {
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid black;
+	vertical-align: middle;
+	table-layout: fixed;
+}
+
+table.general th {
+	width: 15%;
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid black;
+	cellpadding: 0px;
+}
+
+table.general td {
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid black;
+	cellpadding: 0px;
+	vertical-align: middle !important;
+	word-wrap: break-word;
+}
+
+table.general tr {
+	width: 15%;
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid black;
+	cellpadding: 0px;
+	valign: baseline;
+}
+
+table.form th,tr {
+	width: 15%;
+	text-align: left;
+	/* border-collapse: collapse; */
+	cellpadding: 0px;
+}
+
+table.team td {
+	padding-top: 20px;
+}
+
+.team {
+	padding-right: 50px;
+	padding-left: 450px;
+	border-spacing: 0 0em;
+}
+
+.extra {
+	float: right;
+}
+
+table.extra td {
+	padding-right: 30px;
+}
+
+.history {
+	width: 50%;
+	border-collapse: collapse;
+	border: 1px solid black;
+	vertical-align: middle;
+	table-layout: fixed;
+}
+
+table.history th {
+	width: 15%;
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid black;
+	cellpadding: 0px;
+}
+
+table.history td {
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid black;
+	cellpadding: 0px;
+	vertical-align: middle !important;
+}
+
+table.history tr {
+	width: 15%;
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid black;
+	cellpadding: 0px;
+	valign: baseline;
+}
+
+h1 {
+	padding-bottom: 20px;
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.openmrs.module.teammodule.TeamMember" table="team_member">
+        <id column="team_member_id" name="teamMemberId" type="int">
+            <generator class="native"/>
+        </id>    
+    <property name="identifier" column="identifier" type="java.lang.String"/>    
+	<many-to-one name="team" column="team_id" class="org.openmrs.module.teammodule.Team" />
+	<many-to-one name="person" column="person_id" class="org.openmrs.Person" lazy="false" cascade="save-update"/>
+	<property name="joinDate" column="join_date" type="java.util.Date"/>
+	<property name="leaveDate" column="leave_date" type="java.util.Date"/>
+	<property name="isTeamLead" column="is_team_lead" type="boolean" not-null="true" />
+	<!-- <many-to-one name="location" column="location_id" class="org.openmrs.Location"/> -->
+	<set name="location" table="member_location"  inverse="false" lazy="true" fetch="select" cascade="all">
+	            <key>
+	                <column name="team_member_id" not-null="true" />
+	            </key>
+	             <many-to-many class="org.openmrs.Location" column="location_id" />
+	        </set>
+	
+	<property name="dateCreated" column="date_created" type="java.util.Date" not-null="true"/>
+	<many-to-one name="creator" column ="creator" class="org.openmrs.User" not-null="true"/>
+	<many-to-one name="changedBy" column="changed_by" class="org.openmrs.User" />
+	<property name="dateChanged" column="date_changed" type="java.util.Date" />
+	<property name="voided" column="voided" type="boolean" not-null="true"/>
+	<many-to-one name="voidedBy" column="voided_by" class="org.openmrs.User" />
+	<property name="dateVoided" column="date_voided" type="java.util.Date" />
+	<property name="voidReason" column="void_reason" type="java.lang.String" /> 
+	<property name="uuid" column="uuid" type="java.lang.String" not-null="true" />
+
+	
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,23 @@
+<!-- <openmrs:require privilege="View Members" otherwise="/login.htm" redirect="/openmrs/module/teammodule/allMember.form?searchMember=${searchedMember}&from=${dateFrom}&to=${dateTo}" /> -->
+
+<openmrs:require privilege="View Members" otherwise="/login.htm" redirect="/openmrs/module/teammodule/memberHistory.form?personId=${personId}>
+
+<openmrs:require privilege="View Members" otherwise="/login.htm" redirect="/openmrs/module/teammodule/allMember.form?searchMember=${searchedMember}&from=${dateFrom}&to=${dateTo}" />
+
+<openmrs:require privilege="View Teams" otherwise="/login.htm" redirect="/openmrs/module/teammodule/team.form?searchTeam=${searchedTeam}">
+
+<!-- <openmrs:require privilege="View Teams" otherwise="/login.htm" > -->
+
+<openmrs:require privilege="Add Teams" otherwise="/login.htm" redirect="/openmrs/module/teammodule/addTeam.form" />
+
+<openmrs:require privilege="Edit Teams" otherwise="/login.htm" redirect="/openmrs/module/teammodule/editTeam.form?teamId=${teamId}" />
+
+<openmrs:require privilege="View Teams" otherwise="/login.htm" redirect="/openmrs/module/teammodule/teamHistory.form?teamId=${team.teamId}" />
+
+<%-- <openmrs:require privilege="View Members" otherwise="/login.htm" redirect="/openmrs/module/teammodule/teamMember/list.form?teamId=${team.teamId}&member=${memberName}"> --%>
+
+<%-- <openmrs:require privilege="Add Member" otherwise="/login.htm" redirect="/openmrs/module/teammodule/teamMemberAddForm.form?teamId=${teamId}" /> --%>
+
+<%-- <openmrs:require privilege="Add Member" otherwise="/login.htm" redirect="/openmrs/module/teammodule/teamMemberEditForm.form?person_id=${teamMember.person.personId}&teamId=${teamId}&teamMemberId=${teamMember.teamMemberId}" /> --%>
+
+<openmrs:require privilege="Edit Teams" otherwise="/login.htm" redirect="/openmrs/module/teammodule/transferForm.form?teamId=${teamId}&memberId=${teamMember.teamMemberId}&personId=${teamMember.person.personId}" />
