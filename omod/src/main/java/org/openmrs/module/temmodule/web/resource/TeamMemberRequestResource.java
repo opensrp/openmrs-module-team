@@ -10,6 +10,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
+import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -18,6 +19,7 @@ import org.openmrs.module.webservices.rest.web.representation.FullRepresentation
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 /**
@@ -54,7 +56,6 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 				description.addProperty("uuid");
 				description.addProperty("location");
 				description.addProperty("team");
-				// System.out.println("Default");
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("teamMemberId");
 				description.addProperty("identifier");
@@ -76,10 +77,8 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 		//System.out.println(person);
 		if (person != null) {
 			Integer id = person.getPersonId();
-			System.out.println("ID");
 			List<TeamMember> tm = Context.getService(TeamMemberService.class).getMemberByPersonId(id);
 			id = tm.get(0).getTeamMemberId();
-			System.out.println(id);
 			TeamMember member = Context.getService(TeamMemberService.class).getMember(id);
 			return member;
 		}
@@ -99,4 +98,10 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 
 	}
 
+	@Override
+	public SimpleObject search(RequestContext context) {
+		List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchMember(context.getParameter("q"));
+		return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+	}
+	
 }

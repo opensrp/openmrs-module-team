@@ -4,7 +4,6 @@
 package org.openmrs.module.temmodule.web.resource;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLead;
 import org.openmrs.module.teammodule.api.TeamLeadService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
@@ -48,14 +47,11 @@ public class TeamLeadRequestResource extends DelegatingCrudResource<TeamLead> {
 				description.addProperty("teamLeadId");
 				description.addProperty("team");
 				description.addProperty("teamMember");
-				//description.addProperty("team");
 				description.addProperty("uuid");	
-				//System.out.println("Default");
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("teamLeadId");
 				description.addProperty("team");
 				description.addProperty("teamMember");
-				//description.addProperty("team");
 				description.addProperty("uuid");
 			}
 		}
@@ -79,5 +75,12 @@ public class TeamLeadRequestResource extends DelegatingCrudResource<TeamLead> {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/*@Override
+	public SimpleObject search(RequestContext context) {
+		//List<TeamLead> leadList = Context.getService(TeamLeadService.class).searchTeam(context.getParameter("q"));
+		return new NeedsPaging<TeamLead>(leadList, context).toSimpleObject(this);
+	}*/
+	
 
 }

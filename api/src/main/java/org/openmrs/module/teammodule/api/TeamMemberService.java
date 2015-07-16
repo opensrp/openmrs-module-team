@@ -35,6 +35,8 @@ public interface TeamMemberService extends OpenmrsService {
 	
 	public List<TeamMember> getMember(String name);
 	
+	public List<TeamMember> getMemberByLocationId(int id);
+	
 	public List<TeamMember> getMemberByPersonId(int id);
 	
 	public List<TeamMember> searchMember(String name);

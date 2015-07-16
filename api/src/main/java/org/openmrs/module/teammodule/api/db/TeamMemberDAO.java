@@ -34,6 +34,8 @@ public interface TeamMemberDAO {
 	
 	public List<TeamMember> getMemberByPersonId(int id);
 	
+	public List<TeamMember> getMemberByLocationId(int id);
+	
 	public List<TeamMember> searchMember(String name);
 	
 	List<TeamMember> searchMemberByTeam(String name,int teamId);

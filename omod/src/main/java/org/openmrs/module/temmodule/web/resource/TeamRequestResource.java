@@ -3,13 +3,13 @@
  */
 package org.openmrs.module.temmodule.web.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
+import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -37,7 +37,6 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
 			if (rep instanceof DefaultRepresentation) {
-				//description.addProperty("teamId");
 				description.addProperty("display");
 				description.addProperty("teamIdentifier");
 				description.addProperty("teamName");
@@ -45,9 +44,6 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("dateCreated");
 				description.addProperty("location");
 				description.addProperty("memberCount");
-				description.addSelfLink();
-				description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
-				//System.out.println("Default");
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("display");
 				description.addProperty("teamId");
@@ -57,8 +53,6 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("dateCreated");
 				description.addProperty("location");
 				description.addProperty("memberCount");
-				description.addSelfLink();
-				description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_REF);
 			}
 		}
 
@@ -72,20 +66,12 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 
 	@Override
 	public Team save(Team team) {
-		/*
-		 * Context.getService(TeamService.class).saveTeam(team); return team;
-		 */
 		return null;
 	}
 
 	@Override
 	protected void delete(Team team, String reason, RequestContext context) throws ResponseException {
-		/*
-		 * Context.getService(TeamService.class).getTeam(team.getTeamId());
-		 * Context.getService(TeamService.class).purgeTeam(team);
-		 * team.setVoidReason(reason);
-		 */
-
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -96,18 +82,12 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	@Override
 	public void purge(Team arg0, RequestContext arg1) throws ResponseException {
 		// TODO Auto-generated method stub
-
 	}
 	
 	@Override
-	protected NeedsPaging<Team> doSearch(RequestContext context) {
-		System.out.println("Got inside");
-		System.out.println(context.getParameter("teamName"));
-		List<Team> listTeam = Context.getService(TeamService.class).searchTeam(context.getParameter("teamName"));
-		System.out.println(listTeam);
-		//listTeam =  Context.getService(TeamService.class).searchTeam(context.getParameter("teamName"));
-		return new NeedsPaging<Team>(listTeam, context);
-		//return new NeedsPaging<Team>(Context.getService(TeamService.class).searchTeam(context.getParameter("teamName")), context);
+	public SimpleObject search(RequestContext context) {
+		List<Team> listTeam = Context.getService(TeamService.class).searchTeam(context.getParameter("q"));
+		return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
 	}
 	
 	@PropertyGetter("display")

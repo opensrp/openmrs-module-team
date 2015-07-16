@@ -3,6 +3,7 @@
  */
 package org.openmrs.module.teammodule.api.db.hibernate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,12 +19,7 @@ import org.openmrs.Location;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
-//import org.hibernate.Query;
-//import org.hibernate.Query;
-//import org.hibernate.transform.Transformers;
-//import org.openmrs.Person;
-//import org.openmrs.PersonName;
-//import org.openmrs.module.teammodule.api.TeamMemberService;
+
 
 /**
  * @author Muhammad Safwan
@@ -84,13 +80,32 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	}
 
 	public TeamMember getMember(int id) {
-		//System.out.println("getMember");
 		return (TeamMember) sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.id = :id").setInteger("id", id).uniqueResult();
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<TeamMember> getMemberByLocationId(int id) {
+		List<TeamMember> teamMembers = new ArrayList<>();
+		
+		List<Object> result = sessionFactory.getCurrentSession().createQuery("select tm.teamMemberId  from TeamMember tm join tm.location l where l.locationId = :id").setInteger("id", id).list();
+		
+		String query = "from TeamMember where  ";
+		for (int i = 0; i < result.size(); i++) {
+			query += "teamMemberId =" + result.get(i);
+			System.out.println(result.get(i));
+			if(i<(result.size()-1)) {
+				 query+= " OR ";
+			}
+		}
+		
+		teamMembers = sessionFactory.getCurrentSession().createQuery(query).list();
+		return teamMembers;
+		
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<TeamMember> getMemberByPersonId(int id) {
-		System.out.println("Here");
+		//System.out.println("Here");
 		return sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.person.personId = :id").setInteger("id", id).list();
 	}
 
@@ -171,7 +186,6 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		 * "from TeamMember tm join tm.person p join p.names pn where pn.givenName like :name"
 		 * ).setString("name", "%" + name + "%").list();
 		 */
-		System.out.println(name + teamId);
 		return sessionFactory
 				.getCurrentSession()
 				.createQuery(
