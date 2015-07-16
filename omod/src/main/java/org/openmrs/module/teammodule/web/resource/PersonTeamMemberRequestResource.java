@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openmrs.module.temmodule.web.resource;
+package org.openmrs.module.teammodule.web.resource;
 
 import java.util.List;
 
