@@ -3,11 +3,15 @@
  */
 package org.openmrs.module.teammodule.web.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
+import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -26,9 +30,9 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  *
  */
 
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/memberLocation", supportedClass = TeamMember.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/memberLocation", supportedClass = TeamMemberWrapper.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
 "1.12.*" })
-public class LocationRequestResource extends DelegatingCrudResource<List<TeamMember>> {
+public class LocationRequestResource extends DelegatingCrudResource<List<TeamMemberWrapper>> {
 
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		
@@ -37,21 +41,27 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
 			if (rep instanceof DefaultRepresentation) {
-				description.addProperty("teamMemberId");
+				description.addProperty("teamMember");
+				description.addProperty("user");
+				/*description.addProperty("teamMemberId");
 				description.addProperty("identifier");
 				description.addProperty("isTeamLead");
 				description.addProperty("person");		
 				description.addProperty("uuid");
 				description.addProperty("location");
-				description.addProperty("team");
+				description.addProperty("team");*/
+				description.addSelfLink();
 			} else if (rep instanceof FullRepresentation) {
-				description.addProperty("teamMemberId");
-				description.addProperty("identifier");
+				description.addProperty("teamMember");
+				description.addProperty("user");
+				/*description.addProperty("identifier");
 				description.addProperty("isTeamLead");
 				description.addProperty("person");		
 				description.addProperty("uuid");
 				description.addProperty("location");
-				description.addProperty("team");
+				description.addProperty("team");*/
+				//description.addProperty("user");
+				description.addSelfLink();
 			}
 		}
 		
@@ -61,34 +71,35 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 	}
 
 	
-	public List<TeamMember> getByUniqueId(String uuid) {
+	public List<TeamMemberWrapper> getByUniqueId(String uuid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<TeamMember> newDelegate() {
+	public List<TeamMemberWrapper> newDelegate() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<TeamMember> save(List<TeamMember> arg0) {
+	public List<TeamMemberWrapper> save(List<TeamMemberWrapper> arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected void delete(List<TeamMember> arg0, String arg1,
+	protected void delete(List<TeamMemberWrapper> arg0, String arg1,
 			RequestContext arg2) throws ResponseException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void purge(List<TeamMember> arg0, RequestContext arg1)
+	public void purge(List<TeamMemberWrapper> arg0, RequestContext arg1)
 			throws ResponseException {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	
 	@Override
 	public SimpleObject search(RequestContext context){
@@ -104,7 +115,25 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 		
 		List<TeamMember> result = Context.getService(TeamMemberService.class).getMemberByLocationId(locationId);
 		
-		return new NeedsPaging<TeamMember>(result,context).toSimpleObject(this);
+		List<TeamMemberWrapper> teamWrapper = new ArrayList<TeamMemberWrapper>();
+		
+		for(int i = 0; i < result.size(); i++){
+			TeamMemberWrapper tmw = new TeamMemberWrapper(result.get(i));
+			tmw.setTeamMember(result.get(i));
+			//get(0) to get the first person only and not the list
+			try{
+				User user = Context.getUserService().getUsersByPerson(result.get(i).getPerson(), true).get(0);
+				if(!user.equals(null)){
+					tmw.setUser(user);
+				}
+			} catch (Exception e){
+				tmw.setUser(null);
+			}
+
+			teamWrapper.add(tmw);
+		}
+		
+		return new NeedsPaging<TeamMemberWrapper>(teamWrapper,context).toSimpleObject(this);
 	}
 	
 

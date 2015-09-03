@@ -70,81 +70,8 @@
 		
 		document.getElementById("location").multiple = true;
 		document.getElementById("location").size = 7;
-		
-		/* var loctree = jQuery('#hierarchyTree').tree({
-			data: {
-				type: "json",
-				opts: {
-					/* url: "/${contextPath}/q/locationHierarchy.json?selectLeafOnly=false" */
-							/*static : ${json}
-
-				}
-			},
-			types: {
-				"default" : {
-					clickable : false,
-					renameable : false,
-					deletable : false,
-					creatable : false,
-					draggable : false,
-					max_children : -1,
-					max_depth : -1,
-					valid_children : "all"
-				},
-				"nulloption" : {
-					clickable : true,
-					icon : { position : '-16px -16px' }
-				},
-				"selectable" : {
-					clickable : true
-				}
-			},
-			ui: {
-				theme_name: "classic"
-			},
-			callback: {
-				onselect: function(NODE, TREE_OBJ){
-				var locname = document.getElementById('hierarchyTree').value=jQuery(NODE).attr('name');
-				}
-			}
-		}); */
-		
-	/*	jQuery('#location').tree({
-			data: {
-				type: "json",
-				opts: {
-					static: ${json}
-				}
-			},
-			types: {
-				"default" : {
-					clickable	: false,
-					renameable	: false,
-					deletable	: false,
-					creatable	: false,
-					draggable	: false,
-					max_children	: -1,
-					max_depth	: -1,
-					valid_children	: "all"
-				}
-			},
-			ui: {
-				theme_name: "classic"
-			}
-		});
-	jQuery.tree.reference('#location').open_all();*/
-		
-		
 
 	});
-	
-	
-			  	/*alert("inside");
-		    	startDate = jQuery('#joinDate').datepicker("getDate");
-		    	alert(startDate);
-		    	jQuery( "#leaveDate" ).datepicker({ minDate: startDate });*/
-	
-
 
 	function validation(teamId) {
 		var currentDate = new Date();
@@ -171,51 +98,12 @@
 		var lDate = leaveDate.value;
 		var reason = voidReason.value;
 		var id = identifier.value;
-		//alert("here");
-		//var location = document.getElementById("location");
-		//var location = document.getElementById("gender");
 		var selectedValue = gender.options[gender.selectedIndex].value;
-		//var selectedLocation = location.options[location.selectedIndex].value;
-		//alert(selectedLocation);
 		var regexp = /^[a-z/i][a-z.\- ]*[a-z/i]{2,}$/i;
 		var idRegExp = /^[a-z|0-9]+[a-z.\-_]*[a-z|0-9]{2,}$/i;
 		var mustSelectMessage = "";
 		var dataTypeMessage = "";
-		/* if (gName == null || gName == "") {
-			mustSelectMessage += "Name can't be empty\n";
-			//alertify.alert("Name can't be empty");
-		} else if (!regexp.test(gName)) {
-			dataTypeMessage += "Name can only contain letters\n";
-			//alertify.alert("Name can only contain letters");
-		} else if (fName == null || fName == "") {
-			mustSelectMessage += "Family Name can't be empty\n";
-			//alertify.alert("Family Name can't be empty");
-		} else if (!regexp.test(fName)) {
-			dataTypeMessage += "Family name can only contain letters\n";
-			//alertify.alert("Family name can only contain letters");
-		} else if (selectedValue == 0) {
-			mustSelectMessage += "Please select a gender\n";
-			//alertify.alert("Please select a gender");
-		} else if (id != null && id != "") {
-			if(!idRegExp.test(id)){
-				dataTypeMessage += "Only letters and numbers are allowed for Identifier.\n";
-				//alertify.alert("Only letters and numbers are allowed for Identifier.");	
-			}			
-		} else if (jDate > currentDate) {
-			mustSelectMessage += "Join date can't be in future\n";
-			//alertify.alert("Join date can't be in future");
-			jQuery("#joinTip").hide();
-			document.getElementById("joinDate").value = "";
-		} else if (lDate > currentDate) {
-			mustSelectMessage += "Leave date can't be in future\n";
-			//alertify.alert("Leave date can't be in future");
-			jQuery("#leaveTip").hide();
-			document.getElementById("leaveDate").value = "";
-		} else if (document.getElementById("voided").checked && (reason == null || reason == "")) {
-			mustSelectMessage += "Either write a reason or uncheck the box please\n";
-			//alertify.alert("Either write a reason or uncheck the box please");
-		} 
-		 */
+		
 		 if(choice){
 			 if(existingPerson == null || existingPerson == ""){
 				 mustSelectMessage += "Name can't be empty";
@@ -225,7 +113,7 @@
 					mustSelectMessage += "Name can't be empty.";
 					//alertify.alert("Name can't be empty");
 				}  if (!regexp.test(gName)) {
-					dataTypeMessage += "<br>Name can contain [alphabets,.,-] min 3, max 20.";
+					dataTypeMessage += "<br>Min 3, max 20 All data types and either [- . Or _ ] are allowed for text field.";
 					//alertify.alert("Name can only contain letters");
 				} if (fName == null || fName == "") {
 					mustSelectMessage += "<br>Family Name can't be empty.";
@@ -289,26 +177,6 @@
 		}
 	}
 
-	/* function dateValidation(date){
-		alert("here "+ date);
-		if(date > new Date()){
-			alert("Date can't be in future");
-		}
-	} */
-
-	/* 	if(jQuery('#choice').is(":checked"))
-	 jQuery('#memberName').show(); */
-
-	/* jQuery("#choice").click(function()
-		jQuery("#memberName").show();
-		jQuery("#memberFamilyName").show();
-		jQuery("#memberGender").show();		
-	)}; */
-	
-	/*function check(){
-		alert("inside");
-	}*/
-
 	function personSelectedCallback(relType, person) {
 		if (person != null && person.personId != null) {
 			document.getElementById('useExistingButton').disabled = false;
@@ -340,8 +208,6 @@
 	
 	function leave() {
 		startDate = jQuery('#joinDate').datepicker("getDate");
-		//console.log(new Date(startDate));
-		//console.log(startDate.getDate() + "/" + startDate.getMonth() + "/" + startDate.getFullYear());
 		jQuery( "#leaveDate" ).datepicker("option", { minDate: new Date(startDate), dateFormat: 'dd/mm/yy' });
 	}
 	
@@ -354,13 +220,6 @@
 		jQuery( "#joinDate" ).datepicker("option", { minDate: new Date(date)});
 	}
 	
-    
-   /* jQuery('#joinDate').on('change',function(){
-    	alert("inside");
-    	startDate = jQuery('#joinDate').datepicker("getDate");
-    	alert(startDate);
-    	jQuery( "#leaveDate" ).datepicker({ minDate: startDate });
-    });*/
 </script>
 
 
@@ -451,50 +310,18 @@
 			<!-- <td><form:input id="teamLead" path="isTeamLead" /></td> -->
 			<td><form:checkbox id="isTeamLead" path="isTeamLead" /></td>
 		</tr>
-		<%-- 		<tr>
-			<td>Location</td>
-			<td><form:select id="location" path="location"
-					cssStyle="width:165px" multiple="true">
-					<form:option value="0" label=" Please Select " />
-					<c:forEach var="childLocation" items="${childLocation}"
-						varStatus="loop">
-						<form:option value="${childLocation.locationId}">${childLocation.name}</form:option>
-					</c:forEach>
-				</form:select><span style="color: red">*</span></td>
-		</tr> --%>
-		<%-- <tr>
-			<td>Location</td>
-			<td><form:select id="location" path="location" cssStyle="width:165px">
-					<!-- <form:option value="0" label=" Please Select " /> -->
-					<form:option value="${defaultLocation.locationId}">${defaultLocation.name}</form:option>
-					<c:forEach var="childLocation" items="${allLocation}" varStatus="loop">
-						<c:if test="${childLocation.locationId ne defaultLocation.locationId}">
-							<form:option value="${childLocation.locationId}">${childLocation.name}</form:option>
-						</c:if>
-					</c:forEach>
-				</form:select><span style="color: red">*</span></td>
-		</tr> --%>
 		<tr>
 			<td>Location</td>
-			<%-- <td> <openmrs_tag:locationField formFieldName="location"
-					initialValue="${location.locationId}" optionHeader="[blank]" /> <span
-				style="color: red">*</span></td> --%>
-			<%-- <td><form:select id="location" path="location" cssStyle="width:165px">
-					<!-- <form:option value="0" label=" Please Select " /> -->
-					<form:option value="${location.locationId}">${location.name}</form:option>
-					<c:forEach var="childLocation" items="${allLocations}" varStatus="loop">
-						<c:if test="${childLocation.locationId ne location.locationId}">
-							<form:option value="${childLocation.locationId}">${childLocation.name}</form:option>
-						</c:if>
-					</c:forEach>
-				</form:select></td> --%>
 			<td><openmrs:fieldGen type="org.openmrs.Location"
 				formFieldName="location" val="${selectedLocation}" /></td>
 		</tr>
 		<tr>
 			<td>Retire Member ?</td>
-			<td><form:checkbox id="voided" path="voided" /><span
-				style="padding-left: 160px" id="voidTip">Reason must be
+			<td><form:checkbox id="voided" path="voided" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><span id="voidTip">Reason must be
 					written</span></td>
 		</tr>
 		<tr>

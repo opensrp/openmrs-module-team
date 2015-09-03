@@ -153,23 +153,7 @@
 		}
 	}
 
-	/* 	if(jQuery('#choice').is(":checked"))
-	 jQuery('#memberName').show(); */
-
-	/* jQuery("#choice").click(function()
-		jQuery("#memberName").show();
-		jQuery("#memberFamilyName").show();
-		jQuery("#memberGender").show();		
-	)}; */
-
-	/* function personSelectedCallback(relType, person) {
-		if (person != null && person.personId != null) {
-			document.getElementById('useExistingButton').disabled = false;
-		} else {
-			document.getElementById('useExistingButton').disabled = true;
-		}
-	} */
-
+	
 	function showCalendar(obj, yearsPrevious) {
 		// if the object doesn't have an id, just set it to some random text so jq can use it
 		if (!obj.id) {
@@ -193,8 +177,6 @@
 	
 	function leave() {
 		startDate = jQuery('#joinDate').datepicker("getDate");
-		//console.log(new Date(startDate));
-		//console.log(startDate.getDate() + "/" + startDate.getMonth() + "/" + startDate.getFullYear());
 		jQuery( "#leaveDate" ).datepicker("option", { minDate: new Date(startDate), dateFormat: 'dd/mm/yy' });
 	}
 	
@@ -213,13 +195,6 @@
 <h3 style="color: red; display: inline">${error}</h3>
 <h3 align="center" style="color: green;">${edit}</h3>
 <h2 align="center">${caption}</h2>
-
-
-<!-- <table>
-<button> New Member </button> <button> Existing Member </button>
-</table> -->
-
-
 
 <form:form id="editMember" name="editMember" method="post"
 	commandName="memberData">
@@ -247,15 +222,15 @@
 					cssStyle="width:165px">
 					<!-- <form:option value="0" label=" Please Select " /> -->
 					<form:option value="${gender}">${gender}</form:option>
-					<c:choose>
+					 <c:choose>
 						<c:when
-							test="${gender == Female || gender == FEMALE || gender == F}">
+							test="${gender == 'Female'}"> 
 							<form:option value="Male">Male</form:option>
-						</c:when>
-						<c:otherwise>
+						 </c:when>
+						<c:otherwise> 
 							<form:option value="Female">Female</form:option>
-						</c:otherwise>
-					</c:choose>
+					 	</c:otherwise>
+					</c:choose> 
 				</form:select><span style="color: red">*</span></td>
 		</tr>
 		<tr id="memberIdentifier">
@@ -281,37 +256,18 @@
 					onblur="jQuery('#leaveTip).hide()" /><span id="leaveTip">Date
 					shouldn't be in future</span></td>
 		</tr>
-		<!-- <tr id="teamLead">
-			<td>Is Team Lead ?</td>
-			<td><form:input id="teamLead" path="isTeamLead" /></td>
-			<td><form:checkbox id="isTeamLead" path="isTeamLead" /></td>
-		</tr> -->
 		<tr>
 			<td>Location</td>
-			<%-- <td><form:select id="location" path="location" cssStyle="width:165px">
-					<!-- <form:option value="0" label=" Please Select " /> -->
-					<form:option value="${defaultLocation.locationId}">${defaultLocation.name}</form:option>
-					<c:forEach var="childLocation" items="${childLocation}" varStatus="loop">
-						<c:if test="${childLocation.locationId ne defaultLocation.locationId}">
-							<form:option value="${childLocation.locationId}">${childLocation.name}</form:option>
-						</c:if>
-					</c:forEach>
-				</form:select><span style="color: red">*</span></td> --%>
 				<td><openmrs:fieldGen type="org.openmrs.Location"
 				formFieldName="location" val="${selectedLocation}" /></td>
 		</tr>
-
-		<%-- <tr>
-			<td>Location</td>
-			<td><openmrs_tag:locationField formFieldName="location"
-					initialValue="${location.locationId}" optionHeader="[blank]" /> <span
-				style="color: red">*</span></td>
-
-		</tr> --%>
 		<tr>
 			<td>Retire Member ?</td>
-			<td><form:checkbox id="voided" path="voided" /><span
-				style="padding-left: 160px" id="voidTip">Reason must be
+			<td><form:checkbox id="voided" path="voided" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><span id="voidTip">Reason must be
 					written</span></td>
 		</tr>
 		<tr>

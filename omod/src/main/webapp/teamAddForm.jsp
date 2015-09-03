@@ -33,6 +33,7 @@
 		    });
 	 }); 
 	function validation() {
+		document.getElementById("saveButton").disabled = true;
 		var regexp = /^[a-z/i][a-z\- ]*[a-z/i\-|0-9]{2,}$/i;
 		var idRegExp = /^[a-z|0-9]+[a-z.\-_]*[a-z|0-9]{2,}$/i;
 		var name = teamName.value;
@@ -46,11 +47,11 @@
 			mustSelectMessage += "Team name can't be empty.";
 			//alertify.alert("Team name can't be empty");
 		} if (!regexp.test(name)) {
-			dataTypeMessage += "<br>Team Name must start with alphabet and can contain [alphanumeric text,-] min 3, max 20.";
+			dataTypeMessage += "<br>Must start with alphabet.Min 3 and max 20.Alphanumeric text,- is allowed for name.";
 			//alertify.alert("Team Name can contain only letters and numbers.\nMinimum 3 characters allowed");
 		}  if (id != null && id != "") {
 			if(!idRegExp.test(id)){
-				dataTypeMessage += "<br>All data types and [-._] are allowed for identifier except special characters,min 3, max 20.";
+				dataTypeMessage += "<br>Min 3, max 20 All data types and either [- . Or _ ] are allowed for identifier.";
 				//alertify.alert("Only letters and numbers are allowed for Identifier");	
 			}
 		}  if (selectedValue == 0) {
@@ -62,8 +63,10 @@
 		} 
 			 if(mustSelectMessage != ""){
 					alertify.alert(mustSelectMessage);
+					document.getElementById("saveButton").disabled = false;
 				}else if(dataTypeMessage != ""){
 					alertify.alert(dataTypeMessage);
+					document.getElementById("saveButton").disabled = false;
 				}else{
 					var xmlhttp = new XMLHttpRequest();
 					var x;
@@ -114,8 +117,8 @@
 					onblur="jQuery('#idTip').hide();" /></td>
 		</tr>
 		<tr><td></td>
-			<td><span style="padding-left: 12px" id="idTip">Min 3 and
-					max 20.All data types and [-._] are allowed</span></td>
+			<td><span style="padding-left: 12px" id="idTip">Min 3, max 20 All data types and either [- . Or _ ] 
+				are allowed for identifier.</span></td>
 		</tr>
 		<tr>
 			<td>Location</td>
@@ -133,7 +136,7 @@
 			<!-- USE VOIDED STUPID -->
 		</tr>
 		<tr><td></td>
-			<td><span style="padding-left: 160px" id="voidTip">Reason
+			<td><span id="voidTip">Reason
 					must be written</span></td>
 		</tr>
 		<tr>
@@ -143,7 +146,7 @@
 		<tr>
 			<input type="hidden" value="save" name="type" />
 			<td></td>
-			<td><button type="button" onClick="validation();">Save</button></td>
+			<td><button id="saveButton" type="button" onClick="validation();">Save</button></td>
 		</tr>
 
 	</form:form>
