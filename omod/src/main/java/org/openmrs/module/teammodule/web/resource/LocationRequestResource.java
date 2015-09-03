@@ -43,24 +43,10 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 			if (rep instanceof DefaultRepresentation) {
 				description.addProperty("teamMember");
 				description.addProperty("user");
-				/*description.addProperty("teamMemberId");
-				description.addProperty("identifier");
-				description.addProperty("isTeamLead");
-				description.addProperty("person");		
-				description.addProperty("uuid");
-				description.addProperty("location");
-				description.addProperty("team");*/
 				description.addSelfLink();
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("teamMember");
 				description.addProperty("user");
-				/*description.addProperty("identifier");
-				description.addProperty("isTeamLead");
-				description.addProperty("person");		
-				description.addProperty("uuid");
-				description.addProperty("location");
-				description.addProperty("team");*/
-				//description.addProperty("user");
 				description.addSelfLink();
 			}
 		}
