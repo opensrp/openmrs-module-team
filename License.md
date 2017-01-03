@@ -10,5 +10,5 @@ You can also access the license on the internet at the address: http://www.gnu.o
 
 Interactive Health Solutions, hereby disclaims all copyright interest in the program 'Team Management Module' (which makes passes at compilers) written by the contributors.
 
-Contributors: Muhammad Safwan
+Contributors: Muhammad Safwan, Shakeeb Raza
 

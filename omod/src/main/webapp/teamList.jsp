@@ -8,7 +8,7 @@
 <form:form action="teamForm.form">
 <input type="hidden" value="edit" name="type" /> 
 			<tr>
-				<td valign="top">
+				<td style="text-align: left;" valign="top">
 					<c:out value="${team.teamName}"/>
 				</td>		
 				<td> <button type="submit"> Edit </button></td>  <!-- &teamId=${team.teamId} -->

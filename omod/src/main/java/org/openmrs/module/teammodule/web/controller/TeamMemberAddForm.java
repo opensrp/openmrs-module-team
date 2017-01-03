@@ -6,6 +6,7 @@ package org.openmrs.module.teammodule.web.controller;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,9 @@ import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.Provider;
+import org.openmrs.Role;
+import org.openmrs.User;
+import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLead;
@@ -82,12 +86,9 @@ public class TeamMemberAddForm {
 		model.addAttribute("teamDate", teamDate);
 		Location location = team.getLocation();
 		model.addAttribute("location", location);
-		/*Set<Location> childLocation = location.getChildLocations();
-		if (childLocation == null || childLocation.isEmpty()) {
-			model.addAttribute("childLocation", location);
-		} else {
-			model.addAttribute("childLocation", childLocation);
-		}*/
+		List<Role> allRole=Context.getUserService().getAllRoles();
+		model.addAttribute("allRoles",allRole);
+		
 		List<Location> allLocations = Context.getLocationService().getAllLocations();
 		model.addAttribute("allLocations",allLocations);
 		 //model.addAttribute("json", getHierarchyAsJson());
@@ -98,6 +99,13 @@ public class TeamMemberAddForm {
 
 	}
 	
+	@RequestMapping(value="/getUserName", method = RequestMethod.GET)
+	public User checkUserName(Model model, HttpServletRequest request) throws IOException {
+
+		String userName = request.getParameter("userName");
+		 //model.addAttribute("json", getHierarchyAsJson());
+		return Context.getUserService().getUserByUsername(userName);
+	}
 	/*@Override
 	protected Map<String, Object> referenceData(HttpServletRequest request)
 			throws Exception {
@@ -212,8 +220,9 @@ public class TeamMemberAddForm {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String onSubmit(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
-	/* @RequestParam(value = "teamParam", required = false) String teamId, */@ModelAttribute("memberData") TeamMember teamMember, BindingResult errors, @RequestParam(required = false, value = "userId") Integer userId,
-			@RequestParam(required = false, value = "existingPerson") String existingPerson, Model model) {
+			@RequestParam(required = false, value = "userName") String username,@RequestParam(required = false, value = "password") String password,
+			@RequestParam(required = false, value = "roles") List<Role> roles, @ModelAttribute("memberData") TeamMember teamMember,
+			BindingResult errors, @RequestParam(required = false, value = "userId") Integer userId,	@RequestParam(required = false, value = "existingPerson") String existingPerson, Model model) {
 		//Object obj = null;
 		
 		if (errors.hasErrors()) {
@@ -242,6 +251,7 @@ public class TeamMemberAddForm {
 		 */
 		String tId = request.getParameter("teamId");
 		String pId = request.getParameter("person_id");
+		
 		String error = "";
 
 		TeamLead teamLead = new TeamLead();
@@ -306,8 +316,12 @@ public class TeamMemberAddForm {
 			}
 		}
 		model.addAttribute("teamId", tId);
+		User user=null;
 		if (error.isEmpty()) {
-			//System.out.println("Inside Member Save");	
+			user=new User(person);
+			user.setUsername(username);
+			user.setUuid(UUID.randomUUID().toString());
+			Context.getUserService().createUser(user, password);
 			teamMember.setUuid(UUID.randomUUID().toString());
 			Context.getService(TeamMemberService.class).save(teamMember);
 			String saved = "Member saved successfully";
@@ -316,7 +330,6 @@ public class TeamMemberAddForm {
 			provider.setPerson(person);
 			provider.setName(person.getGivenName() + " " + person.getFamilyName());
 			provider.setIdentifier(teamMember.getIdentifier());
-			
 			Context.getProviderService().saveProvider(provider);
 			model.addAttribute("saved", saved);
 		}
@@ -331,6 +344,12 @@ public class TeamMemberAddForm {
 			Context.getService(TeamMemberService.class).saveLocation(location);
 			
 		}
+		
+		for(int i = 0; i < user.getAllRoles().size(); i++){
+			String role = user.getRoles().iterator().next().getRole();
+			Context.getService(UserService.class).saveRole(new Role(role));
+		}
+		
 		
 		
 		//System.out.println(teamMember.getLocation());

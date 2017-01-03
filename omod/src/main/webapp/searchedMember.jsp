@@ -29,11 +29,11 @@
 				<th>Is Team Lead</th>
 			</tr>
 			<c:forEach var="allMembers" items="${teamMember}" varStatus="loop">
-				<td><c:out
+				<td style="text-align: left;"><c:out
 						value="${allMembers.person.givenName} ${allMembers.person.familyName}" /></td>
-				<td><c:out value="${allMembers.identifier}" /></td>
+				<td style="text-align: left;"><c:out value="${allMembers.identifier}" /></td>
 				<td><c:out value="${allMembers.person.gender}" /></td>
-				<td><c:out value="${allMembers.team.teamName}" /></td>
+				<td style="text-align: left;"><c:out value="${allMembers.team.teamName}" /></td>
 				<td><c:out value="${parsedJoinDate[loop.index]}" /></td>
 
 				<c:choose>
@@ -63,9 +63,9 @@
 			<c:forEach var="allMembers" items="${dateSearch}" varStatus="loop">
 				<td><c:out
 						value="${allMembers.person.givenName} ${allMembers.person.familyName}" /></td>
-				<td><c:out value="${allMembers.identifier}" /></td>
+				<td style="text-align: left;"><c:out value="${allMembers.identifier}" /></td>
 				<td><c:out value="${allMembers.person.gender}" /></td>
-				<td><c:out value="${allMembers.team.teamName}" /></td>
+				<td style="text-align: left;"><c:out value="${allMembers.team.teamName}" /></td>
 				<td><c:out value="${parsedJoinDate[loop.index]}" /></td>
 
 				<c:choose>

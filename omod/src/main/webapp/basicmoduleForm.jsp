@@ -13,9 +13,9 @@
   </tr>
   <c:forEach var="patient" items="${thePatientList}">
       <tr>
-        <td>${patient.patientId}</td>
-        <td>${patient.personName}</td>
-        <td>${patient.patientIdentifier}</td>
+        <td style="text-align: left;">${patient.patientId}</td>
+        <td style="text-align: left;">${patient.personName}</td>
+        <td style="text-align: left;">${patient.patientIdentifier}</td>
       </tr>		
   </c:forEach>
 </table>

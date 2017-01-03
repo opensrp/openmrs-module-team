@@ -53,6 +53,10 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	public List<TeamMember> getTeamMembers(Team team, String name, Integer teamLeadId, Boolean retired) {
 		return dao.getTeamMembers(team, name, teamLeadId, retired);
 	}
+	
+	public List<TeamMember> getTeamMembersPage(Team team, String name, Integer teamLeadId, Boolean retired) {
+		return dao.getTeamMembersPage(team, name, teamLeadId, retired);
+	}
 
 	public List<TeamMember> getTeamMembers(Integer id) {
 		return dao.getTeamMembers(id);

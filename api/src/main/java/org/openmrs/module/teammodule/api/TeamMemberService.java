@@ -48,6 +48,8 @@ public interface TeamMemberService extends OpenmrsService {
 	public void purgeMember(TeamMember teamMember);
 	
 	public void update(TeamMember teamMember);
+
+	public List<TeamMember> getTeamMembersPage(Team team, String name, Integer teamLeadId, Boolean retired);
 	
 	//public SQLQuery getCount(Integer teamId);
 	

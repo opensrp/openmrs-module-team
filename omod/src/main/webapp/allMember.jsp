@@ -84,11 +84,11 @@
 			</tr>
 
 			<c:forEach var="allMembers" items="${allMembers}" varStatus="loop">
-				<td><c:out
+				<td style="text-align: left;"><c:out
 						value="${allMembers.person.givenName} ${allMembers.person.familyName}" /></td>
-				<td><c:out value="${allMembers.identifier}" /></td>
+				<td style="text-align: left;"><c:out value="${allMembers.identifier}" /></td>
 				<td><c:out value="${allMembers.person.gender}" /></td>
-				<td><c:out value="${allMembers.team.teamName}" /></td>
+				<td style="text-align: left;"><c:out value="${allMembers.team.teamName}" /></td>
 				<td><c:out value="${parsedDate[loop.index]}" /></td>
 				<td><a
 					href="/openmrs/module/teammodule/memberHistory.form?personId=${allMembers.person.personId}">History</a></td>

@@ -152,5 +152,22 @@
 			baseTableName="member_location" baseColumnNames="team_member_id"
 			referencedTableName="team_member" referencedColumnNames="team_member_id" />
 	</changeSet>
+	
+     <changeSet id="teammodule-10.1.0A" author="Shakeeb Raza">
+		<createTable tableName="team_member_patient">
+			<column name="member_patient_id" type="int(11)" >
+				<constraints primaryKey="true" />
+			</column>
+			<column name="patient_id" type="int(11)" >
+				<constraints foreignKeyName="fk_patient_id" references="patient(patient_id)"  />
+			</column>
+			<column name="member_id" type="int(11)" >
+				<constraints foreignKeyName="fk_member_id" references="team_member(team_member_id)"  />
+			</column>
+			<column name="reason" type="varchar(45)" />
+			<column name="status" type="varchar(45)" />
+			<column name="assignment_date" type="datetime" />
+		</createTable>
+	</changeSet>
 
 </databaseChangeLog>

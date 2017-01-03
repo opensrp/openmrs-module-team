@@ -39,6 +39,13 @@
 		jQuery("#joinTip").hide();
 		jQuery("#leaveTip").hide();
 		jQuery("#voidTip").hide();
+		jQuery("#memberUsername").hide();
+		jQuery("#memberPassword").hide();
+		jQuery("#memberRole").hide();	
+		jQuery("#passwordText").hide();	
+		jQuery("#memberConfirmPassword").hide();	
+		jQuery("#confirmPasswordText").hide();	
+		
 		
 		 jQuery('#voided').change(function(){
 		        if(this.checked)
@@ -56,23 +63,75 @@
 				jQuery("#memberFamilyName").hide();
 				jQuery("#memberGender").hide();
 				jQuery("#heading").show();
+				jQuery("#loginChoicebox").hide();
 				jQuery("#exist").show();
+				jQuery("#memberUsername").hide();
+				jQuery("#memberPassword").hide();
+				jQuery("#memberRole").hide();	
+				jQuery("#memberConfirmPassword").hide();
+				
 			} else {
 				jQuery("#memberName").show();
 				jQuery("#memberFamilyName").show();
 				jQuery("#memberGender").show();
 				jQuery("#heading").hide();
+				jQuery("#loginChoicebox").show();
 				jQuery("#exist").hide();
+				
 			}
 		});
+		jQuery('#loginChoice').change(function() {
+			if (this.checked) {
+				jQuery("#memberUsername").show();
+				jQuery("#memberPassword").show();
+				jQuery("#memberRole").show();	
+				jQuery("#memberConfirmPassword").show();
+				
+			} else {
+				jQuery("#memberUsername").hide();
+				jQuery("#memberPassword").hide();
+				jQuery("#memberRole").hide();	
+				jQuery("#memberConfirmPassword").hide();
+				
+			}
+		});
+		
 		jQuery( "#joinDate" ).datepicker({  maxDate: new Date(), dateFormat: 'dd/mm/yy'  });
 		jQuery( "#leaveDate" ).datepicker({  maxDate: new Date(), dateFormat: 'dd/mm/yy'  });
 		
 		document.getElementById("location").multiple = true;
 		document.getElementById("location").size = 7;
 
+		jQuery( "#password" ).blur(function() {
+			  var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+			  var pass= jQuery( "#password" ).val();
+		      if(re.test(pass)!=true)
+		    	  jQuery("#passwordText").show();	
+		      else
+				  jQuery("#passwordText").hide();	
+		  });
+		  
+		jQuery( "#confirmPassword" ).blur(function() {
+			  var pass1= jQuery( "#password" ).val();
+			  var pass2= jQuery( "#confirmPassword" ).val();
+			  if(pass1 != pass2)
+		    	  jQuery("#confirmPasswordText").show();	
+			  else
+				  jQuery("#confirmPasswordText").hide();	
+			    
+		  });
+		
+		jQuery( "#userName" ).blur(function() {
+			  var user= jQuery( "#userName" ).val();
+			    jQuery.get("/module/teammodule/teamMemberAddForm/getUserName?userName="+user, function(data){
+				console.log(data);
+			        });
+		  });
+			
 	});
 
+	
+		  
 	function validation(teamId) {
 		var currentDate = new Date();
 
@@ -103,7 +162,9 @@
 		var idRegExp = /^[a-z|0-9]+[a-z.\-_]*[a-z|0-9]{2,}$/i;
 		var mustSelectMessage = "";
 		var dataTypeMessage = "";
-		
+		var user = document.getElementById("userName").value;
+		var password = document.getElementById("password").value;
+
 		 if(choice){
 			 if(existingPerson == null || existingPerson == ""){
 				 mustSelectMessage += "Name can't be empty";
@@ -126,6 +187,16 @@
 					mustSelectMessage += "<br>Please select a gender.";
 					//alertify.alert("Please select a gender");
 				}
+				if(document.getElementById("loginChoice").checked)
+					{
+					if (user == null || user == "") {
+					mustSelectMessage += "UserName can't be empty.";
+					
+				}  if (!regexp.test(user)) {
+					dataTypeMessage += "<br>In UserName Min 3, max 20 All data types and either [- . Or _ ] are allowed for text field.";
+					
+				}
+					}
 				/*if (selectedLocation == 0){
 					mustSelectMessage += "<br>Please select location.";
 				}*/
@@ -254,8 +325,6 @@
 			<td><openmrs_tag:personField formFieldName="person_id"
 					formFieldId="existingPersonId" /> <br /></td>
 		</tr>
-
-
 		<tr id="memberName" type="hide">
 			<td>Member Name</td>
 			<td><form:input id="givenName" path="person.names[0].givenName"
@@ -273,6 +342,55 @@
 				style="color: red">*</span> <span id="fNameTip">Min 3 and max
 					20.Alphabets,[-.] are allowed</span></td>
 		</tr>
+		<tr>
+			<td style="padding-bottom: 15px" id="loginChoicebox"><input type="checkbox"
+				id="loginChoice" name="loginChoice" /> Add Login Detail</td>
+			</tr>
+			<tr  id="memberUsername" type="hide">
+				<td>User Name: </td>
+				<td>
+						<input type="text" 
+								name="userName" 
+								id="userName" 
+								autocomplete="on" />
+				</td>
+			</tr>
+			<tr  id="memberPassword" type="hide">
+				<td>Password: </td>
+				<td>
+						<input type="password"
+								name="password" 
+								id="password" 
+								autocomplete="off" />
+				</td>
+				<td>
+				<b id="passwordText">Atleast one number, one lowercase and one uppercase letter atleast six characters</b>
+				</td>
+			</tr>
+			<tr  id="memberConfirmPassword" type="hide">
+				<td>Confirm Password: </td>
+				<td>
+						<input type="password"
+								name="confirmPassword" 
+								id="confirmPassword" 
+								autocomplete="off" />
+				</td>
+				<td>
+				<b id="confirmPasswordText">Password and Confirm Password not match</b>
+				</td>
+			</tr>
+			<tr id="memberRole" type="hide">
+				<td valign="top">Role:</td>
+				<td>
+				<select id="roleOption" multiple>
+					<option value="" label="Please Select " />
+					<c:forEach items="${allRoles}" var="roles" varStatus="varStatus">
+					<option value="${roles}">${roles}</option>
+					</c:forEach>
+				</select>
+				</td>
+			</tr>
+		
 		<tr id="memberGender" type="hide">
 			<td>Gender</td>
 			<td><form:select id="gender" path="person.gender"
@@ -330,7 +448,7 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td style="align: right"><button type="button"
+			<td style="text-align: left;"><button type="button"
 					onClick="validation(${teamId});">Add</button></td>
 		</tr>
 		<tr></tr>

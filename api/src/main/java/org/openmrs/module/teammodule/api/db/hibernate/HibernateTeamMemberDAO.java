@@ -73,6 +73,29 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 
 		return criteria.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<TeamMember> getTeamMembersPage(Team team, String teamName, Integer teamLeadId, Boolean retired) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class).setFirstResult(100);
+
+		if (team != null) {
+			criteria.add(Restrictions.eq("team", team));
+		}
+
+		if (teamName != null) {
+			criteria.add(Restrictions.eq("name", teamName));
+		}
+
+		if (teamLeadId != null) {
+			criteria.add(Restrictions.eq("teamLeadId", teamLeadId));
+		}
+
+		if (retired != null) {
+			criteria.add(Restrictions.eq("voided", retired));
+		}
+
+		return criteria.list();
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<TeamMember> getTeamMembers(Integer id) {
@@ -85,7 +108,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<TeamMember> getMemberByLocationId(int id) {
-		List<TeamMember> teamMembers = new ArrayList<>();
+		List<TeamMember> teamMembers = new ArrayList();
 		
 		List<Object> result = sessionFactory.getCurrentSession().createQuery("select tm.teamMemberId  from TeamMember tm join tm.location l where l.locationId = :id").setInteger("id", id).list();
 		

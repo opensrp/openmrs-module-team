@@ -21,7 +21,7 @@
 
 	<c:forEach var="lead" items="${teamLeadList}" varStatus="loop">
 		<tr>
-			<td>${lead.name}</td>
+			<td style="text-align: left;">${lead.name}</td>
 			<td>${lead.parsedJoinDate[loop.index]}</td>
 			<td>${lead.parsedLeaveDate[loop.index]}</td>
 			<td>${lead.gender}</td>

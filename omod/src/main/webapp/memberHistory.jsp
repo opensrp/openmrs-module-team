@@ -20,7 +20,7 @@
 
 	<c:forEach var="join" items="${join}" varStatus="loop">
 		<tr>
-			<td>${teamName[loop.index]}</td>
+			<td style="text-align: left;">${teamName[loop.index]}</td>
 			<td>${join}</td>
 			<td>${leave[loop.index]}</td>
 		</tr>

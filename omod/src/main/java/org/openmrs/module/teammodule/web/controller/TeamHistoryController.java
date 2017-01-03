@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 //import java.util.List;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -30,6 +31,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Muhammad Safwan
@@ -44,7 +46,7 @@ public class TeamHistoryController {
 	protected final Log log = LogFactory.getLog(getClass());
 
 	/** Success form view name */
-	private final String SUCCESS_FORM_VIEW = "/module/teammodule/teamHistory";
+	private final String SUCCESS_FORM_VIEW = "/module/teammodule/team.form";
 
 	/**
 	 * Initially called after the formBackingObject method to get the landing
@@ -53,7 +55,8 @@ public class TeamHistoryController {
 	 * @return String form view name
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String showForm(Model model, HttpServletRequest request) {
+	@ResponseBody
+	public List<Map<String, Object>> showForm(HttpServletRequest request) {
 		List<Map<String, Object>> teamLeadList = new ArrayList<Map<String, Object>>();
 		List<String> parsedJoinDate = new ArrayList<String>();
 		List<String> parsedLeaveDate = new ArrayList<String>();
@@ -174,9 +177,7 @@ public class TeamHistoryController {
 		// model.addAttribute("dateCreated", dateCreated);
 		// model.addAttribute("name", name);
 		//System.out.println(teamLeadList);
-		model.addAttribute("teamLeadList", teamLeadList);
-		model.addAttribute("team", team);
-		return SUCCESS_FORM_VIEW;
+		return teamLeadList;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

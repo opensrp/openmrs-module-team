@@ -22,6 +22,8 @@ public interface TeamMemberDAO {
 	
 	public List<TeamMember> getTeamMembers(Team team, String name, Integer teamLeadId, Boolean retired);
 	
+	public List<TeamMember> getTeamMembersPage(Team team, String name, Integer teamLeadId, Boolean retired);
+	
 	public List<TeamMember> getTeamMembers(Integer id);
 	
 	public List<TeamMember> getAllMembers(boolean retired);

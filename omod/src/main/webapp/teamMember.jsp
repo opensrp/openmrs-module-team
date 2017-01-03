@@ -97,11 +97,11 @@
 						href="/openmrs/module/teammodule/teamMemberEditForm.form?person_id=${teamMember.person.personId}&teamId=${team.teamId}&teamMemberId=${teamMember.teamMemberId}">Edit</a></td>
 				</openmrs:hasPrivilege>
 				<td valign="top"><c:out value="${teamMember.identifier}" /></td>
-				<td valign="top"><c:out
+				<td valign="top" style="text-align: center;"><c:out
 						value="${teamMember.person.givenName} ${teamMember.person.familyName}" /></td>
 				<td><c:out value="${teamMember.person.gender}" /></td>
 				<td><c:out value="${join[loop.index]}" /></td>
-				<td> <div style=" height:40px; width:145px; z-index:1 position:fixed; overflow-y:scroll"> 
+				<td style="text-align: center;"> <div style=" height:40px; width:145px; z-index:1 position:fixed; overflow-y:scroll"> 
 					<c:out value="${teamMember.location}" /> </div> 
 				</td>
 				<openmrs:hasPrivilege privilege="View Member">

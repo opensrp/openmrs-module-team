@@ -8,7 +8,7 @@
 	<version>${project.parent.version}</version>
 	<package>${project.parent.groupId}.${project.parent.artifactId}
 	</package>
-	<author>Muhammad Safwan</author>
+	<author>Shakeeb Raza</author>
 	<description>
 		${project.parent.description}
 	</description>
@@ -40,6 +40,7 @@
 		team.hbm.xml
 		team_member.hbm.xml
 		team_lead.hbm.xml
+		team_member_patient.hbm.xml
 	</mappingFiles>
 
 	<!-- AOP <advice> <point>org.openmrs.api.FormService</point> <class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class> 
@@ -115,6 +116,11 @@
 	<privilege>
 		<name>View Member</name>
 		<description>Ability to view members</description>
+	</privilege>
+	
+	<privilege>
+		<name>Member Patient Mapping</name>
+		<description>Display Patients for Each Member of Team</description>
 	</privilege>
 	
 	
