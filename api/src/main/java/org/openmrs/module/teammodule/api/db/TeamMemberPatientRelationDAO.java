@@ -11,7 +11,11 @@ public interface TeamMemberPatientRelationDAO {
 
 	public void save(TeamMemberPatientRelation tpr);
 
-	public List<TeamMemberPatientRelation> getTeamPatientRelation(int tpr);
+	public void delete(TeamMemberPatientRelation tpr);
+	
+	public void delete(int memberPatientId);
+
+	public TeamMemberPatientRelation getTeamPatientRelation(int tpr);
 
 	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer Id);
 

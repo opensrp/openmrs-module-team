@@ -26,13 +26,14 @@
 <th>Number of Patient</th>
 <th>Location</th>
 <th>Details</th>
-
+<th>Add patient</th>
 <c:forEach items="${list}" var="data">
    <tr>
    <td>${data.memberId}</td>
    <td>${data.size}</td>
    <td>${data.location}</td>
    <td><a href="/openmrs/module/teammodule/teamMemberResponsibilityDetails.form?memberId=${data.memberId}">Details</a></td>
+   <td><a href="/openmrs/module/teammodule/teamMemberResponsibilityAdd.form?memberId=${data.memberId}">Add Patient</a></td>
    </tr>
 </c:forEach>
 </table>

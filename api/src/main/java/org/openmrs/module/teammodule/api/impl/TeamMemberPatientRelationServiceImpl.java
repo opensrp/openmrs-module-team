@@ -28,24 +28,31 @@ public class TeamMemberPatientRelationServiceImpl extends BaseOpenmrsService imp
 		this.dao = dao;
 	}
 
-	public void saveTeam(TeamMemberPatientRelation tpr) {
-		 dao.save(tpr);
-	}
-
 	public void save(TeamMemberPatientRelation tmpr) {
-		// TODO Auto-generated method stub
+		 dao.save(tmpr);
 		
 	}
 	
-	public List<TeamMemberPatientRelation> getTeamPatientRelation(Integer id) {
+	public void delete(TeamMemberPatientRelation tmpr) {
+		 dao.delete(tmpr);
+		
+	}
+	
+	public void delete(int memberPatientId) {
+		 dao.delete(memberPatientId);
+		
+	}
+
+	
+	public TeamMemberPatientRelation getTeamPatientRelation(Integer id) {
 		// TODO Auto-generated method stub
 		return dao.getTeamPatientRelation(id);
 	}
 
 	public List<TeamMemberPatientRelation> getTeamPatientRelations(
-			Integer Id) {
+			Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.getTeamPatientRelations(id);
 	}
 
 	public TeamMemberPatientRelation getTeamPatientRelation(
@@ -64,6 +71,7 @@ public class TeamMemberPatientRelationServiceImpl extends BaseOpenmrsService imp
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	
 }

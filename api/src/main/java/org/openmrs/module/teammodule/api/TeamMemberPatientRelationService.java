@@ -14,7 +14,9 @@ public interface TeamMemberPatientRelationService extends OpenmrsService {
 
 	public void save(TeamMemberPatientRelation tmpr);
 
-	public List<TeamMemberPatientRelation> getTeamPatientRelation(Integer Id);
+	public void delete(TeamMemberPatientRelation tmpr);
+
+	public TeamMemberPatientRelation getTeamPatientRelation(Integer Id);
 	
 	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer Id);
 
@@ -23,5 +25,7 @@ public interface TeamMemberPatientRelationService extends OpenmrsService {
 	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMemberPatientRelation tmpr);
 
 	public void update(TeamMemberPatientRelation tmpr);
+
+	public void delete(int memberPatientId);
 	
 }

@@ -33,13 +33,31 @@ public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelatio
 	}
 
 	public void save(TeamMemberPatientRelation team) {
+		sessionFactory.getCurrentSession().save(team);
+	}
+	
+	public void delete(TeamMemberPatientRelation team) {
 
 		// sessionFactory.openSession();
-		sessionFactory.getCurrentSession().saveOrUpdate(team);
+		sessionFactory.getCurrentSession().delete(team);
 		// sessionFactory.close();
 	}
 
-	public List<TeamMemberPatientRelation> getTeamPatientRelation(int tpr) {
+	public void delete(int memberPatientId) {
+
+		// sessionFactory.openSession();
+		sessionFactory.getCurrentSession().createQuery("delete from TeamMemberPatientRelation where member_patient_id="+memberPatientId);
+		// sessionFactory.close();
+	}
+	
+	public TeamMemberPatientRelation getTeamPatientRelation(int tpr) {
+		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation where member_patient_id = :id").setInteger("id", tpr).uniqueResult();
+		
+	}
+	
+	
+	public List<TeamMemberPatientRelation> getTeamPatientRelations(
+			Integer tpr) {
 		List<TeamMemberPatientRelation> list = sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation").list();
 		List<TeamMemberPatientRelation> list1 = new ArrayList<TeamMemberPatientRelation>();
 		for(int i=0;i<list.size();i++)
@@ -50,12 +68,6 @@ public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelatio
 			}
 		}
 		return list1;
-	}
-
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(
-			Integer teamMemberId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public TeamMemberPatientRelation getTeamPatientRelation(

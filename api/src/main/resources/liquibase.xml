@@ -155,7 +155,7 @@
 	
      <changeSet id="teammodule-10.1.0A" author="Shakeeb Raza">
 		<createTable tableName="team_member_patient">
-			<column name="member_patient_id" type="int(11)" >
+			<column name="member_patient_id" type="int(11)" autoIncrement="true">
 				<constraints primaryKey="true" />
 			</column>
 			<column name="patient_id" type="int(11)" >

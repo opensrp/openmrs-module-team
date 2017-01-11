@@ -27,9 +27,12 @@
   function teamHistory(teamId) {
 
 	  $.get("/openmrs/module/teammodule/teamHistory.form?teamId="+teamId, function(data){
-		  for (i = 0; i < data.length; i++)
+
+		  var myTable = document.getElementById("history");
+		  var rowCount = myTable.rows.length;
+		  for (i = 0; i < rowCount; i++)
 		  {
-		  $("#historyRow").remove();
+			  $("#historyRow").remove();
 		  }
 			  for (i = 0; i < data.length; i++)
 			  {
@@ -49,7 +52,9 @@
   function teamMember(teamId) {
 	    $.get("/openmrs/module/teammodule/teamMember/listPopup.form?teamId="+teamId, function(data){
 		  console.log(data);
-		  for (i = 0; i < data.length; i++)
+		  var myTable = document.getElementById("member");
+		  var rowCount = myTable.rows.length;
+		  for (i = 0; i < rowCount; i++)
 		  {
 			  $("#memberRow").remove();
 		  }
