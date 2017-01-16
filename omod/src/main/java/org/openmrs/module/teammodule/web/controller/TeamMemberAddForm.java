@@ -321,6 +321,7 @@ public class TeamMemberAddForm {
 			user=new User(person);
 			user.setUsername(username);
 			user.setUuid(UUID.randomUUID().toString());
+			if(!password.isEmpty() && !username.isEmpty())
 			Context.getUserService().createUser(user, password);
 			teamMember.setUuid(UUID.randomUUID().toString());
 			Context.getService(TeamMemberService.class).save(teamMember);

@@ -12,13 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 //import java.util.List;
-
+import org.joda.time.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.mozilla.javascript.JavaAdapter;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLead;
@@ -32,7 +33,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 /**
  * @author Muhammad Safwan
  * 
@@ -103,8 +103,8 @@ public class TeamHistoryController {
 					name = name + " " + fName;
 				}
 				
+				Period period;
 				
-
 				// dateCreated = teamLead.get(i).getDateCreated();
 				if (teamLead.get(i).getJoinDate() != null) {
 					String joinDate = sdf.format(teamLead.get(i).getJoinDate());
@@ -129,15 +129,12 @@ public class TeamHistoryController {
 						parsedLeaveDate.add(null);
 					}
 				}
-				int diffYear = end.get(Calendar.YEAR) - start.get(Calendar.YEAR);
-				int diffMonth = diffYear * 12 + end.get(Calendar.MONTH) - start.get(Calendar.MONTH);
-				int diffDay = diffYear * 12 * 365 + end.get(Calendar.DAY_OF_YEAR) - start.get(Calendar.DAY_OF_YEAR);
-				
-				String duration = diffYear + " years, " + diffMonth + " months, " +diffDay + " days";
-				map.put("duration", duration);
-				//System.out.println(duration);
-				
-				map.put("gender", teamLead.get(i).getTeamMember().getPerson().getGender());
+				 LocalDate dateStart = new LocalDate(start.get(Calendar.YEAR)+1, start.get(Calendar.MONTH)+1, end.get(Calendar.DAY_OF_MONTH)+1);
+		         LocalDate dateEnd= new LocalDate(end.get(Calendar.YEAR)+1, end.get(Calendar.MONTH)+1,start.get(Calendar.DAY_OF_MONTH)+1);
+		    	 Days day = Days.daysBetween(dateStart, dateEnd);
+		    	 String duration="Days: "+day.getDays();	
+		    	 map.put("duration", duration);
+				 map.put("gender", teamLead.get(i).getTeamMember().getPerson().getGender());
 				
 				/*if (teamLead.get(i).getVoided() == false) {
 					map.put("parsedLeaveDate", "Present");

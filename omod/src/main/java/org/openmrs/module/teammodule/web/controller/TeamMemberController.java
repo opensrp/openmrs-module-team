@@ -48,6 +48,8 @@ import com.google.gson.Gson;
 /**
  * @author Muhammad Safwan
  * 
+ * @author Shakeeb Raza
+ * 
  */
 @Controller
 @RequestMapping(value = "module/teammodule/teamMember/")
@@ -157,11 +159,6 @@ public class TeamMemberController {
 		return "module/legacyui/admin/users/userForm";
 	}
 	
-	@RequestMapping(value = "userRoleList.form", method = RequestMethod.GET)
-	public String Role() {
-		
-	}
-	
 
 	@RequestMapping(method = RequestMethod.GET, value = "listPopup.form")
 	@ResponseBody
@@ -210,7 +207,7 @@ public class TeamMemberController {
 				m.put("teamMemberId", String.valueOf(teamMember.get(i).getTeamMemberId()));
 				m.put("personName", teamMember.get(i).getPerson().getGivenName() + teamMember.get(i).getPerson().getFamilyName());
 				m.put("join", joinDate.get(i));
-				m.put("gender", String.valueOf(genderList));
+				m.put("gender", teamMember.get(i).getPerson().getGender());
 				m.put("teamId",teamId);
 				arr.add(m);
 			}

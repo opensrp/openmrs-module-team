@@ -38,15 +38,15 @@
 			  {
 			  $("#history").append("<tr id=\"historyRow\">"
 			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].name+"</td>"
-			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].parsedJoinDate+"</td>"
-			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].parsedLeaveDate+"</td>"
+			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].parsedJoinDate[i]+"</td>"
+			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].parsedLeaveDate[i]+"</td>"
 			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].gender+"</td>"
 			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].duration+"</td>"
 			+"</tr>"); 
 			  }
 	});
 	  $( "#historyDialog" ).dialog( { width: "auto",
-		    height: "auto"});
+		    height: "auto", title: "History" , closeText: ""});
   }
 
   function teamMember(teamId) {
@@ -66,14 +66,14 @@
 				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].personName +"</td>"
 				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].join+"</td>"
 				+"<td style=\"text-align: left;\"> <div style=\" height:40px; width:145px; z-index:1 position:fixed; overflow-y:scroll\"> "
-				+data[i].location+" </div></td>" 
+				+data[i].gender+" </div></td>" 
 				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMemberResponsibility.form?teamId="+data[i].teamId+"\">Patients</a></td>"
 				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMember/list.form?teamId="+data[i].teamId+"\">Detail</a></td>"
 				+"</tr>");
 		  }
 	  });
 	  $( "#memberDialog" ).dialog( { width: "auto",
-		    height: "auto"});  
+		    height: "auto", title: "Team Members", closeText: ""});  
   }
   
   </script>
@@ -85,8 +85,8 @@
 <div id="historyDialog">
 <table id="history">
 	<th>Team Lead</th>
-	<th>Date Made</th>
-	<th>Date Removed</th>
+	<th>Change Date</th>
+	<th>Removed Date </th>
 	<th>Gender</th>
 	<th>Duration</th>
 </table>
@@ -181,7 +181,7 @@
 								href="/openmrs/module/teammodule/teamMemberAddForm.form?teamId=${team.teamId}">Add
 									Member</a></td>
 						</openmrs:hasPrivilege>
-						<td style="text-align: center;"><c:out value="${team.teamName}" /></td>
+						<td style="text-align: center;"><c:out value="${teamLead[loop.index]}" /></td>
 						<openmrs:hasPrivilege privilege="Edit Team">
 							<td><a
 								href="/openmrs/module/teammodule/teamMember/list.form?teamId=${team.teamId}&member=&changeLead=true">
@@ -213,7 +213,7 @@
 								href="/openmrs/module/teammodule/teamMemberAddForm.form?teamId=${team.teamId}">Add
 									Member</a></td>
 						</openmrs:hasPrivilege>
-						<td style="text-align: center;"><c:out value="${team.teamName}" /></td>
+						<td style="text-align: center;"><c:out value="${teamLead[loop.index]}" /></td>
 						<openmrs:hasPrivilege privilege="Edit Team">
 							<td><a
 								href="/openmrs/module/teammodule/teamMember/list.form?teamId=${team.teamId}&member=&changeLead=true">
