@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
+import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.module.teammodule.Team;
 
@@ -60,6 +61,8 @@ public class TeamMember extends BaseOpenmrsData implements java.io.Serializable 
 	//private Location location;
 	
 	private Set<Location> location = new HashSet<Location>(0);
+	
+	private Set<Patient> patients = new HashSet<Patient>();
 	
 	private String uuid;
 	
@@ -281,6 +284,16 @@ public class TeamMember extends BaseOpenmrsData implements java.io.Serializable 
 
 	public void setLocation(Set<Location> location) {
 		this.location = location;
+	}
+
+
+	public Set<Patient> getPatients() {
+		return patients;
+	}
+
+
+	public void setPatients(Set<Patient> patients) {
+		this.patients = patients;
 	}
 
 
