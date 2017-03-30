@@ -88,7 +88,7 @@ public class TransferFormController {
 		model.addAttribute("transfer", transfer);
 		model.addAttribute("teamId", teamId);
 		model.addAttribute("teamMember", teamMember);
-		model.addAttribute("location",team.getLocation());
+	//	model.addAttribute("location",team.getLocation());
 		//teamMember.setTeamId(null);
 		return SUCCESS_FORM_VIEW;
 	}

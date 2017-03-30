@@ -22,7 +22,7 @@
 <h1>Team Name: "${teamName}"</h1>
 <br/>
 <table id="team_patient">
-<th>Member Id</th>
+<th>Member Identifier</th>
 <th>Number of Patient</th>
 <th>Location</th>
 <th>Details</th>

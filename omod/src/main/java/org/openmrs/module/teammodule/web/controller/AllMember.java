@@ -7,31 +7,6 @@ package org.openmrs.module.teammodule.web.controller;
 //import java.util.Date;
 //import java.util.ArrayList;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.Team;
-//import org.openmrs.module.teammodule.Team;
-//import org.openmrs.module.teammodule.TeamLead;
-//import org.openmrs.module.teammodule.api.TeamLeadService;
-import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamMemberService;
-import org.openmrs.module.teammodule.api.TeamService;
-//import org.openmrs.module.teammodule.api.TeamService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 /**
  * @author Muhammad Safwan
  *  @author Shakeeb Raza

@@ -84,7 +84,7 @@ public class TeamMemberAddForm {
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
 		Date teamDate = team.getDateCreated();
 		model.addAttribute("teamDate", teamDate);
-		Location location = team.getLocation();
+		Location location = null;
 		model.addAttribute("location", location);
 		List<Role> allRole=Context.getUserService().getAllRoles();
 		model.addAttribute("allRoles",allRole);

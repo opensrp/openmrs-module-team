@@ -10,7 +10,7 @@ import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
 
 /**
- * @author Muhammad Safwan
+ * @author Muhammad Safwan & shakeeb raza
  * 
  */
 
@@ -28,11 +28,7 @@ public class Team extends BaseOpenmrsData implements Serializable {
 
 	private String teamName;
 	
-	private Location location;
-	
-	private Integer teamLeadId;
-	
-	private Integer memberCount;
+	private Integer supervisor;
 	
 	private String uuid;
 	
@@ -75,13 +71,6 @@ public class Team extends BaseOpenmrsData implements Serializable {
 		this.teamName = teamName;
 	}
 
-	/**
-	 * @param teamId
-	 */
-	/*
-	 * public Team(Integer teamId){ this.teamId = teamId; }
-	 */
-
 	public Integer getId() {
 		return teamId;
 	}
@@ -91,36 +80,11 @@ public class Team extends BaseOpenmrsData implements Serializable {
 
 	}
 
-	public Integer getTeamLeadId() {
-		return teamLeadId;
+	public Integer getSupervisor() {
+		return supervisor;
 	}
 
-	public void setTeamLeadId(Integer teamLeadId) {
-		this.teamLeadId = teamLeadId;
+	public void setSupervisor(Integer supervisor) {
+		this.supervisor = supervisor;
 	}
-
-	public Integer getMemberCount() {
-		return memberCount;
-	}
-
-	public void setMemberCount(Integer memberCount) {
-		this.memberCount = memberCount;
-	}
-
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-/*	public Boolean getIsRetired() {
-		return isRetired;
-	}
-
-	public void setIsRetired(Boolean isRetired) {
-		this.isRetired = isRetired;
-	}*/
-
 }

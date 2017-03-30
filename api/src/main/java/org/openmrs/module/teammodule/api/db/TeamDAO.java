@@ -6,8 +6,6 @@ package org.openmrs.module.teammodule.api.db;
 import java.util.List;
 
 import org.openmrs.module.teammodule.Team;
-
-
 /**
  * @author Muhammad Safwan
  *

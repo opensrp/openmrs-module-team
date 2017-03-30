@@ -75,7 +75,7 @@
 			<openmrs:hasPrivilege privilege="Edit Member">
 				<th>Edit</th>
 			</openmrs:hasPrivilege>
-			<th>Id</th>
+			<th>Identifier</th>
 			<th>Name</th>
 			<th>Gender</th>
 			<th>Join Date</th>
@@ -97,13 +97,10 @@
 						href="/openmrs/module/teammodule/teamMemberEditForm.form?person_id=${teamMember.person.personId}&teamId=${team.teamId}&teamMemberId=${teamMember.teamMemberId}">Edit</a></td>
 				</openmrs:hasPrivilege>
 				<td valign="top"><c:out value="${teamMember.identifier}" /></td>
-				<td valign="top" style="text-align: center;"><c:out
-						value="${teamMember.person.givenName} ${teamMember.person.familyName}" /></td>
+				<td><c:out value="${teamMember.person.givenName} ${teamMember.person.familyName}" /></td>
 				<td><c:out value="${teamMember.person.gender}" /></td>
 				<td><c:out value="${join[loop.index]}" /></td>
-				<td style="text-align: center;"> <div style=" height:40px; width:145px; z-index:1 position:fixed; overflow-y:scroll"> 
-					<c:out value="${teamMember.location}" /> </div> 
-				</td>
+				<td style="text-align: center;"><c:out value="${teamMember.location}" /></td>
 				<openmrs:hasPrivilege privilege="View Member">
 					<c:choose>
 						<c:when test="${teamMember.voided == true}">

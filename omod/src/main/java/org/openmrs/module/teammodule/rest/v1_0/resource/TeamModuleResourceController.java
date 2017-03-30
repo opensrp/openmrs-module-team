@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Muhammad Safwan
  * 
  */
-
 @Controller
 @RequestMapping("/rest/" + RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE)
 public class TeamModuleResourceController extends MainResourceController {

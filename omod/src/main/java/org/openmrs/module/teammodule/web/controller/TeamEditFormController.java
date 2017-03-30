@@ -63,21 +63,13 @@ public class TeamEditFormController {
 		String edit = request.getParameter("edit");
 		model.addAttribute("edit", edit);
 
-		// TO MAKE TEAM LOCATION UNEDITABLE
-		/*
-		 * Integer locationId = teamData.getLocation().getLocationId(); Location
-		 * location = Context.getLocationService().getLocation(locationId);
-		 * List<Location> locationList = new ArrayList<Location>();
-		 * locationList.add(location);
-		 */
-		
-		Location l = Context.getLocationService().getLocation(team.getLocation().getLocationId());
+		/*Location l = Context.getLocationService().getLocation(team.getLocation().getLocationId());
 		List<Location> location = Context.getLocationService().getAllLocations();
-
+*/
 		model.addAttribute("teamData", teamData);
-		model.addAttribute("location", location);
+/*		model.addAttribute("location", location);
 		model.addAttribute("defaultLocation", l);
-		model.addAttribute("teamId", teamId);
+*/		model.addAttribute("teamId", teamId);
 		// model.addAttribute("memberData", teamMember);
 
 		return SUCCESS_FORM_VIEW;

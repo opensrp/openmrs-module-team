@@ -169,5 +169,75 @@
 			<column name="assignment_date" type="datetime" />
 		</createTable>
 	</changeSet>
+	<changeSet  id="teammodule-11.1.0A" author="Shakeeb Raza">
+	<createTable tableName="team_role">
+			<column name="team_role_id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="name" type="varchar(45)" />
+			<column name="owns_team" type="boolean" />
+			<column name="report_to" type="int(11)" >
+				<constraints foreignKeyName="fk_reportto_id" references="team_member(team_member_id)"  />
+			</column>
+	</createTable>
+	</changeSet>
+	 <changeSet  id="teammodule-12.1.0A" author="Shakeeb Raza">
+	<createTable tableName="team_hierarchy">
+			<column name="team_hierarchy_id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="team_role" type="int(11)" >
+				<constraints foreignKeyName="fk_teamrole_id" references="team_role(team_role_id)"  />
+			</column>
+		</createTable>
+	</changeSet> 
+	<changeSet  id="teammodule-13.1.0A" author="Shakeeb Raza">
+	<createTable tableName="team_role_log">
+			<column name="log_id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="team_role" type="int(11)" >
+				<constraints foreignKeyName="fk_role_id" references="team_role(team_role_id)"  />
+			</column>
+			<column name="action" type="varchar(45)" />
+			<column name="data_new" type="varchar(500)" />
+			<column name="data_old" type="varchar(500)" />
+			<column name="log" type="varchar(500)" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="Shakeeb Raza" id="teammodule-14.1.0A">
+     <dropForeignKeyConstraint baseTableName="team" constraintName="fk_team_location_id"/>
+	 <dropColumn tableName="team" columnName="location_id" />
+    </changeSet>
+    
+    <changeSet author="Shakeeb Raza" id="teammodule-15.1.0A">
+    <createTable tableName="team_location">
+			<column name="team_location_id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="team_location" type="int(11)" >
+				<constraints foreignKeyName="fk_team_location_id" references="location(location_id)"  />
+			</column>
+			<column name="team" type="int(11)" >
+				<constraints foreignKeyName="fk_team_id1" references="team(team_id)"  />
+			</column>
+			
+		</createTable>
+	</changeSet>
+
+    <changeSet author="Shakeeb Raza" id="teammodule-16.1.0A">
+    <createTable tableName="team_log">
+			<column name="team_log_id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="team" type="int(11)" >
+				<constraints foreignKeyName="fk_team_id2" references="team(team_id)"  />
+			</column>
+			<column name="action" type="varchar(45)" />
+			<column name="data_new" type="varchar(500)" />
+			<column name="log" type="varchar(500)" />
+		</createTable>
+	</changeSet>
 
 </databaseChangeLog>

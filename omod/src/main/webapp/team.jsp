@@ -65,8 +65,8 @@
 				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].teamMemberId+"</td>"
 				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].personName +"</td>"
 				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].join+"</td>"
-				+"<td style=\"text-align: left;\"> <div style=\" height:40px; width:145px; z-index:1 position:fixed; overflow-y:scroll\"> "
-				+data[i].gender+" </div></td>" 
+				+"<td style=\"text-align: left;\">"
+				+data[i].gender+"</td>" 
 				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMemberResponsibility.form?teamId="+data[i].teamId+"\">Patients</a></td>"
 				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMember/list.form?teamId="+data[i].teamId+"\">Detail</a></td>"
 				+"</tr>");
@@ -95,7 +95,7 @@
 <div id="memberDialog">
 <table id="member">
 		<tr>
-			<th>Id</th>
+			<th>Identifier</th>
 			<th>Name</th>
 			<th>Join Date</th>
 			<th>Gender</th>
@@ -142,7 +142,7 @@
 				<openmrs:hasPrivilege privilege="Edit Team">
 					<th>Edit</th>
 				</openmrs:hasPrivilege>
-				<th>Id</th>
+				<th>Identifier</th>
 				<th>Team Name</th>
 				<th>Date Created</th>
 				<th>Location</th>
@@ -170,7 +170,7 @@
 							</td>
 						</openmrs:hasPrivilege>
 						<td><c:out value="${team.teamIdentifier}" /></td>
-						<td valign="top" style="text-align: center;"><c:out value="${team.teamName}" /></td>
+						<td valign="top" style="text-align: left;"><c:out value="${team.teamName}" /></td>
 						<td><c:out value="${parsedDate[loop.index]}" /></td>
 						<td style="text-align: center;"><c:out value="${team.location.name}" /></td>
 						<openmrs:hasPrivilege privilege="View Member">

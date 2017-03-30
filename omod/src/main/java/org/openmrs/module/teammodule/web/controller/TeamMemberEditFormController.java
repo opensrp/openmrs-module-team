@@ -190,10 +190,10 @@ public class TeamMemberEditFormController {
 		String gender = teamMember.getPerson().getGender();
 		System.out.println(gender);
 		model.addAttribute("gender", gender);
-		Location location = team.getLocation();
+		/*Location location = team.getLocation();
 		model.addAttribute("location", location);
 		model.addAttribute("allLocations",allLocations);
-		 //model.addAttribute("json", getHierarchyAsJson());
+		*/ //model.addAttribute("json", getHierarchyAsJson());
 		 model.addAttribute("locationWidgetType",
 		 Context.getAdministrationService().saveGlobalProperty( 
 				new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE, "default")));

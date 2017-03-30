@@ -29,6 +29,5 @@
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
 	
 	<context:component-scan base-package="org.openmrs.module.teammodule.web.controller" />
- 
 		
 </beans>

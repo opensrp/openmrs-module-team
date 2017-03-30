@@ -30,7 +30,7 @@ $.get("/openmrs/module/teammodule/teamMemberResponsibilityUnAssign.form?memberPa
 <h2>Member Name: ${memberName}</h2>	
 <br/>
 <table id="team_patient">
-<th>Patient Id</th>
+<th>Patient Identifier</th>
 <th>Patient Name</th>
 <th>Patient Age</th>
 <th>Assignment Date</th>

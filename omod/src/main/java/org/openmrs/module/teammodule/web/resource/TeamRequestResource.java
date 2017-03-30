@@ -23,7 +23,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 /**
- * @author Muhammad Safwan
+ * @author Muhammad Safwan and Shakeeb raza
  * 
  */
 @Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/team", supportedClass = Team.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
@@ -42,8 +42,6 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("teamName");
 				description.addProperty("uuid");
 				description.addProperty("dateCreated");
-				description.addProperty("location");
-				description.addProperty("memberCount");
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("display");
 				description.addProperty("teamId");
@@ -51,8 +49,6 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("teamName");
 				description.addProperty("uuid");
 				description.addProperty("dateCreated");
-				description.addProperty("location");
-				description.addProperty("memberCount");
 			}
 		}
 

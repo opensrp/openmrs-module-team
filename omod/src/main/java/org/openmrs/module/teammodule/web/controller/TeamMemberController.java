@@ -163,7 +163,7 @@ public class TeamMemberController {
 	@RequestMapping(method = RequestMethod.GET, value = "listPopup.form")
 	@ResponseBody
 	public ArrayList showFormPopup(Model model, HttpServletRequest request) throws JSONException {
-		List<TeamMember> teamMember;
+		List<TeamMember> teamMember,teamMemberTemp;
 		// Person person;
 		// List<Person> personList = new ArrayList<Person>();
 		String teamId = request.getParameter("teamId");
@@ -182,7 +182,8 @@ public class TeamMemberController {
 		if (Context.isAuthenticated()) {
 			if (memberName == null) {
 				teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
-			} else {
+				teamMemberTemp = Context.getService(TeamMemberService.class).getTeamMembersPage(team, null, null, null);
+				} else {
 				teamMember = Context.getService(TeamMemberService.class).searchMemberByTeam(memberName, Integer.parseInt(teamId));
 			}
 			for (int i = 0; i < teamMember.size(); i++) {
