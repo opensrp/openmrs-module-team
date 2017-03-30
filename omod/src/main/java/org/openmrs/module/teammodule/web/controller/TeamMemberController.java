@@ -126,39 +126,6 @@ public class TeamMemberController {
 
 		return SHOW;
 	}
-	
-	@RequestMapping(value = "user.form", method = RequestMethod.GET)
-	public String getUser(
-			@RequestParam(required = false, value = "userName") String userName, ModelMap model) {
-		
-		// the formBackingObject method above sets up user, depending on userId and personId parameters   
-		
-		model.addAttribute("isNewUser", isNewUser(user));
-		if (isNewUser(user) || Context.hasPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS)) {
-			model.addAttribute("modifyPasswords", true);
-		}
-		
-		if (createNewPerson != null) {
-			model.addAttribute("createNewPerson", createNewPerson);
-		}
-		
-		if (!isNewUser(user)) {
-			model.addAttribute("changePassword", new UserProperties(user.getUserProperties()).isSupposedToChangePassword());
-			
-			model.addAttribute("secretQuestion", userService.getSecretQuestion(user));
-		}
-		
-		if (user.getPerson().getId() != null && !Context.getProviderService().getProvidersByPerson(user.getPerson()).isEmpty()) {
-			model.addAttribute("isProvider", true);
-			model.addAttribute("providerList", Context.getProviderService().getProvidersByPerson(user.getPerson()));
-		} else {
-			model.addAttribute("isProvider", false);
-		}
-		
-		// not using the default view name because I'm converting from an existing form
-		return "module/legacyui/admin/users/userForm";
-	}
-	
 
 	@RequestMapping(method = RequestMethod.GET, value = "listPopup.form")
 	@ResponseBody

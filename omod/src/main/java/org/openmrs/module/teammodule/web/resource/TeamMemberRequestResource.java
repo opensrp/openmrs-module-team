@@ -64,6 +64,7 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 				description.addProperty("uuid");
 				description.addProperty("location");
 				description.addProperty("team");
+				description.addProperty("patients", Representation.REF);
 			}
 		}
 
