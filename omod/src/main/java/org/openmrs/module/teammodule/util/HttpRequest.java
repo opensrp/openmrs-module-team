@@ -3,10 +3,6 @@
  */
 package org.openmrs.module.teammodule.util;
 
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 /*import javax.servlet.http.HttpServletRequest;
 
 //import org.dbunit.util.Base64;

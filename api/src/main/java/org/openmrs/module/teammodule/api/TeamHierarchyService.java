@@ -9,13 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface TeamHierarchyService extends OpenmrsService {
 
-		public void saveTeamHierarchy(TeamHierarchy teamHierarchy);
+	public void saveTeamHierarchy(TeamHierarchy teamHierarchy);
+	
+	public TeamHierarchy getTeamRoleById(int id);
+	
+	public List<TeamHierarchy> getAllTeams();
+	
+	public void purgeTeamRole(TeamHierarchy TeamRole);
+	
+	public List<TeamHierarchy> searchTeamRoleByRole(String role);
 		
-		public TeamHierarchy getTeamRole(int id);
-		
-		public List<TeamHierarchy> getAllTeams();
-		
-		public void purgeTeamRole(TeamHierarchy TeamRole);
-		
-		public List<TeamHierarchy> searchTeamRoleByRole(String role);
+	public TeamHierarchy getTeamRoleByUuid(String uuid);		
 }

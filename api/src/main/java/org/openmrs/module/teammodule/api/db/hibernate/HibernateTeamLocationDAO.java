@@ -4,17 +4,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamLocation;
-import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamHierarchyService;
-import org.openmrs.module.teammodule.api.db.TeamHierarchyDAO;
 import org.openmrs.module.teammodule.api.db.TeamLocationDAO;
 
+@SuppressWarnings("unchecked")
 public class HibernateTeamLocationDAO implements TeamLocationDAO{
 
 
@@ -44,7 +38,7 @@ public class HibernateTeamLocationDAO implements TeamLocationDAO{
 	}
 
 	public TeamLocation getTeamLocation(int id) {
-		return	(TeamLocation)sessionFactory.getCurrentSession().createQuery("from TeamLocation tl where tl.team_location_id = :id").setInteger("id", id).uniqueResult();
+		return	(TeamLocation)sessionFactory.getCurrentSession().createQuery("from TeamLocation tl where tl.teamLocationId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	public void purgeTeamLocation(TeamLocation teamLocation) {
@@ -52,7 +46,18 @@ public class HibernateTeamLocationDAO implements TeamLocationDAO{
 	}
 
 	public List<TeamLocation> searchLocationByLocation(String location) {
-		return (List<TeamLocation>)sessionFactory.getCurrentSession().createQuery("from TeamLocation tl where tl.team_Location = :location").setString("location", location);
+		return (List<TeamLocation>)sessionFactory.getCurrentSession().createQuery("from TeamLocation tl join tl.location l where l.locationId = :location").setString("location", location).list();
+	}
+	
+	public List<TeamLocation> getAllLocation() {
+		return (List<TeamLocation>)sessionFactory.getCurrentSession().createQuery("from TeamLocation tl").list();
 	}
 
+	public TeamLocation getTeamLocationByTeamId(Integer id) {
+		return	(TeamLocation)sessionFactory.getCurrentSession().createQuery("from TeamLocation tl join tl.team t where t.teamId = :id").setInteger("id", id).uniqueResult();
+	}
+	
+	public TeamLocation getTeamLocation(String uuid) {
+		return	(TeamLocation)sessionFactory.getCurrentSession().createQuery("from TeamLocation tl where tl.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+	}
 }

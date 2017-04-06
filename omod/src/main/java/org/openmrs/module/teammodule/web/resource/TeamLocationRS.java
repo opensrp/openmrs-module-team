@@ -1,25 +1,16 @@
 package org.openmrs.module.teammodule.web.resource;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.openmrs.Location;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamLocation;
-import org.openmrs.module.teammodule.api.TeamHierarchyService;
 import org.openmrs.module.teammodule.api.TeamLocationService;
-import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
@@ -64,11 +55,7 @@ public class TeamLocationRS extends DataDelegatingCrudResource<TeamLocation> {
 	protected void delete(TeamLocation teamLocation, String reason, RequestContext context) throws ResponseException {
 		// TODO Auto-generated method stub
 	}
-
-	public TeamLocation getByUniqueId(int id) {
-		return Context.getService(TeamLocationService.class).getTeamLocation(id);
-	}
-
+	
 	@Override
 	public void purge(TeamLocation arg0, RequestContext arg1) throws ResponseException {
 		// TODO Auto-generated method stub
@@ -91,8 +78,7 @@ public class TeamLocationRS extends DataDelegatingCrudResource<TeamLocation> {
 
 	@Override
 	public TeamLocation getByUniqueId(String uniqueId) {
-		// TODO Auto-generated method stub
-		return Context.getService(TeamLocationService.class).getTeamLocation(Integer.parseInt(uniqueId));
+		return Context.getService(TeamLocationService.class).getTeamLocation(uniqueId);
 	}
 }
 

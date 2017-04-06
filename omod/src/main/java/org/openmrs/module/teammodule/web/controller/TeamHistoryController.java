@@ -11,15 +11,16 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-//import java.util.List;
-import org.joda.time.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.mozilla.javascript.JavaAdapter;
+//import java.util.List;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLead;
@@ -27,7 +28,6 @@ import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamLeadService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -103,6 +103,7 @@ public class TeamHistoryController {
 					name = name + " " + fName;
 				}
 				
+				@SuppressWarnings("unused")
 				Period period;
 				
 				// dateCreated = teamLead.get(i).getDateCreated();

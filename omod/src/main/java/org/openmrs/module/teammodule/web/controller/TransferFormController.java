@@ -61,9 +61,9 @@ public class TransferFormController {
 		TeamLead teamLead = Context.getService(TeamLeadService.class).getTeamLead(team);
 		
 		String memberId = request.getParameter("memberId");
-		TeamMember teamMember = Context.getService(TeamMemberService.class).getMember(Integer.parseInt(memberId));
+		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberById(Integer.parseInt(memberId));
 		Boolean isTeamLead = teamMember.getIsTeamLead();
-		if (teamLead != null && teamLead.getTeamMember().getTeamMemberId() == Integer.parseInt(memberId)) {
+		if (teamLead != null && teamLead.getTeamMember().getId() == Integer.parseInt(memberId)) {
 			// System.out.println("inside");
 			teamLead.setLeaveDate(new Date());
 			teamLead.setVoided(true);
@@ -98,11 +98,11 @@ public class TransferFormController {
 			 BindingResult errors, HttpServletRequest request, Model model) {
 		// String errorMessage;
 		// TeamLead teamLead = new TeamLead();
-		Person person = Context.getPersonService().getPerson(teamMember.getPersonId());
+		Person person = Context.getPersonService().getPerson(teamMember.getPerson().getId());
 		teamMember.setIdentifier(teamMember.getIdentifier());
 
 		teamMember.setPerson(person);
-		teamMember.setPersonId(teamMember.getPersonId());
+//		teamMember.setPersonId(teamMember.getPerson().getId());
 		teamMember.setJoinDate(new Date());
 		// TeamLead existingLead =
 		// Context.getService(TeamLeadService.class).getTeamLead(team);
@@ -126,7 +126,7 @@ public class TransferFormController {
 			
 		}
 		
-		return "redirect:/module/teammodule/teamMember/list.form?teamId=" + teamMember.getTeamId();
+		return "redirect:/module/teammodule/teamMember/list.form?teamId=" + teamMember.getTeam().getId();
 
 		/*
 		 * if(teamMember.getIsTeamLead().booleanValue() && existingLead==null){

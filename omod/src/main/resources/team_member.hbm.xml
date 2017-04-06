@@ -13,11 +13,11 @@
 	<property name="isTeamLead" column="is_team_lead" type="boolean" not-null="true" />
 	<!-- <many-to-one name="location" column="location_id" class="org.openmrs.Location"/> -->
 	<set name="location" table="member_location"  inverse="false" lazy="true" fetch="select" cascade="all">
-	            <key>
-	                <column name="team_member_id" not-null="true" />
-	            </key>
-	             <many-to-many class="org.openmrs.Location" column="location_id" />
-	        </set>
+		<key>
+    		<column name="team_member_id" not-null="true" />
+       	</key>
+	    <many-to-many class="org.openmrs.Location" column="location_id" />
+	</set>
 	        
 	<set name="patients" table="team_member_patient"  inverse="false" lazy="false" fetch="join">
        <key>
@@ -25,6 +25,10 @@
        </key>
        <many-to-many class="org.openmrs.Patient" column="patient_id" />
     </set>
+	
+	<many-to-one name="teamRole" column="team_role_id" class="org.openmrs.module.teammodule.TeamHierarchy" />
+	
+	
 	
 	<property name="dateCreated" column="date_created" type="java.util.Date" not-null="true"/>
 	<many-to-one name="creator" column ="creator" class="org.openmrs.User" not-null="true"/>
@@ -35,8 +39,6 @@
 	<property name="dateVoided" column="date_voided" type="java.util.Date" />
 	<property name="voidReason" column="void_reason" type="java.lang.String" /> 
 	<property name="uuid" column="uuid" type="java.lang.String" not-null="true" />
-
-	
 
     </class>
 </hibernate-mapping>

@@ -8,10 +8,8 @@ import java.util.List;
 
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
-import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -73,15 +71,13 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 	}
 
 	@Override
-	protected void delete(List<TeamMemberWrapper> arg0, String arg1,
-			RequestContext arg2) throws ResponseException {
+	protected void delete(List<TeamMemberWrapper> arg0, String arg1, RequestContext arg2) throws ResponseException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void purge(List<TeamMemberWrapper> arg0, RequestContext arg1)
-			throws ResponseException {
+	public void purge(List<TeamMemberWrapper> arg0, RequestContext arg1) throws ResponseException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -99,7 +95,7 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 			return null;
 		}
 		
-		List<TeamMember> result = Context.getService(TeamMemberService.class).getMemberByLocationId(locationId);
+		List<TeamMember> result = Context.getService(TeamMemberService.class).getTeamMemberByLocationId(locationId);
 		
 		List<TeamMemberWrapper> teamWrapper = new ArrayList<TeamMemberWrapper>();
 		

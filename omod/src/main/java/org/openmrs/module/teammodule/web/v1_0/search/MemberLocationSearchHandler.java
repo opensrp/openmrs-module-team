@@ -15,7 +15,6 @@ import org.openmrs.module.webservices.rest.web.resource.api.SearchConfig;
 import org.openmrs.module.webservices.rest.web.resource.api.SearchHandler;
 import org.openmrs.module.webservices.rest.web.resource.api.SearchQuery;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,6 +41,7 @@ public class MemberLocationSearchHandler implements SearchHandler {
 		System.out.println(source);
 		
 		System.out.println(Context.getLocationService().getLocationByUuid(source));
+		@SuppressWarnings("unused")
 		List<TeamMember> member = null;
 		//System.out.println(member);
 		return null;

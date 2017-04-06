@@ -1,28 +1,16 @@
 package org.openmrs.module.teammodule.web.resource;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.openmrs.Location;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamHierarchy;
-import org.openmrs.module.teammodule.TeamConstants.TeamAction;
 import org.openmrs.module.teammodule.TeamLog;
-import org.openmrs.module.teammodule.api.TeamHierarchyService;
-import org.openmrs.module.teammodule.api.TeamLocationService;
 import org.openmrs.module.teammodule.api.TeamLogService;
-import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
@@ -68,10 +56,6 @@ public class TeamLogRS extends DataDelegatingCrudResource<TeamLog> {
 		// TODO Auto-generated method stub
 	}
 
-	public TeamLog getByUniqueId(int id) {
-		return Context.getService(TeamLogService.class).getTeamLog(id);
-	}
-
 	@Override
 	public void purge(TeamLog arg0, RequestContext arg1) throws ResponseException {
 		// TODO Auto-generated method stub
@@ -90,8 +74,7 @@ public class TeamLogRS extends DataDelegatingCrudResource<TeamLog> {
 
 	@Override
 	public TeamLog getByUniqueId(String uniqueId) {
-		// TODO Auto-generated method stub
-		return Context.getService(TeamLogService.class).getTeamLog(Integer.parseInt(uniqueId));
+		return Context.getService(TeamLogService.class).getTeamLog(uniqueId);
 	}
 }
 

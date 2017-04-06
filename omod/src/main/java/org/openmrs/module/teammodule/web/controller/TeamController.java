@@ -21,7 +21,6 @@ import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamLeadService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -73,7 +72,7 @@ public class TeamController {
 				team = Context.getService(TeamService.class).getAllTeams(true);
 			}
 			for (int i = 0; i < team.size(); i++) {
-				teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team.get(i), null, null, false);
+				teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.get(i).getId(), null, null, false);
 				System.out.println(team.get(i).getTeamId());
 				System.out.println(teamMember);
 				System.out.println(team.get(i).getUuid());

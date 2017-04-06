@@ -78,19 +78,18 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 		//System.out.println(person);
 		if (person != null) {
 			Integer id = person.getPersonId();
-			List<TeamMember> tm = Context.getService(TeamMemberService.class).getMemberByPersonId(id);
-			id = tm.get(0).getTeamMemberId();
-			TeamMember member = Context.getService(TeamMemberService.class).getMember(id);
+			List<TeamMember> tm = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(id);
+			id = tm.get(0).getId();
+			TeamMember member = Context.getService(TeamMemberService.class).getTeamMemberById(id);
 			return member;
 		}
-		return Context.getService(TeamMemberService.class).getTeamMember(uuid);
+		return Context.getService(TeamMemberService.class).getTeamMemberByUuid(uuid);
 
 	}
 
 	@Override
 	protected void delete(TeamMember delegate, String reason, RequestContext context) throws ResponseException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -101,8 +100,7 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchMember(context.getParameter("q"));
+		List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchTeamMember(context.getParameter("q"));
 		return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
 	}
-	
 }

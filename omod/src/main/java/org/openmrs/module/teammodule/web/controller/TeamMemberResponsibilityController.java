@@ -18,10 +18,8 @@ import org.apache.commons.collections.map.HashedMap;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
-import org.openmrs.PersonAttributeType;
 import org.openmrs.PersonName;
 import org.openmrs.api.PatientService;
-import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
@@ -29,16 +27,15 @@ import org.openmrs.module.teammodule.TeamMemberPatientRelation;
 import org.openmrs.module.teammodule.api.TeamMemberPatientRelationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
-import org.openmrs.module.teammodule.api.impl.TeamMemberPatientRelationServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
+@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 public class TeamMemberResponsibilityController {
 
 	private final String teamMemberResponsibility = "/module/teammodule/teamMemberResponsibility";
@@ -48,7 +45,7 @@ public class TeamMemberResponsibilityController {
 	@RequestMapping(value = "module/teammodule/teamMemberResponsibility.form", method = RequestMethod.GET)
 	public String showTeamMemberResponsibility(Model model, HttpServletRequest request,@RequestParam("teamId")String teamId) {
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.getId(), null, null, null);
 		model.addAttribute("teamName", team.getTeamName());
 		model.addAttribute("teamMember", teamMember.size());
 		
@@ -57,9 +54,9 @@ public class TeamMemberResponsibilityController {
 		for (int i=0;i<teamMember.size();i++)
 		{
 		m=new HashedMap();
-		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember.get(i).getTeamMemberId());
+		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember.get(i).getId());
 		m.put("size", tprs.size());
-		m.put("memberId", teamMember.get(i).getTeamMemberId());
+		m.put("memberId", teamMember.get(i).getId());
 		Set<Location> location = teamMember.get(i).getLocation();
 		m.put("location",location);
 		list.add(m);
@@ -73,7 +70,7 @@ public class TeamMemberResponsibilityController {
 		
 		List<Map> list=new ArrayList<Map>();
 		Map m;
-		TeamMember teamMember = Context.getService(TeamMemberService.class).getMember(Integer.valueOf(memberId));
+		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberById(Integer.valueOf(memberId));
 		model.addAttribute("memberId", memberId);
 		model.addAttribute("memberName", teamMember.getPerson().getNames());
 		
@@ -109,7 +106,7 @@ public class TeamMemberResponsibilityController {
 		
 		List<Map> list=new ArrayList<Map>();
 		Map m;
-		TeamMember teamMember = Context.getService(TeamMemberService.class).getMember(Integer.valueOf(memberId));
+		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberById(Integer.valueOf(memberId));
 		model.addAttribute("memberId", memberId);
 		model.addAttribute("memberName", teamMember.getPerson().getNames());
 		List<Patient> patient=Context.getService(PatientService.class).getAllPatients(true);
@@ -123,7 +120,7 @@ public class TeamMemberResponsibilityController {
 		List<Map> list=new ArrayList<Map>();
 		Map m;
 		Patient patient=Context.getService(PatientService.class).getPatient(patientText);
-		TeamMember teamMember = Context.getService(TeamMemberService.class).getMember(memberId);
+		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberById(memberId);
 		Date date=new Date();
 		TeamMemberPatientRelation tmpr=new TeamMemberPatientRelation();
 		tmpr.setAssignmentDate(date);

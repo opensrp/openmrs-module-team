@@ -16,9 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLead;
@@ -28,13 +26,10 @@ import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import org.springframework.web.bind.annotation.RequestParam;
 //import java.util.Date;
 //import org.openmrs.PersonName;
 //import org.openmrs.module.teammodule.Team;
@@ -42,8 +37,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 //import org.openmrs.module.teammodule.api.TeamLeadService;
 //import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.google.gson.Gson;
 
 /**
  * @author Muhammad Safwan
@@ -84,9 +77,9 @@ public class TeamMemberController {
 
 		if (Context.isAuthenticated()) {
 			if (memberName == null) {
-				teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
+				teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.getId(), null, null, null);
 			} else {
-				teamMember = Context.getService(TeamMemberService.class).searchMemberByTeam(memberName, Integer.parseInt(teamId));
+				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(memberName, Integer.parseInt(teamId));
 			}
 			for (int i = 0; i < teamMember.size(); i++) {
 				/*
@@ -127,6 +120,7 @@ public class TeamMemberController {
 		return SHOW;
 	}
 
+	@SuppressWarnings({ "unused", "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET, value = "listPopup.form")
 	@ResponseBody
 	public ArrayList showFormPopup(Model model, HttpServletRequest request) throws JSONException {
@@ -148,10 +142,10 @@ public class TeamMemberController {
 		
 		if (Context.isAuthenticated()) {
 			if (memberName == null) {
-				teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
-				teamMemberTemp = Context.getService(TeamMemberService.class).getTeamMembersPage(team, null, null, null);
+				teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.getId(), null, null, null);
+				teamMemberTemp = Context.getService(TeamMemberService.class).getTeamMemberByTeamWithPage(team.getId(), null, null, null);
 				} else {
-				teamMember = Context.getService(TeamMemberService.class).searchMemberByTeam(memberName, Integer.parseInt(teamId));
+				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(memberName, Integer.parseInt(teamId));
 			}
 			for (int i = 0; i < teamMember.size(); i++) {
 				if (teamMember.get(i).getJoinDate() != null) {
@@ -172,7 +166,7 @@ public class TeamMemberController {
 			
 			for(int i=0;i<teamMember.size();i++)
 			{	m=new HashedMap();
-				m.put("teamMemberId", String.valueOf(teamMember.get(i).getTeamMemberId()));
+				m.put("teamMemberId", String.valueOf(teamMember.get(i).getId()));
 				m.put("personName", teamMember.get(i).getPerson().getGivenName() + teamMember.get(i).getPerson().getFamilyName());
 				m.put("join", joinDate.get(i));
 				m.put("gender", teamMember.get(i).getPerson().getGender());
@@ -216,18 +210,18 @@ public class TeamMemberController {
 		TeamMember tm = null;
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
 		TeamLead teamLead = Context.getService(TeamLeadService.class).getTeamLead(team);
-		//TeamMember tm = Context.getService(TeamMemberService.class).getMember(Integer.parseInt(teamMemberId));
+		//TeamMember tm = Context.getService(TeamMemberService.class).getTeamMemberById(Integer.parseInt(teamMemberId));
 		if (teamLead != null) {
 			teamLead.setVoided(true);
 			teamLead.setVoidReason("Team Lead Changed");
 			teamLead.setLeaveDate(new Date());
 			teamLead.setDateVoided(new Date());
 			Context.getService(TeamLeadService.class).update(teamLead);
-			tm = Context.getService(TeamMemberService.class).getMember(Integer.parseInt(teamLeadId));
+			tm = Context.getService(TeamMemberService.class).getTeamMemberById(Integer.parseInt(teamLeadId));
 			tm.setIsTeamLead(false);
 			Context.getService(TeamMemberService.class).update(tm);
 		}
-		tm = Context.getService(TeamMemberService.class).getMember(Integer.parseInt(teamMemberId));
+		tm = Context.getService(TeamMemberService.class).getTeamMemberById(Integer.parseInt(teamMemberId));
 		teamLead = new TeamLead();
 		teamLead.setTeam(team);
 		teamLead.setJoinDate(new Date());
@@ -239,7 +233,7 @@ public class TeamMemberController {
 		teamLead = Context.getService(TeamLeadService.class).getTeamLead(team);	
 		tm.setIsTeamLead(true);
 		Context.getService(TeamMemberService.class).update(tm);
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, false);
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.getId(), null, null, false);
 
 		for (int i = 0; i < teamMember.size(); i++) {
 			// person =

@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamLocation;
 import org.openmrs.module.teammodule.TeamMember;
+import org.openmrs.module.teammodule.api.TeamLocationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,7 @@ public class AjaxTeamModuleController {
 	@RequestMapping(value = "getTeams")
 	@ResponseBody
 	public String getTeams(HttpServletRequest request) {
+		List<TeamLocation> teamLocation = Context.getService(TeamLocationService.class).getAllLocation();
 		List<Team> team = Context.getService(TeamService.class).getAllTeams(false);
 		String error = "";
 		// System.out.println("here");
@@ -37,9 +40,11 @@ public class AjaxTeamModuleController {
 		String locationId = request.getParameter("locationId");
 		for (int i = 0; i < team.size(); i++) {
 			if (teamName.equals(team.get(i).getTeamName())) {
-				if (Integer.parseInt(locationId) == team.get(i).getLocation().getLocationId()) {
-					error = "Team already exists with same name and location";
-					break;
+				for (int j = 0; j < teamLocation.size(); j++) {
+					if (Integer.parseInt(locationId) == teamLocation.get(j).getLocation().getLocationId()) {
+						error = "Team already exists with same name and location";
+						break;
+					}
 				}
 			} else {
 
@@ -56,8 +61,8 @@ public class AjaxTeamModuleController {
 		// System.out.println("here");
 		String identifier = request.getParameter("identifier");
 		String teamId = request.getParameter("teamId");
-		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
+//		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(Integer.parseInt(teamId), null, null, null);
 		// System.out.println(teamId);
 		// String locationId = request.getParameter("locationId");
 		for (int i = 0; i < teamMember.size(); i++) {
@@ -84,14 +89,14 @@ public class AjaxTeamModuleController {
 		String identifier = request.getParameter("identifier");
 		String teamId = request.getParameter("teamId");
 		String teamMemberId = request.getParameter("teamMemberId");
-		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
+//		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(Integer.parseInt(teamId), null, null, null);
 		// System.out.println(teamId);
 		// String locationId = request.getParameter("locationId");
 		for (int i = 0; i < teamMember.size(); i++) {
 			if (identifier.equals(teamMember.get(i).getIdentifier())) {
 				// System.out.println(teamMember.get(i).getTeam().getTeamId());
-				if (Integer.parseInt(teamMemberId) != teamMember.get(i).getTeamMemberId()) {
+				if (Integer.parseInt(teamMemberId) != teamMember.get(i).getId()) {
 					error = "Member exists with same identifier";
 					break;
 				}
@@ -106,8 +111,8 @@ public class AjaxTeamModuleController {
 	@ResponseBody
 	public Location getLocations(HttpServletRequest request) {
 		String teamId = request.getParameter("teamId");
-		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		Location location = team.getLocation();
+		TeamLocation teamLocation = Context.getService(TeamLocationService.class).getTeamLocationByTeamId(Integer.parseInt(teamId));
+		Location location = teamLocation.getLocation();
 		Set<Location> childLocation = location.getChildLocations();
 		if( childLocation == null || childLocation.equals(null) || childLocation.equals("")){
 			return null;

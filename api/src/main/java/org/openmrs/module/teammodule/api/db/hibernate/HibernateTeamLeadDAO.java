@@ -46,7 +46,7 @@ public class HibernateTeamLeadDAO implements TeamLeadDAO {
 	@SuppressWarnings("unchecked")
 	public List<TeamMember> getTeamMembers(Integer teamLeadId) {
 
-		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from Team t where t.team_lead_id = :teamLeadId").setInteger("teamLeadId", teamLeadId).uniqueResult();
+		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamLead t where t.teamLeadId = :teamLeadId").setInteger("teamLeadId", teamLeadId).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -61,11 +61,7 @@ public class HibernateTeamLeadDAO implements TeamLeadDAO {
 	}
 
 	public TeamLead getTeamLead(Team team) {
-		return (TeamLead) sessionFactory.getCurrentSession().createQuery("from TeamLead tl where tl.team = :teamId and tl.voided = :num").setInteger("teamId", team.getTeamId()).setInteger("num", 0).uniqueResult();
-		/*Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamLead.class);
-		
-		criteria.add(Restrictions.eq("voided", false));
-		return (TeamLead) criteria.uniqueResult();*/
+		return (TeamLead) sessionFactory.getCurrentSession().createQuery("from TeamLead join tl.team t where t.team = :teamId and tl.voided = :num").setInteger("teamId", team.getTeamId()).setInteger("num", 0).uniqueResult();
 	}
 
 	public void update(TeamLead teamLead) {

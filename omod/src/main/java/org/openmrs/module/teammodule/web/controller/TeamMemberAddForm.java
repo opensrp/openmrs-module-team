@@ -6,7 +6,6 @@ package org.openmrs.module.teammodule.web.controller;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -163,7 +162,7 @@ public class TeamMemberAddForm {
 		}
 		
 		// If this gets slow with lots of locations then switch out ObjectMapper for the
-		// stream-based version. (But the TODO above is more likely to be a performance hit.)
+		// stream-based version. (But the TO-DO above is more likely to be a performance hit.)
 		StringWriter w = new StringWriter();
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(w, list);
@@ -218,6 +217,7 @@ public class TeamMemberAddForm {
 	 * @return
 	 */
 
+	@SuppressWarnings("deprecation")
 	@RequestMapping(method = RequestMethod.POST)
 	public String onSubmit(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
 			@RequestParam(required = false, value = "userName") String username,@RequestParam(required = false, value = "password") String password,

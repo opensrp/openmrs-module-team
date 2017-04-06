@@ -5,13 +5,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberPatientRelation;
-import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
 import org.openmrs.module.teammodule.api.db.TeamMemberPatientRelationDAO;
 
 public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelationDAO{
@@ -37,27 +32,20 @@ public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelatio
 	}
 	
 	public void delete(TeamMemberPatientRelation team) {
-
-		// sessionFactory.openSession();
 		sessionFactory.getCurrentSession().delete(team);
-		// sessionFactory.close();
 	}
 
 	public void delete(int memberPatientId) {
-
-		// sessionFactory.openSession();
-		sessionFactory.getCurrentSession().createQuery("delete from TeamMemberPatientRelation where member_patient_id="+memberPatientId);
-		// sessionFactory.close();
+		sessionFactory.getCurrentSession().createQuery("delete from TeamMemberPatientRelation where teamMemberPatientId="+memberPatientId);
 	}
 	
 	public TeamMemberPatientRelation getTeamPatientRelation(int tpr) {
-		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation where member_patient_id = :id").setInteger("id", tpr).uniqueResult();
-		
+		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation where teamMemberPatientId = :id").setInteger("id", tpr).uniqueResult();
 	}
 	
 	
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(
-			Integer tpr) {
+	@SuppressWarnings("unchecked")
+	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer tpr) {
 		List<TeamMemberPatientRelation> list = sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation").list();
 		List<TeamMemberPatientRelation> list1 = new ArrayList<TeamMemberPatientRelation>();
 		for(int i=0;i<list.size();i++)
@@ -70,41 +58,48 @@ public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelatio
 		return list1;
 	}
 
-	public TeamMemberPatientRelation getTeamPatientRelation(
-			TeamMemberPatientRelation tpr) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(
-			TeamMemberPatientRelation tpr) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void update(TeamMemberPatientRelation tpr) {
-		// TODO Auto-generated method stub
-		
+	public void update(TeamMemberPatientRelation tmpr) {
+		sessionFactory.getCurrentSession().update(tmpr);
 	}
 
 	public void purgeTeamPatientRelation(TeamMemberPatientRelation tpr) {
-		// TODO Auto-generated method stub
-		
+		sessionFactory.getCurrentSession().delete(tpr);
 	}
 
-	public TeamMemberPatientRelation getTeamPatientRelation(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	@SuppressWarnings("unchecked")
 	public List<TeamMemberPatientRelation> searchTeamPatientRelation(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		List<TeamMemberPatientRelation> list = sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation").list();
+		List<TeamMemberPatientRelation> list1 = new ArrayList<TeamMemberPatientRelation>();
+		for(int i=0;i<list.size();i++)
+		{
+			if(name==list.get(i).getMember().getPerson().getGivenName())
+			{
+				list1.add(list.get(i));
+			}
+		}
+		return list1;
 	}
 
-	public List<TeamMemberPatientRelationDAO> getTeamPatientRelations() {
+	@SuppressWarnings("unchecked")
+	public List<TeamMemberPatientRelation> getTeamPatientRelations() {
+		return sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation").list();
+	}
+
+	/*@Override
+	public TeamMemberPatientRelation getTeamPatientRelation(TeamMemberPatientRelation tpr) {
 		// TODO Auto-generated method stub
 		return null;
+	}*/
+
+	@Override
+	public TeamMemberPatientRelation getTeamPatientRelation(String uuid) {
+		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation where uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
+
+	/*@Override
+	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMemberPatientRelation tpr) {
+		// TODO Auto-generated method stub
+		return null;
+	}*/
 
 }

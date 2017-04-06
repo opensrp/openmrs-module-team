@@ -3,7 +3,6 @@
  */
 package org.openmrs.module.teammodule.api.db.hibernate;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,7 +15,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.ResultTransformer;
 import org.openmrs.Location;
-import org.openmrs.module.teammodule.Team;
+import org.openmrs.Patient;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
 
@@ -25,6 +24,7 @@ import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
  * @author Muhammad Safwan
  * 
  */
+@SuppressWarnings("unchecked")
 public class HibernateTeamMemberDAO implements TeamMemberDAO {
 
 	protected final Log log = LogFactory.getLog(getClass());
@@ -43,20 +43,83 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public void save(TeamMember teamMember) {
-		sessionFactory.getCurrentSession().save(teamMember);
+	@Override
+	public TeamMember getTeamMemberById(Integer id) {
+		return (TeamMember) sessionFactory.getCurrentSession().createQuery("from TeamMember t where t.teamMemberId = :id").setInteger("id", id).uniqueResult();
 	}
 
-	public void saveLocation(Location location) {
-		sessionFactory.getCurrentSession().save(location);
+	@Override
+	public TeamMember getTeamMemberByName(String name) {
+		return (TeamMember) sessionFactory.getCurrentSession().createQuery("from TeamMember tm join tm.person p join p.names pn where pn.givenName = :name").setString("name", name).uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getTeamMembers(Team team, String teamName, Integer teamLeadId, Boolean retired) {
+	@Override
+	public List<TeamMember> getTeamMemberByIdentifier(String identifier) {
+		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember t where t.identifier = :identifier").setString("identifier", identifier).uniqueResult();
+	}
+
+	@Override
+	public TeamMember getTeamMemberByUuid(String uuid) {
+		return (TeamMember) sessionFactory.getCurrentSession().createQuery("from TeamMember t where t.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByTeamId(Integer teamId) {
+		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember tm join tm.team t where t.teamId = :teamId").setInteger("teamId", teamId).uniqueResult();
+	}
+	
+	@Override
+	public List<TeamMember> getTeamMemberByTeamName(String name) {
+		return null;
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByPersonId(Integer personId) {
+		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember tm join tm.person p where p.personId = :personId").setInteger("personId", personId).uniqueResult();
+	}
+
+	@Override
+	public List<TeamMember> getTeamMembersByDate(Date joinDateFrom, Date joinDateTo) {
+		if(joinDateFrom != null && joinDateTo != null) { return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember t where t.joinDate = :joinDateFrom and t.leave_date = :joinDateTo").setDate("joinDateFrom", joinDateFrom).setDate("joinDateTo", joinDateTo).uniqueResult(); }
+		else if(joinDateFrom != null && joinDateTo == null) { return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember t where t.joinDate = :joinDateFrom").setDate("joinDateFrom", joinDateFrom).uniqueResult(); }
+		else if(joinDateFrom == null && joinDateTo != null) { return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember t where t.leaveDate = :joinDateTo").setDate("joinDateTo", joinDateTo).uniqueResult(); }
+		else { return null; }
+	}
+
+	@Override
+	public List<TeamMember> getTeamMembersByTeamLead(boolean isTeamLead) {
+		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember t where t.isTeamLead = :isTeamLead").setBoolean("isTeamLead", isTeamLead).uniqueResult();
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByRetired(boolean retired) {
+		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember t where t.voided = :retired").setBoolean("retired", retired).uniqueResult();
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByTeamRoleId(Integer teamRoleId) {
+		// TODO
+		return null;
+	}
+	
+	@Override
+	public List<TeamMember> getTeamMemberByLocationId(Integer id) {
+		// TODO
+		return null;
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByPatientId(Integer id) {
+		// TODO
+		return null;
+	}
+	
+	@Override
+	public List<TeamMember> getTeamMemberByTeam(Integer teamId, String teamName, Integer teamLeadId, Boolean retired) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
 
-		if (team != null) {
-			criteria.add(Restrictions.eq("team", team));
+		if (teamId != null) {
+			criteria.add(Restrictions.eq("teamId", teamId));
 		}
 
 		if (teamName != null) {
@@ -74,12 +137,12 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		return criteria.list();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getTeamMembersPage(Team team, String teamName, Integer teamLeadId, Boolean retired) {
+	@Override
+	public List<TeamMember> getTeamMemberByTeamWithPage(Integer teamId, String teamName, Integer teamLeadId, Boolean retired) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class).setFirstResult(100);
-
-		if (team != null) {
-			criteria.add(Restrictions.eq("team", team));
+		
+		if (teamId != null) {
+			criteria.add(Restrictions.eq("teamId", teamId));
 		}
 
 		if (teamName != null) {
@@ -96,160 +159,95 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 
 		return criteria.list();
 	}
-
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getTeamMembers(Integer id) {
-		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.id = :id").setInteger("id", id).uniqueResult();
-	}
-
-	public TeamMember getMember(int id) {
-		return (TeamMember) sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.id = :id").setInteger("id", id).uniqueResult();
-	}
 	
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getMemberByLocationId(int id) {
-		List<TeamMember> teamMembers = new ArrayList();
-		
-		List<Object> result = sessionFactory.getCurrentSession().createQuery("select tm.teamMemberId  from TeamMember tm join tm.location l where l.locationId = :id").setInteger("id", id).list();
-		
-		String query = "from TeamMember where  ";
-		for (int i = 0; i < result.size(); i++) {
-			query += "teamMemberId =" + result.get(i);
-			System.out.println(result.get(i));
-			if(i<(result.size()-1)) {
-				 query+= " OR ";
-			}
-		}
-		
-		teamMembers = sessionFactory.getCurrentSession().createQuery(query).list();
-		return teamMembers;
-		
-	}
 	
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getMemberByPersonId(int id) {
-		//System.out.println("Here");
-		return sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.person.personId = :id").setInteger("id", id).list();
+	@Override
+	public List<TeamMember> getAllTeamMember(boolean isRetired) {
+		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamMember").setBoolean("retired", isRetired).uniqueResult();
+
+		/*
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
+		if (!isRetired) { criteria.add(Restrictions.eq("voided", false)); }
+		return criteria.list();
+		*/
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getMember(String name) {
-		return sessionFactory.getCurrentSession().createQuery("from TeamMember tm join tm.person p join p.names pn where pn.givenName = :name").setString("name", name).list();
+	@Override
+	public void save(TeamMember teamMember) {
+		sessionFactory.getCurrentSession().saveOrUpdate(teamMember);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getMembers(Date joinDateFrom, Date joinDateTo) {
-		return sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.joinDate between :from and :to").setDate("from", joinDateFrom).setDate("to", joinDateTo).list();
-	}
-	
-
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getLikeMember(String name) {
-		return sessionFactory.getCurrentSession().createQuery("from TeamMember tm join tm.person p join p.names pn where pn.givenName like :name").setString("name", "%" + name + "%").list();
+	@Override
+	public void saveLocation(Location location) {
+		sessionFactory.getCurrentSession().saveOrUpdate(location);
 	}
 
-	/*
-	 * public SQLQuery getCount(Integer teamId){ return
-	 * sessionFactory.getCurrentSession().createSQLQuery(
-	 * "select count(*) from team_member where voided = 0 and team_id ="
-	 * +teamId); }
-	 */
+	@Override
+	public void savePatient(Patient patient) {
+		sessionFactory.getCurrentSession().saveOrUpdate(patient);
+	}
+
+	@Override
 	public void purgeMember(TeamMember teamMember) {
 		sessionFactory.getCurrentSession().delete(teamMember);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getAllMembers(boolean retired) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
-
-		if (!retired) {
-			criteria.add(Restrictions.eq("retired", false));
-		}
-
-		return criteria.list();
-	}
-
+	@Override
 	public void update(TeamMember teamMember) {
 		sessionFactory.getCurrentSession().update(teamMember);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> searchMember(String name) {
+	@Override
+	public List<TeamMember> searchTeamMember(String name) {
 		/*
 		 * return sessionFactory.getCurrentSession().createQuery(
 		 * "from TeamMember tm join tm.person p join p.names pn where pn.givenName like :name"
 		 * ).setString("name", "%" + name + "%").list();
 		 */
-		return sessionFactory.getCurrentSession()
-				.createQuery("from TeamMember tm join tm.person p join p.names pn where pn.givenName like :name or pn.familyName like :name or tm.identifier like :name")
-				.setString("name", "%" + name + "%").setResultTransformer(new ResultTransformer() {
-					@SuppressWarnings("rawtypes")
-					final Map<Integer, Date> tmMap = new LinkedHashMap();
+		return sessionFactory.getCurrentSession().createQuery("from TeamMember tm join tm.person p join p.names pn where pn.givenName like :name or pn.familyName like :name or tm.identifier like :name").setString("name", "%" + name + "%").setResultTransformer(new ResultTransformer() {
+			@SuppressWarnings("rawtypes")
+			final Map<Integer, Date> tmMap = new LinkedHashMap();
 
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					public Object transformTuple(Object[] result, String[] aliases) {
-						TeamMember tm = (TeamMember) result[0];
-						tmMap.put(tm.getTeamMemberId(), tm.getJoinDate());
-						// Put in map so we can attach comment count later
-						return tm;
-					}
+			public Object transformTuple(Object[] result, String[] aliases) {
+				TeamMember tm = (TeamMember) result[0];
+				tmMap.put(tm.getTeamMemberId(), tm.getJoinDate());
+				// Put in map so we can attach comment count later
+				return tm;
+			}
 
-					@SuppressWarnings("rawtypes")
-					public List transformList(List list) {
-						return list;
-					}
-				}).list();
+			@SuppressWarnings("rawtypes")
+			public List transformList(List list) {
+				return list;
+			}
+		}).list();
 	}
-
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> searchMemberByTeam(String name, int teamId) {
+	
+	@Override
+	public List<TeamMember> searchTeamMemberByTeam(String name, int teamId) {
 		/*
 		 * return sessionFactory.getCurrentSession().createQuery(
 		 * "from TeamMember tm join tm.person p join p.names pn where pn.givenName like :name"
 		 * ).setString("name", "%" + name + "%").list();
 		 */
-		return sessionFactory
-				.getCurrentSession()
-				.createQuery(
-						"from TeamMember tm join tm.person p join p.names pn join tm.team t where pn.givenName like :name or pn.familyName like :name or tm.identifier like :name and t.teamId = :teamId")
-				.setString("name", "%" + name + "%").setInteger("teamId", teamId).setResultTransformer(new ResultTransformer() {
-					@SuppressWarnings("rawtypes")
-					final Map<Integer, Date> tmMap = new LinkedHashMap();
+		return sessionFactory.getCurrentSession().createQuery("from TeamMember tm join tm.person p join p.names pn join tm.team t where pn.givenName like :name or pn.familyName like :name or tm.identifier like :name and t.teamId = :teamId").setString("name", "%" + name + "%").setInteger("teamId", teamId).setResultTransformer(new ResultTransformer() {
+			@SuppressWarnings("rawtypes")
+			final Map<Integer, Date> tmMap = new LinkedHashMap();
 
-					private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = 1L;
 
-					public Object transformTuple(Object[] result, String[] aliases) {
-						TeamMember tm = (TeamMember) result[0];
-						tmMap.put(tm.getTeamMemberId(), tm.getJoinDate());
-						// Put in map so we can attach comment count later
-						return tm;
-					}
+			public Object transformTuple(Object[] result, String[] aliases) {
+				TeamMember tm = (TeamMember) result[0];
+				tmMap.put(tm.getTeamMemberId(), tm.getJoinDate());
+				// Put in map so we can attach comment count later
+				return tm;
+			}
 
-					@SuppressWarnings("rawtypes")
-					public List transformList(List list) {
-						return list;
-					}
-				}).list();
+			@SuppressWarnings("rawtypes")
+			public List transformList(List list) {
+				return list;
+			}
+		}).list();
 	}
-
-	public TeamMember getTeamMember(String uuid) {
-		return (TeamMember) sessionFactory.getCurrentSession().createQuery("from TeamMember t where  t.uuid = :uuid").setString("uuid", uuid).uniqueResult();
-	}
-	/*
-	 * public Query searchMember(String name) { return (Query)
-	 * sessionFactory.getCurrentSession().createQuery(
-	 * "from TeamMember tm join tm.person p join p.names pn where pn.givenName like :name"
-	 * ).setString("name", "%" + name + "%") .setResultTransformer(new
-	 * ResultTransformer() { final Map<Integer, Date> tmMap = new
-	 * LinkedHashMap();
-	 * 
-	 * private static final long serialVersionUID = 1L; public Object
-	 * transformTuple(Object[] result, String[] aliases) { TeamMember tm =
-	 * (TeamMember) result[0]; tmMap.put(tm.getTeamMemberId(),
-	 * tm.getJoinDate()); // Put in map so we can attach comment count later
-	 * return null; } public List transformList(List list) { return list; }
-	 * }).list(); }
-	 */
-
 }

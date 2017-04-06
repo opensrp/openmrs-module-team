@@ -1,0 +1,16 @@
+package org.openmrs.module.teammodule;
+
+public class TeamMemberConstants {
+
+	public enum TeamAction {
+		TEAM_MEMBER_EDITED,
+		TEAM_MEMBER_VOIDED,
+		TEAM_MEMBER_LOCATION_REMOVED,
+		TEAM_MEMBER_LOCATION_ADDED,
+		TEAM_MEMBER_TEAM_CHANGED,
+		TEAM_TRANSFERED,
+		TEAM_MEMBER_PATIENT_REMOVED,
+		TEAM_MEMBER_PATIENT_ADDED;				
+	}
+	
+}

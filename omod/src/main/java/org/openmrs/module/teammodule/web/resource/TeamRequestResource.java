@@ -51,7 +51,6 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("dateCreated");
 			}
 		}
-
 		return description;
 	}
 
@@ -91,9 +90,6 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		if (team == null){		
 			return "";
 		}
-			
-		
 		return team.getTeamName();
 	}
-
 }

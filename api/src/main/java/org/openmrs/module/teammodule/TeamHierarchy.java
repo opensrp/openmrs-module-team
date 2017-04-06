@@ -1,21 +1,41 @@
 package org.openmrs.module.teammodule;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.User;
+
+
+@SuppressWarnings("serial")
 public class TeamHierarchy extends BaseOpenmrsData implements Serializable {
 
-	Integer teamRoleId;
+	private Integer teamRoleId;
 	
-	String name;
+	private String name;
 	
-	Boolean ownsTeam;
+	private Boolean ownsTeam;
 
-	Set<TeamHierarchy> reportTo=new HashSet<>();
+	private Set<TeamHierarchy> reportTo=new HashSet<>();
 	
+	private Date dateCreated;
+
+	private User creator;
+
+	private User changedBy;
+
+	private Date dateChanged;
+
+	private Boolean voided;
+
+	private User voidedBy;
+
+	private String voidedReason;
+
+	private String uuid;
+
 	public Integer getTeamRoleId() {
 		return teamRoleId;
 	}
@@ -49,13 +69,74 @@ public class TeamHierarchy extends BaseOpenmrsData implements Serializable {
 	}
 
 	public Integer getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return getTeamRoleId();
 	}
 
 	public void setId(Integer arg0) {
-		// TODO Auto-generated method stub
-		
+		setTeamRoleId(arg0);
 	}
 	
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+
+	public User getChangedBy() {
+		return changedBy;
+	}
+
+	public void setChangedBy(User changedBy) {
+		this.changedBy = changedBy;
+	}
+
+	public Date getDateChanged() {
+		return dateChanged;
+	}
+
+	public void setDateChanged(Date dateChanged) {
+		this.dateChanged = dateChanged;
+	}
+
+	public Boolean getVoided() {
+		return voided;
+	}
+
+	public void setVoided(Boolean voided) {
+		this.voided = voided;
+	}
+
+	public User getVoidedBy() {
+		return voidedBy;
+	}
+
+	public void setVoidedBy(User voidedBy) {
+		this.voidedBy = voidedBy;
+	}
+
+	public String getVoidedReason() {
+		return voidedReason;
+	}
+
+	public void setVoidedReason(String voidedReason) {
+		this.voidedReason = voidedReason;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 }

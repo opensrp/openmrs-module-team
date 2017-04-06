@@ -52,15 +52,9 @@ public class HibernateTeamDAO implements TeamDAO {
 
 	}
 
-	public Team getTeam(String teamName) {
-		return (Team) sessionFactory.getCurrentSession().createQuery("from Team t where t.teamName = :teamName or t.uuid = :teamName").setString("teamName", teamName).uniqueResult();
+	public Team getTeam(String uuid) {
+		return (Team) sessionFactory.getCurrentSession().createQuery("from Team t where t.teamName = :teamName or t.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
-
-	/*
-	 * public void updateTeam(Team team) { // TODO Auto-generated method stub
-	 * 
-	 * }
-	 */
 
 	@SuppressWarnings("unchecked")
 	public List<Team> getAllTeams(boolean retired) {

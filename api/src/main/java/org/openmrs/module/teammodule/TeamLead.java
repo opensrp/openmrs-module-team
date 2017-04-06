@@ -3,6 +3,8 @@
  */
 package org.openmrs.module.teammodule;
 
+import java.io.Serializable;
+
 //import java.util.List;
 
 import java.util.Date;
@@ -13,7 +15,9 @@ import org.openmrs.BaseOpenmrsData;
  * @author Muhammad Safwan
  * 
  */
-public class TeamLead extends BaseOpenmrsData {
+
+@SuppressWarnings("serial")
+public class TeamLead extends BaseOpenmrsData implements Serializable {
 
 	private int teamLeadId;
 	
@@ -92,11 +96,11 @@ public class TeamLead extends BaseOpenmrsData {
 	}
 
 	public Integer getId() {
-		return teamId;
+		return getTeamId();
 	}
 
-	public void setId(Integer id) {
-		this.teamId = id;
+	public void setId(Integer arg0) {
+		setTeamId(arg0);
 	}
 
 	public Date getJoinDate() {

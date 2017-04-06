@@ -1,22 +1,16 @@
 package org.openmrs.module.teammodule.web.resource;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.api.TeamHierarchyService;
-import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
@@ -36,11 +30,11 @@ public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 		DelegatingResourceDescription description = null;
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
-				description.addProperty("display");
-				description.addProperty("teamRoleId");
-				description.addProperty("ownsTeam");
-				description.addProperty("reportTo");
-				description.addProperty("dateCreated");
+			description.addProperty("display");
+			description.addProperty("teamRoleId");
+			description.addProperty("ownsTeam");
+			description.addProperty("reportTo");
+			description.addProperty("dateCreated");
 		}
 
 		return description;
@@ -59,10 +53,6 @@ public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 	@Override
 	protected void delete(TeamHierarchy teamRole, String reason, RequestContext context) throws ResponseException {
 		// TODO Auto-generated method stub
-	}
-
-	public TeamHierarchy getByUniqueId(int id) {
-		return Context.getService(TeamHierarchyService.class).getTeamRole(id);
 	}
 
 	@Override
@@ -87,8 +77,7 @@ public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 
 	@Override
 	public TeamHierarchy getByUniqueId(String uniqueId) {
-		// TODO Auto-generated method stub
-		return null;
+		return Context.getService(TeamHierarchyService.class).getTeamRoleByUuid(uniqueId);
 	}
 }
 

@@ -5,12 +5,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamHierarchy;
-import org.openmrs.module.teammodule.api.TeamLeadService;
 import org.openmrs.module.teammodule.api.TeamHierarchyService;
 import org.openmrs.module.teammodule.api.db.TeamHierarchyDAO;
-import org.openmrs.module.teammodule.api.db.TeamLeadDAO;
 
 public class TeamHierarchyServiceImpl extends BaseOpenmrsService implements TeamHierarchyService  {
 
@@ -36,23 +33,23 @@ private final Log log = LogFactory.getLog(this.getClass());
 	}
 
 	public List<TeamHierarchy> getAllTeams() {
-		// TODO Auto-generated method stub
 		return dao.getAllTeams();
 	}
 
 	public void purgeTeamRole(TeamHierarchy TeamRole) {
-		// TODO Auto-generated method stub
 		dao.purgeTeamRole(TeamRole);
 	}
 
 	public List<TeamHierarchy> searchTeamRoleByRole(String role) {
-		// TODO Auto-generated method stub
 		return dao.searchTeamRoleByRole(role);
 	}
 
-	public TeamHierarchy getTeamRole(int id) {
-		// TODO Auto-generated method stub
-		return dao.getTeamRole(id);
+	public TeamHierarchy getTeamRoleById(int id) {
+		return dao.getTeamRoleById(id);
+	}
+	
+	public TeamHierarchy getTeamRoleByUuid(String uuid) {
+		return dao.getTeamRoleByUuid(uuid);
 	}
 
 }

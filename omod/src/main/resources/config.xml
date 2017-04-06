@@ -37,12 +37,17 @@
 	</extension>
 
 	<mappingFiles>
-		team.hbm.xml
-		team_member.hbm.xml
-		team_lead.hbm.xml
-		team_member_patient.hbm.xml
 		team_hierarchy.hbm.xml
-		teamRole.hbm.xml
+		team_lead.hbm.xml
+		team_location.hbm.xml
+		team_log.hbm.xml
+		team_member_location.hbm.xml
+		team_member_log.hbm.xml
+		team_member_patient.hbm.xml
+		team_member.hbm.xml		
+		team_role_log.hbm.xml
+		team.hbm.xml		
+		
 	</mappingFiles>
 
 	<!-- AOP <advice> <point>org.openmrs.api.FormService</point> <class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class> 

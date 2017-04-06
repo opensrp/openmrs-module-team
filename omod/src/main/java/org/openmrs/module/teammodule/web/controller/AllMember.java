@@ -7,6 +7,28 @@ package org.openmrs.module.teammodule.web.controller;
 //import java.util.Date;
 //import java.util.ArrayList;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.openmrs.api.context.Context;
+import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamMember;
+import org.openmrs.module.teammodule.api.TeamMemberService;
+import org.openmrs.module.teammodule.api.TeamService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author Muhammad Safwan
  *  @author Shakeeb Raza
@@ -74,7 +96,7 @@ public class AllMember {
 
 		if (searchedMember != null || (!dateFrom.isEmpty() && !dateTo.isEmpty())) {
 			if (searchedMember != null) {
-				allMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchMember(searchedMember);
+				allMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(searchedMember);
 				for (int i = 0; i < allMembers.size(); i++) {
 					if (allMembers.get(i).getJoinDate() != null) {
 						String date = sdf.format(allMembers.get(i).getJoinDate());
@@ -87,7 +109,7 @@ public class AllMember {
 				model.addAttribute("searchedMember", searchedMember);
 				model.addAttribute("allMembers", allMembers);
 			} else {
-				dateSearch = Context.getService(TeamMemberService.class).getMembers(joinFrom, joinTo);
+				dateSearch = Context.getService(TeamMemberService.class).getTeamMembersByDate(joinFrom, joinTo);
 				for (int i = 0; i < dateSearch.size(); i++) {
 					if (dateSearch.get(i).getJoinDate() != null) {
 						String date = sdf.format(dateSearch.get(i).getJoinDate());
@@ -120,7 +142,7 @@ public class AllMember {
 		
 		
 		else {
-			allMembers = Context.getService(TeamMemberService.class).getAllMembers(true);
+			allMembers = Context.getService(TeamMemberService.class).getAllTeamMember(true);
 			for (int i = 0; i < allMembers.size(); i++) {
 				if (allMembers.get(i).getJoinDate() != null) {
 					String date = sdf.format(allMembers.get(i).getJoinDate());

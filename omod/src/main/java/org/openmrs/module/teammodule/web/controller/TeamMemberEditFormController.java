@@ -153,7 +153,7 @@ public class TeamMemberEditFormController {
 	public TeamMember populateTeamMember(@RequestParam(value = "teamMemberId", required = true) int teamMemberId) {
 		TeamMember memberData = new TeamMember();
 
-		memberData = Context.getService(TeamMemberService.class).getMember(teamMemberId);
+		memberData = Context.getService(TeamMemberService.class).getTeamMemberById(teamMemberId);
 		return memberData;
 	}
 
@@ -177,7 +177,8 @@ public class TeamMemberEditFormController {
 		Date teamDate = team.getDateCreated();
 		model.addAttribute("teamDate", teamDate);
 
-		TeamMember teamMember = Context.getService(TeamMemberService.class).getMember(teamMemberId);
+		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberById(teamMemberId);
+		@SuppressWarnings("unused")
 		List<Location> allLocations = Context.getLocationService().getAllLocations();
 		String caption = "";
 		if (teamMember.getIsTeamLead() == true) {
@@ -326,7 +327,7 @@ public class TeamMemberEditFormController {
 
 		// here before
 		// Context.getService(TeamLeadService.class).update(teamLead);
-		return "redirect:/module/teammodule/teamMember/list.form?teamId="+teamMember.getTeamId();
+		return "redirect:/module/teammodule/teamMember/list.form?teamId="+teamMember.getTeam().getId();
 
 		// return
 		// "redirect:/module/teammodule/teamMemberForm/editMember.form?person_id="

@@ -9,12 +9,11 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
+import org.openmrs.Patient;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
-//import org.openmrs.module.teammodule.api.db.Team;
 
 /**
  * @author Muhammad Safwan
@@ -37,72 +36,123 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	/**
 	 * @param dao
 	 */
-
 	public void setDao(TeamMemberDAO dao) {
 		this.dao = dao;
 	}
 
+	@Override
+	public TeamMember getTeamMemberById(Integer id) {
+		return this.dao.getTeamMemberById(id);
+	}
+
+	@Override
+	public TeamMember getTeamMemberByName(String name) {
+		return this.dao.getTeamMemberByName(name);
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByIdentifier(String identifier) {
+		return this.dao.getTeamMemberByIdentifier(identifier);
+	}
+
+	@Override
+	public TeamMember getTeamMemberByUuid(String uuid) {
+		return this.dao.getTeamMemberByUuid(uuid);
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByTeamId(Integer teamId) {
+		return this.dao.getTeamMemberByTeamId(teamId);
+	}
+
+
+	@Override
+	public List<TeamMember> getTeamMemberByTeamName(String name) {
+		return this.dao.getTeamMemberByTeamName(name);
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByPersonId(Integer personId) {
+		return this.dao.getTeamMemberByPersonId(personId);
+	}
+
+	@Override
+	public List<TeamMember> getTeamMembersByDate(Date joinDateFrom, Date joinDateTo) {
+		return this.dao.getTeamMembersByDate(joinDateFrom, joinDateTo);
+	}
+
+	@Override
+	public List<TeamMember> getTeamMembersByTeamLead(boolean isTeamLead) {
+		return this.dao.getTeamMembersByTeamLead(isTeamLead);
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByRetired(boolean retired) {
+		return this.dao.getTeamMemberByRetired(retired);
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByTeamRoleId(Integer teamRoleId) {
+		return this.dao.getTeamMemberByTeamRoleId(teamRoleId);
+	}
+	
+	@Override
+	public List<TeamMember> getTeamMemberByLocationId(Integer id) {
+		return this.dao.getTeamMemberByLocationId(id);
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByPatientId(Integer id) {
+		return this.dao.getTeamMemberByPatientId(id);
+	}
+
+	@Override
+	public List<TeamMember> getTeamMemberByTeam(Integer teamId, String teamName, Integer teamLeadId, Boolean retired) {
+		return this.dao.getTeamMemberByTeam(teamId, teamName, teamLeadId, retired);
+	}
+	
+	@Override
+	public List<TeamMember> getTeamMemberByTeamWithPage(Integer teamId, String teamName, Integer teamLeadId, Boolean retired) {
+		return this.dao.getTeamMemberByTeamWithPage(teamId, teamName, teamLeadId, retired);
+	}	
+	
+	@Override
+	public List<TeamMember> getAllTeamMember(boolean isRetired) {
+		return this.dao.getAllTeamMember(isRetired);
+	}
+	
+	@Override
 	public void save(TeamMember teamMember) {
-		dao.save(teamMember);
-	}
-	
-	public void saveLocation(Location location){
-		dao.saveLocation(location);
+		this.dao.save(teamMember);	
 	}
 
-	public List<TeamMember> getTeamMembers(Team team, String name, Integer teamLeadId, Boolean retired) {
-		return dao.getTeamMembers(team, name, teamLeadId, retired);
-	}
-	
-	public List<TeamMember> getTeamMembersPage(Team team, String name, Integer teamLeadId, Boolean retired) {
-		return dao.getTeamMembersPage(team, name, teamLeadId, retired);
+	@Override
+	public void saveLocation(Location location) {
+		this.dao.saveLocation(location);		
 	}
 
-	public List<TeamMember> getTeamMembers(Integer id) {
-		return dao.getTeamMembers(id);
+	@Override
+	public void savePatient(Patient patient) {
+		this.dao.savePatient(patient);
 	}
 
-	public List<TeamMember> getAllMembers(boolean retired) {
-		return dao.getAllMembers(retired);
-	}
-
-	public TeamMember getMember(int id) {
-		return dao.getMember(id);
-	}
-	
-	public List<TeamMember> getMemberByPersonId(int id) {
-		return dao.getMemberByPersonId(id);
-	}
-
-	public List<TeamMember> getMember(String name) {
-		return dao.getMember(name);
-	}
-
-	public List<TeamMember> getMembers(Date joinDateFrom, Date joinDateTo) {
-		return dao.getMembers(joinDateFrom, joinDateTo);
-	}
-
+	@Override
 	public void purgeMember(TeamMember teamMember) {
-		dao.purgeMember(teamMember);
+		this.dao.purgeMember(teamMember);
 	}
 
+	@Override
 	public void update(TeamMember teamMember) {
-		dao.update(teamMember);
+		this.dao.update(teamMember);
 	}
 	
-	public List<TeamMember> searchMember(String name) {
-		return dao.searchMember(name);
+	@Override
+	public List<TeamMember> searchTeamMember(String name) {
+		return this.dao.searchTeamMember(name);
 	}
 	
-	public List<TeamMember> searchMemberByTeam(String name,int teamId){
-		return dao.searchMemberByTeam(name, teamId);
-	}
-	
-	public TeamMember getTeamMember(String uuid){
-		return dao.getTeamMember(uuid);
-	}
-	
-	public List<TeamMember> getMemberByLocationId(int id) {
-		return dao.getMemberByLocationId(id);
+	@Override
+	public List<TeamMember> searchTeamMemberByTeam(String name, Integer teamId) {
+		return this.dao.searchTeamMemberByTeam(name, teamId);
 	}
 }

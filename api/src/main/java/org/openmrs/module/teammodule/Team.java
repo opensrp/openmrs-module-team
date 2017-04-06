@@ -7,7 +7,6 @@ package org.openmrs.module.teammodule;
 import java.io.Serializable;
 
 import org.openmrs.BaseOpenmrsData;
-import org.openmrs.Location;
 
 /**
  * @author Muhammad Safwan & shakeeb raza
@@ -15,12 +14,8 @@ import org.openmrs.Location;
  */
 
  //@Access(AccessType.PROPERTY)
+@SuppressWarnings("serial")
 public class Team extends BaseOpenmrsData implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	private Integer teamId;
 
@@ -72,12 +67,11 @@ public class Team extends BaseOpenmrsData implements Serializable {
 	}
 
 	public Integer getId() {
-		return teamId;
+		return getTeamId();
 	}
 
-	public void setId(Integer id) {
-		this.teamId = id;
-
+	public void setId(Integer arg0) {
+		setTeamId(arg0);
 	}
 
 	public Integer getSupervisor() {

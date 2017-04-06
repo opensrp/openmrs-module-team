@@ -75,10 +75,10 @@ public class TeamLeadRequestResource extends DelegatingCrudResource<TeamLead> {
 		// TODO Auto-generated method stub
 		
 	}
-	
+		
 	/*@Override
 	public SimpleObject search(RequestContext context) {
-		//List<TeamLead> leadList = Context.getService(TeamLeadService.class).searchTeam(context.getParameter("q"));
+		List<TeamLead> leadList = Context.getService(TeamLeadService.class).searchTeam(context.getParameter("q"));
 		return new NeedsPaging<TeamLead>(leadList, context).toSimpleObject(this);
 	}*/
 	

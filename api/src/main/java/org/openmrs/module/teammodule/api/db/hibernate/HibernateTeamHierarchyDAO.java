@@ -4,13 +4,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamHierarchy;
-import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamHierarchyService;
 import org.openmrs.module.teammodule.api.db.TeamHierarchyDAO;
 
 public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
@@ -41,13 +36,13 @@ public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
 		
 	}
 
-	public TeamHierarchy getTeamRole(int id) {
-		return	(TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamRole th where th.team_hierarchy_id = :id").setInteger("id", id).uniqueResult();
+	public TeamHierarchy getTeamRoleById(int id) {
+		return	(TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy th where th.teamRoleId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TeamHierarchy> getAllTeams() {
-		List<TeamHierarchy> createQuery = (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamRole").list();
+		List<TeamHierarchy> createQuery = (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy").list();
 		return	createQuery;
 		}
 
@@ -55,8 +50,13 @@ public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
 		sessionFactory.getCurrentSession().delete(TeamRole);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<TeamHierarchy> searchTeamRoleByRole(String role) {
-		return (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamRole th where th.team_role = :role").setString("role", role);
+		return (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy th where th.teamRoleId = :role").setString("role", role).list();
+	}
+	
+	public TeamHierarchy getTeamRoleByUuid(String uuid) {
+		return (TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy th where th.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 
 }
