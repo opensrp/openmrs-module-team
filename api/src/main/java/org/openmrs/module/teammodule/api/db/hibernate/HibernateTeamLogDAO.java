@@ -37,12 +37,12 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 	}
 
 	public TeamLog getTeamLog(int id) {
-		return (TeamLog)sessionFactory.getCurrentSession().createQuery("from TeamLog tl where tl.logId = :id").setInteger("id", id).uniqueResult();
+		return (TeamLog)sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog where teamLog.logId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TeamLog> getAllLogs() {
-		List<TeamLog> createQuery = (List<TeamLog>)sessionFactory.getCurrentSession().createQuery("from TeamLog").list();
+		List<TeamLog> createQuery = (List<TeamLog>)sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog").list();
 		return	createQuery;
 	}
 
@@ -52,11 +52,11 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 
 	@SuppressWarnings("unchecked")
 	public List<TeamLog> searchTeamLogByTeam(int team) {
-		return (List<TeamLog>)sessionFactory.getCurrentSession().createQuery("from TeamLog tl join tl.team t where t.teamId = :team").setInteger("team", team).list();
+		return (List<TeamLog>)sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog where teamLog.team = :team").setInteger("team", team).list();
 	}
 
 	public TeamLog getTeamLog(String uuid) {
-		return (TeamLog)sessionFactory.getCurrentSession().createQuery("from TeamLog tl where tl.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return (TeamLog)sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog where teamLog.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 
 }

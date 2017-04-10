@@ -31,7 +31,7 @@ public class TeamMemberLocationRS extends DataDelegatingCrudResource<TeamMemberL
 		if (Context.isAuthenticated()) {
 			
 			description = new DelegatingResourceDescription();
-				description.addProperty("display");
+				//description.addProperty("display");
 				description.addProperty("teamMemberLocationId");
 				description.addProperty("teamMember");
 				description.addProperty("location");
@@ -78,11 +78,8 @@ public class TeamMemberLocationRS extends DataDelegatingCrudResource<TeamMemberL
 
 	@Override
 	public TeamMemberLocation getByUniqueId(String uniqueId) {
-		return Context.getService(TeamMemberLocationService.class).getTeamMemberLocation(uniqueId);
-	}
-
-	public TeamMemberLocation getById(Integer id) {
-		return Context.getService(TeamMemberLocationService.class).getTeamMemberLocation(id);
+		TeamMemberLocation tml = Context.getService(TeamMemberLocationService.class).getTeamMemberLocation(uniqueId);
+		return tml;
 	}
 }
 

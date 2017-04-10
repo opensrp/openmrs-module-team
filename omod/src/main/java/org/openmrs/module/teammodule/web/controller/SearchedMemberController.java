@@ -80,7 +80,7 @@ public class SearchedMemberController {
 			model.addAttribute("searchMember", searchMember);
 			model.addAttribute("teamMember", teamMember);
 		} else {
-			dateSearch = Context.getService(TeamMemberService.class).getTeamMembersByDate(joinFrom, joinTo);
+			dateSearch = Context.getService(TeamMemberService.class).getTeamMemberByDate(joinFrom, joinTo);
 			for (int i = 0; i < dateSearch.size(); i++) {
 				if (dateSearch.get(i).getJoinDate() != null) {
 					String date = sdf.format(dateSearch.get(i).getJoinDate());

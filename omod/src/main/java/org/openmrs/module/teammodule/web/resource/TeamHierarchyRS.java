@@ -30,11 +30,11 @@ public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 		DelegatingResourceDescription description = null;
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
-			description.addProperty("display");
-			description.addProperty("teamRoleId");
-			description.addProperty("ownsTeam");
-			description.addProperty("reportTo");
-			description.addProperty("dateCreated");
+				description.addProperty("display");
+				description.addProperty("teamRoleId");
+				description.addProperty("ownsTeam");
+				description.addProperty("reportTo");
+				description.addProperty("dateCreated");
 		}
 
 		return description;
@@ -54,7 +54,7 @@ public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 	protected void delete(TeamHierarchy teamRole, String reason, RequestContext context) throws ResponseException {
 		// TODO Auto-generated method stub
 	}
-
+	
 	@Override
 	public void purge(TeamHierarchy arg0, RequestContext arg1) throws ResponseException {
 		// TODO Auto-generated method stub
@@ -80,4 +80,3 @@ public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 		return Context.getService(TeamHierarchyService.class).getTeamRoleByUuid(uniqueId);
 	}
 }
-

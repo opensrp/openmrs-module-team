@@ -38,11 +38,11 @@ public class HibernateTeamMemberLocationDAO implements TeamMemberLocationDAO{
 	}
 
 	public TeamMemberLocation getTeamMemberLocation(int id) {
-		return	(TeamMemberLocation)sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation tl where tl.teamMemberLocationId = :id").setInteger("id", id).uniqueResult();
+		return	(TeamMemberLocation)sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation teamMemberLocation where teamMemberLocation.teamMemberLocationId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	public TeamMemberLocation getTeamMemberLocation(String uuid) {
-		return	(TeamMemberLocation)sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation tl where tl.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return	(TeamMemberLocation)sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation teamMemberLocation where teamMemberLocation.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 	
 	public void purgeTeamMemberLocation(TeamMemberLocation teamMemberLocation) {
@@ -50,18 +50,14 @@ public class HibernateTeamMemberLocationDAO implements TeamMemberLocationDAO{
 	}
 
 	public List<TeamMemberLocation> searchLocationByLocation(String location) {
-		List<TeamMemberLocation> asdf = (List<TeamMemberLocation>) sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation tl where tl.location = :location").setString("location", location).list();
-		
-		//System.out.println(asdf.get(0).getId());
-		
-		return asdf;//(List<TeamMemberLocation>)sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation tl join tl.location l where l.locationId = :location").setString("location", location).list();
+		return (List<TeamMemberLocation>) sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation teamMemberLocation where teamMemberLocation.location = :location").setString("location", location).list();
 	}
 	
 	public List<TeamMemberLocation> getAllLocation() {
-		return (List<TeamMemberLocation>)sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation tl").list();
+		return (List<TeamMemberLocation>)sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation teamMemberLocation").list();
 	}
 
 	public TeamMemberLocation getTeamMemberLocationByTeamMemberId(Integer id) {
-		return	(TeamMemberLocation)sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation tl join tl.teamMember tm where tm.teamMemberId = :id").setInteger("id", id).uniqueResult();
+		return (TeamMemberLocation)sessionFactory.getCurrentSession().createQuery("from TeamMemberLocation teamMemberLocation where teamMemberLocation.teamMember = :id").setInteger("id", id).uniqueResult();
 	}
 }

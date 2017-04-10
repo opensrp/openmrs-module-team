@@ -27,7 +27,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  * 
  */
 
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/member", supportedClass = TeamMember.class, supportedOpenmrsVersions = { "1.8.*",
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamMember", supportedClass = TeamMember.class, supportedOpenmrsVersions = { "1.8.*",
 		"1.9.*, 1.10.*, 1.11.*", "1.12.*" })
 public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember> {
 
@@ -79,8 +79,8 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 		if (person != null) {
 			Integer id = person.getPersonId();
 			List<TeamMember> tm = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(id);
-			id = tm.get(0).getId();
-			TeamMember member = Context.getService(TeamMemberService.class).getTeamMemberById(id);
+			id = tm.get(0).getTeamMemberId();
+			TeamMember member = Context.getService(TeamMemberService.class).getTeamMember(id);
 			return member;
 		}
 		return Context.getService(TeamMemberService.class).getTeamMemberByUuid(uuid);
@@ -90,6 +90,7 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 	@Override
 	protected void delete(TeamMember delegate, String reason, RequestContext context) throws ResponseException {
 		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -103,4 +104,5 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 		List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchTeamMember(context.getParameter("q"));
 		return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
 	}
+	
 }

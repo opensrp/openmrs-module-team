@@ -8,7 +8,6 @@ import java.util.Properties;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleMustStartException;
-import org.openmrs.module.teammodule.api.TeamMemberLocationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.util.DatabaseUpdateException;
 import org.openmrs.util.InputRequiredException;
@@ -54,7 +53,7 @@ public class TestClass {
 			System.out.println(var2);
 		}*/
 		
-		/*String s = "C:\\Users\\Zohaib Masood\\AppData\\Roaming\\OpenMRS";//OpenmrsUtil.getApplicationDataDirectory();
+		String s = "C:\\Users\\Zohaib Masood\\AppData\\Roaming\\OpenMRS";//OpenmrsUtil.getApplicationDataDirectory();
 		File propsFile = new File(s, "openmrs-runtime.properties");
 		Properties props = new Properties();
 		OpenmrsUtil.loadProperties(props, propsFile);
@@ -62,13 +61,13 @@ public class TestClass {
 		try {
 		    Context.openSession();
 		    Context.authenticate("admin", "Admin123");
-		    TeamMember tm = Context.getService(TeamMemberService.class).getTeamMemberById(1);
+		    TeamMember tm = Context.getService(TeamMemberService.class).getTeamMember(1);
 			System.out.print(tm.getId());
 		} catch (Exception e) { e.printStackTrace(); 
 		} finally { Context.closeSession();
-		}*/
+		}
 		
-		try {
+		/*try {
 			Properties props = OpenmrsUtil.getRuntimeProperties("openmrs");
 			String url = (String) props.get("connection.url");
 			String username = (String) props.get("connection.username");
@@ -88,7 +87,7 @@ public class TestClass {
 			
 		} catch (Exception e) { e.printStackTrace(); 
 		} finally { Context.closeSession();
-		}
+		}*/
 	}
 	
 }

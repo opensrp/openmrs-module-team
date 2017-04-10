@@ -51,6 +51,23 @@ public class AjaxTeamModuleController {
 			}
 		}
 		return error;
+		
+		/*List<Team> team = Context.getService(TeamService.class).getAllTeams(false);
+		String error = "";
+		// System.out.println("here");
+		String teamName = request.getParameter("teamName");
+		String locationId = request.getParameter("locationId");
+		for (int i = 0; i < team.size(); i++) {
+			if (teamName.equals(team.get(i).getTeamName())) {
+				if (Integer.parseInt(locationId) == team.get(i).getLocation().getLocationId()) {
+					error = "Team already exists with same name and location";
+					break;
+				}
+			} else {
+
+			}
+		}
+		return error;*/
 	}
 
 	@RequestMapping(value = "getMembers")
@@ -61,8 +78,8 @@ public class AjaxTeamModuleController {
 		// System.out.println("here");
 		String identifier = request.getParameter("identifier");
 		String teamId = request.getParameter("teamId");
-//		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(Integer.parseInt(teamId), null, null, null);
+		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
 		// System.out.println(teamId);
 		// String locationId = request.getParameter("locationId");
 		for (int i = 0; i < teamMember.size(); i++) {
@@ -89,14 +106,14 @@ public class AjaxTeamModuleController {
 		String identifier = request.getParameter("identifier");
 		String teamId = request.getParameter("teamId");
 		String teamMemberId = request.getParameter("teamMemberId");
-//		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(Integer.parseInt(teamId), null, null, null);
+		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
 		// System.out.println(teamId);
 		// String locationId = request.getParameter("locationId");
 		for (int i = 0; i < teamMember.size(); i++) {
 			if (identifier.equals(teamMember.get(i).getIdentifier())) {
 				// System.out.println(teamMember.get(i).getTeam().getTeamId());
-				if (Integer.parseInt(teamMemberId) != teamMember.get(i).getId()) {
+				if (Integer.parseInt(teamMemberId) != teamMember.get(i).getTeamMemberId()) {
 					error = "Member exists with same identifier";
 					break;
 				}
@@ -117,6 +134,13 @@ public class AjaxTeamModuleController {
 		if( childLocation == null || childLocation.equals(null) || childLocation.equals("")){
 			return null;
 		}
+		/*String teamId = request.getParameter("teamId");
+		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
+		Location location = team.getLocation();
+		Set<Location> childLocation = location.getChildLocations();
+		if( childLocation == null || childLocation.equals(null) || childLocation.equals("")){
+			return null;
+		}*/
 		//String error = "";
 
 		/*for (int i = 0; i < team.size(); i++) {
@@ -126,7 +150,6 @@ public class AjaxTeamModuleController {
 					break;
 				}
 			} else {
-
 			}
 		}*/
 		return location;

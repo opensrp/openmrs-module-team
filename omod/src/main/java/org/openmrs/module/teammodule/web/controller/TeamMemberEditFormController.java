@@ -153,12 +153,13 @@ public class TeamMemberEditFormController {
 	public TeamMember populateTeamMember(@RequestParam(value = "teamMemberId", required = true) int teamMemberId) {
 		TeamMember memberData = new TeamMember();
 
-		memberData = Context.getService(TeamMemberService.class).getTeamMemberById(teamMemberId);
+		memberData = Context.getService(TeamMemberService.class).getTeamMember(teamMemberId);
 		return memberData;
 	}
 
 	// Was becoming reference object here
 
+	@SuppressWarnings("unused")
 	@RequestMapping(method = RequestMethod.GET)
 	public String showFormEidt(Model model, HttpServletRequest request, @RequestParam(value = "teamId", required = true) int teamId,
 
@@ -177,8 +178,7 @@ public class TeamMemberEditFormController {
 		Date teamDate = team.getDateCreated();
 		model.addAttribute("teamDate", teamDate);
 
-		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberById(teamMemberId);
-		@SuppressWarnings("unused")
+		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMember(teamMemberId);
 		List<Location> allLocations = Context.getLocationService().getAllLocations();
 		String caption = "";
 		if (teamMember.getIsTeamLead() == true) {

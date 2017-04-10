@@ -46,7 +46,7 @@ public class HibernateTeamLeadDAO implements TeamLeadDAO {
 	@SuppressWarnings("unchecked")
 	public List<TeamMember> getTeamMembers(Integer teamLeadId) {
 
-		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamLead t where t.teamLeadId = :teamLeadId").setInteger("teamLeadId", teamLeadId).uniqueResult();
+		return (List<TeamMember>) sessionFactory.getCurrentSession().createQuery("from TeamLead teamLead where teamLead.teamLeadId = :teamLeadId").setInteger("teamLeadId", teamLeadId).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -61,7 +61,8 @@ public class HibernateTeamLeadDAO implements TeamLeadDAO {
 	}
 
 	public TeamLead getTeamLead(Team team) {
-		return (TeamLead) sessionFactory.getCurrentSession().createQuery("from TeamLead join tl.team t where t.team = :teamId and tl.voided = :num").setInteger("teamId", team.getTeamId()).setInteger("num", 0).uniqueResult();
+//		return (TeamLead) sessionFactory.getCurrentSession().createQuery("from TeamLead teamLead join teamLead.team team where team.teamId = :teamId and teamLead.voided = :num").setInteger("teamId", team.getTeamId()).setInteger("num", 0).uniqueResult();
+		return (TeamLead) sessionFactory.getCurrentSession().createQuery("from TeamLead teamLead where teamLead.team = :teamId and teamLead.voided = :num").setInteger("teamId", team.getTeamId()).setInteger("num", 0).uniqueResult();
 	}
 
 	public void update(TeamLead teamLead) {
@@ -73,6 +74,6 @@ public class HibernateTeamLeadDAO implements TeamLeadDAO {
 	}
 	
 	public TeamLead getTeamLead(String uuid){
-		return (TeamLead) sessionFactory.getCurrentSession().createQuery("from TeamLead t where t.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return (TeamLead) sessionFactory.getCurrentSession().createQuery("from TeamLead teamLead where teamLead.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 }

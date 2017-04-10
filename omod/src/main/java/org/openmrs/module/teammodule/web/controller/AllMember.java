@@ -3,6 +3,7 @@
  */
 package org.openmrs.module.teammodule.web.controller;
 
+
 //import java.util.ArrayList;
 //import java.util.Date;
 //import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class AllMember {
 				model.addAttribute("searchedMember", searchedMember);
 				model.addAttribute("allMembers", allMembers);
 			} else {
-				dateSearch = Context.getService(TeamMemberService.class).getTeamMembersByDate(joinFrom, joinTo);
+				dateSearch = Context.getService(TeamMemberService.class).getTeamMemberByDate(joinFrom, joinTo);
 				for (int i = 0; i < dateSearch.size(); i++) {
 					if (dateSearch.get(i).getJoinDate() != null) {
 						String date = sdf.format(dateSearch.get(i).getJoinDate());

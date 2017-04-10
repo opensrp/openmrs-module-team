@@ -3,8 +3,8 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.TeamLocation;
-import org.openmrs.module.teammodule.api.TeamLocationService;
+import org.openmrs.module.teammodule.TeamRoleLog;
+import org.openmrs.module.teammodule.api.TeamRoleLogService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -21,64 +21,63 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  * @author Shakeeb raza
  * 
  */
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamLocation", supportedClass = TeamLocation.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamHierarchyLog", supportedClass = TeamRoleLog.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
 		"1.12.*" })
-public class TeamLocationRS extends DataDelegatingCrudResource<TeamLocation> {
+public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> {
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = null;
 		if (Context.isAuthenticated()) {
-			
 			description = new DelegatingResourceDescription();
-				//description.addProperty("display");
-				description.addProperty("teamLocationId");
-				description.addProperty("team");
-				description.addProperty("location");
-				description.addProperty("dateCreated");
+			description.addProperty("logId");
+			description.addProperty("teamRoleId");
+			description.addProperty("action");
+			description.addProperty("dataNew");
+			description.addProperty("log");
+			description.addProperty("dateCreated");
 		}
 
 		return description;
 	}
 
 	@Override
-	public TeamLocation newDelegate() {
-		return new TeamLocation();
+	public TeamRoleLog newDelegate() {
+		return new TeamRoleLog();
 	}
 
 	@Override
-	public TeamLocation save(TeamLocation teamLocation) {
+	public TeamRoleLog save(TeamRoleLog teamRole) {
 		return null;
 	}
 
 	@Override
-	protected void delete(TeamLocation teamLocation, String reason, RequestContext context) throws ResponseException {
+	protected void delete(TeamRoleLog teamRole, String reason, RequestContext context) throws ResponseException {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
-	public void purge(TeamLocation arg0, RequestContext arg1) throws ResponseException {
+	public void purge(TeamRoleLog arg0, RequestContext arg1) throws ResponseException {
 		// TODO Auto-generated method stub
 	}
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamLocation> listTeam = Context.getService(TeamLocationService.class).searchLocationByLocation(context.getParameter("q"));
-		return new NeedsPaging<TeamLocation>(listTeam, context).toSimpleObject(this);
+		List<TeamRoleLog> listTeam = Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(context.getParameter("q"));
+		return new NeedsPaging<TeamRoleLog>(listTeam, context).toSimpleObject(this);
 	}
 	
 	@PropertyGetter("display")
-	public List<TeamLocation> getDisplayString(String teamLocation) {
-		if (teamLocation == null){		
+	public List<TeamRoleLog> getDisplayString(String teamRole) {
+		if (teamRole == null){		
 			return null;
 		}
 		
-		return Context.getService(TeamLocationService.class).searchLocationByLocation(teamLocation);
+		return Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(teamRole);
 	}
 
 	@Override
-	public TeamLocation getByUniqueId(String uniqueId) {
-		return Context.getService(TeamLocationService.class).getTeamLocation(uniqueId);
+	public TeamRoleLog getByUniqueId(String uniqueId) {
+		return Context.getService(TeamRoleLogService.class).getTeamRoleLog(uniqueId);
 	}
 }
-

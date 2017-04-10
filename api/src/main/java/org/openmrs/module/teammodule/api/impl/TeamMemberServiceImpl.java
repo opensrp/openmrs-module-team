@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
@@ -41,13 +42,8 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 
 	@Override
-	public TeamMember getTeamMemberById(Integer id) {
-		return this.dao.getTeamMemberById(id);
-	}
-
-	@Override
-	public TeamMember getTeamMemberByName(String name) {
-		return this.dao.getTeamMemberByName(name);
+	public TeamMember getTeamMember(Integer id) {
+		return this.dao.getTeamMember(id);
 	}
 
 	@Override
@@ -65,35 +61,24 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 		return this.dao.getTeamMemberByTeamId(teamId);
 	}
 
-
-	@Override
-	public List<TeamMember> getTeamMemberByTeamName(String name) {
-		return this.dao.getTeamMemberByTeamName(name);
-	}
-
 	@Override
 	public List<TeamMember> getTeamMemberByPersonId(Integer personId) {
 		return this.dao.getTeamMemberByPersonId(personId);
 	}
 
 	@Override
-	public List<TeamMember> getTeamMembersByDate(Date joinDateFrom, Date joinDateTo) {
-		return this.dao.getTeamMembersByDate(joinDateFrom, joinDateTo);
+	public List<TeamMember> getTeamMemberByDate(Date joinDateFrom, Date joinDateTo) {
+		return this.dao.getTeamMemberByDate(joinDateFrom, joinDateTo);
 	}
 
 	@Override
-	public List<TeamMember> getTeamMembersByTeamLead(boolean isTeamLead) {
-		return this.dao.getTeamMembersByTeamLead(isTeamLead);
+	public List<TeamMember> getTeamMemberByTeamLead(boolean isTeamLead) {
+		return this.dao.getTeamMemberByTeamLead(isTeamLead);
 	}
 
 	@Override
 	public List<TeamMember> getTeamMemberByRetired(boolean retired) {
 		return this.dao.getTeamMemberByRetired(retired);
-	}
-
-	@Override
-	public List<TeamMember> getTeamMemberByTeamRoleId(Integer teamRoleId) {
-		return this.dao.getTeamMemberByTeamRoleId(teamRoleId);
 	}
 	
 	@Override
@@ -102,18 +87,13 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 
 	@Override
-	public List<TeamMember> getTeamMemberByPatientId(Integer id) {
-		return this.dao.getTeamMemberByPatientId(id);
-	}
-
-	@Override
-	public List<TeamMember> getTeamMemberByTeam(Integer teamId, String teamName, Integer teamLeadId, Boolean retired) {
-		return this.dao.getTeamMemberByTeam(teamId, teamName, teamLeadId, retired);
+	public List<TeamMember> getTeamMemberByTeam(Team team, String teamName, Integer teamLeadId, Boolean retired) {
+		return this.dao.getTeamMemberByTeam(team, teamName, teamLeadId, retired);
 	}
 	
 	@Override
-	public List<TeamMember> getTeamMemberByTeamWithPage(Integer teamId, String teamName, Integer teamLeadId, Boolean retired) {
-		return this.dao.getTeamMemberByTeamWithPage(teamId, teamName, teamLeadId, retired);
+	public List<TeamMember> getTeamMemberByTeamWithPage(Team team, String teamName, Integer teamLeadId, Boolean retired) {
+		return this.dao.getTeamMemberByTeamWithPage(team, teamName, teamLeadId, retired);
 	}	
 	
 	@Override

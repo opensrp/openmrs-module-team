@@ -5,7 +5,7 @@
 	   	<id column="team_member_log_id" name="logId" type="int">
 	       	<generator class="native"/>
 	   	</id> 
-   		<many-to-one name="teamMember" column="team_member_id" class="org.openmrs.module.teammodule.TeamMember"/>
+   		<many-to-one name="teamMember" column="team_member" class="org.openmrs.module.teammodule.TeamMember"/>
 
 	    <property name="action" column="action" type="java.lang.String"/>
 		<property name="dataNew" column="data_new" type="java.lang.String"/>

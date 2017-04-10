@@ -10,11 +10,8 @@ import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
-import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
-import org.openmrs.module.webservices.rest.web.RestConstants;
-import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
@@ -28,8 +25,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  *
  */
 
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/memberLocation", supportedClass = TeamMemberWrapper.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
-"1.12.*" })
+//@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/memberLocation", supportedClass = TeamMemberWrapper.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*" })
 public class LocationRequestResource extends DelegatingCrudResource<List<TeamMemberWrapper>> {
 
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
@@ -57,7 +53,13 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 	
 	public List<TeamMemberWrapper> getByUniqueId(String uuid) {
 		// TODO Auto-generated method stub
-		return null;
+//		return null;
+		TeamMemberWrapper tmw = new TeamMemberWrapper(Context.getService(TeamMemberService.class).getTeamMemberByUuid(uuid));
+		List<TeamMemberWrapper> l = new ArrayList<>();
+		l.add(tmw);
+		return l;
+		
+//		return (List<TeamMemberWrapper>) new TeamMemberWrapper(Context.getService(TeamMemberService.class).getTeamMemberByUuid(uuid));
 	}
 
 	public List<TeamMemberWrapper> newDelegate() {
@@ -73,13 +75,11 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 	@Override
 	protected void delete(List<TeamMemberWrapper> arg0, String arg1, RequestContext arg2) throws ResponseException {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void purge(List<TeamMemberWrapper> arg0, RequestContext arg1) throws ResponseException {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	

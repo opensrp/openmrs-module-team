@@ -32,13 +32,14 @@ public class PersonTeamMemberRequestResource extends DelegatingCrudResource<Team
 	@Override
 	public TeamMember newDelegate() {
 		// TODO Auto-generated method stub
-		return new TeamMember();
+		return null;
+//		return new TeamMember();
 	}
 
 	@Override
 	public TeamMember save(TeamMember delegate) {
-		// TODO Auto-generated method stub
-		return null;
+		Context.getService(TeamMemberService.class).save(delegate);
+		return delegate;
 	}
 
 	@Override
@@ -76,9 +77,9 @@ public class PersonTeamMemberRequestResource extends DelegatingCrudResource<Team
 		Person person = Context.getPersonService().getPersonByUuid(uuid);
 		Integer id = person.getPersonId();
 		List<TeamMember> tm = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(id);
-		id = tm.get(0).getId();
+		id = tm.get(0).getTeamMemberId();
 		System.out.println(id);
-		TeamMember member = Context.getService(TeamMemberService.class).getTeamMemberById(id);
+		TeamMember member = Context.getService(TeamMemberService.class).getTeamMember(id);
 		System.out.println(member);
 		return member;
 	}
@@ -86,10 +87,13 @@ public class PersonTeamMemberRequestResource extends DelegatingCrudResource<Team
 	@Override
 	protected void delete(TeamMember delegate, String reason, RequestContext context) throws ResponseException {
 		// TODO Auto-generated method stub
+//		Context.getService(TeamMemberService.class).purgeMember(delegate);		
 	}
 
 	@Override
 	public void purge(TeamMember delegate, RequestContext context) throws ResponseException {
 		// TODO Auto-generated method stub
+//		Context.getService(TeamMemberService.class).purgeMember(delegate);		
 	}
+
 }

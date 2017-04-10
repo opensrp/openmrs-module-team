@@ -36,16 +36,16 @@ public class HibernateTeamMemberLogDAO implements TeamMemberLogDAO{
 	}
 
 	public TeamMemberLog getTeamMemberLog(int id) {
-		return	(TeamMemberLog)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog tl where tl.logId = :id").setInteger("id", id).uniqueResult();
+		return	(TeamMemberLog)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.logId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	public TeamMemberLog getTeamMemberLog(String uuid) {
-		return	(TeamMemberLog)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog tl where tl.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return	(TeamMemberLog)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<TeamMemberLog> getAllLogs() {
-		List<TeamMemberLog> createQuery = (List<TeamMemberLog>)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog").list();
+		List<TeamMemberLog> createQuery = (List<TeamMemberLog>)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog").list();
 		return	createQuery;
 	}
 
@@ -55,6 +55,6 @@ public class HibernateTeamMemberLogDAO implements TeamMemberLogDAO{
 
 	@SuppressWarnings("unchecked")
 	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(int teamMember) {
-		return (List<TeamMemberLog>)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog tl join tl.teamMember tm where tm.teamMemberId = :teamMember").setInteger("teamMember", teamMember).list();
+		return (List<TeamMemberLog>)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.teamMember = :teamMember").setInteger("teamMember", teamMember).list();
 	}
 }

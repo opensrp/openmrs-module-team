@@ -48,12 +48,12 @@ public class HibernateTeamDAO implements TeamDAO {
 	}
 
 	public Team getTeam(int teamId) {
-		return (Team) sessionFactory.getCurrentSession().createQuery("from Team t where t.id = :id").setInteger("id", teamId).uniqueResult();
+		return (Team) sessionFactory.getCurrentSession().createQuery("from Team t where t.teamId = :id").setInteger("id", teamId).uniqueResult();
 
 	}
 
 	public Team getTeam(String uuid) {
-		return (Team) sessionFactory.getCurrentSession().createQuery("from Team t where t.teamName = :teamName or t.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return (Team) sessionFactory.getCurrentSession().createQuery("from Team t where t.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberPatientRelation;
 import org.openmrs.module.teammodule.api.TeamMemberPatientRelationService;
 import org.openmrs.module.teammodule.api.db.TeamMemberPatientRelationDAO;
@@ -43,25 +44,29 @@ public class TeamMemberPatientRelationServiceImpl extends BaseOpenmrsService imp
 	public TeamMemberPatientRelation getTeamPatientRelation(String uuid) {
 		return dao.getTeamPatientRelation(uuid);
 	}
-	
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer id) {
-		return dao.getTeamPatientRelations(id);
-	}
 
-	public TeamMemberPatientRelation getTeamPatientRelation(TeamMemberPatientRelation tmpr) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMemberPatientRelation tmpr) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<TeamMemberPatientRelation> searchTeamPatientRelation(String name) {
+		return dao.searchTeamPatientRelation(name);
 	}
 
 	public void update(TeamMemberPatientRelation tmpr) {
 		dao.update(tmpr);
 	}
 
-
+	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer id) {
+		return dao.getTeamPatientRelations(id);
+	}
+	
+	public TeamMemberPatientRelation getTeamPatientRelations(TeamMemberPatientRelation id) {
+		return dao.getTeamPatientRelations(id);
+	}
+	
+	public List<TeamMemberPatientRelation> getTeamPatientRelations() {
+		return dao.getTeamPatientRelations();
+	}
+	
+	public List<TeamMemberPatientRelation> getTeamPatientRelationByTeamMember(TeamMember tm) {
+		return dao.getTeamPatientRelationByTeamMember(tm);
+	}
 	
 }

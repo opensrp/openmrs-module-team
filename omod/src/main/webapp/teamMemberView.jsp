@@ -1,95 +1,89 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<openmrs:require privilege="View Team" otherwise="/login.htm" />
-<head>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <style>
-#memberDialog> table, #memberDialog> table th, #memberDialog> table td {
-	border: 1px solid black;
-	 border-collapse: collapse;
-}
-
-#historyDialog> table, #historyDialog> table th, #historyDialog> table td {
-	border: 1px solid black;
-	 border-collapse: collapse;
-}
-
-</style>
-  <script type="text/javascript">
-  $(document).ready(function(){
-	        $('#historyDialog').hide();
-	        $('#memberDialog').hide();
-	});
-  function teamHistory(teamId) {
-
-	  $.get("/openmrs/module/teammodule/teamHistory.form?teamId="+teamId, function(data){
-
-		  var myTable = document.getElementById("history");
-		  var rowCount = myTable.rows.length;
-		  for (i = 0; i < rowCount; i++)
-		  {
-			  $("#historyRow").remove();
-		  }
+<openmrs:require privilege="View Team Member" otherwise="/login.htm" />
+	<head>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	 	<link rel="stylesheet" href="/resources/demos/style.css">
+	  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	  	<style>
+			#memberDialog> table, #memberDialog> table th, #memberDialog> table td {
+				border: 1px solid black;
+		 		border-collapse: collapse;
+			}
+	
+			#historyDialog> table, #historyDialog> table th, #historyDialog> table td {
+				border: 1px solid black;
+			 	border-collapse: collapse;
+			}
+	
+		</style>
+	  	<script type="text/javascript">
+	  		$(document).ready(function(){
+		        $('#historyDialog').hide();
+		        $('#memberDialog').hide();
+			});
+	  		function teamHistory(teamId) {
+		  		$.get("/openmrs/module/teammodule/teamHistory.form?teamId="+teamId, function(data){
+			  		var myTable = document.getElementById("history");
+			  		var rowCount = myTable.rows.length;
+			  		for (i = 0; i < rowCount; i++) {
+				  		$("#historyRow").remove();
+			  		}
+				  	for (i = 0; i < data.length; i++) {
+				  		$("#history").append("<tr id=\"historyRow\">"
+						+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].name+"</td>"
+						+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].parsedJoinDate[i]+"</td>"
+						+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].parsedLeaveDate[i]+"</td>"
+						+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].gender+"</td>"
+						+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].duration+"</td>"
+						+"</tr>"); 
+				  	}
+				});
+		  		$( "#historyDialog" ).dialog( { width: "auto", height: "auto", title: "History" , closeText: ""});
+	  		}
+	
+	  		function teamMember(teamId) {
+		    	$.get("/openmrs/module/teammodule/teamMember/listPopup.form?teamId="+teamId, function(data){
+			  	console.log(data);
+  				var myTable = document.getElementById("member");
+			  var rowCount = myTable.rows.length;
+			  for (i = 0; i < rowCount; i++)
+			  {
+				  $("#memberRow").remove();
+			  }
 			  for (i = 0; i < data.length; i++)
 			  {
-			  $("#history").append("<tr id=\"historyRow\">"
-			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].name+"</td>"
-			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].parsedJoinDate[i]+"</td>"
-			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].parsedLeaveDate[i]+"</td>"
-			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].gender+"</td>"
-			+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].duration+"</td>"
-			+"</tr>"); 
+				  console.log(data[i].edit);
+			    $("#member").append("<tr id=\"memberRow\">"
+					+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].teamMemberId+"</td>"
+					+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].personName +"</td>"
+					+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].join+"</td>"
+					+"<td style=\"text-align: left;\">"
+					+data[i].gender+"</td>" 
+					+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMemberResponsibility.form?teamId="+data[i].teamId+"\">Patients</a></td>"
+					+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMember/list.form?teamId="+data[i].teamId+"\">Detail</a></td>"
+					+"</tr>");
 			  }
-	});
-	  $( "#historyDialog" ).dialog( { width: "auto",
-		    height: "auto", title: "History" , closeText: ""});
-  }
+		  });
+		  $( "#memberDialog" ).dialog( { width: "auto",
+			    height: "auto", title: "Team Members", closeText: ""});  
+	  }
+	  
+	  </script>
+	</head>
 
-  function teamMember(teamId) {
-	    $.get("/openmrs/module/teammodule/teamMember/listPopup.form?teamId="+teamId, function(data){
-		  console.log(data);
-		  var myTable = document.getElementById("member");
-		  var rowCount = myTable.rows.length;
-		  for (i = 0; i < rowCount; i++)
-		  {
-			  $("#memberRow").remove();
-		  }
-		  for (i = 0; i < data.length; i++)
-		  {
-			  console.log(data[i].edit);
-		    $("#member").append("<tr id=\"memberRow\">"
-				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].teamMemberId+"</td>"
-				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].personName +"</td>"
-				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].join+"</td>"
-				+"<td style=\"text-align: left;\">"
-				+data[i].gender+"</td>" 
-				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMemberResponsibility.form?teamId="+data[i].teamId+"\">Patients</a></td>"
-				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMember/list.form?teamId="+data[i].teamId+"\">Detail</a></td>"
-				+"</tr>");
-		  }
-	  });
-	  $( "#memberDialog" ).dialog( { width: "auto",
-		    height: "auto", title: "Team Members", closeText: ""});  
-  }
-  
-  </script>
-</head>
-
-<link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1"
-	type="text/css" rel="stylesheet">
+<link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1" type="text/css" rel="stylesheet">
 
 <div id="historyDialog">
-<table id="history">
-	<th>Team Lead</th>
-	<th>Change Date</th>
-	<th>Removed Date </th>
-	<th>Gender</th>
-	<th>Duration</th>
-</table>
+	<table id="history">
+		<th>Team Lead</th>
+		<th>Change Date</th>
+		<th>Removed Date </th>
+		<th>Gender</th>
+		<th>Duration</th>
+	</table>
 </div>
 
 <div id="memberDialog">

@@ -56,6 +56,10 @@ public class TeamLogRS extends DataDelegatingCrudResource<TeamLog> {
 		// TODO Auto-generated method stub
 	}
 
+	public TeamLog getByUniqueId(int id) {
+		return Context.getService(TeamLogService.class).getTeamLog(id);
+	}
+
 	@Override
 	public void purge(TeamLog arg0, RequestContext arg1) throws ResponseException {
 		// TODO Auto-generated method stub
@@ -74,7 +78,7 @@ public class TeamLogRS extends DataDelegatingCrudResource<TeamLog> {
 
 	@Override
 	public TeamLog getByUniqueId(String uniqueId) {
+		// TODO Auto-generated method stub
 		return Context.getService(TeamLogService.class).getTeamLog(uniqueId);
 	}
 }
-

@@ -61,9 +61,9 @@ public class TransferFormController {
 		TeamLead teamLead = Context.getService(TeamLeadService.class).getTeamLead(team);
 		
 		String memberId = request.getParameter("memberId");
-		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberById(Integer.parseInt(memberId));
+		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(memberId));
 		Boolean isTeamLead = teamMember.getIsTeamLead();
-		if (teamLead != null && teamLead.getTeamMember().getId() == Integer.parseInt(memberId)) {
+		if (teamLead != null && teamLead.getTeamMember().getTeamMemberId() == Integer.parseInt(memberId)) {
 			// System.out.println("inside");
 			teamLead.setLeaveDate(new Date());
 			teamLead.setVoided(true);
@@ -102,7 +102,7 @@ public class TransferFormController {
 		teamMember.setIdentifier(teamMember.getIdentifier());
 
 		teamMember.setPerson(person);
-//		teamMember.setPersonId(teamMember.getPerson().getId());
+		teamMember.getPerson().setPersonId(teamMember.getPerson().getId());
 		teamMember.setJoinDate(new Date());
 		// TeamLead existingLead =
 		// Context.getService(TeamLeadService.class).getTeamLead(team);

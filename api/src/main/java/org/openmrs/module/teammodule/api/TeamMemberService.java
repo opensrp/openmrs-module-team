@@ -9,6 +9,7 @@ import java.util.List;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional 
 public interface TeamMemberService extends OpenmrsService {
 	
-	public TeamMember getTeamMemberById(Integer id);
-	
-	public TeamMember getTeamMemberByName(String name);
+	public TeamMember getTeamMember(Integer id);
 	
 	public List<TeamMember> getTeamMemberByIdentifier(String identifier);
 
@@ -29,27 +28,21 @@ public interface TeamMemberService extends OpenmrsService {
 
 	public List<TeamMember> getTeamMemberByTeamId(Integer teamId);
 	
-	public List<TeamMember> getTeamMemberByTeamName(String teamName);
-
 	public List<TeamMember> getTeamMemberByPersonId(Integer personId);
 	
-	public List<TeamMember> getTeamMembersByDate(Date joinDateFrom, Date joinDateTo);
+	public List<TeamMember> getTeamMemberByDate(Date joinDateFrom, Date joinDateTo);
 	
-	public List<TeamMember> getTeamMembersByTeamLead(boolean isTeamLead);
-	
-	public List<TeamMember> getTeamMemberByTeamRoleId(Integer teamRoleId);
+	public List<TeamMember> getTeamMemberByTeamLead(boolean isTeamLead);
 
 	public List<TeamMember> getTeamMemberByRetired(boolean retired);
 	
 	public List<TeamMember> getTeamMemberByLocationId(Integer id);
-					
-	public List<TeamMember> getTeamMemberByPatientId(Integer id);
-	
+						
 	public List<TeamMember> getAllTeamMember(boolean isRetired);
 	
-	public List<TeamMember> getTeamMemberByTeam(Integer teamId, String teamName, Integer teamLeadId, Boolean retired);
+	public List<TeamMember> getTeamMemberByTeam(Team team, String teamName, Integer teamLeadId, Boolean retired);
 	
-	public List<TeamMember> getTeamMemberByTeamWithPage(Integer teamId, String teamName, Integer teamLeadId, Boolean retired);
+	public List<TeamMember> getTeamMemberByTeamWithPage(Team team, String teamName, Integer teamLeadId, Boolean retired);
 	
 	public void save(TeamMember teamMember);
 	

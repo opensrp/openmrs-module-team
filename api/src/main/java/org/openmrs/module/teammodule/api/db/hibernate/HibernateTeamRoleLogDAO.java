@@ -37,12 +37,12 @@ public class HibernateTeamRoleLogDAO implements TeamRoleLogDAO{
 	}
 
 	public TeamRoleLog getTeamRoleLog(int id) {
-		return (TeamRoleLog)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog trl where trl.logId = :id").setInteger("id", id).uniqueResult();
+		return (TeamRoleLog)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.logId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TeamRoleLog> getAllLogs() {
-		List<TeamRoleLog> createQuery = (List<TeamRoleLog>)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog").list();
+		List<TeamRoleLog> createQuery = (List<TeamRoleLog>)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog").list();
 		return	createQuery;
 	}
 
@@ -51,12 +51,12 @@ public class HibernateTeamRoleLogDAO implements TeamRoleLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(int teamRole) {
-		return (List<TeamRoleLog>)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog trl join trl.teamRole tr where tr.teamRoleId = :teamRole").setInteger("teamRole", teamRole).list();
+	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRole) {
+		return (List<TeamRoleLog>)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.teamRole = :teamRole").setInteger("teamRole", Integer.parseInt(teamRole)).list();
 	}
 
 	public TeamRoleLog getTeamRoleLog(String uuid) {
-		return (TeamRoleLog)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog trl where trl.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return (TeamRoleLog)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 
 }

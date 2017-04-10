@@ -40,7 +40,7 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.purgeTeamRoleLog(TeamRoleLog);
 	}
 
-	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(int teamRole) {
+	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRole) {
 		return dao.searchTeamRoleLogByTeamRole(teamRole);
 	}
 

@@ -37,7 +37,7 @@ public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
 	}
 
 	public TeamHierarchy getTeamRoleById(int id) {
-		return	(TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy th where th.teamRoleId = :id").setInteger("id", id).uniqueResult();
+		return	(TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy where teamHierarchy.teamRoleId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -52,11 +52,11 @@ public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
 
 	@SuppressWarnings("unchecked")
 	public List<TeamHierarchy> searchTeamRoleByRole(String role) {
-		return (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy th where th.teamRoleId = :role").setString("role", role).list();
+		return (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy where teamHierarchy.teamRoleId = :role").setString("role", role).list();
 	}
 	
 	public TeamHierarchy getTeamRoleByUuid(String uuid) {
-		return (TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy th where th.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return (TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy where th.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 
 }

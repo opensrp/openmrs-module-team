@@ -5,8 +5,8 @@
         <id column="team_location_id" name="teamLocationId" type="int">
             <generator class="native"/>
         </id> 
-	    <many-to-one name="team" column="team_id" class="org.openmrs.module.teammodule.Team"/>
-		<many-to-one name="location" column="location_id" class="org.openmrs.Location"/>
+	    <many-to-one name="team" column="team" class="org.openmrs.module.teammodule.Team"/>
+		<many-to-one name="location" column="team_location" class="org.openmrs.Location"/>
 
 		<property name="dateCreated" column="date_created" type="java.util.Date" not-null="true"/>
 		<many-to-one name="creator" column ="creator" class="org.openmrs.User" not-null="true"/>

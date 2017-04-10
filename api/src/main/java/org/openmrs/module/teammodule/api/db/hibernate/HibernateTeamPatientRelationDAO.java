@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
+import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberPatientRelation;
 import org.openmrs.module.teammodule.api.db.TeamMemberPatientRelationDAO;
 
@@ -40,22 +41,7 @@ public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelatio
 	}
 	
 	public TeamMemberPatientRelation getTeamPatientRelation(int tpr) {
-		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation where teamMemberPatientId = :id").setInteger("id", tpr).uniqueResult();
-	}
-	
-	
-	@SuppressWarnings("unchecked")
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer tpr) {
-		List<TeamMemberPatientRelation> list = sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation").list();
-		List<TeamMemberPatientRelation> list1 = new ArrayList<TeamMemberPatientRelation>();
-		for(int i=0;i<list.size();i++)
-		{
-			if(tpr==list.get(i).getMember().getId())
-			{
-				list1.add(list.get(i));
-			}
-		}
-		return list1;
+		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient where teamMemberPatient.teamMemberPatientId = :id").setInteger("id", tpr).uniqueResult();
 	}
 
 	public void update(TeamMemberPatientRelation tmpr) {
@@ -68,7 +54,7 @@ public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelatio
 
 	@SuppressWarnings("unchecked")
 	public List<TeamMemberPatientRelation> searchTeamPatientRelation(String name) {
-		List<TeamMemberPatientRelation> list = sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation").list();
+		List<TeamMemberPatientRelation> list = sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient").list();
 		List<TeamMemberPatientRelation> list1 = new ArrayList<TeamMemberPatientRelation>();
 		for(int i=0;i<list.size();i++)
 		{
@@ -79,27 +65,42 @@ public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelatio
 		}
 		return list1;
 	}
-
-	@SuppressWarnings("unchecked")
-	public List<TeamMemberPatientRelation> getTeamPatientRelations() {
-		return sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation").list();
-	}
-
-	/*@Override
-	public TeamMemberPatientRelation getTeamPatientRelation(TeamMemberPatientRelation tpr) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-
+	
 	@Override
 	public TeamMemberPatientRelation getTeamPatientRelation(String uuid) {
-		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation where uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient where teamMemberPatient.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer tpr) {
+		List<TeamMemberPatientRelation> list = sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation").list();
+		List<TeamMemberPatientRelation> list1 = new ArrayList<TeamMemberPatientRelation>();
+		for(int i=0;i<list.size();i++)
+		{
+			if(tpr==list.get(i).getMember().getId())
+			{
+				list1.add(list.get(i));
+			}
+		}
+		return list1;
+	}
+	
+	@Override
+	public TeamMemberPatientRelation getTeamPatientRelations(TeamMemberPatientRelation tpr) {
+		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient where teamMemberPatient.teamMemberPatientId = :id").setInteger("id", tpr.getId()).uniqueResult();
+	}
+	
 
-	/*@Override
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMemberPatientRelation tpr) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TeamMemberPatientRelation> getTeamPatientRelations() {
+		return sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TeamMemberPatientRelation> getTeamPatientRelationByTeamMember(TeamMember tm) {
+		return sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient where teamMemberPatient.member = :id").setInteger("id", tm.getId()).list();
+	}
 }

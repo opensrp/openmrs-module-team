@@ -17,8 +17,10 @@ import org.openmrs.Privilege;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLead;
+import org.openmrs.module.teammodule.TeamLocation;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamLeadService;
+import org.openmrs.module.teammodule.api.TeamLocationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -52,8 +54,12 @@ public class TeamController {
 	public String showForm(Model model, HttpServletRequest request) {
 		List<Team> team;
 		List<TeamMember> teamMember;
+		List<TeamLocation> teamLocation;
+		
 		TeamLead lead;
 		Team searchTeam = new Team();
+//		TeamLocation searchTeamLocation = new TeamLocation();
+		
 		String searchedTeam = "";
 		try {
 			searchedTeam = request.getParameter("searchTeam");
@@ -63,16 +69,26 @@ public class TeamController {
 		List<String> parsedDate = new ArrayList<String>();
 		List<Integer> length = new ArrayList<Integer>();
 		List<String> teamLead = new ArrayList<String>();
+		
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 		if (Context.isAuthenticated()) {
 			if (searchedTeam != null) {
 				team = Context.getService(TeamService.class).searchTeam(searchedTeam);
+				teamLocation = new ArrayList<>();
+				for (int i = 0; i < team.size(); i++) {
+					teamLocation.add(Context.getService(TeamLocationService.class).getTeamLocationByTeamId(team.get(i).getId()));
+				}
 			} else {
 				team = Context.getService(TeamService.class).getAllTeams(true);
+				teamLocation = new ArrayList<>();
+				for (int i = 0; i < team.size(); i++) {
+					teamLocation.add(Context.getService(TeamLocationService.class).getTeamLocationByTeamId(team.get(i).getId()));
+				}
 			}
 			for (int i = 0; i < team.size(); i++) {
-				teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.get(i).getId(), null, null, false);
+				teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.get(i), null, null, false);
 				System.out.println(team.get(i).getTeamId());
 				System.out.println(teamMember);
 				System.out.println(team.get(i).getUuid());
@@ -115,6 +131,7 @@ public class TeamController {
 			model.addAttribute("parsedDate", parsedDate);
 			model.addAttribute("searchedTeam", searchedTeam);
 			model.addAttribute("privilege", privilege);
+			model.addAttribute("teamLocation", teamLocation);
 		}
 
 		return SUCCESS_FORM_VIEW;
