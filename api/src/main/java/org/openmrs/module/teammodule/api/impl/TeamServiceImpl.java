@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.impl.BaseOpenmrsService;
 //import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.api.db.TeamDAO;
 
@@ -72,4 +73,7 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		return dao.searchTeam(name);
 	}
 	
+	public Team getTeam(TeamSupervisor teamSupervisor) {
+		return dao.getTeam(teamSupervisor);
+	}
 }

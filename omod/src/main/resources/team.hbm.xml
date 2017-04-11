@@ -7,6 +7,7 @@
         </id> 
 	    <property name="teamName" column="name" type="java.lang.String"/>
 		<property name="teamIdentifier" column="identifier" type="java.lang.String"/>
+	    <many-to-one name="supervisor" column="supervisor_id" class="org.openmrs.module.teammodule.TeamSupervisor"/>
 	
 		<property name="dateCreated" column="date_created" type="java.util.Date" not-null="true"/>
 		<many-to-one name="creator" column ="creator" class="org.openmrs.User" not-null="true"/>

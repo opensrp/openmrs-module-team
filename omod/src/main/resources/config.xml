@@ -38,7 +38,7 @@
 
 	<mappingFiles>
 		team_hierarchy.hbm.xml
-		team_lead.hbm.xml
+		team_supervisor.hbm.xml
 		team_location.hbm.xml
 		team_log.hbm.xml
 		team_member_location.hbm.xml

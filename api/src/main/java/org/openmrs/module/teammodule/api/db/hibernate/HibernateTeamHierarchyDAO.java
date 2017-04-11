@@ -42,7 +42,7 @@ public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
 
 	@SuppressWarnings("unchecked")
 	public List<TeamHierarchy> getAllTeams() {
-		List<TeamHierarchy> createQuery = (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy").list();
+		List<TeamHierarchy> createQuery = (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy").list();
 		return	createQuery;
 		}
 

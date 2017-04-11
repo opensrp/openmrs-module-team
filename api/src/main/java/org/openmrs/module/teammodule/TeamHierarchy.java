@@ -2,8 +2,6 @@ package org.openmrs.module.teammodule;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.User;
@@ -18,7 +16,7 @@ public class TeamHierarchy extends BaseOpenmrsData implements Serializable {
 	
 	private Boolean ownsTeam;
 
-	private Set<TeamHierarchy> reportTo=new HashSet<>();
+	private TeamMember reportTo;
 	
 	private Date dateCreated;
 
@@ -44,11 +42,11 @@ public class TeamHierarchy extends BaseOpenmrsData implements Serializable {
 		this.teamRoleId = teamRoleId;
 	}
 
-	public Set<TeamHierarchy> getReportTo() {
+	public TeamMember getReportTo() {
 		return reportTo;
 	}
 
-	public void setReportTo(Set<TeamHierarchy> reportTo) {
+	public void setReportTo(TeamMember reportTo) {
 		this.reportTo = reportTo;
 	}
 

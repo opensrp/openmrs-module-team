@@ -16,9 +16,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamLead;
+import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamLeadService;
+import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -56,9 +56,9 @@ public class SearchedTeamController {
 		String searchedTeam = request.getParameter("searchTeam");
 		List<String> parsedDate = new ArrayList<String>();
 		List<Integer> length = new ArrayList<Integer>();
-		List<String> teamLead = new ArrayList<String>();
+		List<String> teamSupervisor = new ArrayList<String>();
 		List<TeamMember> teamMember;
-		TeamLead lead;
+		TeamSupervisor Supervisor;
 		List<Team> team = Context.getService(TeamService.class).searchTeam(searchedTeam);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -67,10 +67,10 @@ public class SearchedTeamController {
 			teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.get(i), null, null, true);
 			parsedDate.add(date);
 			length.add(teamMember.size());
-			lead = Context.getService(TeamLeadService.class).getTeamLead(team.get(i));
+			Supervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team.get(i));
 
-			if (lead != null && lead.isVoided() != true) { // change made here
-				TeamMember tm = lead.getTeamMember();
+			if (Supervisor != null && Supervisor.isVoided() != true) { // change made here
+				TeamMember tm = Supervisor.getTeamMember();
 				String gName = tm.getPerson().getGivenName();
 				String mName = tm.getPerson().getMiddleName();
 				String fName = tm.getPerson().getFamilyName();
@@ -85,9 +85,9 @@ public class SearchedTeamController {
 					name = name + " " + fName;
 				}
 
-				teamLead.add(name);
+				teamSupervisor.add(name);
 			} else {
-				teamLead.add(null);
+				teamSupervisor.add(null);
 			}
 		}
 		model.addAttribute("team", team);

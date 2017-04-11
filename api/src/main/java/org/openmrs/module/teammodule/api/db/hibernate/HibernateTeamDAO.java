@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
+import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.api.db.TeamDAO;
 
 /**
@@ -48,12 +49,12 @@ public class HibernateTeamDAO implements TeamDAO {
 	}
 
 	public Team getTeam(int teamId) {
-		return (Team) sessionFactory.getCurrentSession().createQuery("from Team t where t.teamId = :id").setInteger("id", teamId).uniqueResult();
+		return (Team) sessionFactory.getCurrentSession().createQuery("from Team team where team.teamId = :id").setInteger("id", teamId).uniqueResult();
 
 	}
 
 	public Team getTeam(String uuid) {
-		return (Team) sessionFactory.getCurrentSession().createQuery("from Team t where t.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return (Team) sessionFactory.getCurrentSession().createQuery("from Team team where team.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -83,7 +84,11 @@ public class HibernateTeamDAO implements TeamDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Team> searchTeam(String teamName) {
-		return sessionFactory.getCurrentSession().createQuery("from Team t where t.teamName like :teamName or t.teamIdentifier like :teamName").setString("teamName", "%" + teamName + "%").list();
+		return sessionFactory.getCurrentSession().createQuery("from Team team where team.teamName like :teamName or team.teamIdentifier like :teamName").setString("teamName", "%" + teamName + "%").list();
+	}
+	
+	public Team getTeam(TeamSupervisor teamSupervisor) {
+		return (Team) sessionFactory.getCurrentSession().createQuery("from Team team where team.supervisor = :id").setInteger("id", teamSupervisor.getId()).uniqueResult();
 	}
 
 }

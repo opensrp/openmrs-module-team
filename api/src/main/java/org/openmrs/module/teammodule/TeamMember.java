@@ -58,7 +58,7 @@ public class TeamMember extends BaseOpenmrsData implements Serializable {
 
 	private String uuid;
 	
-	private Set<Location> location = new HashSet<Location>(0);
+	private Set<Location> location = new HashSet<Location>();
 	
 	private Set<Patient> patients = new HashSet<Patient>();
 	

@@ -442,5 +442,12 @@
 			<column name="uuid" type="varchar(255)" />
 		</addColumn>
 	</changeSet>
-			
+
+
+	<changeSet author="Zohaib Masood" id="teammodule-24.1.0A">
+		<addForeignKeyConstraint constraintName="fk_supervisor_id"
+			baseTableName="team" baseColumnNames="supervisor_id"
+			referencedTableName="team_lead" referencedColumnNames="team_lead_id" />
+	</changeSet>
+
 </databaseChangeLog>

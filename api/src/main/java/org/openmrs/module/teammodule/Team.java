@@ -23,7 +23,7 @@ public class Team extends BaseOpenmrsData implements Serializable {
 
 	private String teamName;
 	
-	private Integer supervisor;
+	private TeamSupervisor supervisor;
 	
 	private String uuid;
 	
@@ -74,11 +74,11 @@ public class Team extends BaseOpenmrsData implements Serializable {
 		setTeamId(arg0);
 	}
 
-	public Integer getSupervisor() {
+	public TeamSupervisor getSupervisor() {
 		return supervisor;
 	}
 
-	public void setSupervisor(Integer supervisor) {
+	public void setSupervisor(TeamSupervisor supervisor) {
 		this.supervisor = supervisor;
 	}
 }

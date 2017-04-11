@@ -17,9 +17,9 @@ import org.openmrs.BaseOpenmrsData;
  */
 
 @SuppressWarnings("serial")
-public class TeamLead extends BaseOpenmrsData implements Serializable {
+public class TeamSupervisor extends BaseOpenmrsData implements Serializable {
 
-	private int teamLeadId;
+	private int teamSupervisorId;
 	
 	//private String isTeamLead;
 
@@ -48,11 +48,11 @@ public class TeamLead extends BaseOpenmrsData implements Serializable {
 	}
 
 	public Integer getPersonId() {
-		return teamLeadId;
+		return teamSupervisorId;
 	}
 
 	public void setPersonId(Integer personId) {
-		this.teamLeadId = personId;
+		this.teamSupervisorId = personId;
 	}
 
 	public Integer getTeamId() {
@@ -127,11 +127,11 @@ public class TeamLead extends BaseOpenmrsData implements Serializable {
 		this.isTeamLead = isTeamLead;
 	}*/
 
-	public int getTeamLeadId() {
-		return teamLeadId;
+	public int getTeamSupervisorId() {
+		return teamSupervisorId;
 	}
 
-	public void setTeamLeadId(int teamLeadId) {
-		this.teamLeadId = teamLeadId;
+	public void setTeamSupervisorId(int teamSupervisorId) {
+		this.teamSupervisorId = teamSupervisorId;
 	}
 }

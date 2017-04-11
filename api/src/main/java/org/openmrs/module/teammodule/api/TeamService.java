@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamSupervisor;
 //import org.openmrs.module.teammodule.TeamMember;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,8 @@ public interface TeamService extends OpenmrsService {
 	
 	public Team getTeam(int id);
 	
+	public Team getTeam(TeamSupervisor teamSupervisor);
+
 	public Team getTeam(String uuid);
 	
 	//public Team getTeam(String uuid);

@@ -16,9 +16,9 @@ import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamLead;
+import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamLeadService;
+import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -58,18 +58,18 @@ public class TransferFormController {
 		String error = request.getParameter("errorMessage");
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
 		// System.out.println(team);
-		TeamLead teamLead = Context.getService(TeamLeadService.class).getTeamLead(team);
+		TeamSupervisor teamSupervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team);
 		
 		String memberId = request.getParameter("memberId");
 		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(memberId));
 		Boolean isTeamLead = teamMember.getIsTeamLead();
-		if (teamLead != null && teamLead.getTeamMember().getTeamMemberId() == Integer.parseInt(memberId)) {
+		if (teamSupervisor != null && teamSupervisor.getTeamMember().getTeamMemberId() == Integer.parseInt(memberId)) {
 			// System.out.println("inside");
-			teamLead.setLeaveDate(new Date());
-			teamLead.setVoided(true);
-			teamLead.setDateVoided(new Date());
-			teamLead.setVoidReason("Transferred");
-			Context.getService(TeamLeadService.class).update(teamLead);
+			teamSupervisor.setLeaveDate(new Date());
+			teamSupervisor.setVoided(true);
+			teamSupervisor.setDateVoided(new Date());
+			teamSupervisor.setVoidReason("Transferred");
+			Context.getService(TeamSupervisorService.class).update(teamSupervisor);
 		}
 		/*
 		 * teamMember.setPerson(Context.getPersonService().getPerson(teamMember.
@@ -97,15 +97,15 @@ public class TransferFormController {
 	public String onSubmit(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject, @ModelAttribute("transfer") TeamMember teamMember,
 			 BindingResult errors, HttpServletRequest request, Model model) {
 		// String errorMessage;
-		// TeamLead teamLead = new TeamLead();
+		// TeamSupervisor teamSupervisor = new TeamSupervisor();
 		Person person = Context.getPersonService().getPerson(teamMember.getPerson().getId());
 		teamMember.setIdentifier(teamMember.getIdentifier());
 
 		teamMember.setPerson(person);
 		teamMember.getPerson().setPersonId(teamMember.getPerson().getId());
 		teamMember.setJoinDate(new Date());
-		// TeamLead existingLead =
-		// Context.getService(TeamLeadService.class).getTeamLead(team);
+		// TeamSupervisor existingSupervisor =
+		// Context.getService(TeamSupervisorService.class).getTeamSupervisor(team);
 		if (errors.hasErrors()) {
 			// return error view
 		}
@@ -129,17 +129,17 @@ public class TransferFormController {
 		return "redirect:/module/teammodule/teamMember/list.form?teamId=" + teamMember.getTeam().getId();
 
 		/*
-		 * if(teamMember.getIsTeamLead().booleanValue() && existingLead==null){
-		 * teamLead.setTeam(team); teamLead.setTeamMember(teamMember); if
-		 * (teamMember.getJoinDate() == null) { teamLead.setJoinDate(new
-		 * Date()); } Context.getService(TeamLeadService.class).save(teamLead);
+		 * if(teamMember.getIsTeamSupervisor().booleanValue() && existingSupervisor==null){
+		 * teamSupervisor.setTeam(team); teamSupervisor.setTeamMember(teamMember); if
+		 * (teamMember.getJoinDate() == null) { teamSupervisor.setJoinDate(new
+		 * Date()); } Context.getService(TeamSupervisorService.class).save(teamSupervisor);
 		 * Context.getService(TeamMemberService.class).save(teamMember);
 		 * List<Team> teams =
 		 * Context.getService(TeamService.class).getAllTeams(true);
 		 * model.addAttribute("teams", teams);
 		 * model.addAttribute("errorMessage",null); return
 		 * "redirect:/module/teammodule/teamMember.form?teamId=" +
-		 * teamMember.getTeamId(); }else{ errorMessage = "Team Lead exists";
+		 * teamMember.getTeamId(); }else{ errorMessage = "Team Supervisor exists";
 		 * model.addAttribute("errorMessage",errorMessage); return
 		 * SUCCESS_FORM_VIEW; }
 		 */

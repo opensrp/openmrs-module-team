@@ -23,9 +23,9 @@ import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamLead;
+import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamLeadService;
+import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -57,7 +57,7 @@ public class TeamHistoryController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public List<Map<String, Object>> showForm(HttpServletRequest request) {
-		List<Map<String, Object>> teamLeadList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> teamSupervisorList = new ArrayList<Map<String, Object>>();
 		List<String> parsedJoinDate = new ArrayList<String>();
 		List<String> parsedLeaveDate = new ArrayList<String>();
 		//List<String> gender = new ArrayList<String>();
@@ -73,22 +73,22 @@ public class TeamHistoryController {
 		// System.out.println(teamId);
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
 		// List<List<Object>> list =
-		// Context.getAdministrationService().executeSQL("select team_member_id from team_lead where team_id = "
+		// Context.getAdministrationService().executeSQL("select team_member_id from team_Supervisor where team_id = "
 		// + teamId, false);
 
-		// Multiple leads
+		// Multiple Supervisors
 
-		List<TeamLead> teamLead = Context.getService(TeamLeadService.class).getTeamLeads(team);
-		// System.out.println(teamLead);
+		List<TeamSupervisor> teamSupervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisors(team);
+		// System.out.println(teamSupervisor);
 		// Date dateCreated = null;
 		// Date leaveDate = null;
 
-		if (teamLead != null) {
+		if (teamSupervisor != null) {
 
-			for (int i = 0; i < teamLead.size(); i++) {
+			for (int i = 0; i < teamSupervisor.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				String name = "";
-				TeamMember tm = teamLead.get(i).getTeamMember();
+				TeamMember tm = teamSupervisor.get(i).getTeamMember();
 				String gName = tm.getPerson().getGivenName();
 				String mName = tm.getPerson().getMiddleName();
 				String fName = tm.getPerson().getFamilyName();
@@ -106,21 +106,21 @@ public class TeamHistoryController {
 				@SuppressWarnings("unused")
 				Period period;
 				
-				// dateCreated = teamLead.get(i).getDateCreated();
-				if (teamLead.get(i).getJoinDate() != null) {
-					String joinDate = sdf.format(teamLead.get(i).getJoinDate());
+				// dateCreated = teamSupervisor.get(i).getDateCreated();
+				if (teamSupervisor.get(i).getJoinDate() != null) {
+					String joinDate = sdf.format(teamSupervisor.get(i).getJoinDate());
 					parsedJoinDate.add(joinDate);
-					start.setTime(teamLead.get(i).getJoinDate());
+					start.setTime(teamSupervisor.get(i).getJoinDate());
 				}else{
 					parsedJoinDate.add(null);
 				}
-				// Date dateVoided = teamlead.getDateVoided();
-				if (teamLead.get(i).getLeaveDate() != null) {
-					String leaveDate = sdf.format(teamLead.get(i).getLeaveDate());
+				// Date dateVoided = teamSupervisor.getDateVoided();
+				if (teamSupervisor.get(i).getLeaveDate() != null) {
+					String leaveDate = sdf.format(teamSupervisor.get(i).getLeaveDate());
 					parsedLeaveDate.add(leaveDate);
-					end.setTime(teamLead.get(i).getLeaveDate());
+					end.setTime(teamSupervisor.get(i).getLeaveDate());
 				}else{
-					if(teamLead.get(i).getVoided() == false){
+					if(teamSupervisor.get(i).getVoided() == false){
 						if(team.getVoided()){
 							parsedLeaveDate.add("Team Voided");
 						}else{
@@ -135,9 +135,9 @@ public class TeamHistoryController {
 		    	 Days day = Days.daysBetween(dateStart, dateEnd);
 		    	 String duration="Days: "+day.getDays();	
 		    	 map.put("duration", duration);
-				 map.put("gender", teamLead.get(i).getTeamMember().getPerson().getGender());
+				 map.put("gender", teamSupervisor.get(i).getTeamMember().getPerson().getGender());
 				
-				/*if (teamLead.get(i).getVoided() == false) {
+				/*if (teamSupervisor.get(i).getVoided() == false) {
 					map.put("parsedLeaveDate", "Present");
 				} else {*/
 					map.put("parsedLeaveDate", parsedLeaveDate);
@@ -146,36 +146,36 @@ public class TeamHistoryController {
 				map.put("name", name);
 				// map.put("dateCreated", dateCreated);
 				map.put("parsedJoinDate", parsedJoinDate);	
-				teamLeadList.add(map);
-				// System.out.println(teamLeadList);
+				teamSupervisorList.add(map);
+				// System.out.println(teamSupervisorList);
 			}
 		}
 
-		// Original code for one lead
+		// Original code for one Supervisor
 
 		/*
-		 * TeamLead lead =
-		 * Context.getService(TeamLeadService.class).getTeamLead(team); if (lead
-		 * != null) { TeamMember tm = lead.getTeamMember(); String gName =
+		 * TeamSupervisor Supervisor =
+		 * Context.getService(TeamSupervisorService.class).getTeamSupervisor(team); if (Supervisor
+		 * != null) { TeamMember tm = Supervisor.getTeamMember(); String gName =
 		 * tm.getPerson().getGivenName(); String mName =
 		 * tm.getPerson().getMiddleName(); String fName =
 		 * tm.getPerson().getFamilyName();
 		 * 
 		 * if (gName != null) { name = name + " " + gName; } if (mName != null)
 		 * { name = name + " " + mName; } if (fName != null) { name = name + " "
-		 * + fName; } } dateCreated = lead.getDateCreated(); // create variable
-		 * here // Date dateVoided = lead.getDateVoided(); leaveDate =
-		 * lead.getLeaveDate(); // create variable here if (leaveDate == null) {
+		 * + fName; } } dateCreated = Supervisor.getDateCreated(); // create variable
+		 * here // Date dateVoided = Supervisor.getDateVoided(); leaveDate =
+		 * Supervisor.getLeaveDate(); // create variable here if (leaveDate == null) {
 		 * String present = "Present"; model.addAttribute("dateVoided",
 		 * present); } else { model.addAttribute("leaveDate", leaveDate); }
 		 * 
-		 * model.addAttribute("lead", lead);
+		 * model.addAttribute("Supervisor", Supervisor);
 		 */
 
 		// model.addAttribute("dateCreated", dateCreated);
 		// model.addAttribute("name", name);
-		//System.out.println(teamLeadList);
-		return teamLeadList;
+		//System.out.println(teamSupervisorList);
+		return teamSupervisorList;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

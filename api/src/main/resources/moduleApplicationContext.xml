@@ -120,16 +120,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list merge="true">
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.TeamLeadService</value>
+				<value>${project.parent.groupId}.${project.parent.artifactId}.api.TeamSupervisorService</value>
 				<bean
 					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager" />
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.TeamLeadServiceImpl">
+						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.TeamSupervisorServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateTeamLeadDAO">
+								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateTeamSupervisorDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory" />
 									</property>

@@ -16,10 +16,10 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Privilege;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamLead;
+import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamLocation;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamLeadService;
+import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamLocationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
@@ -56,7 +56,7 @@ public class TeamController {
 		List<TeamMember> teamMember;
 		List<TeamLocation> teamLocation;
 		
-		TeamLead lead;
+		TeamSupervisor Supervisor;
 		Team searchTeam = new Team();
 //		TeamLocation searchTeamLocation = new TeamLocation();
 		
@@ -68,7 +68,7 @@ public class TeamController {
 		}
 		List<String> parsedDate = new ArrayList<String>();
 		List<Integer> length = new ArrayList<Integer>();
-		List<String> teamLead = new ArrayList<String>();
+		List<String> teamSupervisor = new ArrayList<String>();
 		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -97,11 +97,11 @@ public class TeamController {
 				parsedDate.add(date);
 				System.out.println(teamMember.size());
 				length.add(teamMember.size());
-				lead = Context.getService(TeamLeadService.class).getTeamLead(team.get(i));
+				Supervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team.get(i));
 
-				if (lead != null && lead.isVoided() != true) { // change made
+				if (Supervisor != null && Supervisor.isVoided() != true) { // change made
 																// here
-					TeamMember tm = lead.getTeamMember();
+					TeamMember tm = Supervisor.getTeamMember();
 					String gName = tm.getPerson().getGivenName();
 					String mName = tm.getPerson().getMiddleName();
 					String fName = tm.getPerson().getFamilyName();
@@ -116,9 +116,9 @@ public class TeamController {
 						name = name + " " + fName;
 					}
 
-					teamLead.add(name);
+					teamSupervisor.add(name);
 				} else {
-					teamLead.add(null);
+					teamSupervisor.add(null);
 				}
 
 			}			
@@ -127,7 +127,7 @@ public class TeamController {
 			model.addAttribute("team", team);
 			model.addAttribute("length", length);
 			model.addAttribute("searchTeam", searchTeam);
-			model.addAttribute("teamLead", teamLead);
+			model.addAttribute("teamSupervisor", teamSupervisor);
 			model.addAttribute("parsedDate", parsedDate);
 			model.addAttribute("searchedTeam", searchedTeam);
 			model.addAttribute("privilege", privilege);

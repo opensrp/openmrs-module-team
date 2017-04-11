@@ -23,9 +23,9 @@ import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamLead;
+import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamLeadService;
+import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.util.OpenmrsConstants;
@@ -254,7 +254,7 @@ public class TeamMemberAddForm {
 		
 		String error = "";
 
-		TeamLead teamLead = new TeamLead();
+		TeamSupervisor teamSupervisor = new TeamSupervisor();
 		Person person = null;
 		if (pId == "" || pId == null) {
 			 person = Context.getPersonService().savePerson(teamMember.getPerson());
@@ -297,20 +297,20 @@ public class TeamMemberAddForm {
 		if (error.isEmpty()) {
 
 			if (teamMember.getIsTeamLead().booleanValue()) {
-				TeamLead tl = Context.getService(TeamLeadService.class).getTeamLead(team);
+				TeamSupervisor tl = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team);
 				if (tl == null) {
 					Context.getService(TeamMemberService.class).save(teamMember);
-					teamLead.setTeam(team);
-					teamLead.setTeamMember(teamMember);
+					teamSupervisor.setTeam(team);
+					teamSupervisor.setTeamMember(teamMember);
 					if (teamMember.getJoinDate() == null) {
-						teamLead.setJoinDate(new Date());
+						teamSupervisor.setJoinDate(new Date());
 					} else {
-						teamLead.setJoinDate(teamMember.getJoinDate());
+						teamSupervisor.setJoinDate(teamMember.getJoinDate());
 					}
-					teamLead.setUuid(UUID.randomUUID().toString());
-					Context.getService(TeamLeadService.class).save(teamLead);
+					teamSupervisor.setUuid(UUID.randomUUID().toString());
+					Context.getService(TeamSupervisorService.class).save(teamSupervisor);
 				} else {
-					error = "Team Lead for this team already exists. ";
+					error = "Team Supervisor for this team already exists. ";
 					model.addAttribute("error", error);
 				}
 			}
