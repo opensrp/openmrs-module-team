@@ -442,9 +442,13 @@
 			<column name="uuid" type="varchar(255)" />
 		</addColumn>
 	</changeSet>
+<changeSet author="Shakeeb Raza" id="teammodule-24.1.0A">
+	    <addColumn tableName="team">
+	        <column name="supervisor_id" type="int(11)" />
+	    </addColumn>
+	</changeSet>
 
-
-	<changeSet author="Zohaib Masood" id="teammodule-24.1.0A">
+	<changeSet author="Zohaib Masood" id="teammodule-25.1.0A">
 		<addForeignKeyConstraint constraintName="fk_supervisor_id"
 			baseTableName="team" baseColumnNames="supervisor_id"
 			referencedTableName="team_lead" referencedColumnNames="team_lead_id" />
