@@ -41,7 +41,6 @@
 		jQuery("#voidTip").hide();
 		jQuery("#memberUsername").hide();
 		jQuery("#memberPassword").hide();
-		jQuery("#memberRole").hide();	
 		jQuery("#passwordText").hide();	
 		jQuery("#memberConfirmPassword").hide();	
 		jQuery("#confirmPasswordText").hide();	
@@ -67,7 +66,6 @@
 				jQuery("#exist").show();
 				jQuery("#memberUsername").hide();
 				jQuery("#memberPassword").hide();
-				jQuery("#memberRole").hide();	
 				jQuery("#memberConfirmPassword").hide();
 				
 			} else {
@@ -84,13 +82,11 @@
 			if (this.checked) {
 				jQuery("#memberUsername").show();
 				jQuery("#memberPassword").show();
-				jQuery("#memberRole").show();	
 				jQuery("#memberConfirmPassword").show();
 				
 			} else {
 				jQuery("#memberUsername").hide();
 				jQuery("#memberPassword").hide();
-				jQuery("#memberRole").hide();	
 				jQuery("#memberConfirmPassword").hide();
 				
 			}
@@ -379,17 +375,6 @@
 				<b id="confirmPasswordText">Password and Confirm Password not match</b>
 				</td>
 			</tr>
-			<tr id="memberRole" type="hide">
-				<td valign="top">Role:</td>
-				<td>
-				<select id="roleOption" multiple>
-					<option value="" label="Please Select " />
-					<c:forEach items="${allRoles}" var="roles" varStatus="varStatus">
-					<option value="${roles}">${roles}</option>
-					</c:forEach>
-				</select>
-				</td>
-			</tr>
 		
 		<tr id="memberGender" type="hide">
 			<td>Gender</td>
@@ -425,8 +410,19 @@
 		</tr>
 		<tr id="teamLead">
 			<td>Is Team Lead ?</td>
-			<!-- <td><form:input id="teamLead" path="isTeamLead" /></td> -->
 			<td><form:checkbox id="isTeamLead" path="isTeamLead" /></td>
+		</tr>
+		
+		<tr id="memberRole" type="hide">
+			<td valign="top">Role:</td>
+			<td>
+			<select id="roleOption" multiple>
+				<option value="" label="Please Select " />
+				<c:forEach items="${allRoles}" var="roles" varStatus="varStatus">
+				<option value="${roles}">${roles}</option>
+				</c:forEach>
+			</select>
+			</td>
 		</tr>
 		<tr>
 			<td>Location</td>

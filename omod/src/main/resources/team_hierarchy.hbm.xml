@@ -7,11 +7,8 @@
         </id> 
 	    <property name="name" column="name" type="java.lang.String"/>
 		<property name="ownsTeam" column="owns_Team" type="java.lang.Boolean"/>
-		<set name="reportTo" cascade="all">  
-	          <key column="team_role_id"></key>  
-	          <one-to-many class="org.openmrs.module.teammodule.TeamHierarchy"/>  
-		</set>
-
+		<many-to-one name="reportTo" column ="report_to" class="org.openmrs.module.teammodule.TeamMember"/>
+		
 		<property name="dateCreated" column="date_created" type="java.util.Date" not-null="true"/>
 		<many-to-one name="creator" column ="creator" class="org.openmrs.User" not-null="true"/>
 		<many-to-one name="changedBy" column="changed_by" class="org.openmrs.User" />

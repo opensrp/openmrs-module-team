@@ -21,7 +21,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  * @author Zohaib Masood
  * 
  */
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamMemberLog", supportedClass = TeamMemberLog.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teammemberlog", supportedClass = TeamMemberLog.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
 		"1.12.*" })
 public class TeamMemberLogRS extends DataDelegatingCrudResource<TeamMemberLog> {
 

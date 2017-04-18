@@ -11,8 +11,6 @@ public interface TeamMemberPatientRelationDAO {
 
 	public void delete(TeamMemberPatientRelation tpr);
 	
-	public void delete(int memberPatientId);
-
 	public TeamMemberPatientRelation getTeamPatientRelation(int tpr);
 
 	public void update(TeamMemberPatientRelation tpr);
@@ -20,14 +18,8 @@ public interface TeamMemberPatientRelationDAO {
 	public void purgeTeamPatientRelation(TeamMemberPatientRelation tpr);
 	
 	public TeamMemberPatientRelation getTeamPatientRelation(String uuid);
-	
-	public List<TeamMemberPatientRelation> searchTeamPatientRelation(String name);
-
-	public List<TeamMemberPatientRelation> getTeamPatientRelations();
-
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer Id);
 
 	public TeamMemberPatientRelation getTeamPatientRelations(TeamMemberPatientRelation tmpr);
 
-	public List<TeamMemberPatientRelation> getTeamPatientRelationByTeamMember(TeamMember tmpr);
+	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMember tmpr);
 }

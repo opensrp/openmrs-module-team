@@ -54,8 +54,10 @@ public class TeamMemberResponsibilityController {
 		for (int i=0;i<teamMember.size();i++)
 		{
 		m=new HashedMap();
-		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember.get(i).getTeamMemberId());
+		
+		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember.get(i));
 		m.put("size", tprs.size());
+		m.put("size", 0);
 		m.put("memberId", teamMember.get(i).getTeamMemberId());
 		Set<Location> location = teamMember.get(i).getLocation();
 		m.put("location",location);
@@ -74,7 +76,7 @@ public class TeamMemberResponsibilityController {
 		model.addAttribute("memberId", memberId);
 		model.addAttribute("memberName", teamMember.getPerson().getNames());
 		
-		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(Integer.valueOf(memberId));
+		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember);
 		for(int i=0;i<tprs.size();i++)
 		{
 			m=new HashedMap();
@@ -122,7 +124,7 @@ public class TeamMemberResponsibilityController {
 		Patient patient=Context.getService(PatientService.class).getPatient(patientText);
 		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMember(memberId);
 		Date date=new Date();
-		TeamMemberPatientRelation tmpr=new TeamMemberPatientRelation();
+		/*TeamMemberPatientRelation tmpr=new TeamMemberPatientRelation();
 		tmpr.setAssignmentDate(date);
 		tmpr.setStatus(status);
 		tmpr.setReason(reason);
@@ -134,7 +136,7 @@ public class TeamMemberResponsibilityController {
 			model.addAttribute("exception", "Patient Already been Added");
 			return teamMemberResponsibilityAdd;
 		}
-		Context.getService(TeamMemberPatientRelationService.class).save(tmpr);
+		Context.getService(TeamMemberPatientRelationService.class).save(tmpr);*/
 		return teamMemberResponsibilityDetail;
 		
 	}
@@ -142,7 +144,7 @@ public class TeamMemberResponsibilityController {
 	@RequestMapping(value = "module/teammodule/teamMemberResponsibilityUnAssign.form", method = RequestMethod.GET)
 	@ResponseBody
 	public void TeamMemberResponsibilityUnAssign(Model model, HttpServletRequest request,@RequestParam("memberPatientId")int memberPatientId) {
-		TeamMemberPatientRelation teamMemberPatientObject = Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelation(memberPatientId);
-		Context.getService(TeamMemberPatientRelationService.class).delete(teamMemberPatientObject);
-		}
+		/*TeamMemberPatientRelation teamMemberPatientObject = Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelation(memberPatientId);
+		Context.getService(TeamMemberPatientRelationService.class).delete(teamMemberPatientObject);*/
+	}
 }

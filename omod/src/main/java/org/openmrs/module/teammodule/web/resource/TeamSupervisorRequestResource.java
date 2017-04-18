@@ -22,7 +22,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  *
  */
 
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamSupervisor", supportedClass = TeamSupervisor.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamsupervisor", supportedClass = TeamSupervisor.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
 "1.12.*" })
 public class TeamSupervisorRequestResource extends DelegatingCrudResource<TeamSupervisor> {
 

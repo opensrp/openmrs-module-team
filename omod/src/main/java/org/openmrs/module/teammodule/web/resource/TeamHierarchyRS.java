@@ -21,7 +21,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  * @author Shakeeb raza
  * 
  */
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamHierarchy", supportedClass = TeamHierarchy.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamhierarchy", supportedClass = TeamHierarchy.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
 		"1.12.*" })
 public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 

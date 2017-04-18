@@ -442,7 +442,12 @@
 			<column name="uuid" type="varchar(255)" />
 		</addColumn>
 	</changeSet>
+<<<<<<< HEAD
 <changeSet author="Shakeeb Raza" id="teammodule-24.1.0A">
+=======
+	
+	<changeSet author="Shakeeb Raza" id="teammodule-24.1.0A">
+>>>>>>> 2d0b890dfbdf3979158edd192a917b67627dac21
 	    <addColumn tableName="team">
 	        <column name="supervisor_id" type="int(11)" />
 	    </addColumn>
@@ -453,5 +458,34 @@
 			baseTableName="team" baseColumnNames="supervisor_id"
 			referencedTableName="team_lead" referencedColumnNames="team_lead_id" />
 	</changeSet>
+
+	<changeSet author="Zohaib Masood" id="teammodule-26.1.0A">
+		<!-- <dropColumn tableName="team_member" columnName="date_created" /> -->
+		<dropColumn tableName="team_member" columnName="creator" />
+		<dropColumn tableName="team_member" columnName="changed_by" />
+		<dropColumn tableName="team_member" columnName="date_changed" />
+		<dropColumn tableName="team_member" columnName="voided" />
+		<dropColumn tableName="team_member" columnName="voided_by" />
+		<!-- <dropColumn tableName="team_member" columnName="date_voided" /> -->
+		<dropColumn tableName="team_member" columnName="void_reason" />
+
+		<!-- <dropColumn tableName="team_member_log" columnName="date_created" /> -->
+		<dropColumn tableName="team_member_log" columnName="creator" />
+		<dropColumn tableName="team_member_log" columnName="changed_by" />
+		<dropColumn tableName="team_member_log" columnName="date_changed" />
+		<dropColumn tableName="team_member_log" columnName="voided" />
+		<dropColumn tableName="team_member_log" columnName="voided_by" />
+		<!-- <dropColumn tableName="team_member_log" columnName="date_voided" /> -->
+		<dropColumn tableName="team_member_log" columnName="void_reason" />
+	</changeSet>
+
+	<changeSet author="Zohaib Masood" id="teammodule-27.1.0A">
+		<addColumn tableName="team_member">
+			<column name="location_id" type="int(11)" >
+				<constraints foreignKeyName="fk_member_location_id2" references="location(location_id)"  />
+			</column>
+	    </addColumn>	    
+	</changeSet>
+
 
 </databaseChangeLog>

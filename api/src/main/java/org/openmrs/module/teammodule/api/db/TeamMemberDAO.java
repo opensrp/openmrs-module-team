@@ -19,27 +19,21 @@ public interface TeamMemberDAO {
 	
 	public TeamMember getTeamMember(Integer id);
 		
-	public List<TeamMember> getTeamMemberByIdentifier(String identifier);
-
 	public TeamMember getTeamMemberByUuid(String uuid);
-
-	public List<TeamMember> getTeamMemberByTeamId(Integer teamId);
-	
-	public List<TeamMember> getTeamMemberByPersonId(Integer personId);
 	
 	public List<TeamMember> getTeamMemberByDate(Date joinDateFrom, Date joinDateTo);
 	
-	public List<TeamMember> getTeamMemberByTeamLead(boolean isTeamLead);
-	
-	public List<TeamMember> getTeamMemberByRetired(boolean retired);
-	
+	public List<TeamMember> getTeamMemberByPersonId(Integer personId);
+		
 	public List<TeamMember> getTeamMemberByLocationId(Integer id);
 					
+	public List<TeamMember> getTeamMemberByPatientId(Integer id);
+
 	public List<TeamMember> getTeamMemberByTeam(Team team, String teamName, Integer teamLeadId, Boolean retired);
 	
-	public List<TeamMember> getTeamMemberByTeamWithPage(Team team, String teamName, Integer teamLeadId, Boolean retired);
+	public List<TeamMember> getTeamMemberByTeamWithPage(Team team, String teamName, Integer teamLeadId, Boolean retired, Integer pageSize);
 
-	public List<TeamMember> getAllTeamMember(boolean isRetired);
+	public List<TeamMember> getAllTeamMember(Integer id, boolean isRetired);
 	
 	public void save(TeamMember teamMember);
 	
@@ -54,4 +48,8 @@ public interface TeamMemberDAO {
 	public List<TeamMember> searchTeamMember(String name);
 
 	public List<TeamMember> searchTeamMemberByTeam(String name, int teamId);
+	
+	public List<TeamMember> searchTeamMember(String id, String supervisor, String teamRole, String team, String location);
+	
+	public List<TeamMember> searchTeamMemberWithPage(String id, String supervisor, String teamRole, String team, String location, Integer pageSize);
 }

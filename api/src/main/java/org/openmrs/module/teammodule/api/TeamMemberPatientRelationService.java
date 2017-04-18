@@ -18,17 +18,9 @@ public interface TeamMemberPatientRelationService extends OpenmrsService {
 	
 	public TeamMemberPatientRelation getTeamPatientRelation(String uuid);
 
-	public List<TeamMemberPatientRelation> searchTeamPatientRelation(String name);
-
 	public void update(TeamMemberPatientRelation tmpr);
-
-	public void delete(int memberPatientId);
-	
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer Id);
-
-	public List<TeamMemberPatientRelation> getTeamPatientRelations();
 
 	public TeamMemberPatientRelation getTeamPatientRelations(TeamMemberPatientRelation tmpr);
 
-	public List<TeamMemberPatientRelation> getTeamPatientRelationByTeamMember(TeamMember tm);
+	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMember tm);
 }

@@ -143,7 +143,7 @@ public class AllMember {
 		
 		
 		else {
-			allMembers = Context.getService(TeamMemberService.class).getAllTeamMember(true);
+			allMembers = Context.getService(TeamMemberService.class).getAllTeamMember(null, true);
 			for (int i = 0; i < allMembers.size(); i++) {
 				if (allMembers.get(i).getJoinDate() != null) {
 					String date = sdf.format(allMembers.get(i).getJoinDate());

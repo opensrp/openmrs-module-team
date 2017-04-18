@@ -337,9 +337,17 @@ public class TeamMemberAddForm {
 		
 		for(int i = 0; i < teamMember.getLocation().size(); i++){
 			Integer locationId = teamMember.getLocation().iterator().next().getLocationId();
+			
 			//System.out.println(locationId);
 			Location location = Context.getLocationService().getLocation(locationId);
-			System.out.println(location);
+			
+			
+			System.out.println("location: " + location);
+
+			
+			if (location.getDateCreated() == null) {
+				location.setDateCreated(new Date());
+			}			
 			teamMember.getLocation().add(location);
 			
 			Context.getService(TeamMemberService.class).saveLocation(location);

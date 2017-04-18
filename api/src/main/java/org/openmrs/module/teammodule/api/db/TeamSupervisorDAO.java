@@ -28,5 +28,6 @@ public interface TeamSupervisorDAO {
 	public void purgeTeamSupervisor(TeamSupervisor teamSupervisor);
 	
 	public TeamSupervisor getTeamSupervisor(String uuid);
-
+	
+	public TeamSupervisor getTeamSupervisor(Integer id);
 }

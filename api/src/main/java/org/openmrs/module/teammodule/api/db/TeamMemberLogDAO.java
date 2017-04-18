@@ -12,7 +12,7 @@ public interface TeamMemberLogDAO {
 	
 	public TeamMemberLog getTeamMemberLog(String id);
 
-	public List<TeamMemberLog> getAllLogs();
+	public List<TeamMemberLog> getAllLogs(Integer pageSize);
 	
 	public void purgeTeamMemberLog(TeamMemberLog teamMemberLog);
 	
