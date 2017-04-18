@@ -58,7 +58,7 @@
 			<column name="is_team_lead" type="tinyint(4)">
 				<constraints nullable="false" />
 			</column>
-			<!-- <column name="location_id" type="int(11)" /> -->
+			 <column name="location_id" type="int(11)" /> 
 			<column name="date_created" type="datetime">
 				<constraints nullable="false" />
 			</column>
@@ -206,26 +206,6 @@
 		</createTable>
 	</changeSet>
 	
-	<changeSet author="Shakeeb Raza" id="teammodule-14.1.0A">
-     <dropForeignKeyConstraint baseTableName="team" constraintName="fk_team_location_id"/>
-	 <dropColumn tableName="team" columnName="location_id" />
-    </changeSet>
-    
-    <changeSet author="Shakeeb Raza" id="teammodule-15.1.0A">
-    <createTable tableName="team_location">
-			<column name="team_location_id" type="int(11)" autoIncrement="true">
-				<constraints primaryKey="true" />
-			</column>
-			<column name="team_location" type="int(11)" >
-				<constraints foreignKeyName="fk_team_location_id" references="location(location_id)"  />
-			</column>
-			<column name="team" type="int(11)" >
-				<constraints foreignKeyName="fk_team_id1" references="team(team_id)"  />
-			</column>
-			
-		</createTable>
-	</changeSet>
-
     <changeSet author="Shakeeb Raza" id="teammodule-16.1.0A">
     <createTable tableName="team_log">
 			<column name="team_log_id" type="int(11)" autoIncrement="true">
@@ -276,43 +256,11 @@
 	    </addColumn>
 	</changeSet>
 	
-	<changeSet author="Zohaib Masood" id="teammodule-21.1.0A">
-	   	<dropForeignKeyConstraint baseTableName="member_location" constraintName="fk_location_member_id"/>
-	    <dropForeignKeyConstraint baseTableName="member_location" constraintName="fk_member_location_id"/>
-	 	<dropPrimaryKey tableName="member_location" />
-    </changeSet>
-	
-	<changeSet author="Zohaib Masood" id="teammodule-22.1.0A">
-		<addColumn tableName="member_location">
-			<column name="team_member_location_id" type="int(11)" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false" />
-			</column>
-		</addColumn>
-		<addForeignKeyConstraint constraintName="fk_location_member_id"
-			baseTableName="member_location" baseColumnNames="team_member_id"
-			referencedTableName="team_member" referencedColumnNames="team_member_id" />
-		<addForeignKeyConstraint constraintName="fk_member_location_id"
-			baseTableName="member_location" baseColumnNames="location_id"
-			referencedTableName="location" referencedColumnNames="location_id" />
-	</changeSet>
-	
-	
 	<changeSet author="Zohaib Masood" id="teammodule-23.1.0A">
 		<addColumn tableName="team_hierarchy">
 			<column name="date_created" type="datetime">
 				<constraints nullable="false" />
 			</column>
-			<column name="creator" type="int(11)">
-				<constraints nullable="false" />
-			</column>
-			<column name="changed_by" type="int(11)" />
-			<column name="date_changed" type="datetime" />
-			<column name="voided" type="tinyint(1)">
-				<constraints nullable="false" />
-			</column>
-			<column name="voided_by" type="int(11)" />
-			<column name="date_voided" type="datetime" />
-			<column name="void_reason" type="varchar(255)" />
 			<column name="uuid" type="varchar(255)" />
 		</addColumn>
 		
@@ -323,32 +271,6 @@
 			<column name="creator" type="int(11)">
 				<constraints nullable="false" />
 			</column>
-			<column name="changed_by" type="int(11)" />
-			<column name="date_changed" type="datetime" />
-			<column name="voided" type="tinyint(1)">
-				<constraints nullable="false" />
-			</column>
-			<column name="voided_by" type="int(11)" />
-			<column name="date_voided" type="datetime" />
-			<column name="void_reason" type="varchar(255)" />
-			<column name="uuid" type="varchar(255)" />
-		</addColumn>
-		
-		<addColumn tableName="team_location">
-			<column name="date_created" type="datetime">
-				<constraints nullable="false" />
-			</column>
-			<column name="creator" type="int(11)">
-				<constraints nullable="false" />
-			</column>
-			<column name="changed_by" type="int(11)" />
-			<column name="date_changed" type="datetime" />
-			<column name="voided" type="tinyint(1)">
-				<constraints nullable="false" />
-			</column>
-			<column name="voided_by" type="int(11)" />
-			<column name="date_voided" type="datetime" />
-			<column name="void_reason" type="varchar(255)" />
 			<column name="uuid" type="varchar(255)" />
 		</addColumn>
 		
@@ -359,34 +281,10 @@
 			<column name="creator" type="int(11)">
 				<constraints nullable="false" />
 			</column>
-			<column name="changed_by" type="int(11)" />
-			<column name="date_changed" type="datetime" />
-			<column name="voided" type="tinyint(1)">
-				<constraints nullable="false" />
-			</column>
-			<column name="voided_by" type="int(11)" />
-			<column name="date_voided" type="datetime" />
-			<column name="void_reason" type="varchar(255)" />
-			<column name="uuid" type="varchar(255)" />
+				<column name="uuid" type="varchar(255)" />
 		</addColumn>
 		
-		<addColumn tableName="member_location">
-			<column name="date_created" type="datetime">
-				<constraints nullable="false" />
-			</column>
-			<column name="creator" type="int(11)">
-				<constraints nullable="false" />
-			</column>
-			<column name="changed_by" type="int(11)" />
-			<column name="date_changed" type="datetime" />
-			<column name="voided" type="tinyint(1)">
-				<constraints nullable="false" />
-			</column>
-			<column name="voided_by" type="int(11)" />
-			<column name="date_voided" type="datetime" />
-			<column name="void_reason" type="varchar(255)" />
-			<column name="uuid" type="varchar(255)" />
-		</addColumn>
+		
 		
 		<addColumn tableName="team_member_log">
 			<column name="date_created" type="datetime">
@@ -395,59 +293,19 @@
 			<column name="creator" type="int(11)">
 				<constraints nullable="false" />
 			</column>
-			<column name="changed_by" type="int(11)" />
-			<column name="date_changed" type="datetime" />
-			<column name="voided" type="tinyint(1)">
-				<constraints nullable="false" />
-			</column>
-			<column name="voided_by" type="int(11)" />
-			<column name="date_voided" type="datetime" />
-			<column name="void_reason" type="varchar(255)" />
 			<column name="uuid" type="varchar(255)" />
 		</addColumn>
 		
 		<addColumn tableName="team_member_patient">
-			<column name="date_created" type="datetime">
-				<constraints nullable="false" />
-			</column>
-			<column name="creator" type="int(11)">
-				<constraints nullable="false" />
-			</column>
-			<column name="changed_by" type="int(11)" />
-			<column name="date_changed" type="datetime" />
-			<column name="voided" type="tinyint(1)">
-				<constraints nullable="false" />
-			</column>
-			<column name="voided_by" type="int(11)" />
-			<column name="date_voided" type="datetime" />
-			<column name="void_reason" type="varchar(255)" />
 			<column name="uuid" type="varchar(255)" />
 		</addColumn>
 		
 		<addColumn tableName="team_role_log">
-			<column name="date_created" type="datetime">
-				<constraints nullable="false" />
-			</column>
-			<column name="creator" type="int(11)">
-				<constraints nullable="false" />
-			</column>
-			<column name="changed_by" type="int(11)" />
-			<column name="date_changed" type="datetime" />
-			<column name="voided" type="tinyint(1)">
-				<constraints nullable="false" />
-			</column>
-			<column name="voided_by" type="int(11)" />
-			<column name="date_voided" type="datetime" />
-			<column name="void_reason" type="varchar(255)" />
 			<column name="uuid" type="varchar(255)" />
 		</addColumn>
 	</changeSet>
-<<<<<<< HEAD
-<changeSet author="Shakeeb Raza" id="teammodule-24.1.0A">
-=======
 	
 	<changeSet author="Shakeeb Raza" id="teammodule-24.1.0A">
->>>>>>> 2d0b890dfbdf3979158edd192a917b67627dac21
 	    <addColumn tableName="team">
 	        <column name="supervisor_id" type="int(11)" />
 	    </addColumn>
@@ -456,36 +314,7 @@
 	<changeSet author="Zohaib Masood" id="teammodule-25.1.0A">
 		<addForeignKeyConstraint constraintName="fk_supervisor_id"
 			baseTableName="team" baseColumnNames="supervisor_id"
-			referencedTableName="team_lead" referencedColumnNames="team_lead_id" />
+			referencedTableName="team_member" referencedColumnNames="team_member_id" />
 	</changeSet>
-
-	<changeSet author="Zohaib Masood" id="teammodule-26.1.0A">
-		<!-- <dropColumn tableName="team_member" columnName="date_created" /> -->
-		<dropColumn tableName="team_member" columnName="creator" />
-		<dropColumn tableName="team_member" columnName="changed_by" />
-		<dropColumn tableName="team_member" columnName="date_changed" />
-		<dropColumn tableName="team_member" columnName="voided" />
-		<dropColumn tableName="team_member" columnName="voided_by" />
-		<!-- <dropColumn tableName="team_member" columnName="date_voided" /> -->
-		<dropColumn tableName="team_member" columnName="void_reason" />
-
-		<!-- <dropColumn tableName="team_member_log" columnName="date_created" /> -->
-		<dropColumn tableName="team_member_log" columnName="creator" />
-		<dropColumn tableName="team_member_log" columnName="changed_by" />
-		<dropColumn tableName="team_member_log" columnName="date_changed" />
-		<dropColumn tableName="team_member_log" columnName="voided" />
-		<dropColumn tableName="team_member_log" columnName="voided_by" />
-		<!-- <dropColumn tableName="team_member_log" columnName="date_voided" /> -->
-		<dropColumn tableName="team_member_log" columnName="void_reason" />
-	</changeSet>
-
-	<changeSet author="Zohaib Masood" id="teammodule-27.1.0A">
-		<addColumn tableName="team_member">
-			<column name="location_id" type="int(11)" >
-				<constraints foreignKeyName="fk_member_location_id2" references="location(location_id)"  />
-			</column>
-	    </addColumn>	    
-	</changeSet>
-
 
 </databaseChangeLog>

@@ -3,6 +3,7 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLog;
 import org.openmrs.module.teammodule.api.TeamLogService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
@@ -31,6 +32,7 @@ public class TeamLogRS extends DataDelegatingCrudResource<TeamLog> {
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
 				description.addProperty("logId");
+				description.addProperty("uuid");
 				description.addProperty("team");
 				description.addProperty("action");
 				description.addProperty("dataNew");
@@ -48,12 +50,13 @@ public class TeamLogRS extends DataDelegatingCrudResource<TeamLog> {
 
 	@Override
 	public TeamLog save(TeamLog teamLog) {
-		return null;
+		Context.getService(TeamLogService.class).saveTeamLog(teamLog);
+		return teamLog;
 	}
 
 	@Override
 	protected void delete(TeamLog teamLog, String reason, RequestContext context) throws ResponseException {
-		// TODO Auto-generated method stub
+		Context.getService(TeamLogService.class).purgeTeamLog(teamLog);
 	}
 
 	public TeamLog getByUniqueId(int id) {
@@ -61,8 +64,8 @@ public class TeamLogRS extends DataDelegatingCrudResource<TeamLog> {
 	}
 
 	@Override
-	public void purge(TeamLog arg0, RequestContext arg1) throws ResponseException {
-		// TODO Auto-generated method stub
+	public void purge(TeamLog teamLog, RequestContext arg1) throws ResponseException {
+		Context.getService(TeamLogService.class).purgeTeamLog(teamLog);
 	}
 	
 	@Override

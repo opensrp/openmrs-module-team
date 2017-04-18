@@ -7,7 +7,8 @@ package org.openmrs.module.teammodule;
 import java.io.Serializable;
 
 import org.openmrs.BaseOpenmrsData;
-
+import org.openmrs.Location;
+import org.openmrs.module.teammodule.*;
 /**
  * @author Muhammad Safwan & shakeeb raza
  * 
@@ -23,12 +24,16 @@ public class Team extends BaseOpenmrsData implements Serializable {
 
 	private String teamName;
 	
-	private TeamSupervisor supervisor;
+	private TeamMember supervisor;
 	
 	private String uuid;
 	
-	//private Boolean isRetired;
+	private Boolean isRetired;
 
+	private Location location;
+	
+	
+	
 	public String getUuid() {
 		return uuid;
 	}
@@ -74,11 +79,27 @@ public class Team extends BaseOpenmrsData implements Serializable {
 		setTeamId(arg0);
 	}
 
-	public TeamSupervisor getSupervisor() {
+	public TeamMember getSupervisor() {
 		return supervisor;
 	}
 
-	public void setSupervisor(TeamSupervisor supervisor) {
+	public void setSupervisor(TeamMember supervisor) {
 		this.supervisor = supervisor;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public Boolean IsRetired() {
+		return isRetired;
+	}
+
+	public void IsRetired(Boolean isRetired) {
+		this.isRetired = isRetired;
 	}
 }

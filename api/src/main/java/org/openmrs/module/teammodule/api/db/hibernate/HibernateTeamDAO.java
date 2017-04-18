@@ -12,7 +12,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.api.db.TeamDAO;
 
 /**
@@ -87,8 +86,22 @@ public class HibernateTeamDAO implements TeamDAO {
 		return sessionFactory.getCurrentSession().createQuery("from Team team where team.teamName like :teamName or team.teamIdentifier like :teamName").setString("teamName", "%" + teamName + "%").list();
 	}
 	
-	public Team getTeam(TeamSupervisor teamSupervisor) {
-		return (Team) sessionFactory.getCurrentSession().createQuery("from Team team where team.supervisor = :id").setInteger("id", teamSupervisor.getId()).uniqueResult();
+	public Team getTeamBySupervisor(int teamSupervisor) {
+		return (Team) sessionFactory.getCurrentSession().createQuery("from Team team where team.supervisor = :id").setInteger("id", teamSupervisor).uniqueResult();
+	}
+
+	@Override
+	public void updateTeam(Team team) {
+		sessionFactory.getCurrentSession().update(team);
+		
+	}
+
+	@Override
+	public List<Team> getTeambyLocation(int locationId) {
+		// TODO Auto-generated method stub
+
+		return (List<Team>) sessionFactory.getCurrentSession().createQuery("from Team team where team.location_id=: id").setInteger("id", locationId);
+		 
 	}
 
 }

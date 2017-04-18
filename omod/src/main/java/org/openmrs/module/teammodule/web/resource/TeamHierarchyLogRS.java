@@ -3,7 +3,9 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamRoleLog;
+import org.openmrs.module.teammodule.api.TeamLogService;
 import org.openmrs.module.teammodule.api.TeamRoleLogService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
@@ -32,6 +34,7 @@ public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> 
 			description = new DelegatingResourceDescription();
 			description.addProperty("logId");
 			description.addProperty("teamRoleId");
+			description.addProperty("uuid");
 			description.addProperty("action");
 			description.addProperty("dataNew");
 			description.addProperty("log");
@@ -47,18 +50,19 @@ public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> 
 	}
 
 	@Override
-	public TeamRoleLog save(TeamRoleLog teamRole) {
+	public TeamRoleLog save(TeamRoleLog teamRoleLog) {
+		Context.getService(TeamRoleLogService.class).saveTeamRoleLog(teamRoleLog);
 		return null;
 	}
 
 	@Override
-	protected void delete(TeamRoleLog teamRole, String reason, RequestContext context) throws ResponseException {
-		// TODO Auto-generated method stub
+	protected void delete(TeamRoleLog teamRoleLog, String reason, RequestContext context) throws ResponseException {
+		Context.getService(TeamRoleLogService.class).purgeTeamRoleLog(teamRoleLog);
 	}
 
 	@Override
-	public void purge(TeamRoleLog arg0, RequestContext arg1) throws ResponseException {
-		// TODO Auto-generated method stub
+	public void purge(TeamRoleLog teamRoleLog, RequestContext arg1) throws ResponseException {
+		Context.getService(TeamRoleLogService.class).purgeTeamRoleLog(teamRoleLog);
 	}
 	
 	@Override
