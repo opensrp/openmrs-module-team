@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberLog;
 import org.openmrs.module.teammodule.api.db.TeamMemberLogDAO;
 
@@ -44,9 +46,12 @@ public class HibernateTeamMemberLogDAO implements TeamMemberLogDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<TeamMemberLog> getAllLogs() {
-		List<TeamMemberLog> createQuery = (List<TeamMemberLog>)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog").list();
-		return	createQuery;
+	public List<TeamMemberLog> getAllLogs(Integer pageSize) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
+		if (pageSize != null) {
+			criteria.setFirstResult(pageSize);
+		}
+		return criteria.list();
 	}
 
 	public void purgeTeamMemberLog(TeamMemberLog teamMemberLog) {

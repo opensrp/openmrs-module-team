@@ -6,7 +6,6 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
@@ -26,7 +25,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  */
 
 //@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/memberLocation", supportedClass = TeamMemberWrapper.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*" })
-public class LocationRequestResource extends DelegatingCrudResource<List<TeamMemberWrapper>> {
+public class LocationRequestResource extends DelegatingCrudResource<List<TeamMember>> {
 
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		
@@ -51,38 +50,39 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 	}
 
 	
-	public List<TeamMemberWrapper> getByUniqueId(String uuid) {
+	public List<TeamMember> getByUniqueId(String uuid) {
 		// TODO Auto-generated method stub
 //		return null;
-		TeamMemberWrapper tmw = new TeamMemberWrapper(Context.getService(TeamMemberService.class).getTeamMemberByUuid(uuid));
-		List<TeamMemberWrapper> l = new ArrayList<>();
+		TeamMember tmw = Context.getService(TeamMemberService.class).getTeamMemberByUuid(uuid);
+		List<TeamMember> l = new ArrayList<>();
 		l.add(tmw);
 		return l;
 		
 //		return (List<TeamMemberWrapper>) new TeamMemberWrapper(Context.getService(TeamMemberService.class).getTeamMemberByUuid(uuid));
 	}
 
-	public List<TeamMemberWrapper> newDelegate() {
+	public List<TeamMember> newDelegate() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<TeamMemberWrapper> save(List<TeamMemberWrapper> arg0) {
+	public List<TeamMember> save(List<TeamMember> arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected void delete(List<TeamMemberWrapper> arg0, String arg1, RequestContext arg2) throws ResponseException {
+	protected void delete(List<TeamMember> arg0, String arg1, RequestContext arg2) throws ResponseException {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void purge(List<TeamMemberWrapper> arg0, RequestContext arg1) throws ResponseException {
+	public void purge(List<TeamMember> arg0, RequestContext arg1) throws ResponseException {
 		// TODO Auto-generated method stub
 	}
 	
 	
+	@SuppressWarnings("unused")
 	@Override
 	public SimpleObject search(RequestContext context){
 		String param = context.getRequest().getParameter("q");
@@ -97,11 +97,10 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 		
 		List<TeamMember> result = Context.getService(TeamMemberService.class).getTeamMemberByLocationId(locationId);
 		
-		List<TeamMemberWrapper> teamWrapper = new ArrayList<TeamMemberWrapper>();
+		List<TeamMember> teamWrapper = new ArrayList<TeamMember>();
 		
-		for(int i = 0; i < result.size(); i++){
-			TeamMemberWrapper tmw = new TeamMemberWrapper(result.get(i));
-			tmw.setTeamMember(result.get(i));
+		/*for(int i = 0; i < result.size(); i++){
+			TeamMember tmw = result.get(i);
 			//get(0) to get the first person only and not the list
 			try{
 				User user = Context.getUserService().getUsersByPerson(result.get(i).getPerson(), true).get(0);
@@ -113,9 +112,9 @@ public class LocationRequestResource extends DelegatingCrudResource<List<TeamMem
 			}
 
 			teamWrapper.add(tmw);
-		}
+		}*/
 		
-		return new NeedsPaging<TeamMemberWrapper>(teamWrapper,context).toSimpleObject(this);
+		return new NeedsPaging<TeamMember>(teamWrapper,context).toSimpleObject(this);
 	}
 	
 

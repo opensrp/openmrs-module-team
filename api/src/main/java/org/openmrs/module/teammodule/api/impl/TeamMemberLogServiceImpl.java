@@ -32,8 +32,8 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.saveTeamMemberLog(teamMemberlog);
 	}
 
-	public List<TeamMemberLog> getAllLogs() {
-		return dao.getAllLogs();
+	public List<TeamMemberLog> getAllLogs(Integer pageSize) {
+		return dao.getAllLogs(pageSize);
 	}
 
 	public void purgeTeamMemberLog(TeamMemberLog teamMemberLog) {

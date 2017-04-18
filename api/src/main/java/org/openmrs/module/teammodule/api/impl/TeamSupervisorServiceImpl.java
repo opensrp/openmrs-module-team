@@ -62,4 +62,7 @@ public class TeamSupervisorServiceImpl extends BaseOpenmrsService implements Tea
 		return dao.getTeamSupervisor(uuid);
 	}
 
+	public TeamSupervisor getTeamSupervisor(Integer id){
+		return dao.getTeamSupervisor(id);
+	}
 }

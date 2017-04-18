@@ -32,4 +32,5 @@ public interface TeamSupervisorService extends OpenmrsService {
 	
 	public TeamSupervisor getTeamSupervisor(String uuid);
 
+	public TeamSupervisor getTeamSupervisor(Integer id);
 }

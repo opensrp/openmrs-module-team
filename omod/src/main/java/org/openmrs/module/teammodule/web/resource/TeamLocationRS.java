@@ -21,7 +21,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  * @author Shakeeb raza
  * 
  */
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamLocation", supportedClass = TeamLocation.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamlocation", supportedClass = TeamLocation.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
 		"1.12.*" })
 public class TeamLocationRS extends DataDelegatingCrudResource<TeamLocation> {
 

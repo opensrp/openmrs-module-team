@@ -41,7 +41,7 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamLog> getAllLogs() {
+	public List<TeamLog> getAllLogs() {		
 		List<TeamLog> createQuery = (List<TeamLog>)sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog").list();
 		return	createQuery;
 	}

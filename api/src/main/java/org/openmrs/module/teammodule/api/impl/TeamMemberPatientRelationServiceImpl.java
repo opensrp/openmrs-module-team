@@ -33,10 +33,6 @@ public class TeamMemberPatientRelationServiceImpl extends BaseOpenmrsService imp
 		 dao.delete(tmpr);
 	}
 	
-	public void delete(int memberPatientId) {
-		 dao.delete(memberPatientId);
-	}
-	
 	public TeamMemberPatientRelation getTeamPatientRelation(Integer id) {
 		return dao.getTeamPatientRelation(id);
 	}
@@ -45,28 +41,16 @@ public class TeamMemberPatientRelationServiceImpl extends BaseOpenmrsService imp
 		return dao.getTeamPatientRelation(uuid);
 	}
 
-	public List<TeamMemberPatientRelation> searchTeamPatientRelation(String name) {
-		return dao.searchTeamPatientRelation(name);
-	}
-
 	public void update(TeamMemberPatientRelation tmpr) {
 		dao.update(tmpr);
-	}
-
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer id) {
-		return dao.getTeamPatientRelations(id);
 	}
 	
 	public TeamMemberPatientRelation getTeamPatientRelations(TeamMemberPatientRelation id) {
 		return dao.getTeamPatientRelations(id);
 	}
 	
-	public List<TeamMemberPatientRelation> getTeamPatientRelations() {
-		return dao.getTeamPatientRelations();
-	}
-	
-	public List<TeamMemberPatientRelation> getTeamPatientRelationByTeamMember(TeamMember tm) {
-		return dao.getTeamPatientRelationByTeamMember(tm);
+	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMember tm) {
+		return dao.getTeamPatientRelations(tm);
 	}
 	
 }

@@ -143,7 +143,7 @@ public class TeamMemberController {
 		if (Context.isAuthenticated()) {
 			if (memberName == null) {
 				teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
-				teamMemberTemp = Context.getService(TeamMemberService.class).getTeamMemberByTeamWithPage(team, null, null, null);
+				teamMemberTemp = Context.getService(TeamMemberService.class).getTeamMemberByTeamWithPage(team, null, null, null, 100);
 				} else {
 				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(memberName, Integer.parseInt(teamId));
 			}

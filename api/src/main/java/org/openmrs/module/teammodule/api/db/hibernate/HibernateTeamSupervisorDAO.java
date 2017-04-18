@@ -75,4 +75,8 @@ public class HibernateTeamSupervisorDAO implements TeamSupervisorDAO {
 	public TeamSupervisor getTeamSupervisor(String uuid){
 		return (TeamSupervisor) sessionFactory.getCurrentSession().createQuery("from TeamSupervisor teamSupervisor where teamSupervisor.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
+	
+	public TeamSupervisor getTeamSupervisor(Integer id){
+		return (TeamSupervisor) sessionFactory.getCurrentSession().createQuery("from TeamSupervisor teamSupervisor where teamSupervisor.teamSupervisorId = :id").setInteger("id", id).uniqueResult();
+	}
 }
