@@ -16,9 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -51,7 +49,7 @@ public class SearchedTeamController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
-
+/*
 		Team searchTeam = new Team();
 		String searchedTeam = request.getParameter("searchTeam");
 		List<String> parsedDate = new ArrayList<String>();
@@ -94,7 +92,7 @@ public class SearchedTeamController {
 		model.addAttribute("parsedDate", parsedDate);
 		model.addAttribute("searchedTeam",searchedTeam);
 		model.addAttribute("length", length);
-		/*
+		
 		 * String dateFrom = request.getParameter("from"); String dateTo =
 		 * request.getParameter("to"); System.out.println("From:" + dateFrom);
 		 * System.out.println("To:" + dateTo); Date joinFrom = null; Date joinTo
@@ -117,7 +115,7 @@ public class SearchedTeamController {
 		 * System.out.println(teamMember); if (!teamMember.isEmpty()) {
 		 * model.addAttribute("teamMember", teamMember); } else {
 		 * model.addAttribute("dateSearch", dateSearch); }
-		 */
+		 
 		model.addAttribute("searchTeam", searchTeam);
 
 		return SUCCESS_FORM_VIEW;
@@ -129,7 +127,7 @@ public class SearchedTeamController {
 		if (errors.hasErrors()) {
 			// return error view
 		}
-
+*/
 		return SUCCESS_FORM_VIEW;
 	}
 

@@ -42,7 +42,7 @@ public class TeamListController {
 		List<Team> team;
 
 		if (Context.isAuthenticated()) {
-			team = Context.getService(TeamService.class).getAllTeams(true);
+			team = Context.getService(TeamService.class).getAllTeams(true,0);
 			model.addAttribute("team", team);
 		}
 		return SUCCESS_FORM_VIEW;

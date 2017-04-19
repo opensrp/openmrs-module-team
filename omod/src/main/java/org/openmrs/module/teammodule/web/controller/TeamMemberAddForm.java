@@ -23,9 +23,7 @@ import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.util.OpenmrsConstants;
@@ -223,8 +221,9 @@ public class TeamMemberAddForm {
 			@RequestParam(required = false, value = "userName") String username,@RequestParam(required = false, value = "password") String password,
 			@RequestParam(required = false, value = "roles") List<Role> roles, @ModelAttribute("memberData") TeamMember teamMember,
 			BindingResult errors, @RequestParam(required = false, value = "userId") Integer userId,	@RequestParam(required = false, value = "existingPerson") String existingPerson, Model model) {
+				return existingPerson;
 		//Object obj = null;
-		
+/*		
 		if (errors.hasErrors()) {
 			// return error view
 		}
@@ -233,22 +232,22 @@ public class TeamMemberAddForm {
 		
 		//System.out.println(teamMember.getLocation());
 
-		/*
+		
 		 * model.addAttribute("isNewUser", isNewUser(user)); if (isNewUser(user)
 		 * || Context.hasPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS)) {
 		 * model.addAttribute("modifyPasswords", true); }
-		 */
+		 
 
-		/*
+		
 		 * if (createNewPerson != null) { model.addAttribute("createNewPerson",
 		 * createNewPerson); }
-		 */
+		 
 
-		/*
+		
 		 * if (!isNewUser(user)) { model.addAttribute("changePassword", new
 		 * UserProperties
 		 * (user.getUserProperties()).isSupposedToChangePassword()); }
-		 */
+		 
 		String tId = request.getParameter("teamId");
 		String pId = request.getParameter("person_id");
 		
@@ -264,22 +263,22 @@ public class TeamMemberAddForm {
 			teamMember.setPerson(person);
 		}
 		//System.out.println("Saved Person");
-		/*
+		
 		 * if (existingPerson != null) { Person person =
 		 * Context.getPersonService().getPerson(Integer.parseInt(pId));
 		 * teamMember.setPerson(person); } else { Person person =
 		 * Context.getPersonService().savePerson(teamMember.getPerson());
 		 * teamMember.setPerson(person); }
-		 */
+		 
 
-		/*
+		
 		 * if (teamMember.getPerson().getGivenName().isEmpty() ||
 		 * teamMember.getPerson().getFamilyName().isEmpty()) { error =
 		 * "Name and Family Name can't be empty"; model.addAttribute("error",
 		 * error); }else{ Person person =
 		 * Context.getPersonService().savePerson(teamMember.getPerson());
 		 * teamMember.setPerson(person); }
-		 */
+		 
 
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(tId));
 		teamMember.setTeam(team);
@@ -363,7 +362,7 @@ public class TeamMemberAddForm {
 		
 		//System.out.println(teamMember.getLocation());
 		
-		/*try {
+		try {
 			Location location = (Location) obj;
 			WebAttributeUtil.handleSubmittedAttributesForType(location, errors, LocationAttribute.class, request, Context.getLocationService().getAllLocationAttributeTypes());
 
@@ -378,8 +377,9 @@ public class TeamMemberAddForm {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-*/
+
 		return "redirect:/module/teammodule/teamMemberAddForm.form?teamId=" + tId;
+*/
 	}
 
 	// Made command Object (memberData)

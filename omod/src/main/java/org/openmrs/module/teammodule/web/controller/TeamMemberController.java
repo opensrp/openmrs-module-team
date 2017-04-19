@@ -19,9 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -60,7 +58,7 @@ public class TeamMemberController {
 	 * @return String form view name
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "list.form")
-	public String showForm(Model model, HttpServletRequest request) {
+	public String showForm(Model model, HttpServletRequest request) {/*
 		List<TeamMember> teamMember;
 		// Person person;
 		// List<Person> personList = new ArrayList<Person>();
@@ -82,11 +80,11 @@ public class TeamMemberController {
 				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(memberName, Integer.parseInt(teamId));
 			}
 			for (int i = 0; i < teamMember.size(); i++) {
-				/*
+				
 				 * person =
 				 * Context.getPersonService().getPerson(teamMember.get(i
 				 * ).getPersonId()); personList.add(person);
-				 */
+				 
 				if (teamMember.get(i).getJoinDate() != null) {
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 					String date = sdf.format(teamMember.get(i).getJoinDate());
@@ -95,9 +93,9 @@ public class TeamMemberController {
 					joinDate.add("");
 				}
 
-				/*
+				
 				 * date = teamMember.get(i).getLeaveDate(); leaveDate.add(date);
-				 */
+				 
 			}
 			if(changeSupervisor == null){
 				caption = team.getTeamName() + " Members";
@@ -116,7 +114,7 @@ public class TeamMemberController {
 			model.addAttribute("member", memberName);
 			// model.addAttribute("leave", leaveDate);
 		}
-
+*/
 		return SHOW;
 	}
 
@@ -124,7 +122,8 @@ public class TeamMemberController {
 	@RequestMapping(method = RequestMethod.GET, value = "listPopup.form")
 	@ResponseBody
 	public ArrayList showFormPopup(Model model, HttpServletRequest request) throws JSONException {
-		List<TeamMember> teamMember,teamMemberTemp;
+		return null;
+	/*	List<TeamMember> teamMember,teamMemberTemp;
 		// Person person;
 		// List<Person> personList = new ArrayList<Person>();
 		String teamId = request.getParameter("teamId");
@@ -175,7 +174,7 @@ public class TeamMemberController {
 			}
 		}
 		
-		return arr;
+		return arr;*/
 	}
 	/**
 	 * All the parameters are optional based on the necessity
@@ -200,7 +199,7 @@ public class TeamMemberController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "changeTeamLead.form")
 	public String showFormEdit(Model model, HttpServletRequest request) {
-		String teamMemberId = request.getParameter("teamMemberId");
+		/*String teamMemberId = request.getParameter("teamMemberId");
 		String teamId = request.getParameter("teamId");
 		String teamSupervisorId = request.getParameter("teamLeadId");
 
@@ -251,7 +250,7 @@ public class TeamMemberController {
 		// model.addAttribute("name", personList);
 		model.addAttribute("join", joinDate);
 		model.addAttribute("teamLead", teamSupervisor);
-		model.addAttribute("team", team);
+		model.addAttribute("team", team);*/
 		return SHOW;
 	}
 

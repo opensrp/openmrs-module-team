@@ -23,9 +23,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -57,7 +55,8 @@ public class TeamHistoryController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public List<Map<String, Object>> showForm(HttpServletRequest request) {
-		List<Map<String, Object>> teamSupervisorList = new ArrayList<Map<String, Object>>();
+		return null;
+	/*	List<Map<String, Object>> teamSupervisorList = new ArrayList<Map<String, Object>>();
 		List<String> parsedJoinDate = new ArrayList<String>();
 		List<String> parsedLeaveDate = new ArrayList<String>();
 		//List<String> gender = new ArrayList<String>();
@@ -137,9 +136,9 @@ public class TeamHistoryController {
 		    	 map.put("duration", duration);
 				 map.put("gender", teamSupervisor.get(i).getTeamMember().getPerson().getGender());
 				
-				/*if (teamSupervisor.get(i).getVoided() == false) {
+				if (teamSupervisor.get(i).getVoided() == false) {
 					map.put("parsedLeaveDate", "Present");
-				} else {*/
+				} else {
 					map.put("parsedLeaveDate", parsedLeaveDate);
 				//}
 				// System.out.println(name);
@@ -153,7 +152,7 @@ public class TeamHistoryController {
 
 		// Original code for one Supervisor
 
-		/*
+		
 		 * TeamSupervisor Supervisor =
 		 * Context.getService(TeamSupervisorService.class).getTeamSupervisor(team); if (Supervisor
 		 * != null) { TeamMember tm = Supervisor.getTeamMember(); String gName =
@@ -170,12 +169,12 @@ public class TeamHistoryController {
 		 * present); } else { model.addAttribute("leaveDate", leaveDate); }
 		 * 
 		 * model.addAttribute("Supervisor", Supervisor);
-		 */
+		 
 
 		// model.addAttribute("dateCreated", dateCreated);
 		// model.addAttribute("name", name);
 		//System.out.println(teamSupervisorList);
-		return teamSupervisorList;
+		return teamSupervisorList;*/
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

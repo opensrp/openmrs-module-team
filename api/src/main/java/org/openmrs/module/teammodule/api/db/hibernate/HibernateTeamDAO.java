@@ -8,10 +8,10 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.db.TeamDAO;
 
 /**
@@ -57,25 +57,16 @@ public class HibernateTeamDAO implements TeamDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Team> getAllTeams(boolean retired) {
+	public List<Team> getAllTeams(boolean retired, int pageIndex) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Team.class);
-
 		if (!retired) {
 			criteria.add(Restrictions.eq("voided", false));
 		}
-
+		criteria.setFirstResult(pageIndex);
+		criteria.setMaxResults(20);
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<TeamMember> getAllMembers(boolean retired) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
-
-		if (!retired) {
-			criteria.add(Restrictions.eq("retired", false));
-		}
-		return criteria.list();
-	}
 
 	public void purgeTeam(Team team) {
 		sessionFactory.getCurrentSession().delete(team);
@@ -87,7 +78,9 @@ public class HibernateTeamDAO implements TeamDAO {
 	}
 	
 	public Team getTeamBySupervisor(int teamSupervisor) {
-		return (Team) sessionFactory.getCurrentSession().createQuery("from Team team where team.supervisor = :id").setInteger("id", teamSupervisor).uniqueResult();
+		
+		Query createQuery= sessionFactory.getCurrentSession().createQuery("from Team team where team.supervisor = :id").setInteger("id", teamSupervisor);
+		return (Team) createQuery.uniqueResult();
 	}
 
 	@Override
@@ -97,11 +90,12 @@ public class HibernateTeamDAO implements TeamDAO {
 	}
 
 	@Override
-	public List<Team> getTeambyLocation(int locationId) {
+	public List<Team> getTeambyLocation(int locationId,int pageIndex) {
 		// TODO Auto-generated method stub
-
-		return (List<Team>) sessionFactory.getCurrentSession().createQuery("from Team team where team.location_id=: id").setInteger("id", locationId);
-		 
+		Query createQuery= sessionFactory.getCurrentSession().createQuery("from Team team where team.location_id=: id").setInteger("id", locationId);
+		createQuery.setFirstResult(pageIndex);
+		createQuery.setMaxResults(20);
+		return createQuery.list();
 	}
 
 }

@@ -69,6 +69,11 @@ public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 		return new NeedsPaging<TeamHierarchy>(listTeam, context).toSimpleObject(this);
 	}
 	
+	public TeamHierarchy searchByTeam(RequestContext context) {
+		TeamHierarchy teamHierarchy = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(context.getParameter("id")));
+		return teamHierarchy;
+	}
+	
 	@PropertyGetter("display")
 	public List<TeamHierarchy> getDisplayString(String teamRole) {
 		if (teamRole == null){		

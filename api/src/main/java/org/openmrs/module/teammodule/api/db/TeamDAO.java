@@ -20,15 +20,13 @@ public interface TeamDAO {
 	
 	public void updateTeam(Team team);
 	
-	public List<Team> getTeambyLocation(int locationId);
-	
-	public List<Team> getAllTeams(boolean retired);
-	
-	//public List<TeamMember> getAllMembers(boolean retired);
+	public List<Team> getAllTeams(boolean retired, int pageIndex);
 	
 	public void purgeTeam(Team team);
 	
 	public List<Team> searchTeam(String name);
 
 	public Team getTeamBySupervisor(int teamSupervisor);
+
+	List<Team> getTeambyLocation(int locationId, int pageIndex);
 }

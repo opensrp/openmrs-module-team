@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.openmrs.module.teammodule.TeamLog;
 import org.openmrs.module.teammodule.api.db.TeamLogDAO;
@@ -41,9 +43,11 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamLog> getAllLogs() {		
-		List<TeamLog> createQuery = (List<TeamLog>)sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog").list();
-		return	createQuery;
+	public List<TeamLog> getAllLogs(int pageIndex) {		
+		Query createQuery = sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog");
+		createQuery.setFirstResult(pageIndex);
+		createQuery.setMaxResults(20);
+		return createQuery.list();
 	}
 
 	public void purgeTeamLog(TeamLog TeamLog) {
@@ -51,8 +55,11 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamLog> searchTeamLogByTeam(int team) {
-		return (List<TeamLog>)sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog where teamLog.team = :team").setInteger("team", team).list();
+	public List<TeamLog> searchTeamLogByTeam(int team,int pageIndex) {
+		Query createQuery=sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog where teamLog.team = :team").setInteger("team", team);
+		createQuery.setFirstResult(pageIndex);
+		createQuery.setMaxResults(20);
+		return createQuery.list();
 	}
 
 	public TeamLog getTeamLog(String uuid) {

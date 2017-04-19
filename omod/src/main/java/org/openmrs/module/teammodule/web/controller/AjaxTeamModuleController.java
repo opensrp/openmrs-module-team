@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamLocation;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamLocationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -32,8 +30,9 @@ public class AjaxTeamModuleController {
 	@RequestMapping(value = "getTeams")
 	@ResponseBody
 	public String getTeams(HttpServletRequest request) {
-		List<TeamLocation> teamLocation = Context.getService(TeamLocationService.class).getAllLocation();
-		List<Team> team = Context.getService(TeamService.class).getAllTeams(false);
+		return null;
+		/*List<TeamLocation> teamLocation = Context.getService(TeamLocationService.class).getAllLocation();
+		List<Team> team = Context.getService(TeamService.class).getAllTeams(false,0);
 		String error = "";
 		// System.out.println("here");
 		String teamName = request.getParameter("teamName");
@@ -52,7 +51,7 @@ public class AjaxTeamModuleController {
 		}
 		return error;
 		
-		/*List<Team> team = Context.getService(TeamService.class).getAllTeams(false);
+		List<Team> team = Context.getService(TeamService.class).getAllTeams(false);
 		String error = "";
 		// System.out.println("here");
 		String teamName = request.getParameter("teamName");
@@ -127,23 +126,24 @@ public class AjaxTeamModuleController {
 	@RequestMapping(value = "getLocations")
 	@ResponseBody
 	public Location getLocations(HttpServletRequest request) {
-		String teamId = request.getParameter("teamId");
+		return null;
+		/*String teamId = request.getParameter("teamId");
 		TeamLocation teamLocation = Context.getService(TeamLocationService.class).getTeamLocationByTeamId(Integer.parseInt(teamId));
 		Location location = teamLocation.getLocation();
 		Set<Location> childLocation = location.getChildLocations();
 		if( childLocation == null || childLocation.equals(null) || childLocation.equals("")){
 			return null;
 		}
-		/*String teamId = request.getParameter("teamId");
+		String teamId = request.getParameter("teamId");
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
 		Location location = team.getLocation();
 		Set<Location> childLocation = location.getChildLocations();
 		if( childLocation == null || childLocation.equals(null) || childLocation.equals("")){
 			return null;
-		}*/
+		}
 		//String error = "";
 
-		/*for (int i = 0; i < team.size(); i++) {
+		for (int i = 0; i < team.size(); i++) {
 			if (teamName.equals(team.get(i).getTeamName())) {
 				if (Integer.parseInt(locationId) == team.get(i).getLocation().getLocationId()) {
 					error = "Team already exists with same name and location";
@@ -151,8 +151,8 @@ public class AjaxTeamModuleController {
 				}
 			} else {
 			}
-		}*/
+		}
 		return location;
-	}
+*/	}
 
 }

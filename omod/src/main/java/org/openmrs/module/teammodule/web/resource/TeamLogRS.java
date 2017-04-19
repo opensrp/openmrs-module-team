@@ -70,13 +70,13 @@ public class TeamLogRS extends DataDelegatingCrudResource<TeamLog> {
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamLog> listTeamLog = Context.getService(TeamLogService.class).searchTeamLogByTeam(Integer.parseInt(context.getParameter("q")));
+		List<TeamLog> listTeamLog = Context.getService(TeamLogService.class).searchTeamLogByTeam(Integer.parseInt(context.getParameter("q")),0);
 		return new NeedsPaging<TeamLog>(listTeamLog, context).toSimpleObject(this);
 	}
 	
 	@PropertyGetter("display")
 	public List<TeamLog> getDisplayString(int team) {
-		return Context.getService(TeamLogService.class).searchTeamLogByTeam(team);
+		return Context.getService(TeamLogService.class).searchTeamLogByTeam(team,0);
 	}
 
 	@Override

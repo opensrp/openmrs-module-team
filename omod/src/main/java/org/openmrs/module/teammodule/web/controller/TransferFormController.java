@@ -16,9 +16,7 @@ import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -51,7 +49,7 @@ public class TransferFormController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
-		// ** must be added too
+/*		// ** must be added too
 		TeamMember transfer = new TeamMember();
 		List<Team> teams = Context.getService(TeamService.class).getAllTeams(true);
 		String teamId = request.getParameter("teamId");
@@ -71,10 +69,10 @@ public class TransferFormController {
 			teamSupervisor.setVoidReason("Transferred");
 			Context.getService(TeamSupervisorService.class).update(teamSupervisor);
 		}
-		/*
+		
 		 * teamMember.setPerson(Context.getPersonService().getPerson(teamMember.
 		 * getPersonId())); teamMember.setTeam(team);
-		 */
+		 
 		teamMember.setIsTeamLead(isTeamLead);
 		teamMember.setLeaveDate(new Date());
 		teamMember.setVoided(true);
@@ -90,7 +88,7 @@ public class TransferFormController {
 		model.addAttribute("teamMember", teamMember);
 	//	model.addAttribute("location",team.getLocation());
 		//teamMember.setTeamId(null);
-		return SUCCESS_FORM_VIEW;
+*/		return SUCCESS_FORM_VIEW;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

@@ -13,11 +13,11 @@ public interface TeamLogService extends OpenmrsService {
 	
 	public TeamLog getTeamLog(int id);
 	
-	public List<TeamLog> getAllLogs();
+	public List<TeamLog> getAllLogs(int pageIndex);
 	
 	public void purgeTeamLog(TeamLog teamLog);
 	
-	public List<TeamLog> searchTeamLogByTeam(int team);
+	public List<TeamLog> searchTeamLogByTeam(int team,int pageIndex);
 
 	public TeamLog getTeamLog(String uuid);
 }

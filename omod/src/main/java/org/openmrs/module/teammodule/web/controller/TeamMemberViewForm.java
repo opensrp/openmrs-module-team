@@ -18,12 +18,10 @@ import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberPatientRelation;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.api.TeamHierarchyService;
 import org.openmrs.module.teammodule.api.TeamMemberPatientRelationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -183,8 +181,8 @@ public class TeamMemberViewForm {
 		allTeamRoleIds.clear();
 		allTeamRoleIds.addAll(allTeamRoleSet);*/
 
-		for (int j = 0; j < allSupervisorIds.size(); j++) { TeamSupervisor ts = Context.getService(TeamSupervisorService.class).getTeamSupervisor(Integer.parseInt(allSupervisorIds.get(j))); if(ts == null) { allSupervisorNames.add(""); } else { allSupervisorNames.add(ts.getTeamMember().getPerson().getPersonName().toString()); } }
-		for (int j = 0; j < allTeamRoleIds.size(); j++) { TeamHierarchy th = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(allTeamRoleIds.get(j))); if(th == null) { allTeamRoleNames.add(""); } else { allTeamRoleNames.add(th.getName().toString()); } }
+	/*	for (int j = 0; j < allSupervisorIds.size(); j++) { TeamSupervisor ts = Context.getService(TeamSupervisorService.class).getTeamSupervisor(Integer.parseInt(allSupervisorIds.get(j))); if(ts == null) { allSupervisorNames.add(""); } else { allSupervisorNames.add(ts.getTeamMember().getPerson().getPersonName().toString()); } }
+	*/	for (int j = 0; j < allTeamRoleIds.size(); j++) { TeamHierarchy th = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(allTeamRoleIds.get(j))); if(th == null) { allTeamRoleNames.add(""); } else { allTeamRoleNames.add(th.getName().toString()); } }
 		for (int j = 0; j < allTeamIds.size(); j++) { Team t = Context.getService(TeamService.class).getTeam(Integer.parseInt(allTeamIds.get(j))); if(t == null) { allTeamNames.add(""); } else { allTeamNames.add(t.getTeamName().toString()); } }
 		
 		/*System.out.println("allSupervisorIds: " + allSupervisorIds);

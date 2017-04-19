@@ -67,7 +67,7 @@ public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> 
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamRoleLog> listTeam = Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(context.getParameter("q"));
+		List<TeamRoleLog> listTeam = Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(context.getParameter("q"),0);
 		return new NeedsPaging<TeamRoleLog>(listTeam, context).toSimpleObject(this);
 	}
 	
@@ -77,7 +77,7 @@ public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> 
 			return null;
 		}
 		
-		return Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(teamRole);
+		return Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(teamRole,0);
 	}
 
 	@Override

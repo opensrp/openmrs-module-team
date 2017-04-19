@@ -3,26 +3,12 @@
  */
 package org.openmrs.module.teammodule.web.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Privilege;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
-import org.openmrs.module.teammodule.TeamLocation;
-import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
-import org.openmrs.module.teammodule.api.TeamLocationService;
-import org.openmrs.module.teammodule.api.TeamMemberService;
-import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,7 +38,7 @@ public class TeamController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
-		List<Team> team;
+/*		List<Team> team;
 		List<TeamMember> teamMember;
 		List<TeamLocation> teamLocation;
 		
@@ -133,7 +119,7 @@ public class TeamController {
 			model.addAttribute("privilege", privilege);
 			model.addAttribute("teamLocation", teamLocation);
 		}
-
+*/
 		return SUCCESS_FORM_VIEW;
 	}
 
