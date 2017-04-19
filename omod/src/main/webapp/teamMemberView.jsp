@@ -71,8 +71,7 @@
 	</form:form>
 </table>
 
-
-<%-- 
+<br/>
 <c:choose>
 	<c:when test="${not empty teamMembers}">
 		<table id="example" class="general" cellspacing="0" width="100%">
@@ -88,12 +87,11 @@
 					<th>Sub Ordinate Roles</th>
 					<th>Sub Ordinate Teams</th>
 					<th>History</th>
-					<th>Voided</th>
 					<th>Patients</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="teamMembers" items="${teamMembers}" varStatus="teamMemberLoop">
+				<c:forEach var="teamMembers" items="${teamMembers}" varStatus="loop">
 					<tr>
 						<!-- TEAM MEMBER EDIT -->
 						<td>...</td>
@@ -101,87 +99,22 @@
 						<td><c:out value="${teamMembers.identifier}" /></td>
 						<!-- TEAM MEMBER NAME -->
 						<td><c:out value="${teamMembers.person.personName}" /></td>
-						<!-- ROLE NAME -->
+						<!-- TEAM MEMBER TEAM ROLE NAME -->
 						<td><c:out value="${teamMembers.teamRole.name}" /></td>
 						<!-- TEAM MEMBER TEAM NAME -->
 						<td><c:out value="${teamMembers.team.teamName}" /></td>
 						<!-- TEAM MEMBER REPORT TO -->
-						<c:forEach var="teamMemberIds" items="${teamMemberIds}" varStatus="teamMemberIdLoop">
-							<c:choose>
-							    <c:when test="${teamMemberIds == teamMembers.id}">
-									<c:choose>
-								    	<c:when test="${reportsTo[teamMemberIdLoop.index] == teamMembers.person.personName}">
-								        	<!-- REPORTS TO SAME TEAM -->
-								        	<td></td>
-								        </c:when>
-								        <c:otherwise>
-									    	<td><c:out value="${reportsTo[teamMemberIdLoop.index]}" /></td>
-								        </c:otherwise> 
-									</c:choose>
-							    </c:when>
-							    <c:otherwise>
-						        	<td>None Report To</td>
-							    </c:otherwise>
-							</c:choose>
-						</c:forEach>
+						<td><c:out value="${reportsTo[loop.index]}" /></td>
 						<!-- TEAM MEMBER LOCATIONS -->
-						<c:forEach var="teamMemberIds" items="${teamMemberIds}" varStatus="teamMemberIdLoop">
-							<c:choose>
-							    <c:when test="${teamMemberIds == teamMembers.id}">
-									<td><c:out value="${teamMemberLocations[teamMemberIdLoop.index]}" /></td>
-							    </c:when>
-							    <c:otherwise>
-							    	<td>None Locations</td>
-							    </c:otherwise>
-							</c:choose>
-						</c:forEach>
-		
+						<td><c:out value="${teamMemberLocations[loop.index]}" /></td>
 						<!-- TEAM MEMBER SUB ROLES -->
-						<c:forEach var="teamMemberIds" items="${teamMemberIds}" varStatus="teamMemberIdLoop">
-							<c:choose>
-							    <c:when test="${teamMemberIds == teamMembers.id}">
-							    	<td><c:out value="${subRoles[teamMemberIdLoop.index]}" /></td>
-							    </c:when>
-							    <c:otherwise>
-							    	<td>None Sub Roles</td>
-							    </c:otherwise>
-							</c:choose>
-						</c:forEach>
-										
+				    	<td><c:out value="${subRoles[loop.index]}" /></td>
 						<!-- TEAM MEMBER SUB TEAMS -->
-						<c:forEach var="teamMemberIds" items="${teamMemberIds}" varStatus="teamMemberIdLoop">
-							<c:choose>
-							    <c:when test="${teamMemberIds == teamMembers.id}">
-							    	<td><c:out value="${subTeams[teamMemberIdLoop.index]}" /></td>
-							    </c:when>
-							    <c:otherwise>
-							    	<td>None Sub Teams</td>
-							    </c:otherwise>
-							</c:choose>
-						</c:forEach>
-		
+						<td><c:out value="${subTeams[loop.index]}" /></td>
 						<!-- TEAM MEMBER HISTORY -->
 						<td><a href="/openmrs/module/teammodule/memberHistory.form?personId=${teamMembers.person.personId}">History</a></td>
-						<!-- TEAM MEMBER VOIDED -->
-						<c:choose>
-							<c:when test="${teamMembers.voided == false}">
-								<td>False</td>
-							</c:when>
-							<c:otherwise>
-								<td>True</td>
-							</c:otherwise>
-						</c:choose>				
 						<!-- TEAM MEMBER PATIENTS COUNT -->
-						<c:forEach var="teamMemberIds" items="${teamMemberIds}" varStatus="teamMemberIdLoop">
-							<c:choose>
-							    <c:when test="${teamMemberIds == teamMembers.id}">
-							    	<td><c:out value="${teamMemberPatients[teamMemberIdLoop.index]}" /></td>
-							    </c:when>
-							    <c:otherwise>
-							    	<td>None Patients</td>
-							    </c:otherwise>
-							</c:choose>
-						</c:forEach>			
+						<td><c:out value="${teamMemberPatients[loop.index]}" /></td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -192,42 +125,9 @@
 	</c:otherwise>
 </c:choose>
 
- --%>
-
-
-<c:choose>
-	<c:when test="${not empty teamMembers}">
-		<c:forEach var="teamMembers" items="${teamMembers}" varStatus="teamMemberLoop">
-			${teamMembers.id}<br>
-			${teamMembers.identifier}<br>
-			${teamMembers.person.personName}<br>
-			${teamMembers.teamRole.name}<br>
-			${teamMembers.team.teamName}<br> <%--
-			${reportsTo[teamMemberLoop]}<br>
-			${teamMemberLocations[teamMemberLoop]}<br>
-			${subRoles[teamMemberLoop]}<br>
-			${subTeams[teamMemberLoop]}<br>
-			<c:choose>
-				<c:when test="${teamMembers.voided == false}">
-					False<br>
-				</c:when>
-				<c:otherwise>
-					True<br>
-				</c:otherwise>
-			</c:choose>
-			${teamMemberPatients[teamMemberLoop]}<br>  --%>
-		
-			<br>
-		</c:forEach>
-	</c:when>
-	<c:otherwise>
-		<p>No record(s) found</p>
-	</c:otherwise>
-</c:choose>
-
 <script>
 	function search() {
-		/* var searchQuery = "";
+		var searchQuery = "";
 		var id = document.getElementById("filterById").value;
 		var supervisor = document.getElementById("filterBySupervisor").value;
 		var teamRole = document.getElementById("filterByTeamRole").value;
@@ -254,7 +154,7 @@
 			//	}
 			//});
 			console.log(searchQuery);  
-		}*/
+		}
 	}
 	
 </script>

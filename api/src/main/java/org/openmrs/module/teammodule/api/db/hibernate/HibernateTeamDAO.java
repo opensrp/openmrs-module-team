@@ -65,6 +65,7 @@ public class HibernateTeamDAO implements TeamDAO {
 			criteria.add(Restrictions.eq("voided", false));
 		}
 
+		System.out.println("Criteria Team Name: " + ((Team)criteria.list().get(0)).getTeamName());
 		return criteria.list();
 	}
 
