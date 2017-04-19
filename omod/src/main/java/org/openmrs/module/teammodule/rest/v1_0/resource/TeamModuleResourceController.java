@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/rest/" + RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE)
 public class TeamModuleResourceController extends MainResourceController {
 
-	public static final String TEAMMODULE_NAMESPACE = "/teammodule";
+	public static final String TEAMMODULE_NAMESPACE = "/team";
 
 	@Override
 	public String getNamespace() {

@@ -56,7 +56,7 @@ public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
 	}
 	
 	public TeamHierarchy getTeamRoleByUuid(String uuid) {
-		return (TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy where th.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return (TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy where teamHierarchy.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 
 }

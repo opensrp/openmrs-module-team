@@ -10,7 +10,6 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.impl.BaseOpenmrsService;
 //import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.api.db.TeamDAO;
 
@@ -60,11 +59,6 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		return dao.getAllTeams(retired);
 	}
 
-/*	public List<TeamMember> getAllMembers(boolean retired) {
-
-		return dao.getAllMembers(retired);
-	}*/
-
 	public void purgeTeam(Team team){
 		dao.purgeTeam(team);
 	}
@@ -73,7 +67,19 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		return dao.searchTeam(name);
 	}
 	
-	public Team getTeam(TeamSupervisor teamSupervisor) {
-		return dao.getTeam(teamSupervisor);
+	public Team getTeamBySupervisor(int teamSupervisor) {
+		return dao.getTeamBySupervisor(teamSupervisor);
+	}
+
+	@Override
+	public List<Team> getTeambyLocation(int locationId) {
+		// TODO Auto-generated method stub
+		return dao.getTeambyLocation(locationId);
+	}
+
+	@Override
+	public void updateTeam(Team team) {
+		// TODO Auto-generated method stub
+		dao.updateTeam(team);
 	}
 }

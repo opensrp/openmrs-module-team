@@ -61,12 +61,14 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 
 	@Override
 	public Team save(Team team) {
-		return null;
+		Context.getService(TeamService.class).saveTeam(team);
+		return team;
 	}
 
 	@Override
 	protected void delete(Team team, String reason, RequestContext context) throws ResponseException {
-		// TODO Auto-generated method stub
+
+		Context.getService(TeamService.class).purgeTeam(team);
 	}
 
 	@Override
@@ -75,8 +77,8 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	}
 
 	@Override
-	public void purge(Team arg0, RequestContext arg1) throws ResponseException {
-		// TODO Auto-generated method stub
+	public void purge(Team team, RequestContext arg1) throws ResponseException {
+		Context.getService(TeamService.class).purgeTeam(team);
 	}
 	
 	@Override

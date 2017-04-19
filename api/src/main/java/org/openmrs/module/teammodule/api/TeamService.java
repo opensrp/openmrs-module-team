@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 //import org.openmrs.module.teammodule.TeamMember;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,15 +21,13 @@ public interface TeamService extends OpenmrsService {
 	
 	public Team getTeam(int id);
 	
-	public Team getTeam(TeamSupervisor teamSupervisor);
+	public Team getTeamBySupervisor(int teamSupervisor);
 
 	public Team getTeam(String uuid);
 	
-	//public Team getTeam(String uuid);
+	public List<Team> getTeambyLocation(int locationId);
 	
-	//public void updateTeam(Team team);
-	
-	//public List<TeamMember> getAllMembers(boolean retired);
+	public void updateTeam(Team team);
 	
 	public List<Team> getAllTeams(boolean retired);
 	

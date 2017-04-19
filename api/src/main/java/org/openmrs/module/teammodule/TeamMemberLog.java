@@ -6,7 +6,7 @@ import java.util.Date;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.User;
-import org.openmrs.module.teammodule.TeamMemberConstants.TeamAction;
+import org.openmrs.module.teammodule.TeamConstants.TeamMemberAction;
 
 @SuppressWarnings("serial")
 public class TeamMemberLog extends BaseOpenmrsData implements Serializable{
@@ -15,7 +15,7 @@ public class TeamMemberLog extends BaseOpenmrsData implements Serializable{
 
 	private TeamMember teamMember;
 
-	private TeamAction action;
+	private TeamMemberAction action;
 
 	@JsonProperty
 	private String dataNew;
@@ -51,11 +51,11 @@ public class TeamMemberLog extends BaseOpenmrsData implements Serializable{
 		this.logId = logId;
 	}
 	
-	public TeamAction getAction() {
+	public TeamMemberAction getAction() {
 		return action;
 	}
 
-	public void setAction(TeamAction action) {
+	public void setAction(TeamMemberAction action) {
 		this.action = action;
 	}
 
