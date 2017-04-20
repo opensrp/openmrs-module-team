@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
-import org.openmrs.module.teammodule.*;
+
 /**
  * @author Muhammad Safwan & shakeeb raza
  * 

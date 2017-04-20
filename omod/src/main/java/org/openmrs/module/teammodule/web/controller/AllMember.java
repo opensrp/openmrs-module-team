@@ -61,7 +61,7 @@ public class AllMember {
 		String dateTo = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		List<TeamMember> dateSearch = null;
-		List<Team> teams = Context.getService(TeamService.class).getAllTeams(false);
+		List<Team> teams = Context.getService(TeamService.class).getAllTeams(false,0);
 
 		TeamMember searchMember = new TeamMember();
 

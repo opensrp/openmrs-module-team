@@ -13,14 +13,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Location;
 import org.openmrs.Privilege;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
-import org.openmrs.module.teammodule.TeamLocation;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
-import org.openmrs.module.teammodule.api.TeamLocationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -54,9 +51,9 @@ public class TeamController {
 	public String showForm(Model model, HttpServletRequest request) {
 		List<Team> team;
 		List<TeamMember> teamMember;
-		List<TeamLocation> teamLocation;
+		List<Location> teamLocation;
 		
-		TeamSupervisor Supervisor;
+		TeamMember Supervisor;
 		Team searchTeam = new Team();
 //		TeamLocation searchTeamLocation = new TeamLocation();
 		
@@ -78,13 +75,13 @@ public class TeamController {
 				team = Context.getService(TeamService.class).searchTeam(searchedTeam);
 				teamLocation = new ArrayList<>();
 				for (int i = 0; i < team.size(); i++) {
-					teamLocation.add(Context.getService(TeamLocationService.class).getTeamLocationByTeamId(team.get(i).getId()));
+					teamLocation.add(team.get(i).getLocation());
 				}
 			} else {
-				team = Context.getService(TeamService.class).getAllTeams(true);
+				team = Context.getService(TeamService.class).getAllTeams(true,0);
 				teamLocation = new ArrayList<>();
 				for (int i = 0; i < team.size(); i++) {
-					teamLocation.add(Context.getService(TeamLocationService.class).getTeamLocationByTeamId(team.get(i).getId()));
+					teamLocation.add(team.get(i).getLocation());
 				}
 			}
 			for (int i = 0; i < team.size(); i++) {
@@ -97,11 +94,11 @@ public class TeamController {
 				parsedDate.add(date);
 				System.out.println(teamMember.size());
 				length.add(teamMember.size());
-				Supervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team.get(i));
+				Supervisor = Context.getService(TeamMemberService.class).getTeamMember(team.get(i).getSupervisor().getId());
 
 				if (Supervisor != null && Supervisor.isVoided() != true) { // change made
 																// here
-					TeamMember tm = Supervisor.getTeamMember();
+					TeamMember tm = Supervisor;
 					String gName = tm.getPerson().getGivenName();
 					String mName = tm.getPerson().getMiddleName();
 					String fName = tm.getPerson().getFamilyName();

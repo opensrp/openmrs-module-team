@@ -25,11 +25,11 @@ public interface TeamService extends OpenmrsService {
 
 	public Team getTeam(String uuid);
 	
-	public List<Team> getTeambyLocation(int locationId);
+	public List<Team> getTeambyLocation(int locationId, int pageIndex);
 	
 	public void updateTeam(Team team);
 	
-	public List<Team> getAllTeams(boolean retired);
+	public List<Team> getAllTeams(boolean retired, int pageIndex);
 	
 	public void purgeTeam(Team team);
 	

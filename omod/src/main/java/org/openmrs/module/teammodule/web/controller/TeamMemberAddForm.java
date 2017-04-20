@@ -23,9 +23,7 @@ import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.util.OpenmrsConstants;
@@ -254,7 +252,7 @@ public class TeamMemberAddForm {
 		
 		String error = "";
 
-		TeamSupervisor teamSupervisor = new TeamSupervisor();
+		TeamMember teamSupervisor = new TeamMember();
 		Person person = null;
 		if (pId == "" || pId == null) {
 			 person = Context.getPersonService().savePerson(teamMember.getPerson());
@@ -297,18 +295,18 @@ public class TeamMemberAddForm {
 		if (error.isEmpty()) {
 
 			if (teamMember.getIsTeamLead().booleanValue()) {
-				TeamSupervisor tl = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team);
+				TeamMember tl = Context.getService(TeamMemberService.class).getTeamMember(team.getSupervisor().getId());
 				if (tl == null) {
 					Context.getService(TeamMemberService.class).save(teamMember);
 					teamSupervisor.setTeam(team);
-					teamSupervisor.setTeamMember(teamMember);
+					//teamSupervisor.setTeamMember(teamMember);
 					if (teamMember.getJoinDate() == null) {
 						teamSupervisor.setJoinDate(new Date());
 					} else {
 						teamSupervisor.setJoinDate(teamMember.getJoinDate());
 					}
 					teamSupervisor.setUuid(UUID.randomUUID().toString());
-					Context.getService(TeamSupervisorService.class).save(teamSupervisor);
+					Context.getService(TeamMemberService.class).save(teamSupervisor);
 				} else {
 					error = "Team Supervisor for this team already exists. ";
 					model.addAttribute("error", error);

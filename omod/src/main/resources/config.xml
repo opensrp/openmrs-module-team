@@ -8,7 +8,7 @@
 	<version>${project.parent.version}</version>
 	<package>${project.parent.groupId}.${project.parent.artifactId}
 	</package>
-	<author>Shakeeb Raza</author>
+	<author>Shakeeb Raza And Zohaib Masood</author>
 	<description>
 		${project.parent.description}
 	</description>

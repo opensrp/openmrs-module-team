@@ -317,4 +317,39 @@
 			referencedTableName="team_member" referencedColumnNames="team_member_id" />
 	</changeSet>
 
+	<changeSet author="Zohaib Masood" id="teammodule-26.1.0A">
+		<addColumn tableName="team_role_log">
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int(11)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="teammodule-27.1.0A" author="Zohaib Masood">
+		<addForeignKeyConstraint constraintName="fk_team_member_location_id"
+			baseTableName="team_member" baseColumnNames="location_id"
+			referencedTableName="location" referencedColumnNames="location_id" />
+	</changeSet>
+	
+	<changeSet author="Zohaib Masood" id="teammodule-28.1.0A">
+	   	<dropForeignKeyConstraint baseTableName="member_location" constraintName="fk_location_member_id"/>
+	    <dropForeignKeyConstraint baseTableName="member_location" constraintName="fk_member_location_id"/>
+	 	<dropPrimaryKey tableName="member_location" />
+
+		<addColumn tableName="member_location">
+			<column name="team_member_location_id" type="int(11)" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="fk_location_member_id"
+			baseTableName="member_location" baseColumnNames="team_member_id"
+			referencedTableName="team_member" referencedColumnNames="team_member_id" />
+		<addForeignKeyConstraint constraintName="fk_member_location_id"
+			baseTableName="member_location" baseColumnNames="location_id"
+			referencedTableName="location" referencedColumnNames="location_id" />
+	</changeSet>
+	
 </databaseChangeLog>

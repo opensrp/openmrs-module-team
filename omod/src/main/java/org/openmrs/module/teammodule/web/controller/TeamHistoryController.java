@@ -23,9 +23,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
+import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -78,7 +77,7 @@ public class TeamHistoryController {
 
 		// Multiple Supervisors
 
-		List<TeamSupervisor> teamSupervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisors(team);
+		List<TeamMember> teamSupervisor = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
 		// System.out.println(teamSupervisor);
 		// Date dateCreated = null;
 		// Date leaveDate = null;
@@ -88,7 +87,7 @@ public class TeamHistoryController {
 			for (int i = 0; i < teamSupervisor.size(); i++) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				String name = "";
-				TeamMember tm = teamSupervisor.get(i).getTeamMember();
+				TeamMember tm = teamSupervisor.get(i);
 				String gName = tm.getPerson().getGivenName();
 				String mName = tm.getPerson().getMiddleName();
 				String fName = tm.getPerson().getFamilyName();
@@ -135,7 +134,7 @@ public class TeamHistoryController {
 		    	 Days day = Days.daysBetween(dateStart, dateEnd);
 		    	 String duration="Days: "+day.getDays();	
 		    	 map.put("duration", duration);
-				 map.put("gender", teamSupervisor.get(i).getTeamMember().getPerson().getGender());
+				 map.put("gender", teamSupervisor.get(i).getPerson().getGender());
 				
 				/*if (teamSupervisor.get(i).getVoided() == false) {
 					map.put("parsedLeaveDate", "Present");

@@ -37,6 +37,7 @@ public class AdminList extends AdministrationSectionExt {
 
 		map.put("module/teammodule/team.form", "Manage Teams");
 		map.put("module/teammodule/allMember.form?searchMember=&from=&to=", "View Members");
+		map.put("module/teammodule/teamMemberView.form", "View All Members");
 
 		return map;
 	}

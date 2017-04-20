@@ -1,7 +1,6 @@
 package org.openmrs.module.teammodule;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.openmrs.BaseOpenmrsData;

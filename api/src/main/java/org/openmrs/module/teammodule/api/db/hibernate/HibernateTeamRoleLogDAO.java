@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.openmrs.module.teammodule.TeamRoleLog;
 import org.openmrs.module.teammodule.api.db.TeamRoleLogDAO;
@@ -41,9 +42,11 @@ public class HibernateTeamRoleLogDAO implements TeamRoleLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamRoleLog> getAllLogs() {
-		List<TeamRoleLog> createQuery = (List<TeamRoleLog>)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog").list();
-		return	createQuery;
+	public List<TeamRoleLog> getAllLogs(int pageIndex) {
+		Query createQuery = sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog");
+		createQuery.setFirstResult(pageIndex);
+		createQuery.setMaxResults(20);
+		return	createQuery.list();
 	}
 
 	public void purgeTeamRoleLog(TeamRoleLog TeamRoleLog) {
@@ -51,12 +54,16 @@ public class HibernateTeamRoleLogDAO implements TeamRoleLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRole) {
-		return (List<TeamRoleLog>)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.teamRole = :teamRole").setInteger("teamRole", Integer.parseInt(teamRole)).list();
+	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRole, int pageIndex) {
+		Query createQuery =sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.teamRole = :teamRole").setInteger("teamRole", Integer.parseInt(teamRole));
+		createQuery.setFirstResult(pageIndex);
+		createQuery.setMaxResults(20);
+		return createQuery.list();
 	}
 
 	public TeamRoleLog getTeamRoleLog(String uuid) {
-		return (TeamRoleLog)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		Query createQuery=sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.uuid = :uuid").setString("uuid", uuid);
+		return (TeamRoleLog) createQuery.uniqueResult();
 	}
 
 }

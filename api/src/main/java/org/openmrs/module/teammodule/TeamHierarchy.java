@@ -1,7 +1,6 @@
 package org.openmrs.module.teammodule;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.User;

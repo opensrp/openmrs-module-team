@@ -19,9 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -73,7 +71,7 @@ public class TeamMemberController {
 		// int teamIden = Integer.parseInt(teamId);
 		List<String> genderList = new ArrayList<String>();
 		List<String> joinDate = new ArrayList<String>();
-		TeamSupervisor teamSupervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team);
+		TeamMember teamSupervisor = Context.getService(TeamMemberService.class).getTeamMember(team.getSupervisor().getId());
 
 		if (Context.isAuthenticated()) {
 			if (memberName == null) {
@@ -136,7 +134,7 @@ public class TeamMemberController {
 		// int teamIden = Integer.parseInt(teamId);
 		List<String> genderList = new ArrayList<String>();
 		List<String> joinDate = new ArrayList<String>();
-		TeamSupervisor teamSupervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team);
+		TeamMember teamSupervisor = Context.getService(TeamMemberService.class).getTeamMember(team.getSupervisor().getId());
 		ArrayList arr = new ArrayList();
 		Map<String, String>m=new HashedMap();
 		
@@ -209,28 +207,28 @@ public class TeamMemberController {
 		// List<Person> personList = new ArrayList<Person>();
 		TeamMember tm = null;
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		TeamSupervisor teamSupervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team);
+		TeamMember teamSupervisor = Context.getService(TeamMemberService.class).getTeamMember(team.getSupervisor().getId());
 		//TeamMember tm = Context.getService(TeamMemberService.class).getMember(Integer.parseInt(teamMemberId));
 		if (teamSupervisor != null) {
 			teamSupervisor.setVoided(true);
 			teamSupervisor.setVoidReason("Team Lead Changed");
 			teamSupervisor.setLeaveDate(new Date());
 			teamSupervisor.setDateVoided(new Date());
-			Context.getService(TeamSupervisorService.class).update(teamSupervisor);
+			Context.getService(TeamMemberService.class).update(teamSupervisor);
 			tm = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(teamSupervisorId));
 			tm.setIsTeamLead(false);
 			Context.getService(TeamMemberService.class).update(tm);
 		}
 		tm = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(teamMemberId));
-		teamSupervisor = new TeamSupervisor();
+		teamSupervisor = new TeamMember();
 		teamSupervisor.setTeam(team);
 		teamSupervisor.setJoinDate(new Date());
-		teamSupervisor.setTeamMember(tm);
+		//teamSupervisor.setTeamMember(tm);
 		if(teamSupervisor.getUuid() == null){
 			teamSupervisor.setUuid(UUID.randomUUID().toString());
 		}	
-		Context.getService(TeamSupervisorService.class).save(teamSupervisor);
-		teamSupervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team);	
+		Context.getService(TeamMemberService.class).save(teamSupervisor);
+		teamSupervisor = Context.getService(TeamMemberService.class).getTeamMember(team.getSupervisor().getId());	
 		tm.setIsTeamLead(true);
 		Context.getService(TeamMemberService.class).update(tm);
 		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, false);

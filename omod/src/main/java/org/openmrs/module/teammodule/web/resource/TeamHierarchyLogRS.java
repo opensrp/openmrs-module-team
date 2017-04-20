@@ -3,9 +3,7 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamRoleLog;
-import org.openmrs.module.teammodule.api.TeamLogService;
 import org.openmrs.module.teammodule.api.TeamRoleLogService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
@@ -67,7 +65,7 @@ public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> 
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamRoleLog> listTeam = Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(context.getParameter("q"));
+		List<TeamRoleLog> listTeam = Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(context.getParameter("q"),0);
 		return new NeedsPaging<TeamRoleLog>(listTeam, context).toSimpleObject(this);
 	}
 	
@@ -77,7 +75,7 @@ public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> 
 			return null;
 		}
 		
-		return Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(teamRole);
+		return Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(teamRole,0);
 	}
 
 	@Override

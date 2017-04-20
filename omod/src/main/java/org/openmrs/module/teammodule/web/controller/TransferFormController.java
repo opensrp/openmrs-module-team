@@ -16,9 +16,7 @@ import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -53,23 +51,23 @@ public class TransferFormController {
 	public String showForm(Model model, HttpServletRequest request) {
 		// ** must be added too
 		TeamMember transfer = new TeamMember();
-		List<Team> teams = Context.getService(TeamService.class).getAllTeams(true);
+		List<Team> teams = Context.getService(TeamService.class).getAllTeams(true,0);
 		String teamId = request.getParameter("teamId");
 		String error = request.getParameter("errorMessage");
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
 		// System.out.println(team);
-		TeamSupervisor teamSupervisor = Context.getService(TeamSupervisorService.class).getTeamSupervisor(team);
+		TeamMember teamSupervisor = Context.getService(TeamMemberService.class).getTeamMember(team.getSupervisor().getId());
 		
 		String memberId = request.getParameter("memberId");
 		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(memberId));
 		Boolean isTeamLead = teamMember.getIsTeamLead();
-		if (teamSupervisor != null && teamSupervisor.getTeamMember().getTeamMemberId() == Integer.parseInt(memberId)) {
+		if (teamSupervisor != null && teamSupervisor.getTeamMemberId() == Integer.parseInt(memberId)) {
 			// System.out.println("inside");
 			teamSupervisor.setLeaveDate(new Date());
 			teamSupervisor.setVoided(true);
 			teamSupervisor.setDateVoided(new Date());
 			teamSupervisor.setVoidReason("Transferred");
-			Context.getService(TeamSupervisorService.class).update(teamSupervisor);
+			Context.getService(TeamMemberService.class).update(teamSupervisor);
 		}
 		/*
 		 * teamMember.setPerson(Context.getPersonService().getPerson(teamMember.

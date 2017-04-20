@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamLocation;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamLocationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -32,19 +30,17 @@ public class AjaxTeamModuleController {
 	@RequestMapping(value = "getTeams")
 	@ResponseBody
 	public String getTeams(HttpServletRequest request) {
-		List<TeamLocation> teamLocation = Context.getService(TeamLocationService.class).getAllLocation();
-		List<Team> team = Context.getService(TeamService.class).getAllTeams(false);
+//		List<TeamLocation> teamLocation = Context.getService(TeamService.class).getAllLocation();
+		List<Team> team = Context.getService(TeamService.class).getAllTeams(false,0);
 		String error = "";
 		// System.out.println("here");
 		String teamName = request.getParameter("teamName");
 		String locationId = request.getParameter("locationId");
 		for (int i = 0; i < team.size(); i++) {
 			if (teamName.equals(team.get(i).getTeamName())) {
-				for (int j = 0; j < teamLocation.size(); j++) {
-					if (Integer.parseInt(locationId) == teamLocation.get(j).getLocation().getLocationId()) {
-						error = "Team already exists with same name and location";
-						break;
-					}
+				if (Integer.parseInt(locationId) == team.get(i).getLocation().getLocationId()) {
+					error = "Team already exists with same name and location";
+					break;
 				}
 			} else {
 
@@ -128,7 +124,7 @@ public class AjaxTeamModuleController {
 	@ResponseBody
 	public Location getLocations(HttpServletRequest request) {
 		String teamId = request.getParameter("teamId");
-		TeamLocation teamLocation = Context.getService(TeamLocationService.class).getTeamLocationByTeamId(Integer.parseInt(teamId));
+		Team teamLocation = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
 		Location location = teamLocation.getLocation();
 		Set<Location> childLocation = location.getChildLocations();
 		if( childLocation == null || childLocation.equals(null) || childLocation.equals("")){

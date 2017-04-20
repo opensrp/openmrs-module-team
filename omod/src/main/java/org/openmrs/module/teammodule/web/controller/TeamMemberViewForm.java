@@ -19,12 +19,10 @@ import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberPatientRelation;
-import org.openmrs.module.teammodule.TeamSupervisor;
 import org.openmrs.module.teammodule.api.TeamHierarchyService;
 import org.openmrs.module.teammodule.api.TeamMemberPatientRelationService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
-import org.openmrs.module.teammodule.api.TeamSupervisorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -77,7 +75,7 @@ public class TeamMemberViewForm {
 
 		Set<String> temp = new HashSet<>();
 		
-		System.out.println("size: " + teamMembers.size());
+		//System.out.println("size: " + teamMembers.size());
 		
 		for (int i = 0; i < teamMembers.size(); i++) {			
 			if(teamMembers.get(i) == null) {}
@@ -125,7 +123,7 @@ public class TeamMemberViewForm {
 				}
 				
 				//ALL SUPERVISORS FOR MODEL LAYER
-				allSupervisorIds.add(Integer.toString(teamMembers.get(i).getTeamRole().getReportTo().getId()));
+				allSupervisorIds.add(Integer.toString(teamMembers.get(i).getTeam().getSupervisor().getId()));
 				
 				//ALL TEAM ROLES FOR MODEL LAYER
 				allTeamRoleIds.add(Integer.toString(teamMembers.get(i).getTeamRole().getId()));
@@ -162,7 +160,7 @@ public class TeamMemberViewForm {
 		allTeamRoleIds.addAll(temp);
 		temp.clear();
 
-		for (int j = 0; j < allSupervisorIds.size(); j++) { TeamSupervisor ts = Context.getService(TeamSupervisorService.class).getTeamSupervisor(Integer.parseInt(allSupervisorIds.get(j))); if(ts == null) { allSupervisorNames.add(""); } else { allSupervisorNames.add(ts.getTeamMember().getPerson().getPersonName().toString()); } }
+		for (int j = 0; j < allSupervisorIds.size(); j++) { TeamMember tm = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(allSupervisorIds.get(j))); if(tm == null) { allSupervisorNames.add(""); } else { allSupervisorNames.add(tm.getPerson().getPersonName().toString()); } }
 		for (int j = 0; j < allTeamRoleIds.size(); j++) { TeamHierarchy th = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(allTeamRoleIds.get(j))); if(th == null) { allTeamRoleNames.add(""); } else { allTeamRoleNames.add(th.getName().toString()); } }
 		for (int j = 0; j < allTeamIds.size(); j++) { Team t = Context.getService(TeamService.class).getTeam(Integer.parseInt(allTeamIds.get(j))); if(t == null) { allTeamNames.add(""); } else { allTeamNames.add(t.getTeamName().toString()); } }
 
@@ -172,9 +170,9 @@ public class TeamMemberViewForm {
 		System.out.println("teamMemberPatients: " + teamMemberPatients);
 		System.out.println("reportsTo: " + reportsTo);
 		System.out.println("subRoles: " + subRoles);
-		System.out.println("subTeams: " + subTeams);*/
+		System.out.println("subTeams: " + subTeams);
 		
-		/*System.out.println("allSupervisorIds: " + allSupervisorIds);
+		System.out.println("allSupervisorIds: " + allSupervisorIds);
 		System.out.println("allSupervisorNames: " + allSupervisorNames);
 		System.out.println("allTeamRoleIds: " + allTeamRoleIds);
 		System.out.println("allTeamRoleNames: " + allTeamRoleNames);
