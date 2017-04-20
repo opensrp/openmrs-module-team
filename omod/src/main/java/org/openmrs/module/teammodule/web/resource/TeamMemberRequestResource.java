@@ -3,6 +3,7 @@
  */
 package org.openmrs.module.teammodule.web.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openmrs.Person;
@@ -17,7 +18,7 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
+import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
@@ -27,9 +28,8 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  * 
  */
 
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teammember", supportedClass = TeamMember.class, supportedOpenmrsVersions = { "1.8.*",
-		"1.9.*, 1.10.*, 1.11.*", "1.12.*" })
-public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember> {
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teammember", supportedClass = TeamMember.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*" })
+public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMember> {
 
 	@Override
 	public TeamMember newDelegate() {
@@ -101,8 +101,22 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchTeamMember(context.getParameter("q"));
-		return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		
+		if(context.getParameter("q") != null) {
+			System.out.println(context.getParameter("q"));
+			List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchTeamMember(context.getParameter("q"));
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		else {//if(context.getParameter("id") != null) {
+			TeamMember memberList = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(context.getParameter("id")));
+			List<TeamMember> temp = new ArrayList<>();
+			temp.add(memberList);
+			return new NeedsPaging<TeamMember>(temp, context).toSimpleObject(this);
+		}
+		/*else {
+			List<TeamMember> memberList = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(Integer.parseInt(context.getParameter("personId")));
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}*/
 	}
 	
 }
