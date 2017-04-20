@@ -83,19 +83,23 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
+		if(context.getParameter("q") != null)
+		{
 		List<Team> listTeam = Context.getService(TeamService.class).searchTeam(context.getParameter("q"));
 		return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
-	}
-	
-	public SimpleObject searchByLocation(RequestContext context) {
-		List<Team> listTeam = Context.getService(TeamService.class).getTeambyLocation(Integer.parseInt(context.getParameter("location")),0);
+		}
+		else if(context.getParameter("location")!=null)
+		{
+		List<Team> listTeam = Context.getService(TeamService.class).getTeambyLocation(Integer.parseInt(context.getParameter("location")), 0);
 		return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
-	}
-	
-	public Team searchBySupervisor(RequestContext context) {
-		Team team =  Context.getService(TeamService.class).getTeamBySupervisor(Integer.parseInt(context.getParameter("supervisor")));
-		return team;
-	}
+		}
+		else if(context.getParameter("supervisor")!=null)
+		{
+		List<Team> listTeam = (List<Team>) Context.getService(TeamService.class).getTeamBySupervisor(Integer.parseInt(context.getParameter("supervisor")));
+		return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
+		}
+		return null;
+		}
 	
 	@PropertyGetter("display")
 	public String getDisplayString(Team team) {

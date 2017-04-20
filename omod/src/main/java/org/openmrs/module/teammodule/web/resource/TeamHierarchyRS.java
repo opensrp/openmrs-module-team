@@ -65,14 +65,19 @@ public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
+		if(context.getParameter("q")!=null)
+		{
 		List<TeamHierarchy> listTeam = Context.getService(TeamHierarchyService.class).searchTeamRoleByRole(context.getParameter("q"));
 		return new NeedsPaging<TeamHierarchy>(listTeam, context).toSimpleObject(this);
-	}
+		}
+		else if(context.getParameter("team")!=null)
+		{
+			List<TeamHierarchy> listTeamHierarchy = (List<TeamHierarchy>) Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(context.getParameter("id")));
+			return new NeedsPaging<TeamHierarchy>(listTeamHierarchy, context).toSimpleObject(this);
+		}
+		return null;
+		}
 	
-	public TeamHierarchy searchByTeam(RequestContext context) {
-		TeamHierarchy teamHierarchy = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(context.getParameter("id")));
-		return teamHierarchy;
-	}
 	
 	@PropertyGetter("display")
 	public List<TeamHierarchy> getDisplayString(String teamRole) {
