@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>teammodule</artifactId>
-		<version>1.1.0</version>
+		<version>1.2.0</version>
 	</parent>
 
 	<artifactId>teammodule-omod</artifactId>
