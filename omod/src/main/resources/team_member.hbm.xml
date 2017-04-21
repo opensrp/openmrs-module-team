@@ -19,7 +19,7 @@
 	             <many-to-many class="org.openmrs.Location" column="location_id" />
 	        </set>
 	        
-	<set name="patients" table="team_member_patient"  inverse="false" lazy="false" fetch="join">
+	<set name="patients" table="team_member_patient"  inverse="false" lazy="false" fetch="select">
        <key>
            <column name="member_id" not-null="true" />
        </key>

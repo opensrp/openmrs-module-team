@@ -64,11 +64,11 @@
 		    $("#member").append("<tr id=\"memberRow\">"
 				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].teamMemberId+"</td>"
 				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].personName +"</td>"
-				+"<td style=\"text-align: left;\" valign=\"top\">"+data[i].join+"</td>"
+				+"<td style=\"text-align: left;\" valign=\"top\">"+"--"+"</td>"
 				+"<td style=\"text-align: left;\"> <div style=\" height:40px; width:145px; z-index:1 position:fixed; overflow-y:scroll\"> "
 				+data[i].gender+" </div></td>" 
-				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMemberResponsibility.form?teamId="+data[i].teamId+"\">Patients</a></td>"
-				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMember/list.form?teamId="+data[i].teamId+"\">Detail</a></td>"
+				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMemberResponsibilityDetails.form?teamMemberId="+data[i].teamMemberId+"\">Patients</a></td>"
+				+"<td style=\"text-align: left;\" valign=\"top\"><a href=\"/openmrs/module/teammodule/teamMember/list.form?teamMemberId="+data[i].teamMemberId+"\">Detail</a></td>"
 				+"</tr>");
 		  }
 	  });
@@ -106,20 +106,8 @@
 	</div>
   
 <h1>Teams</h1>
-<c:if test="${not empty searchedTeam}">
-	<h3>Search Results for "${searchedTeam}"</h3>
-</c:if>
 <table>
-	<tr>
-		<td>Enter Team Name or ID</td>
-		<form:form method="post" commandName="searchTeam">
-			<td><form:input id="teamName" path="teamName" /></td>
-			<td><button type="submit">Search</button></td>
-		</form:form>
-	</tr>
-
 </table>
-<c:if test="${empty searchedTeam}">
 	<table class="extra">
 		<tr>
 			<openmrs:hasPrivilege privilege="Add Team">
@@ -134,9 +122,8 @@
 			</openmrs:hasPrivilege>
 		</tr>
 	</table>
-</c:if>
 <c:choose>
-	<c:when test="${not empty team}">
+	<c:when test="${not empty teams}">
 		<table class="general">
 			<tr>
 				<openmrs:hasPrivilege privilege="Edit Team">
@@ -160,70 +147,40 @@
 					<th>History</th>
 				</openmrs:hasPrivilege>
 			</tr>
-
-			<c:forEach var="team" items="${team}" varStatus="loop">
-				<c:if test="${team.voided}">
-					<tr>
-						<openmrs:hasPrivilege privilege="Edit Team">
-							<td><a
-								href="/openmrs/module/teammodule/editTeam.form?teamId=${team.teamId}">Edit</a>
-							</td>
-						</openmrs:hasPrivilege>
-						<td><c:out value="${team.teamIdentifier}" /></td>
-						<td valign="top" style="text-align: center;"><c:out value="${team.teamName}" /></td>
-						<td><c:out value="${parsedDate[loop.index]}" /></td>
-						<td style="text-align: center;"><c:out value="${team.location.name}" /></td>
-						<openmrs:hasPrivilege privilege="View Member">
-							<td><p onclick="teamMember(<c:out value="${team.teamId}" />)" style="cursor:pointer" ><u><c:out value="${length[loop.index]}" /></u></p></td>
-						</openmrs:hasPrivilege>
-						<openmrs:hasPrivilege privilege="Add Member">
-							<td><a
-								href="/openmrs/module/teammodule/teamMemberAddForm.form?teamId=${team.teamId}">Add
-									Member</a></td>
-						</openmrs:hasPrivilege>
-						<td style="text-align: center;"><c:out value="${teamLead[loop.index]}" /></td>
-						<openmrs:hasPrivilege privilege="Edit Team">
-							<td><a
-								href="/openmrs/module/teammodule/teamMember/list.form?teamId=${team.teamId}&member=&changeLead=true">
-									change TeamLead </a></td>
-						</openmrs:hasPrivilege>
-						<openmrs:hasPrivilege privilege="View Team">
-							<td><button onclick="teamHistory(<c:out value="${team.teamId}" />)">History</button>
-							</td>
-						</openmrs:hasPrivilege>
-					</tr>
-				</c:if>
-
-				<c:if test="${!team.voided}">
-					<tr>
-						<openmrs:hasPrivilege privilege="Edit Team">
-							<td><a
-								href="/openmrs/module/teammodule/editTeam.form?teamId=${team.teamId}">Edit</a>
-							</td>
-						</openmrs:hasPrivilege>
-						<td><c:out value="${team.teamIdentifier}" /></td>
-						<td style="text-align: center;"><c:out value="${team.teamName}" /></td>
-						<td><c:out value="${parsedDate[loop.index]}" /></td>
-						<td style="text-align: center;"><c:out value="${team.location.name}" /></td>
-						<openmrs:hasPrivilege privilege="View Member">
-							<td><p onclick="teamMember(<c:out value="${team.teamId}" />)" style="cursor:pointer" ><u><c:out value="${length[loop.index]}" /></u></p></td>
-						</openmrs:hasPrivilege>
-						<openmrs:hasPrivilege privilege="Add Member">
-							<td><a
-								href="/openmrs/module/teammodule/teamMemberAddForm.form?teamId=${team.teamId}">Add
-									Member</a></td>
-						</openmrs:hasPrivilege>
-						<td style="text-align: center;"><c:out value="${teamLead[loop.index]}" /></td>
-						<openmrs:hasPrivilege privilege="Edit Team">
-							<td><a
-								href="/openmrs/module/teammodule/teamMember/list.form?teamId=${team.teamId}&member=&changeLead=true">
-									change TeamLead </a></td>
-						</openmrs:hasPrivilege>
-						<openmrs:hasPrivilege privilege="View Team">
-							<td><button onclick="teamHistory(<c:out value="${team.teamId}" />)" >History</button></td>
-						</openmrs:hasPrivilege>
-					</tr>
-				</c:if>
+			<c:forEach var="team" items="${teams}" varStatus="loop">
+			<tr>
+				<openmrs:hasPrivilege privilege="Edit Team">
+					<td>
+					<c:if test="${not team.team.voided}">
+					<a href="/openmrs/module/teammodule/editTeam.form?teamId=${team.team.teamId}">Edit</a>
+					</c:if>
+					</td>
+				</openmrs:hasPrivilege>
+				<td><c:out value="${team.team.teamIdentifier}" /></td>
+				<td style="text-align: center;"><c:out value="${team.team.teamName}" /></td>
+				<td>${team.team.dateCreated}</td>
+				<td style="text-align: center;"><c:out value="${team.team.location.name}" /></td>
+				<openmrs:hasPrivilege privilege="View Member">
+					<td><p onclick="teamMember(<c:out value="${team.team.teamId}" />)" style="cursor:pointer" ><u>${team.membersCount}</u></p></td>
+				</openmrs:hasPrivilege>
+				<openmrs:hasPrivilege privilege="Add Member">
+					<td>
+					<c:if test="${not team.team.voided}">
+					<a href="/openmrs/module/teammodule/teamMemberAddForm.form?teamId=${team.team.teamId}">Add Member</a>
+					</c:if>
+					</td>
+				</openmrs:hasPrivilege>
+				<td style="text-align: center;">${team.teamLead.teamMember.person.personName}<td>
+				<openmrs:hasPrivilege privilege="Edit Team">
+					<c:if test="${not team.team.voided}">
+					<a href="/openmrs/module/teammodule/teamMember/list.form?teamId=${team.team.teamId}&member=&changeLead=true">
+							change TeamLead </a>
+					</c:if>
+				</openmrs:hasPrivilege>
+				<openmrs:hasPrivilege privilege="View Team">
+					<td><button onclick="teamHistory(<c:out value="${team.team.teamId}" />)" >History</button></td>
+				</openmrs:hasPrivilege>
+			</tr>
 			</c:forEach>
   </table>
 </c:when>
@@ -231,11 +188,6 @@
 		<p>No record(s) found</p>
 	</c:otherwise>
 </c:choose>
-<c:if test="${not empty searchedTeam}">
-	<p>
-		<a href="/openmrs/module/teammodule/team.form">Back to Team List</a>
-	</p>
-</c:if>
 
 
 

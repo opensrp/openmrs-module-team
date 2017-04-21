@@ -56,7 +56,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
 
 		if (team != null) {
-			criteria.add(Restrictions.eq("team", team));
+			criteria.createAlias("team", "t").add(Restrictions.eq("t.teamId", team.getTeamId()));
 		}
 
 		if (teamName != null) {
@@ -103,7 +103,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	}
 
 	public TeamMember getMember(int id) {
-		return (TeamMember) sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.id = :id").setInteger("id", id).uniqueResult();
+		return (TeamMember) sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.teamMemberId = :id").setInteger("id", id).uniqueResult();
 	}
 	
 	@SuppressWarnings("unchecked")

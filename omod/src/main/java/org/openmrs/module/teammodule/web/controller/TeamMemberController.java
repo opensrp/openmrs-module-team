@@ -6,6 +6,7 @@ package org.openmrs.module.teammodule.web.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -13,12 +14,9 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLead;
@@ -28,13 +26,10 @@ import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import org.springframework.web.bind.annotation.RequestParam;
 //import java.util.Date;
 //import org.openmrs.PersonName;
 //import org.openmrs.module.teammodule.Team;
@@ -42,8 +37,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 //import org.openmrs.module.teammodule.api.TeamLeadService;
 //import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.google.gson.Gson;
 
 /**
  * @author Muhammad Safwan
@@ -68,11 +61,10 @@ public class TeamMemberController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "list.form")
 	public String showForm(Model model, HttpServletRequest request) {
-		List<TeamMember> teamMember;
+		List<TeamMember> teamMember = new ArrayList<>();
 		// Person person;
 		// List<Person> personList = new ArrayList<Person>();
 		String teamId = request.getParameter("teamId");
-		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
 		String memberName = request.getParameter("member");
 		String changeLead = request.getParameter("changeLead");
 		System.out.println(memberName);
@@ -80,9 +72,23 @@ public class TeamMemberController {
 		// int teamIden = Integer.parseInt(teamId);
 		List<String> genderList = new ArrayList<String>();
 		List<String> joinDate = new ArrayList<String>();
-		TeamLead teamLead = Context.getService(TeamLeadService.class).getTeamLead(team);
 
-		if (Context.isAuthenticated()) {
+		String teamMemberId = request.getParameter("teamMemberId");
+		Team team = null;
+
+		try{
+		if(teamMemberId != null){
+			teamMember.add(Context.getService(TeamMemberService.class).getMember(Integer.parseInt(teamMemberId)));
+			team = teamMember.get(0).getTeam();
+		}
+		
+		if(teamId != null){
+			team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
+		}
+		if(teamId != null){
+			teamMember.addAll(Context.getService(TeamMemberService.class).getTeamMembers(team , null, null, null));
+		}
+		else if (Context.isAuthenticated()) {
 			if (memberName == null) {
 				teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
 			} else {
@@ -113,73 +119,63 @@ public class TeamMemberController {
 				caption = "Change Team Lead";
 				model.addAttribute("edit",caption);
 			}
-			model.addAttribute("teamMember", teamMember);
-			// model.addAttribute("name", personList);
-			model.addAttribute("team", team);
-			// model.addAttribute("teamIden", teamIden);
-			model.addAttribute("gender", genderList);
-			model.addAttribute("join", joinDate);
-			model.addAttribute("teamLead", teamLead);
-			model.addAttribute("member", memberName);
-			// model.addAttribute("leave", leaveDate);
 		}
-
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		
+		model.addAttribute("teamMember", teamMember);
+		// model.addAttribute("name", personList);
+		model.addAttribute("team", team);
+		// model.addAttribute("teamIden", teamIden);
+		model.addAttribute("gender", genderList);
+		model.addAttribute("join", joinDate);
+		//model.addAttribute("teamLead", teamLead);
+		model.addAttribute("member", memberName);
+		// model.addAttribute("leave", leaveDate);
 		return SHOW;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "listPopup.form")
 	@ResponseBody
 	public ArrayList showFormPopup(Model model, HttpServletRequest request) throws JSONException {
-		List<TeamMember> teamMember;
+		List<TeamMember> teamMember = new ArrayList<>();
+		ArrayList<Map<String, Object>> arr= new ArrayList<>();
 		// Person person;
 		// List<Person> personList = new ArrayList<Person>();
+		try{
 		String teamId = request.getParameter("teamId");
-		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
 		String memberName = request.getParameter("member");
-		String changeLead = request.getParameter("changeLead");
 		System.out.println(memberName);
-		String caption = "";
-		// int teamIden = Integer.parseInt(teamId);
-		List<String> genderList = new ArrayList<String>();
-		List<String> joinDate = new ArrayList<String>();
-		TeamLead teamLead = Context.getService(TeamLeadService.class).getTeamLead(team);
-		ArrayList arr = new ArrayList();
-		Map<String, String>m=new HashedMap();
-		
-		if (Context.isAuthenticated()) {
-			if (memberName == null) {
-				teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
-			} else {
-				teamMember = Context.getService(TeamMemberService.class).searchMemberByTeam(memberName, Integer.parseInt(teamId));
-			}
-			for (int i = 0; i < teamMember.size(); i++) {
-				if (teamMember.get(i).getJoinDate() != null) {
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					String date = sdf.format(teamMember.get(i).getJoinDate());
-					joinDate.add(date);
-				} else {
-					joinDate.add("");
-				}
-			}
-			if(changeLead == null){
-				caption = team.getTeamName() + " Members";
-				m.put("edit", caption);			
-			}else{
-				caption = "Change Team Lead";
-				m.put("edit",caption);
-			}
-			
-			for(int i=0;i<teamMember.size();i++)
-			{	m=new HashedMap();
-				m.put("teamMemberId", String.valueOf(teamMember.get(i).getTeamMemberId()));
-				m.put("personName", teamMember.get(i).getPerson().getGivenName() + teamMember.get(i).getPerson().getFamilyName());
-				m.put("join", joinDate.get(i));
-				m.put("gender", teamMember.get(i).getPerson().getGender());
-				m.put("teamId",teamId);
-				arr.add(m);
-			}
+		String teamMemberId = request.getParameter("teamMemberId");
+		if(teamMemberId != null){
+			teamMember.add(Context.getService(TeamMemberService.class).getMember(Integer.parseInt(teamMemberId)));
 		}
 		
+		Team team = null;
+		if(teamId != null){
+			team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
+		}
+		if(teamId != null){
+			teamMember.addAll(Context.getService(TeamMemberService.class).getTeamMembers(team , null, null, false));
+		}
+			
+		for(int i=0;i<teamMember.size();i++)
+		{	Map<String, Object> m = new HashMap<>();
+			m.put("teamMemberId", String.valueOf(teamMember.get(i).getTeamMemberId()));
+			m.put("personName", teamMember.get(i).getPerson().getGivenName() + teamMember.get(i).getPerson().getFamilyName());
+			m.put("join", teamMember.get(i).getJoinDate());
+			m.put("gender", teamMember.get(i).getPerson().getGender());
+			m.put("teamId",teamId);
+			arr.add(m);
+		}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 		return arr;
 	}
 	/**
@@ -222,9 +218,11 @@ public class TeamMemberController {
 			teamLead.setLeaveDate(new Date());
 			teamLead.setDateVoided(new Date());
 			Context.getService(TeamLeadService.class).update(teamLead);
-			tm = Context.getService(TeamMemberService.class).getMember(Integer.parseInt(teamLeadId));
-			tm.setIsTeamLead(false);
-			Context.getService(TeamMemberService.class).update(tm);
+			tm = Context.getService(TeamMemberService.class).getMember(teamLead.getTeamMember().getTeamMemberId());
+			if(tm != null){ 
+				tm.setIsTeamLead(false);
+				Context.getService(TeamMemberService.class).update(tm);
+			}
 		}
 		tm = Context.getService(TeamMemberService.class).getMember(Integer.parseInt(teamMemberId));
 		teamLead = new TeamLead();

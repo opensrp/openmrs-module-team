@@ -31,11 +31,12 @@ jQuery(document).ready(function(){
 			var patient=document.getElementById("existingPersonId").value;
 			var reason=document.getElementById("reason").value;
 			var status=document.getElementById("status").value;
-			var memberId=${memberId}
+			var memberId=${memberId};
 			jQuery.get("/openmrs/module/teammodule/teamMemberResponsibilityAddData.form?patientText="+patient+"&reason="+reason
 					+"&status="+status+"&memberId="+memberId,function(){
 				jQuery("#positiveNotification").show();
 				jQuery("#negativeNotification").hide();
+				window.location="/openmrs/module/teammodule/teamMemberResponsibilityDetails.form?teamMemberId=${memberId}"
 				}).error(function() {
 					jQuery("#positiveNotification").hide();
 					jQuery("#negativeNotification").show();
@@ -45,16 +46,12 @@ jQuery(document).ready(function(){
 
 <h3 style="color: red; display: inline">${errorMessage}</h3>
 
-	<h3>Select Patient for Member</h3>
+	<h3>Assign patient to ${memberName}</h3>
 <h3 id="positiveNotification" style="color: green; display: inline">Patient Added</h3>
 <h3 id="negativeNotification" style="color: red; display: inline">This not registered Patient</h3>
 <form:form id="patientForm" name="patientForm" method="post"
 	commandName="patient">
 	<table class="form">
-		<tr>
-			<td>Team Member</td>
-			<td>${memberName}</td>
-		</tr>
 		<tr>
 			<td>Patient</td>
 			<td>

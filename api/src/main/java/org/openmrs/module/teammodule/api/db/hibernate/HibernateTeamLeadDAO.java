@@ -61,7 +61,7 @@ public class HibernateTeamLeadDAO implements TeamLeadDAO {
 	}
 
 	public TeamLead getTeamLead(Team team) {
-		return (TeamLead) sessionFactory.getCurrentSession().createQuery("from TeamLead tl where tl.team = :teamId and tl.voided = :num").setInteger("teamId", team.getTeamId()).setInteger("num", 0).uniqueResult();
+		return (TeamLead) sessionFactory.getCurrentSession().createQuery("SELECT tl from TeamLead tl join tl.team tm WHERE tm.teamId = :teamId and tl.voided = false").setInteger("teamId", team.getTeamId()).uniqueResult();
 		/*Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamLead.class);
 		
 		criteria.add(Restrictions.eq("voided", false));

@@ -19,7 +19,7 @@
 function deleteFunction(partientMemberId)
 {
 $.get("/openmrs/module/teammodule/teamMemberResponsibilityUnAssign.form?memberPatientId="+partientMemberId,function(){
-
+	window.location='/openmrs/module/teammodule/teamMemberResponsibilityDetails.form?teamMemberId=${memberId}';
 });
 }
 </script>
@@ -27,8 +27,11 @@ $.get("/openmrs/module/teammodule/teamMemberResponsibilityUnAssign.form?memberPa
 <link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1"
 	type="text/css" rel="stylesheet">
 <h1>Member's Patient</h1>	
-<h2>Member Name: ${memberName}</h2>	
+
+<h1>'${teamMemberName}' of team '${teamName}' have ${patientsCount} patients</h1>
 <br/>
+   <td><a href="/openmrs/module/teammodule/teamMemberResponsibilityAdd.form?memberId=${memberId}">Add Patient</a></td>
+<br>
 <table id="team_patient">
 <th>Patient Id</th>
 <th>Patient Name</th>

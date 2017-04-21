@@ -56,31 +56,26 @@
 
 	<h3>Select team to transfer</h3>
 
-<form:form id="transferForm" name="transferForm" method="post"
-	commandName="transfer">
+<form id="transferForm" name="transferForm" method="post">
+<input type="hidden" name="teamId" value="${teamId}"/>
+<input type="hidden" name="memberId" value="${memberId}"/>
 	<table class="form">
 
 		<tr>
 			<td>Team</td>
-			<td><form:select id="team" path="team.teamId"  >
-					<form:option value="0" label=" Please Select " />
+			<td><select id="team" name="transferredTeam" >
 					<c:forEach var="teams" items="${teams}" varStatus="loop">
 						<c:if test="${teamId != teams.teamId}">
-							<form:option value="${teams.teamId}">${teams.teamName}</form:option>
+							<option value="${teams.teamName}">${teams.teamName}</option>
 						</c:if>
 					</c:forEach>
-				</form:select></td>
-			<!-- <td><form:errors path="team" cssClass="error" /></td> -->
+				</select></td>
 		</tr>
-		<!-- <tr>
-			<td>Is Team Lead ?</td>
-			<td><form:checkbox id="isTeamLead" path="isTeamLead" /></td>
-		</tr> -->
 		
 		<tr>
 			<td>Location</td>
 			<td><openmrs:fieldGen type="org.openmrs.Location" 
-				formFieldName="location" val="${selectedLocation}"  /><span style="color:red"> This hierarchy is from start 
+				formFieldName="transferredLocation" val="${selectedLocation}"  /><span style="color:red"> This hierarchy is from start 
 				so the locations must be selected wisely </span></td>
 		</tr>
 		
@@ -89,7 +84,7 @@
 			<td align="center"><button type="button" onClick="validation();">Transfer</button></td>
 		</tr>
 	</table>
-</form:form>
+</form>
 
 
 

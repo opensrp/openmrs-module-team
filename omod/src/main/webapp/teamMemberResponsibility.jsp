@@ -19,10 +19,10 @@
 </head>
 <link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1"
 	type="text/css" rel="stylesheet">
-<h1>Team Name: "${teamName}"</h1>
+<h1>'${teamMemberName}' of team '${teamName}' have ${patientsCount} patients</h1>
 <br/>
 <table id="team_patient">
-<th>Member Id</th>
+<th>Patient Name</th>
 <th>Number of Patient</th>
 <th>Location</th>
 <th>Details</th>

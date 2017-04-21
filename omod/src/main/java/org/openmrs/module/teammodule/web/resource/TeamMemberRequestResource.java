@@ -79,9 +79,11 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 		if (person != null) {
 			Integer id = person.getPersonId();
 			List<TeamMember> tm = Context.getService(TeamMemberService.class).getMemberByPersonId(id);
-			id = tm.get(0).getTeamMemberId();
-			TeamMember member = Context.getService(TeamMemberService.class).getMember(id);
-			return member;
+			for (TeamMember teamMember : tm) {
+				if(teamMember.isVoided() == false){
+					return teamMember;
+				}
+			}
 		}
 		return Context.getService(TeamMemberService.class).getTeamMember(uuid);
 

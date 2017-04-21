@@ -155,7 +155,7 @@
 	
      <changeSet id="teammodule-10.1.0A" author="Shakeeb Raza">
 		<createTable tableName="team_member_patient">
-			<column name="member_patient_id" type="int(11)" autoIncrement="true">
+			<column name="member_patient_id" type="int(11)" >
 				<constraints primaryKey="true" />
 			</column>
 			<column name="patient_id" type="int(11)" >
@@ -168,6 +168,9 @@
 			<column name="status" type="varchar(45)" />
 			<column name="assignment_date" type="datetime" />
 		</createTable>
+	</changeSet>
+	<changeSet id="teammodule-11.1.0A" author="Maimoona">
+		<sql>ALTER TABLE team_member_patient MODIFY COLUMN member_patient_id INT auto_increment</sql>
 	</changeSet>
 
 </databaseChangeLog>

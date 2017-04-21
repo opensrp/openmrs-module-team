@@ -145,6 +145,9 @@
 								<c:when test="${teamMember.voided == true}">
 									<td>Can't be made</td>
 								</c:when>
+								<c:when test="${teamMember.isTeamLead == true}">
+								<td>Team Lead</td>
+								</c:when>
 								<c:otherwise>
 									<c:choose>
 										<c:when test="${teamLead.teamMember.teamMemberId != null}">

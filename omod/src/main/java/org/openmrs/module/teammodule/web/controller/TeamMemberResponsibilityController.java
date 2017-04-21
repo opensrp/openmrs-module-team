@@ -46,38 +46,30 @@ public class TeamMemberResponsibilityController {
 	private final String teamMemberResponsibilityAdd = "/module/teammodule/teamMemberResponsibilityAdd";
 		
 	@RequestMapping(value = "module/teammodule/teamMemberResponsibility.form", method = RequestMethod.GET)
-	public String showTeamMemberResponsibility(Model model, HttpServletRequest request,@RequestParam("teamId")String teamId) {
-		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
-		model.addAttribute("teamName", team.getTeamName());
-		model.addAttribute("teamMember", teamMember.size());
+	public String showTeamMemberResponsibility(Model model, HttpServletRequest request,@RequestParam("teamMemberId") Integer teamMemberId) {
+		TeamMember teamMember = Context.getService(TeamMemberService.class).getMember(teamMemberId);
+		model.addAttribute("teamName", teamMember.getTeam().getTeamName());
+		model.addAttribute("teamMember", teamMember);
+		model.addAttribute("teamMemberName", teamMember.getPerson().getPersonName().getFullName());
 		
-		List<Map> list=new ArrayList<Map>();
-		Map m;
-		for (int i=0;i<teamMember.size();i++)
-		{
-		m=new HashedMap();
-		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember.get(i).getTeamMemberId());
-		m.put("size", tprs.size());
-		m.put("memberId", teamMember.get(i).getTeamMemberId());
-		Set<Location> location = teamMember.get(i).getLocation();
-		m.put("location",location);
-		list.add(m);
-		}
-		model.addAttribute("list", list);
+		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMemberId);
+		model.addAttribute("patients", tprs);
+		model.addAttribute("patientsCount", tprs.size());
 		return teamMemberResponsibility;
 	}
 	
 	@RequestMapping(value = "module/teammodule/teamMemberResponsibilityDetails.form", method = RequestMethod.GET)
-	public String showTeamMemberResponsibilityDetail(Model model, HttpServletRequest request,@RequestParam("memberId")String memberId) {
+	public String showTeamMemberResponsibilityDetail(Model model, HttpServletRequest request,@RequestParam("teamMemberId") Integer memberId) {
 		
 		List<Map> list=new ArrayList<Map>();
 		Map m;
-		TeamMember teamMember = Context.getService(TeamMemberService.class).getMember(Integer.valueOf(memberId));
+		TeamMember teamMember = Context.getService(TeamMemberService.class).getMember(memberId);
 		model.addAttribute("memberId", memberId);
-		model.addAttribute("memberName", teamMember.getPerson().getNames());
-		
-		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(Integer.valueOf(memberId));
+		model.addAttribute("teamMemberName", teamMember.getPerson().getPersonName().getFullName());
+		model.addAttribute("teamName", teamMember.getTeam().getTeamName());
+		try{
+		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(memberId);
+		model.addAttribute("patientsCount", tprs.size());
 		for(int i=0;i<tprs.size();i++)
 		{
 			m=new HashedMap();
@@ -100,7 +92,9 @@ public class TeamMemberResponsibilityController {
 			list.add(m);
 			model.addAttribute("list", list);
 		}
-		
+		}finally{
+			
+		}
 		return teamMemberResponsibilityDetail;
 	}
 	
@@ -138,7 +132,7 @@ public class TeamMemberResponsibilityController {
 			return teamMemberResponsibilityAdd;
 		}
 		Context.getService(TeamMemberPatientRelationService.class).save(tmpr);
-		return teamMemberResponsibilityDetail;
+		return "redirect:/module/teammodule/teamMemberResponsibilityDetails.form?teamMemberId="+memberId;
 		
 	}
 	

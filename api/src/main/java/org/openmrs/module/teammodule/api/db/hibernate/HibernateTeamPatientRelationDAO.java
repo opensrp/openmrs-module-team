@@ -56,18 +56,8 @@ public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelatio
 	}
 	
 	
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(
-			Integer tpr) {
-		List<TeamMemberPatientRelation> list = sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation").list();
-		List<TeamMemberPatientRelation> list1 = new ArrayList<TeamMemberPatientRelation>();
-		for(int i=0;i<list.size();i++)
-		{
-			if(tpr==list.get(i).getMember().getId())
-			{
-				list1.add(list.get(i));
-			}
-		}
-		return list1;
+	public List<TeamMemberPatientRelation> getTeamPatientRelations(Integer tpr) {
+		return sessionFactory.getCurrentSession().createQuery("SELECT tp from TeamMemberPatientRelation tp join tp.member tm where tm.teamMemberId="+tpr).list();
 	}
 
 	public TeamMemberPatientRelation getTeamPatientRelation(
