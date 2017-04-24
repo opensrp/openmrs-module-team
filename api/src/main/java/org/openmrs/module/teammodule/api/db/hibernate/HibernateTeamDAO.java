@@ -57,9 +57,9 @@ public class HibernateTeamDAO implements TeamDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Team> getAllTeams(boolean retired, int pageIndex) {
+	public List<Team> getAllTeams(boolean voided, int pageIndex) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Team.class);
-		if (!retired) {
+		if (!voided) {
 			criteria.add(Restrictions.eq("voided", false));
 		}
 		criteria.setFirstResult(pageIndex);
@@ -93,7 +93,7 @@ public class HibernateTeamDAO implements TeamDAO {
 	@Override
 	public List<Team> getTeambyLocation(int locationId,int pageIndex) {
 		// TODO Auto-generated method stub
-		Query createQuery= sessionFactory.getCurrentSession().createQuery("from Team team where team.location= :id").setInteger("id", locationId);
+		Query createQuery= sessionFactory.getCurrentSession().createQuery("from Team team where team.location_id=: id").setInteger("id", locationId);
 		createQuery.setFirstResult(pageIndex);
 		createQuery.setMaxResults(20);
 		return createQuery.list();

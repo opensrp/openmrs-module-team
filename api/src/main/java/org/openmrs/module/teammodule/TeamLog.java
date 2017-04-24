@@ -18,11 +18,12 @@ public class TeamLog extends BaseOpenmrsData implements Serializable{
 
 	@JsonProperty
 	private String dataNew;
+	
+	@JsonProperty
+	private String dataOld;
 
 	@JsonProperty
 	private String log;
-
-	private String uuid;
 	
 	public Integer getLogId() {
 		return logId;
@@ -46,6 +47,14 @@ public class TeamLog extends BaseOpenmrsData implements Serializable{
 
 	public void setDataNew(String dataNew) {
 		this.dataNew = dataNew;
+	}
+	
+	public String getDataOld() {
+		return dataOld;
+	}
+
+	public void setDataOld(String dataOld) {
+		this.dataOld = dataOld;
 	}
 
 	public String getLog() {
@@ -78,13 +87,5 @@ public class TeamLog extends BaseOpenmrsData implements Serializable{
 
 	public void setCreator(User creator) {
 		this.creator = creator;
-	}
-
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
 	}
 }

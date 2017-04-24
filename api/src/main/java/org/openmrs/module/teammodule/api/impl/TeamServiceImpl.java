@@ -55,8 +55,8 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		return dao.getTeam(name);
 	}
 
-	public List<Team> getAllTeams(boolean retired,int pageIndex ) {
-		return dao.getAllTeams(retired,pageIndex);
+	public List<Team> getAllTeams(boolean voided,int pageIndex ) {
+		return dao.getAllTeams(voided,pageIndex);
 	}
 
 	public void purgeTeam(Team team){
@@ -73,13 +73,11 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 
 	@Override
 	public List<Team> getTeambyLocation(int locationId, int pageIndex) {
-		// TODO Auto-generated method stub
 		return dao.getTeambyLocation(locationId,pageIndex);
 	}
 
 	@Override
 	public void updateTeam(Team team) {
-		// TODO Auto-generated method stub
 		dao.updateTeam(team);
 	}
 }

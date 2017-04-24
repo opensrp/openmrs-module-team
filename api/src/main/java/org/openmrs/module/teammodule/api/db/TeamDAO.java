@@ -20,7 +20,7 @@ public interface TeamDAO {
 	
 	public void updateTeam(Team team);
 	
-	public List<Team> getAllTeams(boolean retired, int pageIndex);
+	public List<Team> getAllTeams(boolean voided, int pageIndex);
 	
 	public void purgeTeam(Team team);
 	

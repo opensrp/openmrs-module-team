@@ -16,16 +16,6 @@ public class TeamHierarchy extends BaseOpenmrsData implements Serializable {
 	private Boolean ownsTeam;
 
 	private TeamMember reportTo;
-	
-	private String uuid;
-	
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
 
 	public Integer getTeamRoleId() {
 		return teamRoleId;

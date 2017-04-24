@@ -188,6 +188,7 @@ public class TeamMemberViewForm {
 		model.addAttribute("subRoles", subRoles);
 		model.addAttribute("subTeams", subTeams);
 		
+		allLocations.add("a s d");
 		model.addAttribute("allSupervisorIds", allSupervisorIds);
 		model.addAttribute("allSupervisorNames", allSupervisorNames);
 		model.addAttribute("allTeamRoleIds", allTeamRoleIds);
@@ -195,6 +196,11 @@ public class TeamMemberViewForm {
 		model.addAttribute("allTeamIds", allTeamIds);
 		model.addAttribute("allTeamNames", allTeamNames);
 		model.addAttribute("allLocations", allLocations);
+		
+		model.addAttribute("selectedSupervisor", "");
+		model.addAttribute("selectedTeamRole", "");
+		model.addAttribute("selectedTeam", "");
+		model.addAttribute("selectedLocation", "");
 
 		return SUCCESS_FORM_VIEW;
 	}
@@ -207,36 +213,75 @@ public class TeamMemberViewForm {
 			System.out.println("ERROR");
 			return "redirect:/module/teammodule/teamMemberView.form";
 		}
-		System.out.println("searchMember id: " + searchMember.getId());
 		
-		String teamMemberIdStr = request.getParameter("filterById");
-		String supervisorIdStr = request.getParameter("filterBySupervisor");
-		String teamRoleIdStr = request.getParameter("filterByTeamRole");
-		String teamIdStr = request.getParameter("filterByTeam");
-		String locationIdStr = request.getParameter("filterByLocation");
-		
-		System.out.println(teamMemberIdStr + ", " + supervisorIdStr + ", " + teamRoleIdStr + ", " + teamIdStr + ", " + locationIdStr);
-		
-		Integer teamMemberId=null, supervisorId=null, teamId=null, teamRoleId=null, locationId=null;
-		
-		if(teamMemberIdStr.matches("\\d+")) { teamMemberId = Integer.parseInt(teamMemberIdStr); }
-		if(teamIdStr.matches("\\d+")) { teamId = Integer.parseInt(teamIdStr); }
-		if(teamRoleIdStr.matches("\\d+")) { teamRoleId = Integer.parseInt(teamRoleIdStr); }
-		if(supervisorIdStr.matches("\\d+")) { supervisorId = Integer.parseInt(supervisorIdStr); }
-		if(locationIdStr.matches("\\d+")) { locationId = Integer.parseInt(locationIdStr); }
+		String id = request.getParameter("filterById");
+		String supervisorId = request.getParameter("filterBySupervisor");
+		String teamRoleId = request.getParameter("filterByTeamRole");
+		String teamId = request.getParameter("filterByTeam");
+		String locationId = request.getParameter("filterByLocation");
 
-		System.out.println(teamMemberId + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId );
+		if(id.equals("") ) { id = null; }
+		if(supervisorId.equals("") ) { supervisorId = null; }
+		if(teamRoleId.equals("") ) { teamRoleId = null; }
+		if(teamId.equals("") ) { teamId = null; }
+		if(locationId.equals("") ) { locationId = null; }
 		
-/*		List<TeamMember> newTeamMembers = new ArrayList<>();
-		List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).getAllTeamMember(true);
-		for (int i = 0; i < teamMembers.size(); i++) {			
-			if(teamMembers.get(i).getTeamMemberId() == teamMemberId) {
-			}
-		}		
-*/		
-//		TeamHierarchy tr = Context.getService(TeamHierarchyService.class).getTeamRole(teamRole);
+		/*Location l = Context.getLocationService().getLocation(1);
+		System.out.println("location: " + l);*/
+		
+		System.out.println("BEFORE: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId );
+
+		/*TeamMember identifier = null;
+		if(id != null) {
+			identifier = Context.getService(TeamMemberService.class).searchTeamMember(null, null, id);
+		} System.out.println("identifier: " + identifier);*/
+		
+		TeamMember supervisor = null;
+		if(supervisorId != null) {
+			supervisor = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(supervisorId));
+		} System.out.println("supervisor: " + supervisor);
+		
+		Team team = null;
+		if(teamId != null) {
+			team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
+		} System.out.println("team: " + team);
+
+		TeamHierarchy teamRole = null;
+		if(teamRoleId != null) {
+			teamRole = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(teamRoleId));
+		} System.out.println("teamRole: " + teamRole);
+
+		Location location = null;
+		//if(location != null) {
+			location = Context.getLocationService().getLocation(1);
+		//} 
+		System.out.println("location: " + location);
+
+
+		
+		List<TeamMember> teamMembers = Context.getService(TeamMemberService.class).searchTeamMember(id, Integer.parseInt(supervisorId), Integer.parseInt(teamRoleId), Integer.parseInt(teamId), Integer.parseInt(locationId), null, null);
+		
+		System.out.println("AFTER: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId );
+		System.out.println("teamMembers: " + teamMembers);
+
+
+		
+		
+		if(id == (null) ) { id = ""; }
+		if(supervisorId == (null) ) { supervisorId = ""; }
+		if(teamRoleId == (null) ) { teamRoleId = ""; }
+		if(teamId == (null) ) { teamId = ""; }
+		if(locationId == (null) ) { locationId = ""; }
+		
+		if(teamMembers != null) { 
+			model.addAttribute("teamMembers", teamMembers); 
+			model.addAttribute("selectedSupervisor", supervisorId);
+			model.addAttribute("selectedTeamRole", teamRoleId);
+			model.addAttribute("selectedTeam", teamId);
+			model.addAttribute("selectedLocation", locationId);
+		}
 		
 //		return "redirect:/module/teammodule/teamMemberView.form";
-		return "redirect:/module/teammodule/teamMemberView.form?teamMemberId=" + teamMemberIdStr + "&supervisorId=" + supervisorIdStr + "&teamRoleId=" + teamRoleIdStr + "&teamId=" + teamIdStr + "&locationId=" + locationIdStr;
+		return "redirect:/module/teammodule/teamMemberView.form?id=" + id + "&supervisor=" + supervisorId + "&teamRole=" + teamRoleId + "&team=" + teamId + "&location=" + locationId;
 	}
 }

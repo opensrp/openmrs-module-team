@@ -10,8 +10,7 @@
 		<many-to-one name="person" column="person_id" class="org.openmrs.Person" lazy="false" cascade="save-update"/>
 		<property name="joinDate" column="join_date" type="java.util.Date"/>
 		<property name="leaveDate" column="leave_date" type="java.util.Date"/>
-		<property name="isTeamLead" column="is_team_lead" type="boolean" not-null="true" />
-		
+				
 		<set name="location" table="member_location"  inverse="false" lazy="true" fetch="select" cascade="all">
 			<key>
 	    		<column name="team_member_id" not-null="true" />
@@ -28,6 +27,6 @@
 	
 		<many-to-one name="teamRole" column="team_role_id" class="org.openmrs.module.teammodule.TeamHierarchy" />
 
-		<property name="uuid" column="uuid" type="java.lang.String" not-null="true" />
+		<!-- <property name="uuid" column="uuid" type="java.lang.String" not-null="true" /> -->
     </class>
 </hibernate-mapping>

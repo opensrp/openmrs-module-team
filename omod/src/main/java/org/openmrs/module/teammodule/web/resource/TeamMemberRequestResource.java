@@ -4,6 +4,7 @@
 package org.openmrs.module.teammodule.web.resource;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.openmrs.Person;
@@ -99,10 +100,11 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public SimpleObject search(RequestContext context) {
 		
-		if(context.getParameter("q") != null) {
+		/*if(context.getParameter("q") != null) {
 			System.out.println(context.getParameter("q"));
 			List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchTeamMember(context.getParameter("q"));
 			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
@@ -113,10 +115,61 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 			temp.add(memberList);
 			return new NeedsPaging<TeamMember>(temp, context).toSimpleObject(this);
 		}
-		/*else {
+		else {
 			List<TeamMember> memberList = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(Integer.parseInt(context.getParameter("personId")));
 			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
 		}*/
+		
+		if(context.getParameter("identifier") != null && context.getParameter("supervisor") != null && context.getParameter("role") != null && context.getParameter("team") != null && context.getParameter("location") != null) { 
+			Integer startRecord = null; 
+			Integer pageSize = null;
+
+			//Team team = Context.getService(TeamService.class).getTeam();
+			//TeamHierarchy teamRole = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(context.getParameter("role")));
+			List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchTeamMember(context.getParameter("identifier"), Integer.parseInt(context.getParameter("supervisor")), Integer.parseInt(context.getParameter("role")), Integer.parseInt(context.getParameter("team")), Integer.parseInt(context.getParameter("location")), startRecord, pageSize);
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		
+		else if(context.getParameter("teamId") != null) { 
+			List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(Integer.parseInt(context.getParameter("teamId")));
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		else if(context.getParameter("id") != null && context.getParameter("retire") != null) { 
+			boolean isRetired; if(Integer.parseInt(context.getParameter("retire")) == 0) isRetired = false; else isRetired = false;
+			List<TeamMember> memberList = Context.getService(TeamMemberService.class).getAllTeamMember(Integer.parseInt(context.getParameter("id")), isRetired);
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		else if(context.getParameter("joinFrom") != null && context.getParameter("joinTo") != null) { 
+			List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchTeamMember(new Date(context.getParameter("joinFrom")), new Date(context.getParameter("joinTo")), null);
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		
+		else if(context.getParameter("q") != null) { 
+			List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchTeamMember(null, null, context.getParameter("q"));
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		else if(context.getParameter("id") != null) { 
+			TeamMember temp = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(context.getParameter("id")));
+			List<TeamMember> memberList = new ArrayList<>();
+			memberList.add(temp);
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		else if(context.getParameter("uuid") != null) {
+			TeamMember temp = Context.getService(TeamMemberService.class).getTeamMemberByUuid(context.getParameter("uuid"));
+			List<TeamMember> memberList = new ArrayList<>();
+			memberList.add(temp);
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		else if(context.getParameter("person") != null) { 
+			List<TeamMember> memberList = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(Integer.parseInt(context.getParameter("person")));
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		
+		
+		
+		
+		
+		else { return null; }
 	}
 	
 }

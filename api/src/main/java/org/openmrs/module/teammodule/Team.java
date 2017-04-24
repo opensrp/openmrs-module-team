@@ -25,23 +25,9 @@ public class Team extends BaseOpenmrsData implements Serializable {
 	private String teamName;
 	
 	private TeamMember supervisor;
-	
-	private String uuid;
-	
-	private Boolean isRetired;
 
 	private Location location;
-	
-	
-	
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
+		
 	public Team() {
 
 	}
@@ -93,13 +79,5 @@ public class Team extends BaseOpenmrsData implements Serializable {
 
 	public void setLocation(Location location) {
 		this.location = location;
-	}
-
-	public Boolean IsRetired() {
-		return isRetired;
-	}
-
-	public void IsRetired(Boolean isRetired) {
-		this.isRetired = isRetired;
 	}
 }

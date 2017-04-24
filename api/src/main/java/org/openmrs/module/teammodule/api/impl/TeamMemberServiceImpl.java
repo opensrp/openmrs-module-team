@@ -8,10 +8,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Location;
-import org.openmrs.Patient;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
@@ -52,28 +49,18 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 	
 	@Override
-	public void save(TeamMember teamMember) {
-		this.dao.save(teamMember);	
+	public void saveTeamMember(TeamMember teamMember) {
+		this.dao.saveTeamMember(teamMember);	
 	}
 
 	@Override
-	public void saveLocation(Location location) {
-		this.dao.saveLocation(location);		
+	public void purgeTeamMember(TeamMember teamMember) {
+		this.dao.purgeTeamMember(teamMember);
 	}
 
 	@Override
-	public void savePatient(Patient patient) {
-		this.dao.savePatient(patient);
-	}
-
-	@Override
-	public void purgeMember(TeamMember teamMember) {
-		this.dao.purgeMember(teamMember);
-	}
-
-	@Override
-	public void update(TeamMember teamMember) {
-		this.dao.update(teamMember);
+	public void updateTeamMember(TeamMember teamMember) {
+		this.dao.updateTeamMember(teamMember);
 	}
 
 	@Override
@@ -82,52 +69,22 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 	
 	@Override
-	public List<TeamMember> getTeamMemberByDate(Date joinDateFrom, Date joinDateTo) {
-		return this.dao.getTeamMemberByDate(joinDateFrom, joinDateTo);
+	public List<TeamMember> getAllTeamMember(Integer id, boolean voided) {
+		return this.dao.getAllTeamMember(id, voided);
 	}
 	
 	@Override
-	public List<TeamMember> getTeamMemberByLocationId(Integer id) {
-		return this.dao.getTeamMemberByLocationId(id);
-	}
-
-	@Override
-	public List<TeamMember> getTeamMemberByPatientId(Integer id) {
-		return this.dao.getTeamMemberByPatientId(id);
-	}
-
-	@Override
-	public List<TeamMember> getTeamMemberByTeam(Team team, String teamName, Integer teamLeadId, Boolean retired) {
-		return this.dao.getTeamMemberByTeam(team, teamName, teamLeadId, retired);
+	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name) {
+		return this.dao.searchTeamMember(joinDateFrom, joinDateTo, name);
 	}
 	
 	@Override
-	public List<TeamMember> getTeamMemberByTeamWithPage(Team team, String teamName, Integer teamLeadId, Boolean retired, Integer pageSize) {
-		return this.dao.getTeamMemberByTeamWithPage(team, teamName, teamLeadId, retired, pageSize);
-	}	
-	
-	@Override
-	public List<TeamMember> getAllTeamMember(Integer id, boolean isRetired) {
-		return this.dao.getAllTeamMember(id, isRetired);
+	public List<TeamMember> searchTeamMemberByTeam(Integer teamId) {
+		return this.dao.searchTeamMemberByTeam(teamId);
 	}
 	
 	@Override
-	public List<TeamMember> searchTeamMember(String name) {
-		return this.dao.searchTeamMember(name);
-	}
-	
-	@Override
-	public List<TeamMember> searchTeamMemberByTeam(String name, Integer teamId) {
-		return this.dao.searchTeamMemberByTeam(name, teamId);
-	}
-	
-	@Override
-	public List<TeamMember> searchTeamMember(String id, String supervisor, String teamRole, String team, String location) {
-		return this.dao.searchTeamMember(id, supervisor, teamRole, team, location);
-	}
-	
-	@Override
-	public List<TeamMember> searchTeamMemberWithPage(String id, String supervisor, String teamRole, String team, String location, Integer pageSize) {
-		return this.dao.searchTeamMemberWithPage(id, supervisor, teamRole, team, location, pageSize);
+	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, Integer teamRoleId, Integer teamId, Integer locationId, Integer offset, Integer pageSize) {
+		return this.dao.searchTeamMember(identifier, supervisorId, teamRoleId, teamId, locationId, offset, pageSize);
 	}
 }

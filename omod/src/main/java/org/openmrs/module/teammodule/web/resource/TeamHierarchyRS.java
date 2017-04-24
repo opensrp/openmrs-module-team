@@ -63,6 +63,7 @@ public class TeamHierarchyRS extends DataDelegatingCrudResource<TeamHierarchy> {
 		Context.getService(TeamHierarchyService.class).purgeTeamRole(teamHierarchy);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public SimpleObject search(RequestContext context) {
 		if(context.getParameter("q")!=null)

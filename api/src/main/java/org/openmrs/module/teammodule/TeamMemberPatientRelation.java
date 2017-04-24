@@ -6,47 +6,30 @@ import java.util.Date;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
 import org.openmrs.Patient;
-import org.openmrs.User;
 
 @SuppressWarnings("serial")
 public class TeamMemberPatientRelation extends BaseOpenmrsData implements Serializable{
 
-	private Integer teamMemberPatientId;
+	private Integer teamMemberPatientRelationId;
 
-	private TeamMember member;
+	private TeamMember teamMember;
 	
 	private String status;
 	
 	private Patient patient;
 
-	private Date assignmentDate;
+	private Date dateAssigned;
 
 	private Location location;
 	
 	private String reason;
-	
-	private Date dateCreated;
 
-	private User creator;
-
-	private User changedBy;
-
-	private Date dateChanged;
-
-	private Boolean voided;
-
-	private User voidedBy;
-
-	private String voidedReason;
-
-	private String uuid;
-
-	public TeamMember getMember() {
-		return member;
+	public TeamMember getTeamMember() {
+		return teamMember;
 	}
 
-	public void setMember(TeamMember member) {
-		this.member = member;
+	public void setTeamMember(TeamMember teamMember) {
+		this.teamMember = teamMember;
 	}
 	
 	public String getStatus() {
@@ -65,12 +48,12 @@ public class TeamMemberPatientRelation extends BaseOpenmrsData implements Serial
 		this.patient = patient;
 	}
 
-	public Date getAssignmentDate() {
-		return assignmentDate;
+	public Date getDateAssigned() {
+		return dateAssigned;
 	}
 
-	public void setAssignmentDate(Date assignmentDate) {
-		this.assignmentDate = assignmentDate;
+	public void setDateAssigned(Date dateAssigned) {
+		this.dateAssigned = dateAssigned;
 	}
 
 	public Location getLocation() {
@@ -89,83 +72,19 @@ public class TeamMemberPatientRelation extends BaseOpenmrsData implements Serial
 		this.reason = reason;
 	}
 
-	public Integer getTeamMemberPatientId() {
-		return this.teamMemberPatientId;
+	public Integer getTeamMemberPatientRelationId() {
+		return this.teamMemberPatientRelationId;
 	}
 
-	public void setTeamMemberPatientId(Integer teamMemberPatientId) {
-		this.teamMemberPatientId = teamMemberPatientId;
+	public void setTeamMemberPatientRelationId(Integer teamMemberPatientRelationId) {
+		this.teamMemberPatientRelationId = teamMemberPatientRelationId;
 	}
 
 	public Integer getId() {
-		return getTeamMemberPatientId();
+		return getTeamMemberPatientRelationId();
 	}
 
 	public void setId(Integer arg0) {
-		setTeamMemberPatientId(arg0);
+		setTeamMemberPatientRelationId(arg0);
 	}
-
-	public Date getDateCreated() {
-		return dateCreated;
-	}
-	
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-	
-	public User getCreator() {
-		return creator;
-	}
-	
-	public void setCreator(User creator) {
-		this.creator = creator;
-	}
-	
-	public User getChangedBy() {
-		return changedBy;
-	}
-	
-	public void setChangedBy(User changedBy) {
-		this.changedBy = changedBy;
-	}
-	
-	public Date getDateChanged() {
-		return dateChanged;
-	}
-	
-	public void setDateChanged(Date dateChanged) {
-		this.dateChanged = dateChanged;
-	}
-	
-	public Boolean getVoided() {
-		return voided;
-	}
-	
-	public void setVoided(Boolean voided) {
-		this.voided = voided;
-	}
-	
-	public User getVoidedBy() {
-		return voidedBy;
-	}
-	
-	public void setVoidedBy(User voidedBy) {
-		this.voidedBy = voidedBy;
-	}
-	
-	public String getVoidedReason() {
-		return voidedReason;
-	}
-	
-	public void setVoidedReason(String voidedReason) {
-		this.voidedReason = voidedReason;
-	}
-	
-	public String getUuid() {
-		return uuid;
-	}
-	
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}	
 }

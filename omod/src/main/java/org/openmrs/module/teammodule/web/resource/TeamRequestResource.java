@@ -81,6 +81,7 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		Context.getService(TeamService.class).purgeTeam(team);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public SimpleObject search(RequestContext context) {
 		if(context.getParameter("q") != null)
