@@ -71,8 +71,6 @@ public class TeamMemberViewForm {
 		List<String> allTeamNames = new ArrayList<>();
 		List<String> allLocationIds = new ArrayList<>();
 		List<String> allLocationNames = new ArrayList<>();
-		
-		//List<String> allLocations = new ArrayList<>();
 
 		Set<String> temp = new HashSet<>();
 		
@@ -204,10 +202,10 @@ public class TeamMemberViewForm {
 		model.addAttribute("allLocationIds", allLocationIds);
 		model.addAttribute("allLocationNames", allLocationNames);
 		
-		model.addAttribute("selectedSupervisor", "");
-		model.addAttribute("selectedTeamRole", "");
-		model.addAttribute("selectedTeam", "");
-		model.addAttribute("selectedLocation", "");
+		model.addAttribute("selectedSupervisor", "1");
+		model.addAttribute("selectedTeamRole", "1");
+		model.addAttribute("selectedTeam", "1");
+		model.addAttribute("selectedLocation", "1");
 
 		return SUCCESS_FORM_VIEW;
 	}
@@ -259,15 +257,16 @@ public class TeamMemberViewForm {
 		if(teamId == (null) ) { teamId = ""; }
 		if(locationId == (null) ) { locationId = ""; }
 		
-		if(teamMembers != null) { 
+		/*if(teamMembers != null) { 
 			System.out.println("teamMembers: " + teamMembers);
 			model.addAttribute("teamMembers", teamMembers); 
-//			model.addAttribute("selectedSupervisor", supervisorId);
-//			model.addAttribute("selectedTeamRole", teamRoleId);
-//			model.addAttribute("selectedTeam", teamId);
-//			model.addAttribute("selectedLocation", locationId);
-		}
+			model.addAttribute("selectedSupervisor", supervisorId);
+			model.addAttribute("selectedTeamRole", teamRoleId);
+			model.addAttribute("selectedTeam", teamId);
+			model.addAttribute("selectedLocation", locationId);
+		}*/
 		
+//		return SUCCESS_FORM_VIEW;
 		return "redirect:/module/teammodule/teamMemberView.form";
 //		return "redirect:/module/teammodule/teamMemberView.form?id=" + id + "&supervisor=" + supervisorId + "&teamRole=" + teamRoleId + "&team=" + teamId + "&location=" + locationId;
 	}

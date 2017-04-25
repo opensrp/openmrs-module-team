@@ -17,6 +17,28 @@
 		$('#example').DataTable({
 			"language": { "search": "Filter records:" }
 		});
+	
+		$("#submitBtn").bind("click", function() {
+			console.log("ajax call start");
+			$.ajax({
+				url: "http://localhost:8080/openmrs/ws/rest/v1/team/teammember?id=1&v=full",
+				//type: "POST",
+				//data: dataNode,
+				success : function(result) {
+					var data = JSON.parse(result);
+					console.log(result);
+					console.log(result.results);
+					console.log(JSON.stringify(result));
+					console.log(JSON.parse(result));
+				}, error: function(jqXHR, textStatus, errorThrown) {
+					console.log(jqXHR);
+					console.log(textStatus);
+					console.log(errorThrown);
+				}
+			});
+			console.log("ajax call end");
+		});
+	
 	});
 </script>
 
@@ -29,7 +51,7 @@
 <p>${selectedLocation}</p>
 
 <table>
-	<form:form method="post" ><!-- commandName="filterTeamMember" -->
+	<form:form ><!-- commandName="filterTeamMember" method="post" -->
 		<tr>
 			<td>Filter By: </td>
 			<td>
@@ -68,7 +90,7 @@
 				</select>
 			</td>
 			<td>
-				<button type="submit">Filter</button>
+				<button type="button" id="submitBtn" name="submitBtn">Filter</button>
 			</td>
 		</tr>
 	</form:form>
