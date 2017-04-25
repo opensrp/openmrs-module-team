@@ -25,32 +25,32 @@ public class TeamMemberPatientRelationServiceImpl extends BaseOpenmrsService imp
 		this.dao = dao;
 	}
 
-	public void save(TeamMemberPatientRelation tmpr) {
-		 dao.save(tmpr);
+	public void saveTeamMemberPatientRelation(TeamMemberPatientRelation tmpr) {
+		 dao.saveTeamMemberPatientRelation(tmpr);
 	}
 	
-	public void delete(TeamMemberPatientRelation tmpr) {
-		 dao.delete(tmpr);
+	public void purgeTeamMemberPatientRelation(TeamMemberPatientRelation tmpr) {
+		 dao.purgeTeamMemberPatientRelation(tmpr);
 	}
 	
-	public TeamMemberPatientRelation getTeamPatientRelation(Integer id) {
-		return dao.getTeamPatientRelation(id);
+	public TeamMemberPatientRelation getTeamMemberPatientRelation(Integer id) {
+		return dao.getTeamMemberPatientRelation(id);
 	}
 
-	public TeamMemberPatientRelation getTeamPatientRelation(String uuid) {
-		return dao.getTeamPatientRelation(uuid);
+	public TeamMemberPatientRelation getTeamMemberPatientRelation(String uuid) {
+		return dao.getTeamMemberPatientRelation(uuid);
 	}
 
-	public void update(TeamMemberPatientRelation tmpr) {
-		dao.update(tmpr);
+	public void updateTeamMemberPatientRelation(TeamMemberPatientRelation tmpr) {
+		dao.updateTeamMemberPatientRelation(tmpr);
 	}
 	
-	public TeamMemberPatientRelation getTeamPatientRelations(TeamMemberPatientRelation id) {
-		return dao.getTeamPatientRelations(id);
+	public TeamMemberPatientRelation getTeamMemberPatientRelations(TeamMemberPatientRelation id) {
+		return dao.getTeamMemberPatientRelations(id);
 	}
 	
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMember tm) {
-		return dao.getTeamPatientRelations(tm);
+	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(TeamMember tm) {
+		return dao.getTeamMemberPatientRelations(tm);
 	}
 	
 }

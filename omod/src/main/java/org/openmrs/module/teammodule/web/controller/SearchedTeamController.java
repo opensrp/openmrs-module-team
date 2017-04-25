@@ -62,7 +62,10 @@ public class SearchedTeamController {
 
 		for (int i = 0; i < team.size(); i++) {
 			String date = sdf.format(team.get(i).getDateCreated());
-			teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.get(i), null, null, true);
+			
+			/*teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.get(i), null, null, true);*/
+			teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.get(i).getId());
+			
 			parsedDate.add(date);
 			length.add(teamMember.size());
 			Supervisor = Context.getService(TeamMemberService.class).getTeamMember(team.get(i).getSupervisor().getId());

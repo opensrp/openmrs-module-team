@@ -27,6 +27,6 @@
 	
 		<many-to-one name="teamRole" column="team_role_id" class="org.openmrs.module.teammodule.TeamHierarchy" />
 
-		<!-- <property name="uuid" column="uuid" type="java.lang.String" not-null="true" /> -->
+		<property name="uuid" column="uuid" type="java.lang.String" not-null="true" />
     </class>
 </hibernate-mapping>

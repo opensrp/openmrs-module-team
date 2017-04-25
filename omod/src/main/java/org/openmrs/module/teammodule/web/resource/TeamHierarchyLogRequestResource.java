@@ -23,7 +23,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  */
 @Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamhierarchylog", supportedClass = TeamRoleLog.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
 		"1.12.*" })
-public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> {
+public class TeamHierarchyLogRequestResource extends DataDelegatingCrudResource<TeamRoleLog> {
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
@@ -65,7 +65,7 @@ public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> 
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamRoleLog> listTeam = Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(context.getParameter("q"),0);
+		List<TeamRoleLog> listTeam = Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(context.getParameter("q"),null,null);
 		return new NeedsPaging<TeamRoleLog>(listTeam, context).toSimpleObject(this);
 	}
 	
@@ -75,7 +75,7 @@ public class TeamHierarchyLogRS extends DataDelegatingCrudResource<TeamRoleLog> 
 			return null;
 		}
 		
-		return Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(teamRole,0);
+		return Context.getService(TeamRoleLogService.class).searchTeamRoleLogByTeamRole(teamRole,null,null);
 	}
 
 	@Override

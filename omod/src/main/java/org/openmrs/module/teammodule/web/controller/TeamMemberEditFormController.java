@@ -181,13 +181,18 @@ public class TeamMemberEditFormController {
 		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMember(teamMemberId);
 		List<Location> allLocations = Context.getLocationService().getAllLocations();
 		String caption = "";
-		if (teamMember.getIsTeamLead() == true) {
+		
+		/*if (teamMember.getIsTeamLead() == true) {
 			caption = "Edit Team Lead";
 			model.addAttribute("caption", caption);
 		} else {
 			caption = "Edit Member";
 			model.addAttribute("caption", caption);
-		}
+		}*/
+		caption = "Edit Member - CAPTION";
+		model.addAttribute("caption", caption);
+
+
 		String gender = teamMember.getPerson().getGender();
 		System.out.println(gender);
 		model.addAttribute("gender", gender);
@@ -319,7 +324,10 @@ public class TeamMemberEditFormController {
 			
 			if (error.isEmpty()) {
 				// System.out.println(error);
-				Context.getService(TeamMemberService.class).update(teamMember);
+				
+				/*Context.getService(TeamMemberService.class).update(teamMember);*/
+				Context.getService(TeamMemberService.class).updateTeamMember(teamMember);
+				
 				String edit = "Member edited successfully";
 				model.addAttribute("edit", edit);
 			}

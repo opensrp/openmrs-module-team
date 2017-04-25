@@ -32,8 +32,8 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.saveTeamRole(TeamHierarchy);
 	}
 
-	public List<TeamHierarchy> getAllTeams() {
-		return dao.getAllTeams();
+	public List<TeamHierarchy> getAllTeamHierarchy() {
+		return dao.getAllTeamHierarchy();
 	}
 
 	public void purgeTeamRole(TeamHierarchy TeamRole) {

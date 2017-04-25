@@ -15,7 +15,7 @@ public interface TeamMemberLogService extends OpenmrsService {
 	
 	public TeamMemberLog getTeamMemberLog(String uuid);
 
-	public List<TeamMemberLog> getAllLogs(Integer pageSize);
+	public List<TeamMemberLog> getAllLogs(Integer offset, Integer pageSize);
 	
 	public void purgeTeamMemberLog(TeamMemberLog teamMemberLog);
 	

@@ -11,7 +11,7 @@ import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberPatientRelation;
 import org.openmrs.module.teammodule.api.db.TeamMemberPatientRelationDAO;
 
-public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelationDAO{
+public class HibernateTeamMemberPatientRelationDAO implements TeamMemberPatientRelationDAO{
 
 
 	protected final Log log = LogFactory.getLog(getClass());
@@ -29,39 +29,39 @@ public class HibernateTeamPatientRelationDAO implements TeamMemberPatientRelatio
 		this.sessionFactory = sessionFactory;
 	}
 
-	public void save(TeamMemberPatientRelation team) {
+	@Override
+	public void saveTeamMemberPatientRelation(TeamMemberPatientRelation team) {
 		sessionFactory.getCurrentSession().save(team);
 	}
 	
-	public void delete(TeamMemberPatientRelation team) {
-		sessionFactory.getCurrentSession().delete(team);
-	}
-	
-	public TeamMemberPatientRelation getTeamPatientRelation(int tpr) {
+	@Override
+	public TeamMemberPatientRelation getTeamMemberPatientRelation(int tpr) {
 		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient where teamMemberPatient.teamMemberPatientId = :id").setInteger("id", tpr).uniqueResult();
 	}
 
-	public void update(TeamMemberPatientRelation tmpr) {
+	@Override
+	public void updateTeamMemberPatientRelation(TeamMemberPatientRelation tmpr) {
 		sessionFactory.getCurrentSession().update(tmpr);
 	}
 
-	public void purgeTeamPatientRelation(TeamMemberPatientRelation tpr) {
+	@Override
+	public void purgeTeamMemberPatientRelation(TeamMemberPatientRelation tpr) {
 		sessionFactory.getCurrentSession().delete(tpr);
 	}
 	
 	@Override
-	public TeamMemberPatientRelation getTeamPatientRelation(String uuid) {
+	public TeamMemberPatientRelation getTeamMemberPatientRelation(String uuid) {
 		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient where teamMemberPatient.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 	
 	@Override
-	public TeamMemberPatientRelation getTeamPatientRelations(TeamMemberPatientRelation tpr) {
+	public TeamMemberPatientRelation getTeamMemberPatientRelations(TeamMemberPatientRelation tpr) {
 		return (TeamMemberPatientRelation) sessionFactory.getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient where teamMemberPatient.teamMemberPatientId = :id").setInteger("id", tpr.getId()).uniqueResult();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMember tm) {
+	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(TeamMember tm) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMemberPatientRelation.class);
 
 		if (tm != null) {

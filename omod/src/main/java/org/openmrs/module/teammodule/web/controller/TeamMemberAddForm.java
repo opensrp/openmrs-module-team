@@ -294,10 +294,14 @@ public class TeamMemberAddForm {
 		//System.out.println("Error:"+error);
 		if (error.isEmpty()) {
 
-			if (teamMember.getIsTeamLead().booleanValue()) {
+			/*if (teamMember.getIsTeamLead().booleanValue()) {*/
+			
 				TeamMember tl = Context.getService(TeamMemberService.class).getTeamMember(team.getSupervisor().getId());
 				if (tl == null) {
-					Context.getService(TeamMemberService.class).save(teamMember);
+					
+					/*Context.getService(TeamMemberService.class).save(teamMember);*/
+					Context.getService(TeamMemberService.class).saveTeamMember(teamMember);
+					
 					teamSupervisor.setTeam(team);
 					//teamSupervisor.setTeamMember(teamMember);
 					if (teamMember.getJoinDate() == null) {
@@ -306,13 +310,18 @@ public class TeamMemberAddForm {
 						teamSupervisor.setJoinDate(teamMember.getJoinDate());
 					}
 					teamSupervisor.setUuid(UUID.randomUUID().toString());
-					Context.getService(TeamMemberService.class).save(teamSupervisor);
+					
+					/*Context.getService(TeamMemberService.class).save(teamSupervisor);*/
+					Context.getService(TeamMemberService.class).saveTeamMember(teamSupervisor);
+							
 				} else {
 					error = "Team Supervisor for this team already exists. ";
 					model.addAttribute("error", error);
 				}
-			}
+			
+			/*}*/	
 		}
+	
 		model.addAttribute("teamId", tId);
 		User user=null;
 		if (error.isEmpty()) {
@@ -322,7 +331,10 @@ public class TeamMemberAddForm {
 			if(!password.isEmpty() && !username.isEmpty())
 			Context.getUserService().createUser(user, password);
 			teamMember.setUuid(UUID.randomUUID().toString());
-			Context.getService(TeamMemberService.class).save(teamMember);
+			
+			/*Context.getService(TeamMemberService.class).save(teamMember);*/
+			Context.getService(TeamMemberService.class).saveTeamMember(teamMember);
+			
 			String saved = "Member saved successfully";
 			//System.out.println("Member Saved");
 			Provider provider = new Provider();
@@ -348,7 +360,8 @@ public class TeamMemberAddForm {
 			}			
 			teamMember.getLocation().add(location);
 			
-			Context.getService(TeamMemberService.class).saveLocation(location);
+			/*Context.getService(TeamMemberService.class).saveLocation(location);*/
+			Context.getLocationService().saveLocation(location);
 			
 		}
 		

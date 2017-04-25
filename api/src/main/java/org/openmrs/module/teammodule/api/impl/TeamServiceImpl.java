@@ -7,9 +7,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Location;
 import org.openmrs.api.impl.BaseOpenmrsService;
 //import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.api.db.TeamDAO;
 
@@ -55,8 +57,8 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		return dao.getTeam(name);
 	}
 
-	public List<Team> getAllTeams(boolean voided,int pageIndex ) {
-		return dao.getAllTeams(voided,pageIndex);
+	public List<Team> getAllTeams(boolean voided, Integer offset, Integer pageSize) {
+		return dao.getAllTeams(voided,offset, pageSize);
 	}
 
 	public void purgeTeam(Team team){
@@ -67,13 +69,13 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		return dao.searchTeam(name);
 	}
 	
-	public Team getTeamBySupervisor(int teamSupervisor) {
+	public Team getTeamBySupervisor(TeamMember teamSupervisor) {
 		return dao.getTeamBySupervisor(teamSupervisor);
 	}
 
 	@Override
-	public List<Team> getTeambyLocation(int locationId, int pageIndex) {
-		return dao.getTeambyLocation(locationId,pageIndex);
+	public List<Team> getTeambyLocation(Location locationId, Integer offset, Integer pageSize) {
+		return dao.getTeambyLocation(locationId,offset, pageSize);
 	}
 
 	@Override

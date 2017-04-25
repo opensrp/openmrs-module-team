@@ -75,9 +75,15 @@ public class TeamMemberController {
 
 		if (Context.isAuthenticated()) {
 			if (memberName == null) {
-				teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
+				
+				/*teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);*/
+				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
+				
 			} else {
-				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(memberName, Integer.parseInt(teamId));
+				
+				/*teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(memberName, Integer.parseInt(teamId));*/
+				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(Integer.parseInt(teamId));
+				
 			}
 			for (int i = 0; i < teamMember.size(); i++) {
 				/*
@@ -140,10 +146,18 @@ public class TeamMemberController {
 		
 		if (Context.isAuthenticated()) {
 			if (memberName == null) {
-				teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
-				teamMemberTemp = Context.getService(TeamMemberService.class).getTeamMemberByTeamWithPage(team, null, null, null, 100);
-				} else {
-				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(memberName, Integer.parseInt(teamId));
+				
+				/*teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);*/
+				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
+				
+				/*teamMemberTemp = Context.getService(TeamMemberService.class).getTeamMemberByTeamWithPage(team, null, null, null, 100);*/
+				
+			} 
+			else {
+			
+				/*teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(memberName, Integer.parseInt(teamId));*/
+				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(Integer.parseInt(teamId));
+					
 			}
 			for (int i = 0; i < teamMember.size(); i++) {
 				if (teamMember.get(i).getJoinDate() != null) {
@@ -214,10 +228,17 @@ public class TeamMemberController {
 			teamSupervisor.setVoidReason("Team Lead Changed");
 			teamSupervisor.setLeaveDate(new Date());
 			teamSupervisor.setDateVoided(new Date());
-			Context.getService(TeamMemberService.class).update(teamSupervisor);
+			
+			/*Context.getService(TeamMemberService.class).update(teamSupervisor);*/
+			Context.getService(TeamMemberService.class).updateTeamMember(teamSupervisor);
+			
 			tm = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(teamSupervisorId));
-			tm.setIsTeamLead(false);
-			Context.getService(TeamMemberService.class).update(tm);
+			
+			/*tm.setIsTeamLead(false);*/
+			
+			/*Context.getService(TeamMemberService.class).update(tm);*/
+			Context.getService(TeamMemberService.class).updateTeamMember(tm);
+			
 		}
 		tm = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(teamMemberId));
 		teamSupervisor = new TeamMember();
@@ -227,11 +248,19 @@ public class TeamMemberController {
 		if(teamSupervisor.getUuid() == null){
 			teamSupervisor.setUuid(UUID.randomUUID().toString());
 		}	
-		Context.getService(TeamMemberService.class).save(teamSupervisor);
+		
+		/*Context.getService(TeamMemberService.class).save(teamSupervisor);*/
+		Context.getService(TeamMemberService.class).saveTeamMember(teamSupervisor);
+		
 		teamSupervisor = Context.getService(TeamMemberService.class).getTeamMember(team.getSupervisor().getId());	
-		tm.setIsTeamLead(true);
-		Context.getService(TeamMemberService.class).update(tm);
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, false);
+		
+		/*tm.setIsTeamLead(true);*/
+		
+		/*Context.getService(TeamMemberService.class).update(tm);*/
+		Context.getService(TeamMemberService.class).updateTeamMember(tm);
+		
+		/*List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, false);*/
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
 
 		for (int i = 0; i < teamMember.size(); i++) {
 			// person =

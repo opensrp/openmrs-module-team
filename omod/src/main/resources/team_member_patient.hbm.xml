@@ -11,7 +11,7 @@
 		<property name="reason" column="reason" type="java.lang.String"/>
 		<property name="status" column="status" type="java.lang.String"/>
 		
-		<!-- <property name="uuid" column="uuid" type="java.lang.String" not-null="true" /> -->
+		<property name="uuid" column="uuid" type="java.lang.String" not-null="true" />
 		
 	</class>
 </hibernate-mapping>

@@ -6,7 +6,10 @@ package org.openmrs.module.teammodule.api;
 import java.util.Date;
 import java.util.List;
 
+import org.openmrs.Location;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamMember;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,5 +38,5 @@ public interface TeamMemberService extends OpenmrsService {
 
 	public List<TeamMember> searchTeamMemberByTeam(Integer teamId);
 
-	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, Integer teamRoleId, Integer teamId, Integer locationId, Integer offset, Integer pageSize);
+	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize);
 }

@@ -10,11 +10,11 @@ public interface TeamLogDAO {
 	
 	public TeamLog getTeamLog(int id);
 	
-	public List<TeamLog> getAllLogs(int pageIndex);
+	public List<TeamLog> getAllLogs(Integer offset, Integer pageSize);
 	
 	public void purgeTeamLog(TeamLog teamLog);
 	
-	public List<TeamLog> searchTeamLogByTeam(int team, int pageIndex);
+	public List<TeamLog> searchTeamLogByTeam(int team, Integer offset, Integer pageSize);
 
 	public TeamLog getTeamLog(String uuid);
 }

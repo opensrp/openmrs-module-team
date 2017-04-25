@@ -46,10 +46,13 @@ public class HibernateTeamMemberLogDAO implements TeamMemberLogDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<TeamMemberLog> getAllLogs(Integer pageSize) {
+	public List<TeamMemberLog> getAllLogs(Integer offset, Integer pageSize) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
 		if (pageSize != null) {
-			criteria.setFirstResult(pageSize);
+			criteria.setFirstResult(offset);
+		}
+		if (pageSize != null) {
+			criteria.setMaxResults(pageSize);
 		}
 		return criteria.list();
 	}

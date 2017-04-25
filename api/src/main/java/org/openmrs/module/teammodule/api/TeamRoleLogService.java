@@ -13,11 +13,11 @@ public interface TeamRoleLogService extends OpenmrsService {
 	
 	public TeamRoleLog getTeamRoleLog(int id);
 	
-	public List<TeamRoleLog> getAllLogs(int pageIndex);
+	public List<TeamRoleLog> getAllLogs(Integer offset, Integer pageSize);
 	
 	public void purgeTeamRoleLog(TeamRoleLog teamRoleLog);
 	
-	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRoleId,int pageIndex);
+	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRoleId,Integer offset, Integer pageSize);
 
 	public TeamRoleLog getTeamRoleLog(String uuid);
 }

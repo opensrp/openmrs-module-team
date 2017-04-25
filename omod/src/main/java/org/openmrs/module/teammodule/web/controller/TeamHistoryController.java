@@ -77,7 +77,9 @@ public class TeamHistoryController {
 
 		// Multiple Supervisors
 
-		List<TeamMember> teamSupervisor = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
+		/*List<TeamMember> teamSupervisor = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);*/
+		List<TeamMember> teamSupervisor = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
+		
 		// System.out.println(teamSupervisor);
 		// Date dateCreated = null;
 		// Date leaveDate = null;

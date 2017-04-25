@@ -11,9 +11,13 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.ResultTransformer;
+import org.openmrs.Location;
+import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
 
@@ -125,47 +129,63 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	
 	//id - TODO
 	@Override
-	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, Integer teamRoleId, Integer teamId, Integer locationId, Integer offset, Integer pageSize) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
-		
-		if (identifier != null) {
-			criteria.add(Restrictions.eq("teamMemberIdentifier", identifier));
-			System.out.println("identifier");
-		}
-		
-		if (supervisorId != null) {
-			criteria.add(Restrictions.eq("supervisorId", supervisorId));
-			System.out.println("supervisor");
-		}
+	public List<TeamMember> searchTeamMember(String identifier, Integer supervisor, TeamHierarchy teamRole, Team team, Location location, Integer offset, Integer pageSize) {
+		String queryStr = " select tm.* from team_member tm ";
 
-		if (teamRoleId != null) {
-			criteria.createAlias("teamRole", "tr").add(Restrictions.eq("tr.teamRoleId", teamRoleId));
-			//criteria.add(Restrictions.eq("teamRole", teamRole));
-			System.out.println("teamRole");
-		}
-
-		if (teamId != null) {
-			criteria.createAlias("team", "t").add(Restrictions.eq("t.teamId", teamId));
-			//criteria.add(Restrictions.eq("team", team));
-			System.out.println("team");
-		}
-
-		if (locationId != null) {
-			criteria.createAlias("location", "l").add(Restrictions.eq("l.locationId", locationId));
-			//criteria.add(Restrictions.eq("location", location));
+		if (location != null) {
+			queryStr += " inner join location l on l.location_id=" + Integer.toString(location.getId()) + " ";
 			System.out.println("location");
 		}
 		
+		if (teamRole != null) {
+			queryStr += " inner join team_role tr on tr.team_role_id=" + Integer.toString(teamRole.getId()) + " ";
+			System.out.println("teamRole");
+		}
+		
+		if (team != null) {
+			queryStr += " inner join team t on t.team_id=" + Integer.toString(team.getId()) + " ";
+			System.out.println("team-if");
+			if (supervisor != null && identifier != null) {
+				queryStr += " where t.supervisor_id=" + Integer.toString(supervisor) + " and tm.identifier like '%" + identifier + "%' ";
+				System.out.println("supervisor and identifier");
+			}
+			else if (supervisor != null && identifier == null) {
+				queryStr += " where t.supervisor_id=" + Integer.toString(supervisor) + " ";
+				System.out.println("supervisor");
+			}
+			else if (supervisor == null && identifier != null) {
+				queryStr += " where tm.identifier like '%" + identifier + "%' ";
+				System.out.println("identifier");
+			}
+		}
+		else {//if (team == null) {
+			System.out.println("team-else");
+			if (supervisor != null && identifier != null) {
+				queryStr += " inner join team t where t.supervisor_id=" + Integer.toString(supervisor) + " and tm.identifier like '%" + identifier + "%' ";
+				System.out.println("supervisor and identifier");
+			}
+			else if (supervisor != null && identifier == null) {
+				queryStr += " inner join team t where t.supervisor_id=" + Integer.toString(supervisor) + " ";
+				System.out.println("supervisor");
+			}
+			else if (supervisor == null && identifier != null) {
+				queryStr += " where tm.identifier like '%" + identifier + "%' ";
+				System.out.println("identifier");
+			}
+		}
+
+		System.out.println("queryStr: " + queryStr);
+		Query q = sessionFactory.getCurrentSession().createSQLQuery(queryStr);
+		
 		if (offset != null) {
-			criteria.setFirstResult(offset);
+			q.setFirstResult(offset);
 		}
 		
 		if (pageSize != null) {
-			criteria.setMaxResults(pageSize);
+			q.setMaxResults(pageSize);
 		}
 		
-		
-		return criteria.list();
+		return q.list();
 	}
 			
 	@SuppressWarnings("serial")

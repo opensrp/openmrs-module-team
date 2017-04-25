@@ -45,7 +45,10 @@ public class TeamMemberResponsibilityController {
 	@RequestMapping(value = "module/teammodule/teamMemberResponsibility.form", method = RequestMethod.GET)
 	public String showTeamMemberResponsibility(Model model, HttpServletRequest request,@RequestParam("teamId")String teamId) {
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
+		
+		/*List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);*/
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
+		
 		model.addAttribute("teamName", team.getTeamName());
 		model.addAttribute("teamMember", teamMember.size());
 		
@@ -55,7 +58,9 @@ public class TeamMemberResponsibilityController {
 		{
 		m=new HashedMap();
 		
-		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember.get(i));
+		/*List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember.get(i));*/
+		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamMemberPatientRelations(teamMember.get(i));
+		
 		m.put("size", tprs.size());
 		m.put("size", 0);
 		m.put("memberId", teamMember.get(i).getTeamMemberId());
@@ -76,7 +81,8 @@ public class TeamMemberResponsibilityController {
 		model.addAttribute("memberId", memberId);
 		model.addAttribute("memberName", teamMember.getPerson().getNames());
 		
-		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember);
+		/*List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember);*/
+		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamMemberPatientRelations(teamMember);
 		for(int i=0;i<tprs.size();i++)
 		{
 			m=new HashedMap();
@@ -91,7 +97,10 @@ public class TeamMemberResponsibilityController {
 			m.put("id", id);
 			String status = tprs.get(i).getStatus();
 			m.put("status", status);
-			Date assignmentDate = tprs.get(i).getAssignmentDate();
+			
+			/*Date assignmentDate = tprs.get(i).getAssignmentDate();*/
+			Date assignmentDate = tprs.get(i).getDateAssigned();
+			
 			m.put("assignmentDate", assignmentDate);
 			String reason = tprs.get(i).getReason();
 			m.put("reason", reason);

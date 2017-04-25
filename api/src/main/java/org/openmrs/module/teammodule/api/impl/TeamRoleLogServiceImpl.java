@@ -32,16 +32,16 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.saveTeamRoleLog(teamRolelog);
 	}
 
-	public List<TeamRoleLog> getAllLogs(int pageIndex) {
-		return dao.getAllLogs(pageIndex);
+	public List<TeamRoleLog> getAllLogs(Integer offset, Integer pageSize) {
+		return dao.getAllLogs(offset, pageSize);
 	}
 
 	public void purgeTeamRoleLog(TeamRoleLog TeamRoleLog) {
 		dao.purgeTeamRoleLog(TeamRoleLog);
 	}
 
-	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRole,int pageIndex) {
-		return dao.searchTeamRoleLogByTeamRole(teamRole,pageIndex);
+	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRole,Integer offset, Integer pageSize) {
+		return dao.searchTeamRoleLogByTeamRole(teamRole,offset, pageSize);
 	}
 
 	public TeamRoleLog getTeamRoleLog(int id) {

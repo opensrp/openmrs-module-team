@@ -31,7 +31,10 @@ public class AjaxTeamModuleController {
 	@ResponseBody
 	public String getTeams(HttpServletRequest request) {
 //		List<TeamLocation> teamLocation = Context.getService(TeamService.class).getAllLocation();
-		List<Team> team = Context.getService(TeamService.class).getAllTeams(false,0);
+		
+		/*List<Team> team = Context.getService(TeamService.class).getAllTeams(false,0);*/
+		List<Team> team = Context.getService(TeamService.class).getAllTeams(false,null, null);
+		
 		String error = "";
 		// System.out.println("here");
 		String teamName = request.getParameter("teamName");
@@ -75,7 +78,10 @@ public class AjaxTeamModuleController {
 		String identifier = request.getParameter("identifier");
 		String teamId = request.getParameter("teamId");
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
+		
+		/*List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);*/
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
+		
 		// System.out.println(teamId);
 		// String locationId = request.getParameter("locationId");
 		for (int i = 0; i < teamMember.size(); i++) {
@@ -103,7 +109,10 @@ public class AjaxTeamModuleController {
 		String teamId = request.getParameter("teamId");
 		String teamMemberId = request.getParameter("teamMemberId");
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);
+		
+		/*List<TeamMember> teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team, null, null, null);*/
+		List<TeamMember> teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
+		
 		// System.out.println(teamId);
 		// String locationId = request.getParameter("locationId");
 		for (int i = 0; i < teamMember.size(); i++) {

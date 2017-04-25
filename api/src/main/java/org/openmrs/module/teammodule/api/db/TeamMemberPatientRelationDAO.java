@@ -7,19 +7,17 @@ import org.openmrs.module.teammodule.TeamMemberPatientRelation;
 
 public interface TeamMemberPatientRelationDAO {
 
-	public void save(TeamMemberPatientRelation tpr);
-
-	public void delete(TeamMemberPatientRelation tpr);
+	public void saveTeamMemberPatientRelation(TeamMemberPatientRelation tpr);
 	
-	public TeamMemberPatientRelation getTeamPatientRelation(int tpr);
+	public TeamMemberPatientRelation getTeamMemberPatientRelation(int tpr);
 
-	public void update(TeamMemberPatientRelation tpr);
+	public void updateTeamMemberPatientRelation(TeamMemberPatientRelation tpr);
 	
-	public void purgeTeamPatientRelation(TeamMemberPatientRelation tpr);
+	public void purgeTeamMemberPatientRelation(TeamMemberPatientRelation tpr);
 	
-	public TeamMemberPatientRelation getTeamPatientRelation(String uuid);
+	public TeamMemberPatientRelation getTeamMemberPatientRelation(String uuid);
 
-	public TeamMemberPatientRelation getTeamPatientRelations(TeamMemberPatientRelation tmpr);
+	public TeamMemberPatientRelation getTeamMemberPatientRelations(TeamMemberPatientRelation tmpr);
 
-	public List<TeamMemberPatientRelation> getTeamPatientRelations(TeamMember tmpr);
+	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(TeamMember tmpr);
 }

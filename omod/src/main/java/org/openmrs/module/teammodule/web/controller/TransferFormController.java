@@ -51,7 +51,10 @@ public class TransferFormController {
 	public String showForm(Model model, HttpServletRequest request) {
 		// ** must be added too
 		TeamMember transfer = new TeamMember();
-		List<Team> teams = Context.getService(TeamService.class).getAllTeams(true,0);
+		
+		/*List<Team> teams = Context.getService(TeamService.class).getAllTeams(true,0);*/
+		List<Team> teams = Context.getService(TeamService.class).getAllTeams(true,null, null);
+		
 		String teamId = request.getParameter("teamId");
 		String error = request.getParameter("errorMessage");
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
@@ -60,25 +63,33 @@ public class TransferFormController {
 		
 		String memberId = request.getParameter("memberId");
 		TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(memberId));
-		Boolean isTeamLead = teamMember.getIsTeamLead();
+		/*Boolean isTeamLead = teamMember.getIsTeamLead();*/
 		if (teamSupervisor != null && teamSupervisor.getTeamMemberId() == Integer.parseInt(memberId)) {
 			// System.out.println("inside");
 			teamSupervisor.setLeaveDate(new Date());
 			teamSupervisor.setVoided(true);
 			teamSupervisor.setDateVoided(new Date());
 			teamSupervisor.setVoidReason("Transferred");
-			Context.getService(TeamMemberService.class).update(teamSupervisor);
+			
+			/*Context.getService(TeamMemberService.class).update(teamSupervisor);*/
+			Context.getService(TeamMemberService.class).updateTeamMember(teamSupervisor);
+
 		}
 		/*
 		 * teamMember.setPerson(Context.getPersonService().getPerson(teamMember.
 		 * getPersonId())); teamMember.setTeam(team);
 		 */
-		teamMember.setIsTeamLead(isTeamLead);
+		
+		/*teamMember.setIsTeamLead(isTeamLead);*/
+		
 		teamMember.setLeaveDate(new Date());
 		teamMember.setVoided(true);
 		teamMember.setVoidReason("Transferred");
 		teamMember.setDateVoided(new Date());
-		Context.getService(TeamMemberService.class).update(teamMember);
+		
+		/*Context.getService(TeamMemberService.class).update(teamMember);*/
+		Context.getService(TeamMemberService.class).updateTeamMember(teamMember);
+		
 		model.addAttribute("teams", teams);
 		model.addAttribute("errorMessage", error);
 
@@ -108,19 +119,25 @@ public class TransferFormController {
 			// return error view
 		}
 		//String memberId = request.getParameter("memberId");
-		teamMember.setIsTeamLead(false);
+		
+		/*teamMember.setIsTeamLead(false);*/
+		
 		//System.out.println(teamMember.getTeam().getTeamId());
 		Team team = Context.getService(TeamService.class).getTeam(teamMember.getTeam().getTeamId());
 		//teamMember.setLocation(team.getLocation());
 		teamMember.setTeam(team);
 		teamMember.setUuid(UUID.randomUUID().toString());
-		Context.getService(TeamMemberService.class).save(teamMember);
+		
+		/*Context.getService(TeamMemberService.class).save(teamMember);*/
+		Context.getService(TeamMemberService.class).saveTeamMember(teamMember);
 		
 		for(int i = 0; i < teamMember.getLocation().size(); i++){
 			Integer locationId = teamMember.getLocation().iterator().next().getLocationId();
 			Location location = Context.getLocationService().getLocation(locationId);
 			teamMember.getLocation().add(location);		
-			Context.getService(TeamMemberService.class).saveLocation(location);
+			
+			/*Context.getService(TeamMemberService.class).saveLocation(location);*/
+			Context.getLocationService().saveLocation(location);
 			
 		}
 		

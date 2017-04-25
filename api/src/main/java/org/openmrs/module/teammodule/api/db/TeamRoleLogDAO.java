@@ -10,11 +10,11 @@ public interface TeamRoleLogDAO {
 	
 	public TeamRoleLog getTeamRoleLog(int id);
 	
-	public List<TeamRoleLog> getAllLogs(int pageIndex);
+	public List<TeamRoleLog> getAllLogs(Integer offset, Integer pageSize);
 	
 	public void purgeTeamRoleLog(TeamRoleLog teamRoleLog);
 	
-	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRole, int pageIndex);
+	public List<TeamRoleLog> searchTeamRoleLogByTeamRole(String teamRole, Integer offset, Integer pageSize);
 
 	public TeamRoleLog getTeamRoleLog(String uuid);
 }

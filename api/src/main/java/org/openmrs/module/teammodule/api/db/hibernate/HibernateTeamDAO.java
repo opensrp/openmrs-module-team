@@ -11,7 +11,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Location;
 import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.db.TeamDAO;
 
 /**
@@ -57,13 +59,17 @@ public class HibernateTeamDAO implements TeamDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Team> getAllTeams(boolean voided, int pageIndex) {
+	public List<Team> getAllTeams(boolean voided, Integer offset, Integer pageSize) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Team.class);
 		if (!voided) {
 			criteria.add(Restrictions.eq("voided", false));
 		}
-		criteria.setFirstResult(pageIndex);
-		criteria.setMaxResults(20);
+		if(offset != null) {
+			criteria.setFirstResult(offset);
+		}
+		if(pageSize != null) {
+			criteria.setMaxResults(pageSize);
+		}
 		return criteria.list();
 	}
 
@@ -77,9 +83,9 @@ public class HibernateTeamDAO implements TeamDAO {
 		return sessionFactory.getCurrentSession().createQuery("from Team team where team.teamName like :teamName or team.teamIdentifier like :teamName").setString("teamName", "%" + teamName + "%").list();
 	}
 	
-	public Team getTeamBySupervisor(int teamSupervisor) {
+	public Team getTeamBySupervisor(TeamMember teamSupervisor) {
 		
-		Query createQuery= sessionFactory.getCurrentSession().createQuery("from Team team where team.supervisor = :id").setInteger("id", teamSupervisor);
+		Query createQuery= sessionFactory.getCurrentSession().createQuery("from Team team where team.supervisor = :id").setInteger("id", teamSupervisor.getId());
 		return (Team) createQuery.uniqueResult();
 	}
 
@@ -91,11 +97,14 @@ public class HibernateTeamDAO implements TeamDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Team> getTeambyLocation(int locationId,int pageIndex) {
-		// TODO Auto-generated method stub
-		Query createQuery= sessionFactory.getCurrentSession().createQuery("from Team team where team.location_id=: id").setInteger("id", locationId);
-		createQuery.setFirstResult(pageIndex);
-		createQuery.setMaxResults(20);
+	public List<Team> getTeambyLocation(Location locationId, Integer offset, Integer pageSize) {
+		Query createQuery= sessionFactory.getCurrentSession().createQuery("from Team team where team.location=:id").setInteger("id", locationId.getId());
+		if(offset != null) {
+			createQuery.setFirstResult(offset);
+		}
+		if(pageSize != null) {
+			createQuery.setMaxResults(pageSize);
+		}
 		return createQuery.list();
 	}
 

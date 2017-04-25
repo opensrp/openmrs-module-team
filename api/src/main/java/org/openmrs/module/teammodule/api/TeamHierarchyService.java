@@ -13,7 +13,7 @@ public interface TeamHierarchyService extends OpenmrsService {
 	
 	public TeamHierarchy getTeamRoleById(int id);
 	
-	public List<TeamHierarchy> getAllTeams();
+	public List<TeamHierarchy> getAllTeamHierarchy();
 	
 	public void purgeTeamRole(TeamHierarchy TeamRole);
 	

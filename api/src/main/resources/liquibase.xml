@@ -352,4 +352,8 @@
 			referencedTableName="location" referencedColumnNames="location_id" />
 	</changeSet>
 	
+	<changeSet author="Zohaib Masood" id="teammodule-29.1.0A">
+		<dropColumn tableName="team_member" columnName="is_team_lead" />
+	</changeSet>
+	
 </databaseChangeLog>

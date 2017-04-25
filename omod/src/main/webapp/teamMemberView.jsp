@@ -23,7 +23,10 @@
 
 <h1>Team Members</h1>
 
-
+<p>${selectedSupervisor}</p>
+<p>${selectedTeamRole}</p>
+<p>${selectedTeam}</p>
+<p>${selectedLocation}</p>
 
 <table>
 	<form:form method="post" ><!-- commandName="filterTeamMember" -->
@@ -59,8 +62,8 @@
 			<td>
 				<select id="filterByLocation" name="filterByLocation" onchange="search()">
 					<option value="" selected>Select Location</option>
-				   	<c:forEach items="${allLocations}" var="locations" varStatus="loop">
-				    	<option value="${locations}" >${locations}</option>
+				   	<c:forEach items="${allLocationIds}" var="location" varStatus="loop">
+				    	<option value="${location}" >${allLocationNames[loop.index]}</option>
 				   	</c:forEach>
 				</select>
 			</td>
@@ -156,7 +159,6 @@
 			console.log(searchQuery);  
 		}
 	}
-	
 </script>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

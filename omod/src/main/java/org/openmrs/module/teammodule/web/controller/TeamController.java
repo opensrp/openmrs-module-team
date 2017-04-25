@@ -78,14 +78,19 @@ public class TeamController {
 					teamLocation.add(team.get(i).getLocation());
 				}
 			} else {
-				team = Context.getService(TeamService.class).getAllTeams(true,0);
+				/*team = Context.getService(TeamService.class).getAllTeams(true,0);*/
+				team = Context.getService(TeamService.class).getAllTeams(true,null,null);
+				
 				teamLocation = new ArrayList<>();
 				for (int i = 0; i < team.size(); i++) {
 					teamLocation.add(team.get(i).getLocation());
 				}
 			}
 			for (int i = 0; i < team.size(); i++) {
-				teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.get(i), null, null, false);
+				
+				/*teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.get(i), null, null, false);*/
+				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.get(i).getId());
+				
 				System.out.println(team.get(i).getTeamId());
 				System.out.println(teamMember);
 				System.out.println(team.get(i).getUuid());

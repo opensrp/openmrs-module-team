@@ -67,7 +67,10 @@ public class SearchedMemberController {
 		}
 
 		if (!searchMember.isEmpty()) {
-			teamMember = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(searchMember);
+			
+			/*teamMember = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(searchMember);*/
+			teamMember = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(null, null, searchMember);
+			
 			for (int i = 0; i < teamMember.size(); i++) {
 				if (teamMember.get(i).getJoinDate() != null) {
 					String date = sdf.format(teamMember.get(i).getJoinDate());
@@ -80,7 +83,10 @@ public class SearchedMemberController {
 			model.addAttribute("searchMember", searchMember);
 			model.addAttribute("teamMember", teamMember);
 		} else {
-			dateSearch = Context.getService(TeamMemberService.class).getTeamMemberByDate(joinFrom, joinTo);
+			
+			/*dateSearch = Context.getService(TeamMemberService.class).getTeamMemberByDate(joinFrom, joinTo);*/
+			dateSearch = Context.getService(TeamMemberService.class).searchTeamMember(joinFrom, joinTo, null);
+			
 			for (int i = 0; i < dateSearch.size(); i++) {
 				if (dateSearch.get(i).getJoinDate() != null) {
 					String date = sdf.format(dateSearch.get(i).getJoinDate());

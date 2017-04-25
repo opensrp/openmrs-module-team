@@ -61,8 +61,10 @@ public class AllMember {
 		String dateTo = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		List<TeamMember> dateSearch = null;
-		List<Team> teams = Context.getService(TeamService.class).getAllTeams(false,0);
-
+		
+		/*List<Team> teams = Context.getService(TeamService.class).getAllTeams(false,0);*/
+		List<Team> teams = Context.getService(TeamService.class).getAllTeams(false,null,null);
+		
 		TeamMember searchMember = new TeamMember();
 
 		String searchedMember = null;
@@ -97,7 +99,10 @@ public class AllMember {
 
 		if (searchedMember != null || (!dateFrom.isEmpty() && !dateTo.isEmpty())) {
 			if (searchedMember != null) {
-				allMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(searchedMember);
+				
+				/*allMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(searchedMember);*/
+				allMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(null, null, searchedMember);
+				
 				for (int i = 0; i < allMembers.size(); i++) {
 					if (allMembers.get(i).getJoinDate() != null) {
 						String date = sdf.format(allMembers.get(i).getJoinDate());
@@ -110,7 +115,10 @@ public class AllMember {
 				model.addAttribute("searchedMember", searchedMember);
 				model.addAttribute("allMembers", allMembers);
 			} else {
-				dateSearch = Context.getService(TeamMemberService.class).getTeamMemberByDate(joinFrom, joinTo);
+				
+				/*dateSearch = Context.getService(TeamMemberService.class).getTeamMemberByDate(joinFrom, joinTo);*/
+				dateSearch = Context.getService(TeamMemberService.class).searchTeamMember(joinFrom, joinTo, null);
+				
 				for (int i = 0; i < dateSearch.size(); i++) {
 					if (dateSearch.get(i).getJoinDate() != null) {
 						String date = sdf.format(dateSearch.get(i).getJoinDate());

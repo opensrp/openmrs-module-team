@@ -8,7 +8,10 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Location;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
@@ -84,7 +87,7 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 	
 	@Override
-	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, Integer teamRoleId, Integer teamId, Integer locationId, Integer offset, Integer pageSize) {
+	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize) {
 		return this.dao.searchTeamMember(identifier, supervisorId, teamRoleId, teamId, locationId, offset, pageSize);
 	}
 }

@@ -3,10 +3,14 @@
  */
 package org.openmrs.module.teammodule.web.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamMember;
+import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
@@ -81,26 +85,28 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		Context.getService(TeamService.class).purgeTeam(team);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public SimpleObject search(RequestContext context) {
-		if(context.getParameter("q") != null)
-		{
-		List<Team> listTeam = Context.getService(TeamService.class).searchTeam(context.getParameter("q"));
-		return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
+		if(context.getParameter("q") != null) {
+			List<Team> listTeam = Context.getService(TeamService.class).searchTeam(context.getParameter("q"));
+			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
 		}
-		else if(context.getParameter("location")!=null)
-		{
-		List<Team> listTeam = Context.getService(TeamService.class).getTeambyLocation(Integer.parseInt(context.getParameter("location")), 0);
-		return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
+		else if(context.getParameter("location")!=null) {
+			Location location = Context.getLocationService().getLocation(Integer.parseInt(context.getParameter("location")));
+			List<Team> listTeam = Context.getService(TeamService.class).getTeambyLocation(location, null,null);
+			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
 		}
-		else if(context.getParameter("supervisor")!=null)
-		{
-		List<Team> listTeam = (List<Team>) Context.getService(TeamService.class).getTeamBySupervisor(Integer.parseInt(context.getParameter("supervisor")));
-		return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
+		else if(context.getParameter("supervisor")!=null) {
+			TeamMember supervisor = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(context.getParameter("supervisor")));
+			Team team =  Context.getService(TeamService.class).getTeamBySupervisor(supervisor);
+			List<Team> listTeam = new ArrayList<>();
+			listTeam.add(team);
+			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
 		}
-		return null;
+		else {
+			return null;
 		}
+	}
 	
 	@PropertyGetter("display")
 	public String getDisplayString(Team team) {

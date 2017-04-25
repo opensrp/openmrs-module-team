@@ -32,16 +32,16 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.saveTeamLog(teamlog);
 	}
 
-	public List<TeamLog> getAllLogs(int pageIndex) {
-		return dao.getAllLogs(pageIndex);
+	public List<TeamLog> getAllLogs(Integer offset, Integer pageSize) {
+		return dao.getAllLogs(offset, pageSize);
 	}
 
 	public void purgeTeamLog(TeamLog TeamLog) {
 		dao.purgeTeamLog(TeamLog);
 	}
 
-	public List<TeamLog> searchTeamLogByTeam(int team,int pageIndex) {
-		return dao.searchTeamLogByTeam(team, pageIndex);
+	public List<TeamLog> searchTeamLogByTeam(int team,Integer offset, Integer pageSize) {
+		return dao.searchTeamLogByTeam(team, offset, pageSize);
 	}
 
 	public TeamLog getTeamLog(int id) {

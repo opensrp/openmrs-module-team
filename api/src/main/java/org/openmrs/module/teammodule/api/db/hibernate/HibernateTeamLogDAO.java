@@ -42,10 +42,14 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamLog> getAllLogs(int pageIndex) {		
+	public List<TeamLog> getAllLogs(Integer offset, Integer pageSize) {		
 		Query createQuery = sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog");
-		createQuery.setFirstResult(pageIndex);
-		createQuery.setMaxResults(20);
+		if( offset != null) {
+			createQuery.setFirstResult(offset);
+		}
+		if(pageSize != null) {
+			createQuery.setMaxResults(pageSize);
+		}
 		return createQuery.list();
 	}
 
@@ -54,10 +58,14 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamLog> searchTeamLogByTeam(int team,int pageIndex) {
+	public List<TeamLog> searchTeamLogByTeam(int team,Integer offset, Integer pageSize) {
 		Query createQuery=sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog where teamLog.team = :team").setInteger("team", team);
-		createQuery.setFirstResult(pageIndex);
-		createQuery.setMaxResults(20);
+		if( offset != null) {
+			createQuery.setFirstResult(offset);
+		}
+		if(pageSize != null) {
+			createQuery.setMaxResults(pageSize);
+		}
 		return createQuery.list();
 	}
 
