@@ -44,7 +44,7 @@ private final Log log = LogFactory.getLog(this.getClass());
 		return dao.searchTeamRoleByRole(role);
 	}
 
-	public TeamHierarchy getTeamRoleById(int id) {
+	public TeamHierarchy getTeamRoleById(Integer id) {
 		return dao.getTeamRoleById(id);
 	}
 	

@@ -1,35 +1,23 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 
 <%@ include file="/WEB-INF/template/header.jsp"%>
-
+<!-- 
 <openmrs:require privilege="Add Member" otherwise="/login.htm" />
-
 <openmrs:htmlInclude file="/scripts/jquery/jsTree/jquery.tree.min.js" />
-<openmrs:htmlInclude
-	file="/scripts/jquery/jsTree/themes/classic/style.css" />
-
+<openmrs:htmlInclude file="/scripts/jquery/jsTree/themes/classic/style.css" />
 <openmrs:htmlInclude file="/openmrs.js" />
-<openmrs:htmlInclude file="/scripts/openmrsmessages.js"
-	appendLocale="true" />
+<openmrs:htmlInclude file="/scripts/openmrsmessages.js" appendLocale="true" />
+ -->
 
-<link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1"
-	type="text/css" rel="stylesheet">
-<link rel="stylesheet"
-	href="/openmrs/moduleResources/teammodule/themes/alertify.core.css" />
-<link rel="stylesheet"
-	href="/openmrs/moduleResources/teammodule/themes/alertify.default.css"
-	id="toggleCSS" />
-<script
-	src="/openmrs/scripts/jquery-ui/js/jquery-ui-datepicker-i18n.js?v=1.9.3.f535e9"
-	type="text/javascript"></script>
+<link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="/openmrs/moduleResources/teammodule/themes/alertify.core.css" />
+<link rel="stylesheet" href="/openmrs/moduleResources/teammodule/themes/alertify.default.css" id="toggleCSS" />
+<script src="/openmrs/scripts/jquery-ui/js/jquery-ui-datepicker-i18n.js?v=1.9.3.f535e9" type="text/javascript"></script>
 <script src="/openmrs/moduleResources/teammodule/alertify.min.js"></script>
-
-
 
 <script type="text/javascript">
 	\$j = jQuery;
 	jQuery(document).ready(function() {
-
 
 		jQuery("#heading").hide();
 		jQuery("#exist").hide();
@@ -289,26 +277,24 @@
 	
 </script>
 
-
-
 <h3 style="color: red; display: inline">${error}</h3>
 <h3 align="center" style="color: green">${saved}</h3>
 
 <h2 align="center">Add Member</h2>
 
 
-<!-- <table>
-<button> New Member </button> <button> Existing Member </button>
-</table> -->
+<!-- 
+<table>
+	<button> New Member </button> <button> Existing Member </button>
+</table>
+ -->
 
-
-
-<form:form id="saveMember" name="saveMember" method="post"
-	commandName="memberData">
+<form:form id="saveMember" name="saveMember" method="post" commandName="memberData">
 	<table class="team">
 		<tr>
-			<td style="padding-bottom: 15px"><input type="checkbox"
-				id="choice" name="choice" /> Choose Existing Person</td>
+			<td style="padding-bottom: 15px">
+				<input type="checkbox" id="choice" name="choice" /> Choose Existing Person
+			</td>
 		</tr>
 		<tr id="heading">
 			<td>
@@ -317,147 +303,173 @@
 			</td>
 		</tr>
 		<tr id="exist">
-			<td>Name</td>
-			<td><openmrs_tag:personField formFieldName="person_id"
-					formFieldId="existingPersonId" /> <br /></td>
+			<td>
+				Name
+			</td>
+			<td>
+				<openmrs_tag:personField formFieldName="person_id" formFieldId="existingPersonId" />
+				<br />
+			</td>
 		</tr>
 		<tr id="memberName" type="hide">
-			<td>Member Name</td>
-			<td><form:input id="givenName" path="person.names[0].givenName"
-					onfocus="jQuery('#nameTip').show();"
-					onblur="jQuery('#nameTip').hide();" maxlength="20" /><span
-				style="color: red">*</span> <span id="nameTip">Min 3 and max
-					20.Alphabets,[-.] are allowed</span></td>
+			<td>
+				Member Name
+			</td>
+			<td>
+				<form:input id="givenName" path="person.names[0].givenName" onfocus="jQuery('#nameTip').show();" onblur="jQuery('#nameTip').hide();" maxlength="20" />
+				<span style="color: red">*</span>
+				<span id="nameTip">Min 3 and max 20.Alphabets,[-.] are allowed</span>
+			</td>
 		</tr>
 		<tr id="memberFamilyName" type="hide">
-			<td>Member Family Name</td>
-			<td><form:input id="familyName"
-					path="person.names[0].familyName"
-					onfocus="jQuery('#fNameTip').show();"
-					onblur="jQuery('#fNameTip').hide();" maxlength="20" /><span
-				style="color: red">*</span> <span id="fNameTip">Min 3 and max
-					20.Alphabets,[-.] are allowed</span></td>
-		</tr>
-		<tr>
-			<td style="padding-bottom: 15px" id="loginChoicebox"><input type="checkbox"
-				id="loginChoice" name="loginChoice" /> Add Login Detail</td>
-			</tr>
-			<tr  id="memberUsername" type="hide">
-				<td>User Name: </td>
-				<td>
-						<input type="text" 
-								name="userName" 
-								id="userName" 
-								autocomplete="on" />
-				</td>
-			</tr>
-			<tr  id="memberPassword" type="hide">
-				<td>Password: </td>
-				<td>
-						<input type="password"
-								name="password" 
-								id="password" 
-								autocomplete="off" />
-				</td>
-				<td>
-				<b id="passwordText">Atleast one number, one lowercase and one uppercase letter atleast six characters</b>
-				</td>
-			</tr>
-			<tr  id="memberConfirmPassword" type="hide">
-				<td>Confirm Password: </td>
-				<td>
-						<input type="password"
-								name="confirmPassword" 
-								id="confirmPassword" 
-								autocomplete="off" />
-				</td>
-				<td>
-				<b id="confirmPasswordText">Password and Confirm Password not match</b>
-				</td>
-			</tr>
-		
-		<tr id="memberGender" type="hide">
-			<td>Gender</td>
-			<td><form:select id="gender" path="person.gender"
-					cssStyle="width:165px">
-					<form:option value="0" label=" Please Select " />
-					<form:option value="Male">Male</form:option>
-					<form:option value="Female">Female</form:option>
-				</form:select><span style="color: red">*</span></td>
-		</tr>
-		<tr id="memberIdentifier">
-			<td>Member Identifier</td>
-			<td><form:input id="identifier" path="identifier"
-					onfocus="jQuery('#idTip').show();"
-					onblur="jQuery('#idTip').hide();" maxlength="20" /> <span
-				style="color: red">*</span> <span style="padding-left: 12px"
-				id="idTip">Min 3 and max 20.All data types and [-_] are
-					allowed</span></td>
-		</tr>
-		<tr id="memberJoin">
-			<td>Join Date</td>
-			<td><form:input id="joinDate" path="joinDate"
-					onblur="jQuery('#joinTip').hide();"
-					onfocus="showCalendar(this,60);jQuery('#joinTip').show();join();" /><span
-				id="joinTip">Date shouldn't be in future</span></td>
-		</tr>
-		<tr id="memberEnd">
-			<td>Leave Date</td>
-			<td><form:input id="leaveDate" path="leaveDate"
-					onfocus="showCalendar(this,60);jQuery('#leaveTip').show();leave();"
-					onblur="jQuery('#leaveTip').hide();" /><span id="leaveTip">Date
-					shouldn't be in future</span></td>
-		</tr>
-		<tr id="teamLead">
-			<td>Is Team Lead ?</td>
-			<td><form:checkbox id="isTeamLead" path="isTeamLead" /></td>
-		</tr>
-		
-		<tr id="memberRole" type="hide">
-			<td valign="top">Role:</td>
 			<td>
-			<select id="roleOption" multiple>
-				<option value="" label="Please Select " />
-				<c:forEach items="${allRoles}" var="roles" varStatus="varStatus">
-				<option value="${roles}">${roles}</option>
-				</c:forEach>
-			</select>
+				Member Family Name
+			</td>
+			<td>
+				<form:input id="familyName" path="person.names[0].familyName" onfocus="jQuery('#fNameTip').show();" onblur="jQuery('#fNameTip').hide();" maxlength="20" />
+				<span style="color: red">*</span>
+				<span id="fNameTip">Min 3 and max 20.Alphabets,[-.] are allowed</span>
 			</td>
 		</tr>
 		<tr>
-			<td>Location</td>
-			<td><openmrs:fieldGen type="org.openmrs.Location"
-				formFieldName="location" val="${selectedLocation}" /></td>
+			<td style="padding-bottom: 15px" id="loginChoicebox">
+				<input type="checkbox" id="loginChoice" name="loginChoice" /> Add Login Detail
+			</td>
+		</tr>
+		<tr id="memberUsername" type="hide">
+			<td>
+				User Name: 
+			</td>
+			<td>
+				<input type="text" name="userName" id="userName" autocomplete="on" />
+			</td>
+		</tr>
+		<tr id="memberPassword" type="hide">
+			<td>
+				Password: 
+			</td>
+			<td>
+				<input type="password" name="password" id="password" autocomplete="off" />
+			</td>
+			<td>
+				<b id="passwordText">Atleast one number, one lowercase and one uppercase letter atleast six characters</b>
+			</td>
+		</tr>
+		<tr id="memberConfirmPassword" type="hide">
+			<td>
+				Confirm Password: 
+			</td>
+			<td>
+				<input type="password" name="confirmPassword" id="confirmPassword" autocomplete="off" />
+			</td>
+			<td>
+				<b id="confirmPasswordText">Password and Confirm Password not match</b>
+			</td>
+		</tr>
+		
+		<tr id="memberGender" type="hide">
+			<td>
+				Gender
+			</td>
+			<td>
+				<form:select id="gender" path="person.gender" cssStyle="width:165px"> 
+					<form:option value="0" label=" Please Select " />
+					<form:option value="Male">Male</form:option>
+					<form:option value="Female">Female</form:option>
+				</form:select>
+				<span style="color: red">*</span>
+			</td>
+		</tr>
+		<tr id="memberIdentifier">
+			<td>
+				Member Identifier
+			</td>
+			<td>
+				<form:input id="identifier" path="identifier" onfocus="jQuery('#idTip').show();" onblur="jQuery('#idTip').hide();" maxlength="20" />
+				<span style="color: red">*</span>
+				<span style="padding-left: 12px" id="idTip">Min 3 and max 20.All data types and [-_] are allowed</span>
+			</td>
+		</tr>
+		<tr id="memberJoin">
+			<td>
+				Join Date
+			</td>
+			<td>
+				<form:input id="joinDate" path="joinDate" onblur="jQuery('#joinTip').hide();" onfocus="showCalendar(this,60);jQuery('#joinTip').show();join();" />
+				<span id="joinTip">Date shouldn't be in future</span>
+			</td>
+		</tr>
+		<tr id="memberEnd">
+			<td>
+				Leave Date
+			</td>
+			<td>
+				<form:input id="leaveDate" path="leaveDate" onfocus="showCalendar(this,60);jQuery('#leaveTip').show();leave();" onblur="jQuery('#leaveTip').hide();" />
+				<span id="leaveTip">Date shouldn't be in future</span>
+			</td>
+		</tr>
+		<!-- <tr id="teamLead">
+			<td>
+				Is Team Lead ?
+			</td>
+			<td>
+				<form:checkbox id="isTeamLead" path="isTeamLead" />
+			</td>
+		</tr> -->
+		
+		<tr id="memberRole" type="hide">
+			<td valign="top">
+				Role:
+			</td>
+			<td>
+				<select id="roleOption" multiple>
+					<option value="" label="Please Select " />
+					<c:forEach items="${allRoles}" var="roles" varStatus="varStatus">
+						<option value="${roles}">${roles}</option>
+					</c:forEach>
+				</select>
+			</td>
 		</tr>
 		<tr>
-			<td>Retire Member ?</td>
-			<td><form:checkbox id="voided" path="voided" /></td>
+			<td>
+				Location
+			</td>
+			<td>
+				<openmrs:fieldGen type="org.openmrs.Location" formFieldName="location" val="${selectedLocation}" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Retire Member ?
+			</td>
+			<td>
+				<form:checkbox id="voided" path="voided" />
+			</td>
 		</tr>
 		<tr>
 			<td></td>
-			<td><span id="voidTip">Reason must be
-					written</span></td>
+			<td>
+				<span id="voidTip">Reason must be written</span></td>
 		</tr>
 		<tr>
 			<td>Retire Reason</td>
-			<td><form:textarea id="voidReason" path="voidReason" /></td>
+			<td>
+				<form:textarea id="voidReason" path="voidReason" />
+			</td>
 		</tr>
 		<tr>
 			<td></td>
-			<td style="text-align: left;"><button type="button"
-					onClick="validation(${teamId});">Add</button></td>
+			<td style="text-align: left;">
+				<button type="button" onClick="validation(${teamId});">Add</button>
+			</td>
 		</tr>
 		<tr></tr>
 		<tr>
-			<td><a href="/openmrs/module/teammodule/team.form">Back to
-					Team List</a></td>
+			<td>
+				<a href="/openmrs/module/teammodule/team.form">Back to Team List</a>
+			</td>
 		</tr>
-
 	</table>
-
-
 </form:form>
-
-
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

@@ -3,7 +3,9 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
 <openmrs:require privilege="View Team" otherwise="/login.htm"  />
-
+<script>
+console.log("searchedteam.jsp")
+</script>
 
 <h3>Search Results for ${searchedTeam}</h3>
 <table>

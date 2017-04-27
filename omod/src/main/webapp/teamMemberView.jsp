@@ -13,52 +13,126 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 
 <script>
+	var members = [];
+	var headerArray = ["edit", "Identifier", "Name", "Role", "Team", "Report To", "Locations", "Sub Ordinate Roles", "Sub Ordinate Teams", "History", "Patients"];
+	function GenerateTable() {
+		document.getElementById("example").innerHTML = "";
+		var table = document.getElementById("example");
+	    
+	    var thead = document.createElement("THEAD")
+	    var row = thead.insertRow(-1);
+	    for (var i = 0; i < headerArray.length; i++) {
+	        var headerCell = document.createElement("TH");
+	        headerCell.innerHTML = headerArray[i];
+	        row.appendChild(headerCell);
+	    }
+	    
+	    var tbody = document.createElement("TBODY")
+	    for (var i = 0; i < members.length; i++) {
+	    	row = tbody.insertRow(-1);
+
+	        /* Edit */
+	    	var cell = row.insertCell(-1);
+	        cell.innerHTML = "...";
+
+	        /* Identifier */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = members[i].identifier;
+
+	        /* Name */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = members[i].person.person.display;
+
+	        /* Role */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = members[i].teamRole;
+
+	        /* Team */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = members[i].team.teamName;
+
+	        /* Report To */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = members[i].reportTo;
+	        
+	        /* Locations */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = members[i].location[0].name;
+	        
+	        /* Sub Ordinate Roles */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = members[i].subTeamRole;
+
+	        /* Sub Ordinate Teams */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = members[i].subTeam;
+
+	        /* History */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = '<a href="/openmrs/module/teammodule/memberHistory.form?personId='+members[i].personId+'">History</a>';
+
+	        /* Patients */
+	        var cell = row.insertCell(-1);
+	        cell.innerHTML = members[i].patients.length;
+		}
+	    table.appendChild(thead);
+	    table.appendChild(tbody);
+	}
+	
 	$(document).ready(function() {
-		$('#example').DataTable({
-			"language": { "search": "Filter records:" }
+		$.ajax({
+			url: "/openmrs/ws/rest/v1/team/teammember?get=all&v=full",
+			success : function(result) { 
+				console.log("SUCCESS-ALL"); 
+				console.log(result); 
+				members = result.results;
+				GenerateTable();
+				$('#example').DataTable({
+					"language": { "search": "Filter records:" }
+				});
+			}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-ALL"); console.log(jqXHR); }
 		});
-	
+
 		$("#submitBtn").bind("click", function() {
-			console.log("ajax call start");
+			var url = "/openmrs/ws/rest/v1/team/teammember?get=filter&v=full";
+			var id = document.getElementById("filterById").value;
+			var supervisor = document.getElementById("filterBySupervisor").value;
+			var role = document.getElementById("filterByTeamRole").value;
+			var team = document.getElementById("filterByTeam").value;
+			var location = document.getElementById("filterByLocation").value;
+			
+			if(id != "") { url += "&identifier=" + id; }
+			if(supervisor != "") { url += "&supervisor=" + supervisor; }
+			if(role != "") { url += "&role=" + role; }
+			if(team != "") { url += "&team=" + team; }
+			if(location != "") { url += "&location=" + location; }
+
 			$.ajax({
-				url: "http://localhost:8080/openmrs/ws/rest/v1/team/teammember?id=1&v=full",
-				//type: "POST",
-				//data: dataNode,
-				success : function(result) {
-					var data = JSON.parse(result);
-					console.log(result);
-					console.log(result.results);
-					console.log(JSON.stringify(result));
-					console.log(JSON.parse(result));
-				}, error: function(jqXHR, textStatus, errorThrown) {
-					console.log(jqXHR);
-					console.log(textStatus);
-					console.log(errorThrown);
-				}
+				url: url,
+				success : function(result) { 
+					console.log("SUCCESS-FILTER"); 
+					console.log(result); 
+					members = result.results;
+					GenerateTable();
+				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-FILTER"); console.log(jqXHR); }
 			});
-			console.log("ajax call end");
 		});
-	
+		
+		
 	});
 </script>
 
-
 <h1>Team Members</h1>
-
-<p>${selectedSupervisor}</p>
-<p>${selectedTeamRole}</p>
-<p>${selectedTeam}</p>
-<p>${selectedLocation}</p>
 
 <table>
 	<form:form ><!-- commandName="filterTeamMember" method="post" -->
 		<tr>
 			<td>Filter By: </td>
 			<td>
-				<input id="filterById" name="filterById" placeholder="name, id, supervisor" oninput="search()"/>
+				<input id="filterById" name="filterById" placeholder="name, id, supervisor"/>
 			</td>
 			<td>
-				<select id="filterBySupervisor" name="filterBySupervisor" onchange="search()">
+				<select id="filterBySupervisor" name="filterBySupervisor">
 					<option value="" selected>Select Supervisor</option>
 				   	<c:forEach items="${allSupervisorIds}" var="supervisor" varStatus="loop">
 				    	<option value="${supervisor}" >${allSupervisorNames[loop.index]}</option>
@@ -66,7 +140,7 @@
 				</select>
 			</td>
 			<td>
-				<select id="filterByTeamRole" name="filterByTeamRole" onchange="search()">
+				<select id="filterByTeamRole" name="filterByTeamRole">
 					<option value="" selected>Select Team Role</option>
 				   	<c:forEach items="${allTeamRoleIds}" var="teamRole" varStatus="loop">
 				    	<option value="${teamRole}" >${allTeamRoleNames[loop.index]}</option>
@@ -74,7 +148,7 @@
 				</select>
 			</td>
 			<td>
-				<select id="filterByTeam" name="filterByTeam" onchange="search()">
+				<select id="filterByTeam" name="filterByTeam">
 					<option value="" selected>Select Team</option>
 				   	<c:forEach items="${allTeamIds}" var="team" varStatus="loop">
 				    	<option value="${team}" >${allTeamNames[loop.index]}</option>
@@ -82,7 +156,7 @@
 				</select>
 			</td>
 			<td>
-				<select id="filterByLocation" name="filterByLocation" onchange="search()">
+				<select id="filterByLocation" name="filterByLocation">
 					<option value="" selected>Select Location</option>
 				   	<c:forEach items="${allLocationIds}" var="location" varStatus="loop">
 				    	<option value="${location}" >${allLocationNames[loop.index]}</option>
@@ -97,90 +171,8 @@
 </table>
 
 <br/>
-<c:choose>
-	<c:when test="${not empty teamMembers}">
-		<table id="example" class="general" cellspacing="0" width="100%">
-			<thead>
-				<tr>
-					<th>edit</th>
-					<th>Identifier</th>
-					<th>Name</th>
-					<th>Role</th>
-					<th>Team</th>
-					<th>Report To</th>
-					<th>Locations</th>
-					<th>Sub Ordinate Roles</th>
-					<th>Sub Ordinate Teams</th>
-					<th>History</th>
-					<th>Patients</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="teamMembers" items="${teamMembers}" varStatus="loop">
-					<tr>
-						<!-- TEAM MEMBER EDIT -->
-						<td>...</td>
-						<!-- TEAM MEMBER IDENTIFIER -->
-						<td><c:out value="${teamMembers.identifier}" /></td>
-						<!-- TEAM MEMBER NAME -->
-						<td><c:out value="${teamMembers.person.personName}" /></td>
-						<!-- TEAM MEMBER TEAM ROLE NAME -->
-						<td><c:out value="${teamMembers.teamRole.name}" /></td>
-						<!-- TEAM MEMBER TEAM NAME -->
-						<td><c:out value="${teamMembers.team.teamName}" /></td>
-						<!-- TEAM MEMBER REPORT TO -->
-						<td><c:out value="${reportsTo[loop.index]}" /></td>
-						<!-- TEAM MEMBER LOCATIONS -->
-						<td><c:out value="${teamMemberLocations[loop.index]}" /></td>
-						<!-- TEAM MEMBER SUB ROLES -->
-				    	<td><c:out value="${subRoles[loop.index]}" /></td>
-						<!-- TEAM MEMBER SUB TEAMS -->
-						<td><c:out value="${subTeams[loop.index]}" /></td>
-						<!-- TEAM MEMBER HISTORY -->
-						<td><a href="/openmrs/module/teammodule/memberHistory.form?personId=${teamMembers.person.personId}">History</a></td>
-						<!-- TEAM MEMBER PATIENTS COUNT -->
-						<td><c:out value="${teamMemberPatients[loop.index]}" /></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</c:when>
-	<c:otherwise>
-		<p>No record(s) found</p>
-	</c:otherwise>
-</c:choose>
 
-<script>
-	function search() {
-		var searchQuery = "";
-		var id = document.getElementById("filterById").value;
-		var supervisor = document.getElementById("filterBySupervisor").value;
-		var teamRole = document.getElementById("filterByTeamRole").value;
-		var team = document.getElementById("filterByTeam").value;
-		var location = document.getElementById("filterByLocation").value;
-		
-		if(id != "") { searchQuery += id + " "; }
-		if(supervisor != "") { searchQuery += supervisor + " "; }
-		if(teamRole != "") { searchQuery += teamRole + " "; }
-		if(team != "") { searchQuery += team + " "; }
-		if(location != "") { searchQuery += location; }
-		if(searchQuery == "") {}
-		else { 
-			//$.ajax({
-			//	url: "/openmrs/module/teammodule/teamMemberView",
-			//	type: "POST",
-			//	data : {id: id, supervisor: supervisor, teamRole: teamRole, team: team, location: location },
-			//	success : function(result) {
-			//		console.log(result);
-			//	}, error: function(jqXHR, textStatus, errorThrown) { 
-			//		console.log(jqXHR);
-			//		console.log(textStatus);
-			//		console.log(errorThrown);
-			//	}
-			//});
-			console.log(searchQuery);  
-		}
-	}
-</script>
+<table id="example" class="general" cellspacing="0" width="100%"></table>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
+

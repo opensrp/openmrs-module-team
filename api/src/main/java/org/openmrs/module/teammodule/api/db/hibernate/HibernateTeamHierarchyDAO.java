@@ -36,7 +36,7 @@ public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
 		
 	}
 
-	public TeamHierarchy getTeamRoleById(int id) {
+	public TeamHierarchy getTeamRoleById(Integer id) {
 		return	(TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy where teamHierarchy.teamRoleId = :id").setInteger("id", id).uniqueResult();
 	}
 

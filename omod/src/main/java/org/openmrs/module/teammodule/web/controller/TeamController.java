@@ -3,7 +3,6 @@
  */
 package org.openmrs.module.teammodule.web.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -63,16 +62,17 @@ public class TeamController {
 		} catch (Exception e) {
 			searchedTeam = "";
 		}
-		List<String> parsedDate = new ArrayList<String>();
+		
+		//List<String> parsedDate = new ArrayList<String>();
 		List<Integer> length = new ArrayList<Integer>();
 		List<String> teamSupervisor = new ArrayList<String>();
 		
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
+		/*SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");*/
 		if (Context.isAuthenticated()) {
 			if (searchedTeam != null) {
 				team = Context.getService(TeamService.class).searchTeam(searchedTeam);
+				
 				teamLocation = new ArrayList<>();
 				for (int i = 0; i < team.size(); i++) {
 					teamLocation.add(team.get(i).getLocation());
@@ -91,14 +91,18 @@ public class TeamController {
 				/*teamMember = Context.getService(TeamMemberService.class).getTeamMemberByTeam(team.get(i), null, null, false);*/
 				teamMember = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.get(i).getId());
 				
-				System.out.println(team.get(i).getTeamId());
-				System.out.println(teamMember);
-				System.out.println(team.get(i).getUuid());
+//				System.out.println(team.get(i).getTeamId());
+//				System.out.println(teamMember);
+//				System.out.println(team.get(i).getUuid());
 				//membersNotVoided = Context.getService(TeamMemberService.class).getTeamMembers(team.get(i), null, null, true);
-				String date = sdf.format(team.get(i).getDateCreated());
+				
+				/*String date = sdf.format(team.get(i).getDateCreated());
+				System.out.println("date: " + date);
 				parsedDate.add(date);
-				System.out.println(teamMember.size());
+				System.out.println("parsedDate: " + parsedDate);*/
+
 				length.add(teamMember.size());
+
 				Supervisor = Context.getService(TeamMemberService.class).getTeamMember(team.get(i).getSupervisor().getId());
 
 				if (Supervisor != null && Supervisor.isVoided() != true) { // change made
@@ -117,22 +121,36 @@ public class TeamController {
 					if (fName != null) {
 						name = name + " " + fName;
 					}
-
 					teamSupervisor.add(name);
 				} else {
 					teamSupervisor.add(null);
 				}
 
 			}			
-			Collection<Privilege> privilege = Context.getUserContext().getAuthenticatedUser().getPrivileges();
+			Collection<Privilege> privilege = Context.getUserContext().getAuthenticatedUser().getPrivileges();			
 			
+			System.out.println("team:" + team);
 			model.addAttribute("team", team);
+
+			System.out.println("length:" + length);
 			model.addAttribute("length", length);
+			
+			System.out.println("searchTeam:" + searchTeam);
 			model.addAttribute("searchTeam", searchTeam);
+			
+			System.out.println("teamSupervisor:" + teamSupervisor);
 			model.addAttribute("teamSupervisor", teamSupervisor);
-			model.addAttribute("parsedDate", parsedDate);
+			
+			/*System.out.println("parsedDate:" + parsedDate);
+			model.addAttribute("parsedDate", parsedDate);*/
+			
+			System.out.println("searchedTeam:" + searchedTeam);
 			model.addAttribute("searchedTeam", searchedTeam);
+			
+			System.out.println("privilege:" + privilege);
 			model.addAttribute("privilege", privilege);
+			
+			System.out.println("teamLocation:" + teamLocation);
 			model.addAttribute("teamLocation", teamLocation);
 		}
 

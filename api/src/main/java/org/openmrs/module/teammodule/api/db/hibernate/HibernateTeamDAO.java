@@ -49,7 +49,7 @@ public class HibernateTeamDAO implements TeamDAO {
 		// sessionFactory.close();
 	}
 
-	public Team getTeam(int teamId) {
+	public Team getTeam(Integer teamId) {
 		return (Team) sessionFactory.getCurrentSession().createQuery("from Team team where team.teamId = :id").setInteger("id", teamId).uniqueResult();
 
 	}

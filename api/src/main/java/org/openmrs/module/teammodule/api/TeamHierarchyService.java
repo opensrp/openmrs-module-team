@@ -11,7 +11,7 @@ public interface TeamHierarchyService extends OpenmrsService {
 
 	public void saveTeamHierarchy(TeamHierarchy teamHierarchy);
 	
-	public TeamHierarchy getTeamRoleById(int id);
+	public TeamHierarchy getTeamRoleById(Integer id);
 	
 	public List<TeamHierarchy> getAllTeamHierarchy();
 	

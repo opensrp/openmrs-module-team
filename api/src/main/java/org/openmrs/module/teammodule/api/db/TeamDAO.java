@@ -16,7 +16,7 @@ public interface TeamDAO {
 
 	public void saveTeam(Team team);
 	
-	public Team getTeam(int id);
+	public Team getTeam(Integer id);
 	
 	public Team getTeam(String name);
 	

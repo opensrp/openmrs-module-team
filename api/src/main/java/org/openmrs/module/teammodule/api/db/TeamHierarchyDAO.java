@@ -8,7 +8,7 @@ public interface TeamHierarchyDAO {
 
 	public void saveTeamRole(TeamHierarchy TeamRole);
 	
-	public TeamHierarchy getTeamRoleById(int id);
+	public TeamHierarchy getTeamRoleById(Integer id);
 	
 	public List<TeamHierarchy> getAllTeamHierarchy();
 	

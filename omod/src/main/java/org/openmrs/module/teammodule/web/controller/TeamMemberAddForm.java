@@ -68,30 +68,46 @@ public class TeamMemberAddForm {
 	 * @throws IOException
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String showForm(// @ModelAttribute("existingMember") TeamMember
-							// teamMember,
-			Model model, HttpServletRequest request) throws IOException {
+	public String showForm( /*@ModelAttribute("existingMember") TeamMember teamMember, */Model model, HttpServletRequest request) throws IOException {
 
+		System.out.println("\nTeam Member Add");
+		
 		String error = request.getParameter("error");
+		System.out.println("\n error: " + error);
 		model.addAttribute("error", error);
+		
 		String saved = request.getParameter("saved");
+		System.out.println("\n saved: " + saved);
 		model.addAttribute("saved", saved);
+		
 		String teamId = request.getParameter("teamId");
+		System.out.println("\n teamId: " + teamId);
 		model.addAttribute("teamId", teamId);
+		
 		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
+		System.out.println("\n team: " + team);
+		
 		Date teamDate = team.getDateCreated();
+		System.out.println("\n teamDate: " + teamDate);
 		model.addAttribute("teamDate", teamDate);
+		
 		Location location = null;
+		System.out.println("\n location: " + location);
 		model.addAttribute("location", location);
+		
 		List<Role> allRole=Context.getUserService().getAllRoles();
+		System.out.println("\n allRole: " + allRole);
 		model.addAttribute("allRoles",allRole);
 		
 		List<Location> allLocations = Context.getLocationService().getAllLocations();
+		System.out.println("\n allLocations: " + allLocations);
 		model.addAttribute("allLocations",allLocations);
-		 //model.addAttribute("json", getHierarchyAsJson());
-		 model.addAttribute("locationWidgetType",
-		 Context.getAdministrationService().saveGlobalProperty( 
-				new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE, "default")));
+		
+		//model.addAttribute("json", getHierarchyAsJson());
+		
+//		System.out.println("\n LONG: " + Context.getAdministrationService().saveGlobalProperty(new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE, "default")));
+//		model.addAttribute("locationWidgetType", Context.getAdministrationService().saveGlobalProperty(new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE, "default")));
+
 		return SUCCESS_FORM_VIEW;
 
 	}

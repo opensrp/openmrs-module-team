@@ -49,7 +49,7 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		 dao.saveTeam(team);
 	}
 
-	public Team getTeam(int id) {
+	public Team getTeam(Integer id) {
 		return dao.getTeam(id);
 	}
 

@@ -26,7 +26,7 @@ public interface TeamMemberService extends OpenmrsService {
 	
 	public List<TeamMember> getTeamMemberByPersonId(Integer personId);
 
-	public List<TeamMember> getAllTeamMember(Integer id, boolean voided);
+	public List<TeamMember> getAllTeamMember(Integer id, boolean voided, Integer offset, Integer pageSize);
 		
 	public void saveTeamMember(TeamMember teamMember);
 	
@@ -34,9 +34,9 @@ public interface TeamMemberService extends OpenmrsService {
 	
 	public void updateTeamMember(TeamMember teamMember);
 	
-	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name);
+	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name, Integer offset, Integer pageSize);
 
 	public List<TeamMember> searchTeamMemberByTeam(Integer teamId);
 
-	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize);
+	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize);
 }

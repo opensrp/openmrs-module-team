@@ -72,13 +72,13 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 	
 	@Override
-	public List<TeamMember> getAllTeamMember(Integer id, boolean voided) {
-		return this.dao.getAllTeamMember(id, voided);
+	public List<TeamMember> getAllTeamMember(Integer id, boolean voided, Integer offset, Integer pageSize) {
+		return this.dao.getAllTeamMember(id, voided, offset, pageSize);
 	}
 	
 	@Override
-	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name) {
-		return this.dao.searchTeamMember(joinDateFrom, joinDateTo, name);
+	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name, Integer offset, Integer pageSize) {
+		return this.dao.searchTeamMember(joinDateFrom, joinDateTo, name, offset, pageSize);
 	}
 	
 	@Override
@@ -87,7 +87,7 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 	
 	@Override
-	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize) {
+	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize) {
 		return this.dao.searchTeamMember(identifier, supervisorId, teamRoleId, teamId, locationId, offset, pageSize);
 	}
 }
