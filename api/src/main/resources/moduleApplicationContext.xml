@@ -182,16 +182,16 @@
 	 <bean parent="serviceContext">
 		<property name="moduleService">
 			<list merge="true">
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.TeamRoleLogService</value>
+				<value>${project.parent.groupId}.${project.parent.artifactId}.api.TeamHierarchyLogService</value>
 				<bean
 					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager" />
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.TeamRoleLogServiceImpl">
+						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.TeamHierarchyLogServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateTeamRoleLogDAO">
+								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateTeamHierarchyLogDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory" />
 									</property>

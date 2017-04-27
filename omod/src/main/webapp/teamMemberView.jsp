@@ -45,7 +45,7 @@
 
 	        /* Role */
 	        var cell = row.insertCell(-1);
-	        cell.innerHTML = members[i].teamRole;
+	        cell.innerHTML = members[i].teamHierarchy;
 
 	        /* Team */
 	        var cell = row.insertCell(-1);
@@ -61,7 +61,7 @@
 	        
 	        /* Sub Ordinate Roles */
 	        var cell = row.insertCell(-1);
-	        cell.innerHTML = members[i].subTeamRole;
+	        cell.innerHTML = members[i].subTeamHierarchy;
 
 	        /* Sub Ordinate Teams */
 	        var cell = row.insertCell(-1);
@@ -97,7 +97,7 @@
 			var url = "/openmrs/ws/rest/v1/team/teammember?get=filter&v=full";
 			var id = document.getElementById("filterById").value;
 			var supervisor = document.getElementById("filterBySupervisor").value;
-			var role = document.getElementById("filterByTeamRole").value;
+			var role = document.getElementById("filterByTeamHierarchy").value;
 			var team = document.getElementById("filterByTeam").value;
 			var location = document.getElementById("filterByLocation").value;
 			
@@ -140,10 +140,10 @@
 				</select>
 			</td>
 			<td>
-				<select id="filterByTeamRole" name="filterByTeamRole">
+				<select id="filterByTeamHierarchy" name="filterByTeamHierarchy">
 					<option value="" selected>Select Team Role</option>
-				   	<c:forEach items="${allTeamRoleIds}" var="teamRole" varStatus="loop">
-				    	<option value="${teamRole}" >${allTeamRoleNames[loop.index]}</option>
+				   	<c:forEach items="${allTeamHierarchyIds}" var="teamHierarchy" varStatus="loop">
+				    	<option value="${teamHierarchy}" >${allTeamHierarchyNames[loop.index]}</option>
 				   	</c:forEach>
 				</select>
 			</td>

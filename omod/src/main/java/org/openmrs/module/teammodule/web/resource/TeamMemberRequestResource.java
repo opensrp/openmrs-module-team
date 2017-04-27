@@ -61,12 +61,12 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 				description.addProperty("uuid");
 				description.addProperty("location");
 				description.addProperty("team");
-				description.addProperty("patients", Representation.DEFAULT);
 
-				description.addProperty("teamRole");
+				description.addProperty("patients", Representation.REF);
+				description.addProperty("teamHierarchy");
 				description.addProperty("reportTo");
 				description.addProperty("subTeam");
-				description.addProperty("subTeamRole");
+				description.addProperty("subTeamHierarchy");
 				description.addProperty("personId");
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("teamMemberId");
@@ -76,11 +76,11 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 				description.addProperty("location");
 				description.addProperty("team");
 				description.addProperty("patients", Representation.REF);
-			
-				description.addProperty("teamRole");
+
+				description.addProperty("teamHierarchy");
 				description.addProperty("reportTo");
 				description.addProperty("subTeam");
-				description.addProperty("subTeamRole");
+				description.addProperty("subTeamHierarchy");
 				description.addProperty("personId");
 			}
 		}
@@ -185,17 +185,16 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 		return teamMember.getPerson().getId().toString();
 	}
 
-
-	@PropertyGetter("teamRole")
+	@PropertyGetter("teamHierarchy")
 	public String getTeamRoleName(TeamMember teamMember) {
 		if (teamMember == null){ return ""; }
-		return teamMember.getTeamRole().getName().toString();
+		return teamMember.getTeamHierarchy().getName().toString();
 	}
 	
 	@PropertyGetter("reportTo")
 	public String getReportTo(TeamMember teamMember) {
 		if (teamMember == null){ return ""; }
-		return teamMember.getTeamRole().getReportTo().getPerson().getPersonName().toString();
+		return teamMember.getTeamHierarchy().getReportTo().getName();
 	}
 
 	@PropertyGetter("subTeam")
@@ -210,14 +209,14 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 		}
 	}
 	
-	@PropertyGetter("subTeamRole")
+	@PropertyGetter("subTeamHierarchy")
 	public String getSubTeamRole(TeamMember teamMember) {
 		List<TeamMember> tm = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(teamMember.getPerson().getId());
 		if(tm == null) { return ""; }
 		else { String teamNames = "";
 			for (int j = 0; j < tm.size(); j++) { 
-				if(j==tm.size()-1) { teamNames += tm.get(j).getTeamRole().getName() + ""; }
-				else { teamNames += tm.get(j).getTeamRole().getName() + ", "; }
+				if(j==tm.size()-1) { teamNames += tm.get(j).getTeamHierarchy().getName() + ""; }
+				else { teamNames += tm.get(j).getTeamHierarchy().getName() + ", "; }
 			} return teamNames;
 		}
 	}

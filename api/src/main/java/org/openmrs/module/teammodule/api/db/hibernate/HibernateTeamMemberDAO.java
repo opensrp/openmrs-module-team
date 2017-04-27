@@ -163,7 +163,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		}
 		
 		if (teamRole != null) {
-			criteria.add(Restrictions.eq("teamRole", teamRole));
+			criteria.add(Restrictions.eq("teamHierarchy", teamRole));
 		}
 		
 		if (identifier != null) {

@@ -9,8 +9,9 @@
 		<property name="teamIdentifier" column="identifier" type="java.lang.String"/>
 	    <many-to-one name="supervisor" column="supervisor_id" class="org.openmrs.module.teammodule.TeamMember"/>
 		<many-to-one name="location" column="location_id" class="org.openmrs.Location"/>
-		
 		<property name="uuid" column="uuid" type="java.lang.String" not-null="true" />
-	
+		<property name="voided" column="voided" type="java.lang.Boolean" />
+		<many-to-one name="supervisorTeam" column="supervisor_team" class="org.openmrs.module.teammodule.Team"/>
+		
     </class>
 </hibernate-mapping>
