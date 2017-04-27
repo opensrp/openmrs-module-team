@@ -69,7 +69,7 @@ public class SearchedMemberController {
 		if (!searchMember.isEmpty()) {
 			
 			/*teamMember = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(searchMember);*/
-			teamMember = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(null, null, searchMember);
+			teamMember = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(null, null, searchMember, null, null);
 			
 			for (int i = 0; i < teamMember.size(); i++) {
 				if (teamMember.get(i).getJoinDate() != null) {
@@ -85,7 +85,7 @@ public class SearchedMemberController {
 		} else {
 			
 			/*dateSearch = Context.getService(TeamMemberService.class).getTeamMemberByDate(joinFrom, joinTo);*/
-			dateSearch = Context.getService(TeamMemberService.class).searchTeamMember(joinFrom, joinTo, null);
+			dateSearch = Context.getService(TeamMemberService.class).searchTeamMember(joinFrom, joinTo, null, null, null);
 			
 			for (int i = 0; i < dateSearch.size(); i++) {
 				if (dateSearch.get(i).getJoinDate() != null) {

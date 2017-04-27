@@ -21,6 +21,7 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
@@ -45,14 +46,20 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("teamIdentifier");
 				description.addProperty("teamName");
 				description.addProperty("uuid");
-				description.addProperty("dateCreated");
+				description.addProperty("supervisor", Representation.REF);
+				description.addProperty("supervisorTeam");
+				description.addProperty("location", Representation.REF);
+				description.addProperty("voided");
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("display");
 				description.addProperty("teamId");
 				description.addProperty("teamIdentifier");
 				description.addProperty("teamName");
+				description.addProperty("supervisor", Representation.REF);
+				description.addProperty("supervisorTeam");
+				description.addProperty("voided");
+				description.addProperty("location", Representation.REF);
 				description.addProperty("uuid");
-				description.addProperty("dateCreated");
 			}
 		}
 		return description;
@@ -93,7 +100,7 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		}
 		else if(context.getParameter("location")!=null) {
 			Location location = Context.getLocationService().getLocation(Integer.parseInt(context.getParameter("location")));
-			List<Team> listTeam = Context.getService(TeamService.class).getTeambyLocation(location, null,null);
+			List<Team> listTeam = Context.getService(TeamService.class).getTeambyLocation(location, 0,20);
 			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
 		}
 		else if(context.getParameter("supervisor")!=null) {
@@ -114,5 +121,19 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 			return "";
 		}
 		return team.getTeamName();
+	}
+	
+	@Override
+	protected PageableResult doGetAll(RequestContext context)
+			throws ResponseException {
+		List<Team> teams = Context.getService(TeamService.class).getAllTeams(false, 0, 25);
+		try{
+		teams.addAll(Context.getService(TeamService.class).getAllTeams(true, 0, 25));
+		return new NeedsPaging<Team>(teams,context);
+		}
+		catch(Exception ex)
+		{
+		return new NeedsPaging<Team>(teams,context);	
+		}
 	}
 }

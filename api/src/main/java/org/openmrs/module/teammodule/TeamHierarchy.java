@@ -9,29 +9,22 @@ import org.openmrs.User;
 @SuppressWarnings("serial")
 public class TeamHierarchy extends BaseOpenmrsData implements Serializable {
 
-	private Integer teamRoleId;
+	private Integer teamHierarchyId;
 	
 	private String name;
 	
 	private Boolean ownsTeam;
 
-	private TeamMember reportTo;
+	private TeamHierarchy reportTo;
 
-	public Integer getTeamRoleId() {
-		return teamRoleId;
+	public Integer getTeamHierarchyId() {
+		return teamHierarchyId;
 	}
 
-	public void setTeamRoleId(Integer teamRoleId) {
-		this.teamRoleId = teamRoleId;
+	public void setTeamHierarchyId(Integer teamHierarchyId) {
+		this.teamHierarchyId = teamHierarchyId;
 	}
 
-	public TeamMember getReportTo() {
-		return reportTo;
-	}
-
-	public void setReportTo(TeamMember reportTo) {
-		this.reportTo = reportTo;
-	}
 
 	public String getName() {
 		return name;
@@ -50,11 +43,11 @@ public class TeamHierarchy extends BaseOpenmrsData implements Serializable {
 	}
 
 	public Integer getId() {
-		return getTeamRoleId();
+		return getTeamHierarchyId();
 	}
 
 	public void setId(Integer arg0) {
-		setTeamRoleId(arg0);
+		setTeamHierarchyId(arg0);
 	}
 	
 
@@ -64,6 +57,14 @@ public class TeamHierarchy extends BaseOpenmrsData implements Serializable {
 
 	public void setCreator(User creator) {
 		this.creator = creator;
+	}
+
+	public TeamHierarchy getReportTo() {
+		return reportTo;
+	}
+
+	public void setReportTo(TeamHierarchy reportTo) {
+		this.reportTo = reportTo;
 	}
 
 }

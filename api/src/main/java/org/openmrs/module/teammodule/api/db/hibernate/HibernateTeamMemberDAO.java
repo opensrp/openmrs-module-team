@@ -11,7 +11,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.ResultTransformer;
@@ -60,7 +59,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	}
 
 	@Override
-	public List<TeamMember> getAllTeamMember(Integer id, boolean voided) {
+	public List<TeamMember> getAllTeamMember(Integer id, boolean voided, Integer offset, Integer pageSize) {
 	
 		if(id != null) {// id is not null
 			if (!voided) { // get by team member id & voided
@@ -74,9 +73,16 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 						criteria_role.add(Restrictions.eq("personId", id));
 						if(criteria_role.list() == null) {
 							return null;
-						} else { return criteria_role.list(); }
-					} else { return criteria_team.list(); }					
-				} else { return criteria_member.list(); }
+						}
+						else { 
+							return criteria_role.list(); 
+						}
+					} 
+					else { return criteria_team.list(); }					
+				}
+				else { 
+					return criteria_member.list(); 
+				}
 			}
 			else { // get by team member id
 				Criteria criteria_member = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
@@ -92,16 +98,36 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 							criteria_role.add(Restrictions.eq("personId", id));
 							if(criteria_role.list() == null) {
 								return null;
-							} else { return criteria_role.list(); }
-						} else { return criteria_person.list(); }
-					} else { return criteria_team.list(); }					
-				} else { return criteria_member.list(); }
+							} 
+							else { 
+								return criteria_role.list(); 
+							}
+						} 
+						else {
+							return criteria_person.list(); 
+						}
+					} 
+					else { 
+						return criteria_team.list(); 
+					}					
+				} 
+				else { 
+					return criteria_member.list(); 
+				}
 			}
 		}
 		else {// id is null
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
 			if (!voided) {
 				criteria.add(Restrictions.eq("voided", false));
+			}
+			
+			if (offset != null) {
+				criteria.setFirstResult(offset);
+			}
+			
+			if (pageSize != null) {
+				criteria.setMaxResults(pageSize);
 			}
 			return criteria.list();
 		} 
@@ -129,68 +155,44 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	
 	//id - TODO
 	@Override
-	public List<TeamMember> searchTeamMember(String identifier, Integer supervisor, TeamHierarchy teamRole, Team team, Location location, Integer offset, Integer pageSize) {
-		String queryStr = " select tm.* from team_member tm ";
-
+	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisor, TeamHierarchy teamRole, Team team, Location location, Integer offset, Integer pageSize) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
+		
 		if (location != null) {
-			queryStr += " inner join location l on l.location_id=" + Integer.toString(location.getId()) + " ";
-			System.out.println("location");
+			criteria.createAlias("location", "l").add(Restrictions.eq("l.locationId", location.getId()));
 		}
 		
 		if (teamRole != null) {
-			queryStr += " inner join team_role tr on tr.team_role_id=" + Integer.toString(teamRole.getId()) + " ";
-			System.out.println("teamRole");
+			criteria.add(Restrictions.eq("teamHierarchy", teamRole));
+		}
+		
+		if (identifier != null) {
+			criteria.add(Restrictions.like("identifier", "%"+identifier+"%"));
+			//criteria.add(Restrictions.or(Restrictions.or(Restrictions.like("identifier", "%"+identifier+"%"),Restrictions.like("identifier", "%"+identifier+"%")),Restrictions.or(Restrictions.like("identifier", "%"+identifier+"%"),Restrictions.like("identifier", "%"+identifier+"%"))));
 		}
 		
 		if (team != null) {
-			queryStr += " inner join team t on t.team_id=" + Integer.toString(team.getId()) + " ";
-			System.out.println("team-if");
-			if (supervisor != null && identifier != null) {
-				queryStr += " where t.supervisor_id=" + Integer.toString(supervisor) + " and tm.identifier like '%" + identifier + "%' ";
-				System.out.println("supervisor and identifier");
-			}
-			else if (supervisor != null && identifier == null) {
-				queryStr += " where t.supervisor_id=" + Integer.toString(supervisor) + " ";
-				System.out.println("supervisor");
-			}
-			else if (supervisor == null && identifier != null) {
-				queryStr += " where tm.identifier like '%" + identifier + "%' ";
-				System.out.println("identifier");
-			}
+			criteria.add(Restrictions.eq("team", team));
 		}
-		else {//if (team == null) {
-			System.out.println("team-else");
-			if (supervisor != null && identifier != null) {
-				queryStr += " inner join team t where t.supervisor_id=" + Integer.toString(supervisor) + " and tm.identifier like '%" + identifier + "%' ";
-				System.out.println("supervisor and identifier");
-			}
-			else if (supervisor != null && identifier == null) {
-				queryStr += " inner join team t where t.supervisor_id=" + Integer.toString(supervisor) + " ";
-				System.out.println("supervisor");
-			}
-			else if (supervisor == null && identifier != null) {
-				queryStr += " where tm.identifier like '%" + identifier + "%' ";
-				System.out.println("identifier");
-			}
+		
+		if (supervisor != null) {
+			criteria.createAlias("team", "t").add(Restrictions.eq("t.supervisor", supervisor));
 		}
-
-		System.out.println("queryStr: " + queryStr);
-		Query q = sessionFactory.getCurrentSession().createSQLQuery(queryStr);
 		
 		if (offset != null) {
-			q.setFirstResult(offset);
+			criteria.setFirstResult(offset);
 		}
 		
 		if (pageSize != null) {
-			q.setMaxResults(pageSize);
+			criteria.setMaxResults(pageSize);
 		}
 		
-		return q.list();
+		return criteria.list();
 	}
 			
 	@SuppressWarnings("serial")
 	@Override
-	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name) {
+	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name, Integer offset, Integer pageSize) {
 		String query = "from TeamMember teamMember ";
 
 		if (name != null && (joinDateFrom != null && joinDateTo != null)) {

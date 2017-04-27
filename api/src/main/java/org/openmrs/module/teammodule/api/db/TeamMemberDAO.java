@@ -23,7 +23,7 @@ public interface TeamMemberDAO {
 	
 	public List<TeamMember> getTeamMemberByPersonId(Integer personId);
 
-	public List<TeamMember> getAllTeamMember(Integer id, boolean voided);
+	public List<TeamMember> getAllTeamMember(Integer id, boolean voided, Integer offset, Integer pageSize);
 	
 	public void saveTeamMember(TeamMember teamMember);
 	
@@ -31,9 +31,9 @@ public interface TeamMemberDAO {
 	
 	public void updateTeamMember(TeamMember teamMember);
 	
-	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name);
+	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name, Integer offset, Integer pageSize);
 
 	public List<TeamMember> searchTeamMemberByTeam(Integer teamId);
 	
-	public List<TeamMember> searchTeamMember(String identifier, Integer supervisor, TeamHierarchy teamRole, Team team, Location location, Integer offset, Integer pageSize);
+	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisor, TeamHierarchy teamRole, Team team, Location location, Integer offset, Integer pageSize);
 }

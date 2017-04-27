@@ -54,7 +54,7 @@ public class TeamMemberViewForm {
 	@SuppressWarnings({"rawtypes" })
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
-		List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).getAllTeamMember(null, true);
+		List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).getAllTeamMember(null, true, null, null);
 		
 		List<Integer> teamMemberIds = new ArrayList<>();
 		List<String> teamMemberLocations = new ArrayList<>();
@@ -102,7 +102,7 @@ public class TeamMemberViewForm {
 				if(teamMembers.get(i).getTeamRole() == null) { reportsTo.add("No Report To"); }
 				else {
 					if(teamMembers.get(i).getTeamRole().getReportTo() == null) { reportsTo.add("No Report To"); }
-					else { reportsTo.add(teamMembers.get(i).getTeamRole().getReportTo().getPerson().getPersonName().toString()); } 
+					else { reportsTo.add(teamMembers.get(i).getTeamRole().getReportTo().getName()); } 
 				}
 
 				//TEAM MEMBER SUB ROLE NAME FOR MODEL LAYER
@@ -201,11 +201,6 @@ public class TeamMemberViewForm {
 		model.addAttribute("allTeamNames", allTeamNames);
 		model.addAttribute("allLocationIds", allLocationIds);
 		model.addAttribute("allLocationNames", allLocationNames);
-		
-		model.addAttribute("selectedSupervisor", "1");
-		model.addAttribute("selectedTeamRole", "1");
-		model.addAttribute("selectedTeam", "1");
-		model.addAttribute("selectedLocation", "1");
 
 		return SUCCESS_FORM_VIEW;
 	}
@@ -215,59 +210,10 @@ public class TeamMemberViewForm {
 			@ModelAttribute("filterTeamMember") TeamMember searchMember, HttpServletRequest request) {
 
 		if (errors.hasErrors()) {
-			System.out.println("ERROR");
+			System.out.println("ERROR: " + errors);
 			return "redirect:/module/teammodule/teamMemberView.form";
 		}
 		
-		String id = request.getParameter("filterById");
-		String supervisorId = request.getParameter("filterBySupervisor");
-		String teamRoleId = request.getParameter("filterByTeamRole");
-		String teamId = request.getParameter("filterByTeam");
-		String locationId = request.getParameter("filterByLocation");
-
-		System.out.println("\nFrom UI: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
-
-		if(id.equals("") ) { id = null; }
-		if(supervisorId.equals("") ) { supervisorId = null; }
-		if(teamRoleId.equals("") ) { teamRoleId = null; }
-		if(teamId.equals("") ) { teamId = null; }
-		if(locationId.equals("") ) { locationId = null; }
-		
-		Integer supervisor = null;
-		if(supervisorId != null) { supervisor = Integer.parseInt(supervisorId); }
-		
-		Team team = null;
-		if(teamId != null) { team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId)); }
-
-		TeamHierarchy teamRole = null;
-		if(teamRoleId != null) { teamRole = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(teamRoleId)); }
-
-		Location location = null;
-		if(locationId != null) { location = Context.getLocationService().getLocation(Integer.parseInt(locationId)); }
-
-		System.out.println("\nTo Function: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
-
-		List<TeamMember> teamMembers = Context.getService(TeamMemberService.class).searchTeamMember(id, supervisor, teamRole, team, location, null, null);
-		
-		System.out.println("\nAFTER: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
-
-		if(id == (null) ) { id = ""; }
-		if(supervisorId == (null) ) { supervisorId = ""; }
-		if(teamRoleId == (null) ) { teamRoleId = ""; }
-		if(teamId == (null) ) { teamId = ""; }
-		if(locationId == (null) ) { locationId = ""; }
-		
-		/*if(teamMembers != null) { 
-			System.out.println("teamMembers: " + teamMembers);
-			model.addAttribute("teamMembers", teamMembers); 
-			model.addAttribute("selectedSupervisor", supervisorId);
-			model.addAttribute("selectedTeamRole", teamRoleId);
-			model.addAttribute("selectedTeam", teamId);
-			model.addAttribute("selectedLocation", locationId);
-		}*/
-		
-//		return SUCCESS_FORM_VIEW;
 		return "redirect:/module/teammodule/teamMemberView.form";
-//		return "redirect:/module/teammodule/teamMemberView.form?id=" + id + "&supervisor=" + supervisorId + "&teamRole=" + teamRoleId + "&team=" + teamId + "&location=" + locationId;
 	}
 }

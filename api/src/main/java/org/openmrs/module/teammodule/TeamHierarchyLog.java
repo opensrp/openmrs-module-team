@@ -8,7 +8,7 @@ import org.openmrs.User;
 import org.openmrs.module.teammodule.TeamConstants.TeamAction;
 
 @SuppressWarnings("serial")
-public class TeamRoleLog extends BaseOpenmrsData implements Serializable{
+public class TeamHierarchyLog extends BaseOpenmrsData implements Serializable{
 
 	private Integer logId;
 
