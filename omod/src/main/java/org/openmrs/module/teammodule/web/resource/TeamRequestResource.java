@@ -46,19 +46,19 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("teamIdentifier");
 				description.addProperty("teamName");
 				description.addProperty("uuid");
-				description.addProperty("supervisor", Representation.REF);
+				description.addProperty("supervisor");
 				description.addProperty("supervisorTeam");
-				description.addProperty("location", Representation.REF);
+				description.addProperty("location");
 				description.addProperty("voided");
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("display");
 				description.addProperty("teamId");
 				description.addProperty("teamIdentifier");
 				description.addProperty("teamName");
-				description.addProperty("supervisor", Representation.REF);
+				description.addProperty("supervisor");
 				description.addProperty("supervisorTeam");
 				description.addProperty("voided");
-				description.addProperty("location", Representation.REF);
+				description.addProperty("location");
 				description.addProperty("uuid");
 			}
 		}
