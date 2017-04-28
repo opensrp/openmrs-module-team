@@ -10,6 +10,9 @@
 		<many-to-one name="person" column="person_id" class="org.openmrs.Person" lazy="false" cascade="save-update"/>
 		<property name="joinDate" column="join_date" type="java.util.Date"/>
 		<property name="leaveDate" column="leave_date" type="java.util.Date"/>
+	    <property name="provider" column="provider" type="java.lang.String"/>    
+		<property name="isDataProvider" column="is_data_provider" type="boolean" not-null="true" />
+
 				
 		<set name="location" table="member_location"  inverse="false" lazy="true" fetch="select" cascade="all">
 			<key>

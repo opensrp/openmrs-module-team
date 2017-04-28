@@ -41,6 +41,10 @@ public class TeamMember extends BaseOpenmrsData implements Serializable {
 
 	private TeamHierarchy teamHierarchy;
 	
+	private String provider;
+	
+	private boolean isDataProvider;
+	
 	public TeamMember() { }
 
 	public String getIdentifier() {
@@ -133,5 +137,21 @@ public class TeamMember extends BaseOpenmrsData implements Serializable {
 
 	public void setTeamHierarchy(TeamHierarchy teamHierarchy) {
 		this.teamHierarchy = teamHierarchy;
+	}
+	
+	public String getProvider() {
+		return provider;
+	}
+
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+	
+	public boolean getIsDataProvider() {
+		return isDataProvider;
+	}
+
+	public void setIsDataProvider(boolean isDataProvider) {
+		this.isDataProvider = isDataProvider;
 	}
 }

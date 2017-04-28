@@ -371,4 +371,14 @@
 			referencedTableName="team_role" referencedColumnNames="team_role_id" />
 	    
 	</changeSet>
+	
+	<changeSet author="Zohaib Masood" id="teammodule-32.1.0A">
+		<addColumn tableName="team_member">
+			<column name="provider" type="varchar(45)" />
+			<column name="is_data_provider" type="tinyint(4)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+	
 </databaseChangeLog>
