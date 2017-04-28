@@ -5,6 +5,7 @@ package org.openmrs.module.teammodule;
 
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
@@ -25,23 +26,11 @@ public class Team extends BaseOpenmrsData implements Serializable {
 	private String teamName;
 	
 	private TeamMember supervisor;
-
-	private Team supervisorTeam;
 	
 	private Location location;
-	
-	private Boolean voided;
 		
 	public Team() {
 
-	}
-
-	public Boolean getVoided() {
-		return voided;
-	}
-
-	public void setVoided(Boolean voided) {
-		this.voided = voided;
 	}
 
 	//@Access(AccessType.PROPERTY)
@@ -93,11 +82,4 @@ public class Team extends BaseOpenmrsData implements Serializable {
 		this.location = location;
 	}
 
-	public Team getSupervisorTeam() {
-		return supervisorTeam;
-	}
-
-	public void setSupervisorTeam(Team supervisorTeam) {
-		this.supervisorTeam = supervisorTeam;
-	}
 }

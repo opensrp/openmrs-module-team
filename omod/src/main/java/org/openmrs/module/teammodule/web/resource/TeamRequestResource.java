@@ -26,6 +26,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudR
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author Muhammad Safwan and Shakeeb raza
@@ -44,19 +45,13 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 			if (rep instanceof DefaultRepresentation) {
 				description.addProperty("display");
 				description.addProperty("teamIdentifier");
-				description.addProperty("teamName");
 				description.addProperty("uuid");
-				description.addProperty("supervisor");
-				description.addProperty("supervisorTeam");
 				description.addProperty("location");
-				description.addProperty("voided");
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("display");
-				description.addProperty("teamId");
 				description.addProperty("teamIdentifier");
 				description.addProperty("teamName");
 				description.addProperty("supervisor");
-				description.addProperty("supervisorTeam");
 				description.addProperty("voided");
 				description.addProperty("location");
 				description.addProperty("uuid");
@@ -92,6 +87,7 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		Context.getService(TeamService.class).purgeTeam(team);
 	}
 	
+	@ResponseBody
 	@Override
 	public SimpleObject search(RequestContext context) {
 		if(context.getParameter("q") != null) {
@@ -106,6 +102,12 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		else if(context.getParameter("supervisor")!=null) {
 			TeamMember supervisor = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(context.getParameter("supervisor")));
 			Team team =  Context.getService(TeamService.class).getTeamBySupervisor(supervisor);
+			List<Team> listTeam = new ArrayList<>();
+			listTeam.add(team);
+			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
+		}
+		else if(context.getParameter("teamName")!=null && context.getParameter("locationId")!=null) {
+			Team team = Context.getService(TeamService.class).getTeam(context.getParameter("teamName"),Integer.parseInt(context.getParameter("locationId")));
 			List<Team> listTeam = new ArrayList<>();
 			listTeam.add(team);
 			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);

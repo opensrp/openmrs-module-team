@@ -108,4 +108,11 @@ public class HibernateTeamDAO implements TeamDAO {
 		return createQuery.list();
 	}
 
+	@Override
+	public Team getTeam(String teamName, int locationId) {
+		Query createQuery= sessionFactory.getCurrentSession().createQuery("from Team team where team.teamName = :name and team.location= :locationId").setInteger("locationId", locationId).setString("name", teamName);
+		return (Team) createQuery.uniqueResult();
+		
+	}
+
 }

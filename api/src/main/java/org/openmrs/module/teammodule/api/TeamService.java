@@ -23,6 +23,8 @@ public interface TeamService extends OpenmrsService {
 	
 	public Team getTeam(int id);
 	
+	public Team getTeam(String teamName, int locationid);
+	
 	public Team getTeamBySupervisor(TeamMember teamSupervisor);
 
 	public Team getTeam(String uuid);

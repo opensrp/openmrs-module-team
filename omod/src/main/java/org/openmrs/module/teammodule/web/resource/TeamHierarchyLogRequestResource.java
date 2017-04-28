@@ -13,6 +13,8 @@ import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
@@ -30,15 +32,23 @@ public class TeamHierarchyLogRequestResource extends DataDelegatingCrudResource<
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = null;
+		
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
+		if (rep instanceof DefaultRepresentation) {
+			description.addProperty("uuid");
+			description.addProperty("action");
+			description.addProperty("dataNew");
+			description.addProperty("log");
+			}
+		else if (rep instanceof FullRepresentation) {
 			description.addProperty("logId");
-			description.addProperty("teamHierarchyId");
 			description.addProperty("uuid");
 			description.addProperty("action");
 			description.addProperty("dataNew");
 			description.addProperty("log");
 			description.addProperty("dateCreated");
+			}
 		}
 
 		return description;
