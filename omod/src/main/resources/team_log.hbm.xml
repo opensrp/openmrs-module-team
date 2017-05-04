@@ -12,8 +12,6 @@
 		<property name="dataOld" column="data_old" type="java.lang.String"/>
 		<property name="log" column="log" type="java.lang.String"/>
 
-		<!-- <property name="dateCreated" column="date_created" type="java.util.Date" not-null="true"/>
-		<many-to-one name="creator" column ="creator" class="org.openmrs.User" not-null="true"/> -->
 		<property name="uuid" column="uuid" type="java.lang.String"/>
 	</class>
 </hibernate-mapping>

@@ -11,6 +11,8 @@ import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
@@ -30,12 +32,18 @@ public class TeamHierarchyRequestResource extends DataDelegatingCrudResource<Tea
 		DelegatingResourceDescription description = null;
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
-				description.addProperty("display");
-				description.addProperty("uuid");
-				description.addProperty("teamRoleId");
-				description.addProperty("ownsTeam");
-				description.addProperty("reportTo");
-				description.addProperty("dateCreated");
+		if (rep instanceof DefaultRepresentation) {
+			description.addProperty("display");
+			description.addProperty("uuid");
+			description.addProperty("ownsTeam");
+			description.addProperty("reportTo");
+			} else if (rep instanceof FullRepresentation) {
+			description.addProperty("display");
+			description.addProperty("uuid");
+			description.addProperty("ownsTeam");
+			description.addProperty("reportTo");
+			description.addProperty("dateCreated");
+			}
 		}
 
 		return description;

@@ -82,4 +82,10 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 	public void updateTeam(Team team) {
 		dao.updateTeam(team);
 	}
+
+	@Override
+	public Team getTeam(String teamName, int locationid) {
+		// TODO Auto-generated method stub
+		return dao.getTeam(teamName,locationid);
+	}
 }

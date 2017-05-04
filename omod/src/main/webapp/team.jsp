@@ -113,10 +113,9 @@
 	type="text/css" rel="stylesheet">
   <script type="text/javascript">
   $(document).ready(function(){
-	  $.get("http://127.0.0.1:8080/openmrs/ws/rest/v1/team/team?v=default", function(data, status){
+	  $.get("/openmrs/ws/rest/v1/team/team?v=default", function(data, status){
 		  $.get("http://127.0.0.1:8080/openmrs/ws/rest/v1/team/team?v=default", function(data, status){
-			  $.get("http://127.0.0.1:8080/openmrs/ws/rest/v1/team/team?supervisor=&v=default", function(data, status){
-				  $.get("http://127.0.0.1:8080/openmrs/ws/rest/v1/team/teammember?v=default", function(data, status){
+			    $.get("http://127.0.0.1:8080/openmrs/ws/rest/v1/team/teammember?v=default", function(data, status){
 					  $.get("http://127.0.0.1:8080/openmrs/ws/rest/v1/team/teamlog?teamId=&v=default", function(data, status){
 										        
 	    });

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
@@ -22,7 +21,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamHierarchyService;
-import org.openmrs.util.OpenmrsConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -111,6 +109,7 @@ public class TeamMemberAddForm {
 		
 		
 		model.addAttribute("teamId",1);
+		System.out.println("\n teamId: 1\n");
 
 		//model.addAttribute("json", getHierarchyAsJson());
 		

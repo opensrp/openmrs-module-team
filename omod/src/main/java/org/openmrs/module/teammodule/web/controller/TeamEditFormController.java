@@ -51,22 +51,13 @@ public class TeamEditFormController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String showFormEidt(Model model, HttpServletRequest request, @RequestParam(value = "teamId", required = true) int teamId, @ModelAttribute("teamData") Team team) {
 		Team teamData = new Team();
-
 		teamData = Context.getService(TeamService.class).getTeam(teamId);
 		String error = request.getParameter("error");
 		model.addAttribute("error", error);
 		String edit = request.getParameter("edit");
 		model.addAttribute("edit", edit);
-
-		/*Location l = Context.getLocationService().getLocation(team.getLocation().getLocationId());
-		List<Location> location = Context.getLocationService().getAllLocations();
-*/
 		model.addAttribute("teamData", teamData);
-/*		model.addAttribute("location", location);
-		model.addAttribute("defaultLocation", l);
-*/		model.addAttribute("teamId", teamId);
-		// model.addAttribute("memberData", teamMember);
-
+		model.addAttribute("teamId", teamId);
 		return SUCCESS_FORM_VIEW;
 	}
 

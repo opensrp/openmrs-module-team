@@ -68,24 +68,19 @@
 					alertify.alert(dataTypeMessage);
 					document.getElementById("saveButton").disabled = false;
 				}else{
-					var xmlhttp = new XMLHttpRequest();
-					var x;
-					xmlhttp.open('POST', '/openmrs/module/teammodule/ajax/getTeams.form', true);  //"false" makes the request synchronous
-					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-					xmlhttp.send("teamName="+name+"&locationId="+selectedValue);
-					xmlhttp.onreadystatechange=function()
-					{
-					 if(xmlhttp.readyState==4 && xmlhttp.status==200)
-					  {
-					   x=xmlhttp.responseText;
-					   if(x == "" || x == null){
-							 document.getElementById("saveTeam").submit(); 
-						}else{
-						alertify.alert(x);
-						}
-					
-				}
-			  }
+					jQuery.ajax({
+						  url:"/openmrs/ws/rest/v1/team/team?teamName="+name+"&locationId="+selectedValue+"&v=full",
+						  type:"GET",
+						  contentType:"application/json;charset=UTF-8",
+						  dataType:"json",
+						  success: function(data,status){
+						alert(status)
+						if(status==200)
+							{
+							document.getElementById("saveTeam").submit();
+							}
+						  }
+						  });
 			}			 
 				
 		}
@@ -97,8 +92,7 @@
 <h3 style="color: green; display: inline">${edit}</h3>
 <h2 align="center">Add Team</h2>
 <table class="team">
-	<form:form id="saveTeam" name="saveTeam" method="post"
-		commandName="teamData">
+	<form:form id="saveTeam" name="saveTeam" method="post" commandName="teamData">
 		<tr>
 			<td>Team Name</td>
 			<td><form:input id="teamName" path="teamName" maxlength="20"

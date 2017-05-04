@@ -18,6 +18,8 @@ public interface TeamDAO {
 	
 	public Team getTeam(Integer id);
 	
+	public Team getTeam(String teamName,int locationId);
+	
 	public Team getTeam(String name);
 	
 	public void updateTeam(Team team);

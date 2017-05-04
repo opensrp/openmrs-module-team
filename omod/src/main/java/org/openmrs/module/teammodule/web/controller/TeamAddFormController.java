@@ -94,7 +94,7 @@ public class TeamAddFormController {
 		List<Location> location = Context.getLocationService().getAllLocations();
 		model.addAttribute("location", location);
 		model.addAttribute("error", error);
-
+		
 		return SUCCESS_FORM_VIEW;
 	}
 

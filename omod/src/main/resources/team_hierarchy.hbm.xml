@@ -8,8 +8,7 @@
 	    <property name="name" column="name" type="java.lang.String"/>
 		<property name="ownsTeam" column="owns_Team" type="java.lang.Boolean"/>
 		<many-to-one name="reportTo" column="report_to" class="org.openmrs.module.teammodule.TeamHierarchy" />
-		<property name="uuid" column="uuid" type="java.lang.String"/>
 		
-
+		<property name="uuid" column="uuid" type="java.lang.String"/>
 	</class>
 </hibernate-mapping>
