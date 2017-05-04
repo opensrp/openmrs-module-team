@@ -18,7 +18,6 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script type="text/javascript">
-	//\$j = jQuery;
 	var members = [];
 	var headerArray = ["edit", "Identifier", "Name", "Role", "Team", "Report To", "Locations", "Sub Ordinate Roles", "Sub Ordinate Teams", "History", "Patients"];
 	
@@ -31,11 +30,11 @@
 				members = result.results;
 				GenerateTable();
 				$('#example').DataTable({
+			        "bFilter": false
 					//"language": { "search": "Filter records:" },
 					//"paging":   true,
 			        //"ordering": true,
 			        //"info":     true,
-			        "bFilter": false
 				});
 			}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-ALL"); console.log(jqXHR); }
 		});
@@ -158,11 +157,11 @@
 							console.log(members);
 							GenerateTable();
 							document.getElementById("errorHead").innerHTML = ""; 
-							document.getElementById("saveHead").innerHTML = "<br><p>Team Member Role Updated Successfully</p><br>"; 
+							document.getElementById("saveHead").innerHTML = "<p>Team Member Role Updated Successfully</p>"; 
 							$('#editTeamMemberRoleDiv').dialog('close'); 
 						}
 					}
-				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER ROLE"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<br><p>Error Occured While Updating Team Member Role</p><br>"; }
+				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER ROLE"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Role</p>"; }
 			});
 		} 
 		else if(type==="memberTeamInfo") { 
@@ -187,11 +186,11 @@
 							console.log(members);
 							GenerateTable();
 							document.getElementById("errorHead").innerHTML = ""; 
-							document.getElementById("saveHead").innerHTML = "<br><p>Team Member Team Updated Successfully</p><br>"; 
+							document.getElementById("saveHead").innerHTML = "<p>Team Member Team Updated Successfully</p>"; 
 							$('#editTeamMemberTeamDiv').dialog('close'); 
 						}
 					}
-				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER TEAM"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<br><p>Error Occured While Updating Team Member Team</p><br>"; }
+				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER TEAM"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Team</p>"; }
 			});
 		} 
 		else if(type==="memberInfo") { 
@@ -223,11 +222,11 @@
 							GenerateTable();
 				    		console.log("if");
 							document.getElementById("errorHead").innerHTML = ""; 
-							document.getElementById("saveHead").innerHTML = "<br><p>Team Member Information Updated Successfully</p><br>"; 
+							document.getElementById("saveHead").innerHTML = "<p>Team Member Information Updated Successfully</p>"; 
 							$('#editTeamMemberDiv').dialog('close'); 
 				    	}
 					}
-				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER INFO"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<br><p>Error Occured While Updating Team Member Information</p><br>"; }
+				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER INFO"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Information</p>"; }
 			});
 		} 
 	}
