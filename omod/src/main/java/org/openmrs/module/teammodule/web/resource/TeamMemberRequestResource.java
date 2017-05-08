@@ -4,18 +4,10 @@
 package org.openmrs.module.teammodule.web.resource;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.openmrs.Location;
 import org.openmrs.Person;
-import org.openmrs.PersonName;
-import org.openmrs.Role;
-import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamHierarchy;
@@ -32,10 +24,10 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
-import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
+import org.openmrs.module.webservices.rest.web.v1_0.controller.ComplexDataDelegatingCrudResource;
 
 /**
  * @author Muhammad Safwan
@@ -43,7 +35,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  */
 
 @Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teammember", supportedClass = TeamMember.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*" })
-public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMember> {
+public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource<TeamMember> {
 
 	@Override
 	public TeamMember newDelegate() {
@@ -52,10 +44,17 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 
 	@Override
 	public TeamMember save(TeamMember delegate) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			if(delegate.getId() > 0){
+				Context.getService(TeamMemberService.class).updateTeamMember(delegate);
+				return delegate;
+			}
+			Context.getService(TeamMemberService.class).saveTeamMember(delegate);
+		}
+		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }
+		return delegate;
 	}
-
+	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = null;
@@ -63,41 +62,65 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
 			if (rep instanceof DefaultRepresentation) {
-				description.addProperty("teamMemberId");
 				description.addProperty("identifier");
-				description.addProperty("person");
+				description.addProperty("person", Representation.DEFAULT);
 				description.addProperty("uuid");
 				description.addProperty("location");
-				description.addProperty("team");
+				description.addProperty("team", Representation.DEFAULT);
+				description.addProperty("patients", Representation.DEFAULT);
+				description.addProperty("voided");
+				description.addProperty("subTeams");
+				
+				//description.addProperty("teamHierarchy");
+				//description.addProperty("subTeamHierarchys");
 
-				description.addProperty("patients", Representation.REF);
-				description.addProperty("teamHierarchy");
-				description.addProperty("reportTo");
-				description.addProperty("subTeam");
-				description.addProperty("subTeamHierarchy");
-				description.addProperty("personId");
-				description.addProperty("personGivenName");
-				description.addProperty("personMiddleName");
-				description.addProperty("personFamilyName");
 			} else if (rep instanceof FullRepresentation) {
-				description.addProperty("teamMemberId");
 				description.addProperty("identifier");
-				description.addProperty("person");
+				description.addProperty("person", Representation.FULL);
 				description.addProperty("uuid");
 				description.addProperty("location");
-				description.addProperty("team");
-				description.addProperty("patients", Representation.REF);
-
-				description.addProperty("teamHierarchy");
-				description.addProperty("reportTo");
-				description.addProperty("subTeam");
-				description.addProperty("subTeamHierarchy");
-				description.addProperty("personId");
-				description.addProperty("personGivenName");
-				description.addProperty("personMiddleName");
-				description.addProperty("personFamilyName");
+				description.addProperty("team", Representation.FULL);
+				description.addProperty("patients", Representation.FULL);
+				description.addProperty("voided");
+				description.addProperty("subTeams");
+				description.addProperty("auditInfo");
+				description.addSelfLink();
+				
+				//description.addProperty("teamHierarchy");
+				//description.addProperty("subTeamHierarchys");
 			}
 		}
+		return description;
+	}
+
+
+	@Override
+	public SimpleObject subresourceSave(TeamMember delegate, String subResource, SimpleObject post, RequestContext context) {
+		if(subResource.equals("team") && post.get("team") != null) {//post.get("team") == new team id
+			System.out.println("subResource: " + subResource);
+			System.out.println("team: " + post.get("team").toString());
+			delegate.setTeam(Context.getService(TeamService.class).getTeam(Integer.parseInt(post.get("team").toString())));
+			Context.getService(TeamMemberService.class).saveTeamMember(delegate);
+			List<TeamMember> teamMembers = new ArrayList<>();
+			teamMembers.add(delegate);
+			System.out.println("teamMembers: " + teamMembers);
+			return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
+		}
+		else { return null; }
+	}
+	
+	@Override
+	public DelegatingResourceDescription getUpdatableProperties()  {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("identifier");
+		description.addProperty("person");	
+		description.addProperty("location");
+		description.addProperty("team");
+		description.addProperty("patients");
+		description.addProperty("subTeams");
+		description.addProperty("voided");
+		//description.addProperty("teamHierarchy");
+		//description.addProperty("subTeamHierarchys");
 		return description;
 	}
 
@@ -119,26 +142,16 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 
 	@Override
 	protected void delete(TeamMember delegate, String reason, RequestContext context) throws ResponseException {
-		// TODO Auto-generated method stub
-
+		Context.getService(TeamMemberService.class).purgeTeamMember(delegate);
 	}
 
 	@Override
 	public void purge(TeamMember delegate, RequestContext context) throws ResponseException {
-		// TODO Auto-generated method stub
-
+		Context.getService(TeamMemberService.class).purgeTeamMember(delegate);
 	}
 
-	@SuppressWarnings({ "deprecation", "rawtypes" })
 	@Override
 	public SimpleObject search(RequestContext context) {
-		if(context.getParameter("getUserNameBy") != null) {
-			System.out.println("getUserNameBy: " + context.getParameter("getUserNameBy"));
-			User user = Context.getUserService().getUserByUsername(context.getParameter("getUserNameBy"));
-			List<User> users = new ArrayList<>();
-			users.add(user);
-			return new NeedsPaging<User>(users, context).toSimpleObject(this);
-		}
 		if(context.getParameter("q") != null) {
 			System.out.println("q: " + context.getParameter("q"));
 			List<TeamMember> teamMembers = Context.getService(TeamMemberService.class).searchTeamMember(null, null, context.getParameter("q"), null, null);
@@ -154,7 +167,48 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 			return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
 		}
 		// FOR UI
-		else if(context.getParameter("update") != null) {
+		else if(context.getParameter("get") != null) {
+			//GET 'ALL' TEAM MEMBERS 'ON PAGE LOAD' - teamMemberView.form
+			if(context.getParameter("get").equals("all")) {
+				List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).getAllTeamMember(null, true, null, null);
+				System.out.println("teamMembers: " + teamMembers);
+				return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
+			}
+			//GET 'FILTERED' TEAM MEMBERS 'ON FILTER BUTTON CLICK' - teamMemberView.form
+			else if(context.getParameter("get").equals("filter")) {
+				String id = "", supervisorId = "", teamRoleId = "", teamId = "", locationId = "";
+				
+				if(context.getParameter("identifier") != null) { id = context.getParameter("identifier"); }
+				if(context.getParameter("supervisor") != null) { supervisorId = context.getParameter("supervisor"); }
+				if(context.getParameter("role") != null) { teamRoleId = context.getParameter("role"); }
+				if(context.getParameter("team") != null) { teamId = context.getParameter("team"); }
+				if(context.getParameter("location") != null) { locationId = context.getParameter("location"); }
+
+				//System.out.println("\nFrom UI: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
+
+				if(id.equals("") ) { id = null; }
+				if(supervisorId.equals("") ) { supervisorId = null; }
+				if(teamRoleId.equals("") ) { teamRoleId = null; }
+				if(teamId.equals("") ) { teamId = null; }
+				if(locationId.equals("") ) { locationId = null; }
+
+				TeamMember supervisor = null; if(supervisorId != null) { supervisor = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(supervisorId)); }
+				Team team = null; if(teamId != null) { team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId)); }
+				TeamHierarchy teamRole = null; if(teamRoleId != null) { teamRole = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(teamRoleId)); }
+				Location location = null; if(locationId != null) { location = Context.getLocationService().getLocation(Integer.parseInt(locationId)); }
+				
+				//System.out.println("\nTo Function: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
+
+				List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(id, supervisor, teamRole, team, location, null, null);
+
+				//System.out.println("\nAFTER: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
+				System.out.println("teamMembers: " + teamMembers);
+
+				return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
+			}
+			else { System.out.println("get: " + context.getParameter("get")); return null; }
+		}
+		/*else if(context.getParameter("update") != null) {
 			//UPDATE TEAM MEMBER INFO - teamMemberView.form
 			if(context.getParameter("update").equals("teamMemberInfo")) {
 				String uuid = "", identifier = "", firstName = "", middleName = "", lastName = "";
@@ -234,49 +288,8 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 				return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
 			}
 			else { System.out.println("update: " + context.getParameter("update")); return null; }
-		}
-		else if(context.getParameter("get") != null) {
-			//GET 'ALL' TEAM MEMBERS 'ON PAGE LOAD' - teamMemberView.form
-			if(context.getParameter("get").equals("all")) {
-				List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).getAllTeamMember(null, true, null, null);
-				System.out.println("teamMembers: " + teamMembers);
-				return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
-			}
-			//GET 'FILTERED' TEAM MEMBERS 'ON FILTER BUTTON CLICK' - teamMemberView.form
-			else if(context.getParameter("get").equals("filter")) {
-				String id = "", supervisorId = "", teamRoleId = "", teamId = "", locationId = "";
-				
-				if(context.getParameter("identifier") != null) { id = context.getParameter("identifier"); }
-				if(context.getParameter("supervisor") != null) { supervisorId = context.getParameter("supervisor"); }
-				if(context.getParameter("role") != null) { teamRoleId = context.getParameter("role"); }
-				if(context.getParameter("team") != null) { teamId = context.getParameter("team"); }
-				if(context.getParameter("location") != null) { locationId = context.getParameter("location"); }
-
-				//System.out.println("\nFrom UI: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
-
-				if(id.equals("") ) { id = null; }
-				if(supervisorId.equals("") ) { supervisorId = null; }
-				if(teamRoleId.equals("") ) { teamRoleId = null; }
-				if(teamId.equals("") ) { teamId = null; }
-				if(locationId.equals("") ) { locationId = null; }
-
-				TeamMember supervisor = null; if(supervisorId != null) { supervisor = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(supervisorId)); }
-				Team team = null; if(teamId != null) { team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId)); }
-				TeamHierarchy teamRole = null; if(teamRoleId != null) { teamRole = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(teamRoleId)); }
-				Location location = null; if(locationId != null) { location = Context.getLocationService().getLocation(Integer.parseInt(locationId)); }
-				
-				//System.out.println("\nTo Function: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
-
-				List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(id, supervisor, teamRole, team, location, null, null);
-
-				//System.out.println("\nAFTER: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
-				System.out.println("teamMembers: " + teamMembers);
-
-				return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
-			}
-			else { System.out.println("get: " + context.getParameter("get")); return null; }
-		}
-		else if(context.getParameter("post") != null) {
+		}*/
+		/*else if(context.getParameter("post") != null) {
 			if(context.getParameter("post").equals("add")) {
 				String givenName="",familyName="",gender="",birthDate="",identifier="",joinDate="",leaveDate="",location="",voided="",voidReason="",isDataProvider="",provider="",teamRoleOption="",choice="",existingPersonId="",loginChoice="",userName="",password="",confirmPassword="",roleOption="",teamId="";
 				if(context.getParameter("givenName") != null) { givenName = context.getParameter("givenName"); }
@@ -413,61 +426,34 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 				return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
 //				return null;
 			}
-			else { return null;
-			}
-		}
+			else { return null; }
+		}*/
 		else { return null; }
 	}
 
-	@PropertyGetter("personId")
-	public String getPersonId(TeamMember teamMember) {
-		if (teamMember == null){ return ""; }
-		return teamMember.getPerson().getId().toString();
+	@PropertyGetter("display")
+	public String getDisplayString(TeamMember teamMember) {
+		if (teamMember == null){		
+			return null;
+		}
+		
+		return teamMember.getPerson().getPersonName().toString();
 	}
 	
-	@PropertyGetter("personGivenName")
-	public String getPersonGivenName(TeamMember teamMember) {
-		if (teamMember == null || teamMember.getPerson().getPersonName().getGivenName() == null) { return ""; }
-		return teamMember.getPerson().getPersonName().getGivenName().toString();
-	}
-	
-	@PropertyGetter("personMiddleName")
-	public String getPersonMiddleName(TeamMember teamMember) {
-		if (teamMember == null || teamMember.getPerson().getPersonName().getMiddleName() == null) { return ""; }
-		return teamMember.getPerson().getPersonName().getMiddleName().toString();
-	}
-	
-	@PropertyGetter("personFamilyName")
-	public String getPersonFamilyName(TeamMember teamMember) {
-		if (teamMember == null || teamMember.getPerson().getPersonName().getFamilyName() == null) { return ""; }
-		return teamMember.getPerson().getPersonName().getFamilyName().toString();
-	}
-	
-	@PropertyGetter("teamHierarchy")
-	public String getTeamRoleName(TeamMember teamMember) {
-		if (teamMember == null){ return ""; }
-		return teamMember.getTeamHierarchy().getName().toString();
-	}
-	
-	@PropertyGetter("reportTo")
-	public String getReportTo(TeamMember teamMember) {
-		if (teamMember == null){ return ""; }
-		return teamMember.getTeamHierarchy().getReportTo().getName();
-	}
-
-	@PropertyGetter("subTeam")
+	@PropertyGetter("subTeams")
 	public String getSubTeam(TeamMember teamMember) {
-		List<TeamMember> tm = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(teamMember.getPerson().getId());
-		if(tm == null) { return ""; }
-		else { String teamNames = "";
-			for (int j = 0; j < tm.size(); j++) { 
-				if(j==tm.size()-1) { teamNames += tm.get(j).getTeam().getTeamName() + ""; }
-				else { teamNames += tm.get(j).getTeam().getTeamName() + ", "; }
-			} return teamNames;
+		List<Team> teams = Context.getService(TeamService.class).getSubTeams(teamMember);
+		if(teams == null) { return null; }
+		else {
+			String str = "";
+			for (int i = 0; i < teams.size(); i++) {
+				if(i==teams.size()-1) { str += teams.get(i).getTeamName(); }
+				else { str += teams.get(i).getTeamName() + ", "; }
+			} return str;
 		}
 	}
 	
-	@PropertyGetter("subTeamHierarchy")
+	/*@PropertyGetter("subTeamHierarchys")
 	public String getSubTeamRole(TeamMember teamMember) {
 		List<TeamMember> tm = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(teamMember.getPerson().getId());
 		if(tm == null) { return ""; }
@@ -478,4 +464,41 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 			} return teamNames;
 		}
 	}
+	
+	@PropertyGetter("teamHierarchy")
+	public String getTeamRoleName(TeamMember teamMember) {
+		if (teamMember == null){ return ""; }
+		return teamMember.getTeamHierarchy().getName().toString();
+	}
+
+	@PropertyGetter("reportTo")
+	public String getReportTo(TeamMember teamMember) {
+		if (teamMember == null){ return ""; }
+		return teamMember.getTeamHierarchy().getReportTo().getName();
+	}*/
+	
+	
+
+	/*@PropertySetter("team")
+	public Team setTeam(String teamStr) {
+		System.out.println();
+		System.out.println("teamStr: " + teamStr);
+		if (teamStr == null){ return null; }
+		else {
+			Team team = Context.getService(TeamService.class).getTeam(teamStr);
+			if(team == null) { return Context.getService(TeamService.class).getTeam(Integer.parseInt(teamStr)); }
+			else { return team; }
+		}
+	}
+
+	@Override
+	public void setConvertedProperties(TeamMember delegate, Map<String, Object> propertyMap, DelegatingResourceDescription description, boolean mustIncludeRequiredProperties) throws ConversionException {
+		for (Map.Entry<String, Object> prop : propertyMap.entrySet()) {
+			System.out.println("Conversion");
+			System.out.println(delegate);
+			System.out.println(prop.getKey());
+			System.out.println(prop.getValue());
+			setProperty(delegate, prop.getKey(), prop.getValue());
+		}
+	}*/
 }

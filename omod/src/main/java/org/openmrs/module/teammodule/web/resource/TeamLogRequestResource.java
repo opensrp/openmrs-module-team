@@ -3,8 +3,10 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLog;
 import org.openmrs.module.teammodule.api.TeamLogService;
+import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -32,19 +34,21 @@ public class TeamLogRequestResource extends DataDelegatingCrudResource<TeamLog> 
 		DelegatingResourceDescription description = null;
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
-		if (rep instanceof DefaultRepresentation) {
-			description.addProperty("uuid");
-			description.addProperty("team");
-			description.addProperty("action");
-			description.addProperty("log");
-		} else if (rep instanceof FullRepresentation) {
-			description.addProperty("logId");
-			description.addProperty("uuid");
-			description.addProperty("team");
-			description.addProperty("action");
-			description.addProperty("dataNew");
-			description.addProperty("log");
-			description.addProperty("dateCreated");
+			if (rep instanceof DefaultRepresentation) {
+				description.addProperty("uuid");
+				description.addProperty("team");
+				description.addProperty("action");
+				description.addProperty("log");
+			} else if (rep instanceof FullRepresentation) {
+				description.addProperty("logId");
+				description.addProperty("uuid");
+				description.addProperty("team");
+				description.addProperty("action");
+				description.addProperty("dataNew");
+				description.addProperty("dataOld");
+				description.addProperty("log");
+				description.addProperty("auditInfo");
+				description.addSelfLink();
 			}
 		}
 		return description;
@@ -77,7 +81,8 @@ public class TeamLogRequestResource extends DataDelegatingCrudResource<TeamLog> 
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamLog> listTeamLog = Context.getService(TeamLogService.class).searchTeamLogByTeam(Integer.parseInt(context.getParameter("q")),null,null);
+		List<Team> team = Context.getService(TeamService.class).searchTeam(context.getParameter("q"));
+		List<TeamLog> listTeamLog = Context.getService(TeamLogService.class).searchTeamLogByTeam(team.get(0).getTeamId(),null,null);
 		return new NeedsPaging<TeamLog>(listTeamLog, context).toSimpleObject(this);
 	}
 	

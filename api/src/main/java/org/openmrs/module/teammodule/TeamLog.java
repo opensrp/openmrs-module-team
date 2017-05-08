@@ -8,23 +8,23 @@ import org.openmrs.User;
 import org.openmrs.module.teammodule.TeamConstants.TeamAction;
 
 @SuppressWarnings("serial")
-public class TeamLog extends BaseOpenmrsData implements Serializable{
+public class TeamLog extends BaseOpenmrsData implements Serializable {
 
 	private Integer logId;
 
 	private Team team;
 
-	private TeamAction action;
+	private String action;
 
 	@JsonProperty
 	private String dataNew;
-	
+
 	@JsonProperty
 	private String dataOld;
 
 	@JsonProperty
 	private String log;
-	
+
 	public Integer getLogId() {
 		return logId;
 	}
@@ -33,11 +33,15 @@ public class TeamLog extends BaseOpenmrsData implements Serializable{
 		this.logId = logId;
 	}
 
-	public TeamAction getAction() {
+	public String getAction() {
 		return action;
 	}
 
 	public void setAction(TeamAction action) {
+		this.action = action.name();
+	}
+	
+	 void setAction(String action) {
 		this.action = action;
 	}
 
@@ -48,7 +52,7 @@ public class TeamLog extends BaseOpenmrsData implements Serializable{
 	public void setDataNew(String dataNew) {
 		this.dataNew = dataNew;
 	}
-	
+
 	public String getDataOld() {
 		return dataOld;
 	}

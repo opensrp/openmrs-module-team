@@ -2,11 +2,11 @@
 
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
-<!-- <openmrs:require privilege="Add Member" otherwise="/login.htm" />
+<openmrs:require privilege="Add Member" otherwise="/login.htm" />
 <openmrs:htmlInclude file="/scripts/jquery/jsTree/jquery.tree.min.js" />
 <openmrs:htmlInclude file="/scripts/jquery/jsTree/themes/classic/style.css" />
 <openmrs:htmlInclude file="/openmrs.js" />
-<openmrs:htmlInclude file="/scripts/openmrsmessages.js" appendLocale="true" /> -->
+<openmrs:htmlInclude file="/scripts/openmrsmessages.js" appendLocale="true" />
 
 <link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="/openmrs/moduleResources/teammodule/themes/alertify.core.css" />
@@ -20,13 +20,14 @@
 		jQuery("#heading").hide();
 		jQuery("#exist").hide();
 		jQuery("#nameTip").hide();
+		jQuery("#mNameTip").hide();
 		jQuery("#fNameTip").hide();
 		jQuery("#idTip").hide();
-		jQuery("#providerTip").hide();
+		//jQuery("#providerTip").hide();
 		jQuery("#joinTip").hide();
 		jQuery("#leaveTip").hide();
 		jQuery("#voidTip").hide();
-		jQuery("#isDataProviderTip").hide();
+		//jQuery("#isDataProviderTip").hide();
 		jQuery("#memberUsername").hide();
 		jQuery("#memberPassword").hide();
 		jQuery("#memberRole").hide();
@@ -37,11 +38,12 @@
 	 	
 		jQuery('#voided').change(function(){ if(this.checked) { jQuery('#voidTip').show(); } else { jQuery('#voidTip').hide(); } });
 		
-		jQuery('#isDataProvider').change(function(){ if(this.checked) { jQuery('#isDataProviderTip').show(); } else { jQuery('#isDataProviderTip').hide(); } });
+		//jQuery('#isDataProvider').change(function(){ if(this.checked) { jQuery('#isDataProviderTip').show(); } else { jQuery('#isDataProviderTip').hide(); } });
 
 		jQuery('#choice').change(function() {
 			if (this.checked) {
 				jQuery("#memberName").hide();
+				jQuery("#memberMiddleName").hide();
 				jQuery("#memberFamilyName").hide();
 				jQuery("#memberGender").hide();
 				jQuery("#memberBirth").hide();
@@ -55,6 +57,7 @@
 				
 			} else {
 				jQuery("#memberName").show();
+				jQuery("#memberMiddleName").show();
 				jQuery("#memberFamilyName").show();
 				jQuery("#memberGender").show();
 				jQuery("#memberBirth").show();
@@ -125,13 +128,14 @@
 			var choice = document.getElementById("choice").checked;
 			var existingPerson = document.getElementById("existingPersonId").value;
 			var gName = givenName.value;
+			var mName = middleName.value;
 			var fName = familyName.value;
 			var dobDate = birthDate.value;
 			
 			var jDate = joinDate.value;
 			var lDate = leaveDate.value;
 			var reason = voidReason.value;
-			var provider = document.getElementById("provider").value;
+			//var provider = document.getElementById("provider").value;
 			var id = identifier.value;
 			var selectedValue = gender.options[gender.selectedIndex].value;
 			var regexp = /^[a-z/i][a-z.\- ]*[a-z/i]{2,}$/i;
@@ -173,8 +177,8 @@
 					document.getElementById("leaveDate").value = "";
 				} if (document.getElementById("voided").checked && (reason == null || reason == "")) {
 					mustSelectMessage += "<br>Either write a reason or uncheck the box please.";
-				} if (document.getElementById("isDataProvider").checked && (provider == null || provider == "")) {
-					mustSelectMessage += "<br>Either write a provider name or uncheck the box please.";
+				//} if (document.getElementById("isDataProvider").checked && (provider == null || provider == "")) {
+				//	mustSelectMessage += "<br>Either write a provider name or uncheck the box please.";
 				} if (dobDate > currentDate) {
 					mustSelectMessage += "<br>Birth date can't be in future.";
 					//alertify.alert("Join date can't be in future");
@@ -194,6 +198,7 @@
 						x=xmlhttp.responseText; 
 						if(x == "" || x == null) { 
 							var givenName = document.getElementById("givenName").value;
+							var middleName = document.getElementById("middleName").value;
 							var familyName = document.getElementById("familyName").value;
 							var gender = document.getElementById("gender").value;
 							var birthDate = document.getElementById("birthDate").value;
@@ -204,7 +209,7 @@
 							var voided = document.getElementById("voided").checked;
 							var voidReason = document.getElementById("voidReason").value;
 							var isDataProvider = document.getElementById("isDataProvider").checked;
-							var provider = document.getElementById("provider").value;
+							//var provider = document.getElementById("provider").value;
 							var teamRoleOption = document.getElementById("teamRoleOption").value;
 
 							var choice = document.getElementById("choice").checked;
@@ -221,6 +226,7 @@
 							var roleOption = document.getElementById("roleOption").value;
 							
 							/* console.log("givenName: " + givenName);
+							console.log("middleName: " + middleName);
 							console.log("familyName: " + familyName);
 							console.log("gender: " + gender);
 							console.log("birthDate: " + birthDate);
@@ -231,7 +237,7 @@
 							console.log("voided: " + voided);
 							console.log("voidReason: " + voidReason);
 							console.log("isDataProvider: " + isDataProvider);
-							console.log("provider: " + provider);
+							//console.log("provider: " + provider);
 							console.log("teamRoleOption: " + teamRoleOption);
 
 							console.log("choice: " + choice);
@@ -246,6 +252,7 @@
 
 							var url = "/openmrs/ws/rest/v1/team/teammember?post=add&v=full";
 							if(givenName != "") { url += "&givenName=" + givenName; }
+							if(middleName != "") { url += "&middleName=" + middleName; }
 							if(familyName != "") { url += "&familyName=" + familyName; }
 							if(gender != "") { url += "&gender=" + gender; }
 							if(birthDate != "") { url += "&birthDate=" + birthDate; }
@@ -254,7 +261,7 @@
 							if(leaveDate != "") { url += "&leaveDate=" + leaveDate; }
 							if(location != "") { url += "&location=" + location; }
 							if(voidReason != "") { url += "&voidReason=" + voidReason; }
-							if(provider != "") { url += "&provider=" + provider; }
+							//if(provider != "") { url += "&provider=" + provider; }
 							if(teamRoleOption != "") { url += "&teamRoleOption=" + teamRoleOption; }
 							if(existingPersonId != "") { url += "&existingPersonId=" + existingPersonId_selection; }
 							if(userName != "") { url += "&userName=" + userName; }
@@ -300,12 +307,13 @@
 	}
 	
 	function join() {
-		var date = "${teamDate}";
+		/* var date = "${teamDate}";
 		var array = date.split(" ");
 		var array = array[0].split("-");
 		date = array[1] + "/" + array[2] + "/" + array[0];
 		var d = new Date(date);
-		jQuery( "#joinDate" ).datepicker("option", { minDate: new Date(date)});
+		jQuery( "#joinDate" ).datepicker("option", { minDate: new Date()}); */
+		jQuery( "#joinDate" ).datepicker();
 	}
 	
 	function leave() {
@@ -315,14 +323,6 @@
 	
 	function birth() {
 		jQuery( "#birthDate" ).datepicker();
-
-		var date = "${teamDate}";
-		console.log("date: " + date);
-		/* var array = date.split(" ");
-		var array = array[0].split("-");
-		date = array[1] + "/" + array[2] + "/" + array[0];
-		var d = new Date(date);
-		jQuery( "#birthDate" ).datepicker("option", { minDate: new Date(date)}); */
 	}
 	function validation(teamId) {
 		
@@ -381,6 +381,16 @@
 				<span id="nameTip">
 					Min 3 and max 20.Alphabets,[-.] are allowed
 				</span>
+			</td>
+		</tr>
+		<tr id="memberMiddleName" type="hide">
+			<td>
+				Member Middle Name
+			</td>
+			<td>
+				<form:input id="middleName" path="person.names[0].middleName" onfocus="jQuery('#mNameTip').show();" onblur="jQuery('#mNameTip').hide();" maxlength="20" />
+				<span style="color: red">*</span>
+				<span id="mNameTip">Min 3 and max 20.Alphabets,[-.] are allowed</span>
 			</td>
 		</tr>
 		<tr id="memberFamilyName" type="hide">
@@ -448,8 +458,8 @@
 			<td>
 				<form:select id="gender" path="person.gender" cssStyle="width:165px"> 
 					<form:option value="0" label=" Please Select " />
-					<form:option value="Male">Male</form:option>
-					<form:option value="Female">Female</form:option>
+					<form:option value="M">Male</form:option>
+					<form:option value="F">Female</form:option>
 				</form:select>
 				<span style="color: red">*</span>
 			</td>
@@ -531,7 +541,7 @@
 				<form:checkbox id="isDataProvider" path="isDataProvider" />
 			</td>
 		</tr>
-		<tr>
+		<!-- <tr>
 			<td></td>
 			<td>
 				<span id="isDataProviderTip">
@@ -549,7 +559,7 @@
 					Min 3 and max 20.All data types and [-_] are allowed
 				</span>
 			</td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td>
 				Member Role

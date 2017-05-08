@@ -32,5 +32,7 @@ public interface TeamDAO {
 
 	public Team getTeamBySupervisor(TeamMember teamSupervisor);
 
-	List<Team> getTeambyLocation(Location locationId, Integer offset, Integer pageSize);
+	public List<Team> getTeambyLocation(Location locationId, Integer offset, Integer pageSize);
+
+	public List<Team> getSubTeams(TeamMember teamSupervisor);
 }

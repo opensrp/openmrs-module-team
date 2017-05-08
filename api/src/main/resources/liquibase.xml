@@ -381,4 +381,10 @@
 		</addColumn>
 	</changeSet>
 	
+	<changeSet author="Shakeeb Raza" id="teammodule-33.1.0A">
+		<addColumn tableName="team_log">
+			<column name="data_old" type="varchar(500)" />
+		</addColumn>
+	</changeSet>
+	
 </databaseChangeLog>

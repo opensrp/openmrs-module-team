@@ -39,4 +39,5 @@ public interface TeamService extends OpenmrsService {
 	
 	public List<Team> searchTeam(String name);
 
+	public List<Team> getSubTeams(TeamMember teamMember);
 }

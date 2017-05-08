@@ -32,17 +32,21 @@ public class TeamHierarchyRequestResource extends DataDelegatingCrudResource<Tea
 		DelegatingResourceDescription description = null;
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
-		if (rep instanceof DefaultRepresentation) {
-			description.addProperty("display");
-			description.addProperty("uuid");
-			description.addProperty("ownsTeam");
-			description.addProperty("reportTo");
-			} else if (rep instanceof FullRepresentation) {
-			description.addProperty("display");
-			description.addProperty("uuid");
-			description.addProperty("ownsTeam");
-			description.addProperty("reportTo");
-			description.addProperty("dateCreated");
+			if (rep instanceof DefaultRepresentation) {
+				description.addProperty("display");
+				description.addProperty("uuid");
+				description.addProperty("name");
+				description.addProperty("ownsTeam");
+				description.addProperty("reportTo");
+			} 
+			else if (rep instanceof FullRepresentation) {
+				description.addProperty("display");
+				description.addProperty("uuid");
+				description.addProperty("name");
+				description.addProperty("ownsTeam");
+				description.addProperty("reportTo");
+				description.addProperty("auditInfo");
+				description.addSelfLink();
 			}
 		}
 
@@ -89,12 +93,11 @@ public class TeamHierarchyRequestResource extends DataDelegatingCrudResource<Tea
 	
 	
 	@PropertyGetter("display")
-	public List<TeamHierarchy> getDisplayString(String teamRole) {
+	public String getDisplayString(TeamHierarchy teamRole) {
 		if (teamRole == null){		
-			return null;
+			return "";
 		}
-		
-		return Context.getService(TeamHierarchyService.class).searchTeamRoleByRole(teamRole);
+		return teamRole.getName().toString();
 	}
 
 	@Override

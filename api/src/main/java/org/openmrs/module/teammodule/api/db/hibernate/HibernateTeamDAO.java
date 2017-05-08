@@ -114,4 +114,9 @@ public class HibernateTeamDAO implements TeamDAO {
 		
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Team> getSubTeams(TeamMember teamSupervisor) {
+		return sessionFactory.getCurrentSession().createQuery("from Team team where team.supervisor = :id").setInteger("id", teamSupervisor.getId()).list();
+	}
 }

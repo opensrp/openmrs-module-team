@@ -88,4 +88,9 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		// TODO Auto-generated method stub
 		return dao.getTeam(teamName,locationid);
 	}
+
+	@Override
+	public List<Team> getSubTeams(TeamMember teamSupervisor) {
+		return dao.getSubTeams(teamSupervisor);
+	}
 }

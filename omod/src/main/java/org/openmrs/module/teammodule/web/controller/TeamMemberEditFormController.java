@@ -4,7 +4,6 @@
 package org.openmrs.module.teammodule.web.controller;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,12 +11,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.GlobalProperty;
-import org.openmrs.Location;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
-import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.util.OpenmrsConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -87,7 +83,7 @@ public class TeamMemberEditFormController {
 		System.out.println("\n teamDate: " + teamMember.getTeam().getDateCreated());
 		model.addAttribute("teamDate", teamMember.getTeam().getDateCreated());
 
-		List<Location> allLocations = Context.getLocationService().getAllLocations();
+		//List<Location> allLocations = Context.getLocationService().getAllLocations();
 		model.addAttribute("locationWidgetType", Context.getAdministrationService().saveGlobalProperty(new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE, "default")));
 		
 		return SUCCESS_FORM_VIEW;

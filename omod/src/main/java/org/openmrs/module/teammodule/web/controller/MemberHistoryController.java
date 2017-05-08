@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
-//import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,7 +44,9 @@ public class MemberHistoryController {
 	public String showForm(Model model, HttpServletRequest request) {
 		String personId = request.getParameter("personId");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");		//Added this to bring the format required
-		List<List<Object>> list = Context.getAdministrationService().executeSQL("select team_id from team_member where person_id = " + personId, false);
+		
+		//List<List<Object>> list = Context.getAdministrationService().executeSQL("select team_id from team_member where person_id = " + personId, false);
+		List<List<Object>> list = Context.getAdministrationService().executeSQL("select tm.team_id from team_member tm inner join person p where tm.person_id=p.person_id and p.uuid = '" + personId + "'", false);
 
 		String[] team = new String[list.size()];
 		for (int i = 0; i < list.size(); i++) {
@@ -67,7 +68,9 @@ public class MemberHistoryController {
 
 		list.clear();
 		
-		list = Context.getAdministrationService().executeSQL("select join_date from team_member where person_id = " + personId, false);
+		//list = Context.getAdministrationService().executeSQL("select join_date from team_member where person_id = " + personId, false);
+		list = Context.getAdministrationService().executeSQL("select tm.join_date from team_member tm inner join person p where tm.person_id=p.person_id and p.uuid = '" + personId + "'", false);
+		
 		//System.out.println(list);
 		String[] joinDate = new String[list.size()];
 		for (int i = 0; i < list.size(); i++) {
@@ -82,7 +85,9 @@ public class MemberHistoryController {
 		// System.out.println(joinDate);
 
 		list.clear();
-		list = Context.getAdministrationService().executeSQL("select leave_date from team_member where person_id = " + personId, false);
+		
+		//list = Context.getAdministrationService().executeSQL("select leave_date from team_member where person_id = " + personId, false);
+		list = Context.getAdministrationService().executeSQL("select tm.leave_date from team_member tm inner join person p where tm.person_id=p.person_id and p.uuid = '" + personId + "'", false);
 
 		String[] leaveDate = new String[list.size()];
 
