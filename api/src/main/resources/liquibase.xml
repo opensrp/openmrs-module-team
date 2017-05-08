@@ -371,4 +371,11 @@
 			referencedTableName="team_role" referencedColumnNames="team_role_id" />
 	    
 	</changeSet>
+	
+	<changeSet author="Shakeeb Raza" id="teammodule-32.1.0A">
+		<addColumn tableName="team_log">
+			<column name="data_old" type="varchar(500)" />
+		</addColumn>
+	</changeSet>
+	
 </databaseChangeLog>

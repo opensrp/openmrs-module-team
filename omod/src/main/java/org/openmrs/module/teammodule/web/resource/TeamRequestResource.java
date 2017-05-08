@@ -44,6 +44,7 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 			description = new DelegatingResourceDescription();
 			if (rep instanceof DefaultRepresentation) {
 				description.addProperty("display");
+				description.addProperty("teamName");
 				description.addProperty("teamIdentifier");
 				description.addProperty("uuid");
 				description.addProperty("location");
@@ -55,6 +56,8 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("voided");
 				description.addProperty("location");
 				description.addProperty("uuid");
+				description.addProperty("members");
+				description.addProperty("auditInfo");
 			}
 		}
 		return description;
@@ -125,17 +128,46 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		return team.getTeamName();
 	}
 	
+	@PropertyGetter("members")
+	public int getNumberOfMember(Team team) {
+		try{
+		List<TeamMember> teamMembers = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
+		return teamMembers.size();
+		}catch(Exception ex)
+		{
+		return 0;	
+		}
+		}
+	
+	@PropertyGetter("supervisor")
+	public TeamMember getSuperVisor(Team team) {
+		try{
+		TeamMember teamMember = (TeamMember) Context.getService(TeamMemberService.class).searchTeamMember(null, team.getSupervisor(), null, null, null, null, null);
+		return teamMember;
+		}catch(Exception ex)
+		{
+		return null;
+		}
+		}
+	
+	@PropertyGetter("supervisorTeam")
+	public Team getSuperVisorTeam(Team team) {
+		try{
+		TeamMember teamMember =(TeamMember) Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
+		Team supervisorTeam =  Context.getService(TeamService.class).getTeamBySupervisor(teamMember);
+		
+		return supervisorTeam;
+		}catch(Exception ex)
+		{
+		return null;
+		}
+		}
+	
 	@Override
 	protected PageableResult doGetAll(RequestContext context)
 			throws ResponseException {
 		List<Team> teams = Context.getService(TeamService.class).getAllTeams(false, 0, 25);
-		try{
-		teams.addAll(Context.getService(TeamService.class).getAllTeams(true, 0, 25));
-		return new NeedsPaging<Team>(teams,context);
-		}
-		catch(Exception ex)
-		{
 		return new NeedsPaging<Team>(teams,context);	
-		}
+		
 	}
 }

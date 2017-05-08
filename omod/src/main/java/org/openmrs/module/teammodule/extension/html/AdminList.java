@@ -10,7 +10,7 @@ import org.openmrs.module.Extension;
 import org.openmrs.module.web.extension.AdministrationSectionExt;
 
 /**
- * @author Muhammad Safwan
+ * @author Muhammad Safwan, Shakeeb Raza & Zohaib Masood
  *
  */
 public class AdminList extends AdministrationSectionExt {
@@ -38,6 +38,7 @@ public class AdminList extends AdministrationSectionExt {
 		map.put("module/teammodule/team.form", "Manage Teams");
 		map.put("module/teammodule/allMember.form?searchMember=&from=&to=", "View Members");
 		map.put("module/teammodule/teamMemberView.form", "View All Members");
+		map.put("module/teammodule/teamHierarchy.form", "All Teams Hierarchy");
 
 		return map;
 	}
