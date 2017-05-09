@@ -56,7 +56,6 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("voided");
 				description.addProperty("location");
 				description.addProperty("uuid");
-				description.addProperty("members");
 				description.addProperty("auditInfo");
 			}
 		}
@@ -131,7 +130,7 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	@PropertyGetter("members")
 	public int getNumberOfMember(Team team) {
 		try{
-		return Context.getService(TeamMemberService.class).count(team.getId());
+		return Context.getService(TeamMemberService.class).count(team.getTeamId());
 		}catch(Exception ex)
 		{
 		return 0;	
@@ -143,19 +142,6 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		try{
 		TeamMember teamMember = (TeamMember) Context.getService(TeamMemberService.class).searchTeamMember(null, team.getSupervisor(), null, null, null, null, null);
 		return teamMember;
-		}catch(Exception ex)
-		{
-		return null;
-		}
-		}
-	
-	@PropertyGetter("supervisorTeam")
-	public Team getSuperVisorTeam(Team team) {
-		try{
-		TeamMember teamMember =(TeamMember) Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
-		Team supervisorTeam =  Context.getService(TeamService.class).getTeamBySupervisor(teamMember);
-		
-		return supervisorTeam;
 		}catch(Exception ex)
 		{
 		return null;
