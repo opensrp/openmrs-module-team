@@ -372,7 +372,7 @@
 	    
 	</changeSet>
 	
-	<changeSet author="Zohaib Masood" id="teammodule-32.1.0A">
+	<changeSet author="Zohaib Masood" id="teammodule-33.1.0A">
 		<addColumn tableName="team_member">
 			<column name="provider" type="varchar(45)" />
 			<column name="is_data_provider" type="tinyint(4)">
@@ -381,7 +381,7 @@
 		</addColumn>
 	</changeSet>
 	
-	<changeSet author="Shakeeb Raza" id="teammodule-33.1.0A">
+	<changeSet author="Shakeeb Raza" id="teammodule-32.1.0A">
 		<addColumn tableName="team_log">
 			<column name="data_old" type="varchar(500)" />
 		</addColumn>

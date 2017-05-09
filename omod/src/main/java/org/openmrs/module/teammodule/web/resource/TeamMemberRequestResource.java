@@ -428,6 +428,12 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 			}
 			else { return null; }
 		}*/
+		else if(context.getParameter("teamName")!=null && context.getParameter("locationId")!=null) {
+			Location location = Context.getLocationService().getLocationByUuid(context.getParameter("locationId"));
+			Team team = Context.getService(TeamService.class).getTeam(context.getParameter("teamName"),location.getLocationId());
+			List<TeamMember> teamMembers = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getTeamId());
+			return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
+		}
 		else { return null; }
 	}
 

@@ -3,8 +3,10 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamHierarchy;
 import org.openmrs.module.teammodule.api.TeamHierarchyService;
+import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -32,21 +34,18 @@ public class TeamHierarchyRequestResource extends DataDelegatingCrudResource<Tea
 		DelegatingResourceDescription description = null;
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
-			if (rep instanceof DefaultRepresentation) {
-				description.addProperty("display");
-				description.addProperty("uuid");
-				description.addProperty("name");
-				description.addProperty("ownsTeam");
-				description.addProperty("reportTo");
-			} 
-			else if (rep instanceof FullRepresentation) {
-				description.addProperty("display");
-				description.addProperty("uuid");
-				description.addProperty("name");
-				description.addProperty("ownsTeam");
-				description.addProperty("reportTo");
-				description.addProperty("auditInfo");
-				description.addSelfLink();
+		if (rep instanceof DefaultRepresentation) {
+			description.addProperty("display");
+			description.addProperty("uuid");
+			description.addProperty("ownsTeam");
+			description.addProperty("reportTo");
+			} else if (rep instanceof FullRepresentation) {
+			description.addProperty("display");
+			description.addProperty("name");
+			description.addProperty("uuid");
+			description.addProperty("ownsTeam");
+			description.addProperty("reportTo");
+			description.addProperty("auditInfo");
 			}
 		}
 
@@ -93,15 +92,19 @@ public class TeamHierarchyRequestResource extends DataDelegatingCrudResource<Tea
 	
 	
 	@PropertyGetter("display")
-	public String getDisplayString(TeamHierarchy teamRole) {
-		if (teamRole == null){		
-			return "";
-		}
-		return teamRole.getName().toString();
+	public String getDisplayString(TeamHierarchy teamHierarchy) {
+		return teamHierarchy.getName();
 	}
 
 	@Override
 	public TeamHierarchy getByUniqueId(String uniqueId) {
 		return Context.getService(TeamHierarchyService.class).getTeamRoleByUuid(uniqueId);
+	}
+	
+	@Override
+	public SimpleObject getAll(RequestContext context) throws ResponseException {
+		
+		List<TeamHierarchy> teamsHierarchies = Context.getService(TeamHierarchyService.class).getAllTeamHierarchy();
+		return new NeedsPaging<TeamHierarchy>(teamsHierarchies,context).toSimpleObject(this);	
 	}
 }

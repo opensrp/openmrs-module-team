@@ -36,4 +36,6 @@ public interface TeamMemberDAO {
 	public List<TeamMember> searchTeamMemberByTeam(Integer teamId);
 	
 	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisor, TeamHierarchy teamRole, Team team, Location location, Integer offset, Integer pageSize);
+
+	public int count(Integer teamId);
 }

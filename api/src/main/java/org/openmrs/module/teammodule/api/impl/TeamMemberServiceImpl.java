@@ -90,4 +90,10 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize) {
 		return this.dao.searchTeamMember(identifier, supervisorId, teamRoleId, teamId, locationId, offset, pageSize);
 	}
+
+	@Override
+	public int count(Integer teamId) {
+		// TODO Auto-generated method stub
+		return this.dao.count(teamId);
+	}
 }

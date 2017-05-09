@@ -30,9 +30,15 @@
 		$('#historyDialog').hide();
 		$('#memberDialog').hide();
 		$.get("/openmrs/ws/rest/v1/team/team?v=full", function(teamData) {
-			$.get("/openmrs/ws/rest/v1/team/teamhierachy?v=full", function(hierarchyData) {
-			teams = teamData.results;
-			teamsHierarchies = hierarchyData.results;
+			var table = document.getElementById("general");
+
+			var tbody = document.createElement("TBODY")
+			for(int i=0;i<teamDate.length;i++)
+			{
+			$.get("/openmrs/ws/rest/v1/team/teammember?v=full&teamName="+teamData[i].teamName+"&locationId="+teamData[i].location.uuid, function(teamMemberData) {
+			teams = teamMemberData.results;
+			team =teams[i];
+			teamMembers = teamMemberData.results;
 			GenerateTable();
 			$('#general').DataTable({
 				"language" : {
@@ -47,56 +53,56 @@
 				"autoWidth" : true,
 				"sDom" : 'lfrtip',
 			});
+			}
 		});
 	});
+		table.appendChild(tbody);
 	});
 
 	function GenerateTable() {
-		var table = document.getElementById("general");
-
-		var tbody = document.createElement("TBODY")
-		for (var i = 0; i < teams.length; i++) {
 			row = tbody.insertRow(-1);
 			/* Edit */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = "<a id='editTeamMemberLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' href='/openmrs/module/teammodule/editTeamHierarchy.form?location="
-					+ teams[i].location.uuid
+			for(int i=0;i<teamMembers.length;i++)
+			{
+			cell.innerHTML = "<a id='editTeaLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' href='/openmrs/module/teammodule/editTeamHierarchy.form?location="
+					+ team.location.uuid
 					+ "&name="
-					+ teams[i].teamName
+					+ team.teamName
 					+ "&teamsHierarchy="
-					+ teamsHierarchy[i].uuid
+					+ teamsHierarchies[i].uuid
 					+ "'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%;' ></a>";
 			/* Identifier */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teams[i].teamIdentifier;
+			cell.innerHTML = team.teamIdentifier;
 			/* Name */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teams[i].teamName;
+			cell.innerHTML = team.teamName;
 			/* Role */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teams[i].numberOfMember;
+			cell.innerHTML = team.numberOfMember;
 			
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teamsHierarchy[i].reportTo;
+			cell.innerHTML = teamMembers[i].reportTo;
 			/* Team */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teamsHierarchy[i].ownsTeam;
+			cell.innerHTML = teamMembers[i].ownsTeam;
 			
 			/* Report To */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teamsHierarchy[i].name;
+			cell.innerHTML = teamMembers[i].name;
 
 			var cell = row.insertCell(-1);
 			cell.innerHTML = '<a onClick="teamHistory('
-					+ teamsHierarchy[i].uuid + ')">History</a>';
+					+ teamMembers[i].uuid + ')">History</a>';
 			/* Patients */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teams[i].voided;
-		}
-		table.appendChild(tbody);
+			cell.innerHTML = team.voided;
+			}
+		
 	}
 
-	function teamteamsHierarchyHistory(teamId) {
+	function teamsHierarchyHistory(teamId) {
 		$
 				.get(
 						"/openmrs/ws/rest/v1/team/teamlogteamsHierarchy/" + teamId,

@@ -213,4 +213,10 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 			public List transformList(List list) { return list; }
 		}).list();/**/
 	}
+
+	@Override
+	public int count(Integer teamId) {
+		// TODO Auto-generated method stub
+		return (int) sessionFactory.getCurrentSession().createQuery("count(*) from teamMember where teamMember.team= :teamId").setInteger("teamId", teamId).list().get(0);
+	}
 }

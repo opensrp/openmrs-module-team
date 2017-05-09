@@ -131,8 +131,7 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	@PropertyGetter("members")
 	public int getNumberOfMember(Team team) {
 		try{
-		List<TeamMember> teamMembers = Context.getService(TeamMemberService.class).searchTeamMemberByTeam(team.getId());
-		return teamMembers.size();
+		return Context.getService(TeamMemberService.class).count(team.getId());
 		}catch(Exception ex)
 		{
 		return 0;	

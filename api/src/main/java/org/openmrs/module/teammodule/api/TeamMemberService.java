@@ -39,4 +39,7 @@ public interface TeamMemberService extends OpenmrsService {
 	public List<TeamMember> searchTeamMemberByTeam(Integer teamId);
 
 	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize);
+
+	public int count(Integer teamId);
+
 }
