@@ -56,6 +56,7 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("voided");
 				description.addProperty("location");
 				description.addProperty("uuid");
+				description.addProperty("members");
 				description.addProperty("auditInfo");
 			}
 		}

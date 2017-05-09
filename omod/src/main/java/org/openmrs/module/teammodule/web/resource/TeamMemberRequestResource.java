@@ -71,7 +71,7 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 				description.addProperty("voided");
 				description.addProperty("subTeams");
 				
-				//description.addProperty("teamHierarchy");
+				description.addProperty("teamHierarchy", Representation.DEFAULT);
 				//description.addProperty("subTeamHierarchys");
 
 			} else if (rep instanceof FullRepresentation) {
@@ -86,7 +86,7 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 				description.addProperty("auditInfo");
 				description.addSelfLink();
 				
-				//description.addProperty("teamHierarchy");
+				description.addProperty("teamHierarchy", Representation.FULL);
 				//description.addProperty("subTeamHierarchys");
 			}
 		}
