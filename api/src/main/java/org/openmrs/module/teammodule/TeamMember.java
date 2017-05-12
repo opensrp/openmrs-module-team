@@ -39,7 +39,7 @@ public class TeamMember extends BaseOpenmrsData implements Serializable {
 	
 //	private Set<Team> subTeams = new HashSet<Team>(0);
 
-	private TeamHierarchy teamHierarchy;
+	private TeamRole teamRole;
 	
 	private String provider;
 	
@@ -123,20 +123,12 @@ public class TeamMember extends BaseOpenmrsData implements Serializable {
 		setTeamMemberId(arg0);
 	}	
 
-	public TeamHierarchy getTeamRole() {
-		return getTeamHierarchy();
+	public TeamRole getTeamRole() {
+		return teamRole;
 	}
 
-	public void setTeamRole(TeamHierarchy teamRole) {
-		this.setTeamHierarchy(teamRole);
-	}
-
-	public TeamHierarchy getTeamHierarchy() {
-		return teamHierarchy;
-	}
-
-	public void setTeamHierarchy(TeamHierarchy teamHierarchy) {
-		this.teamHierarchy = teamHierarchy;
+	public void setTeamRole(TeamRole teamRole) {
+		this.teamRole = teamRole;
 	}
 	
 	public String getProvider() {

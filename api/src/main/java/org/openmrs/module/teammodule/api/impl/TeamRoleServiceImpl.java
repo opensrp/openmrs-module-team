@@ -5,22 +5,22 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.teammodule.TeamHierarchy;
-import org.openmrs.module.teammodule.api.TeamHierarchyService;
-import org.openmrs.module.teammodule.api.db.TeamHierarchyDAO;
+import org.openmrs.module.teammodule.TeamRole;
+import org.openmrs.module.teammodule.api.TeamRoleService;
+import org.openmrs.module.teammodule.api.db.TeamRoleDAO;
 
-public class TeamHierarchyServiceImpl extends BaseOpenmrsService implements TeamHierarchyService  {
+public class TeamRoleServiceImpl extends BaseOpenmrsService implements TeamRoleService  {
 
 private final Log log = LogFactory.getLog(this.getClass());
 	
-	private TeamHierarchyDAO dao;
+	private TeamRoleDAO dao;
 
 	
-	public TeamHierarchyDAO getDao() {
+	public TeamRoleDAO getDao() {
 		return dao;
 	}
 
-	public void setDao(TeamHierarchyDAO dao) {
+	public void setDao(TeamRoleDAO dao) {
 		this.dao = dao;
 	}
 
@@ -28,28 +28,34 @@ private final Log log = LogFactory.getLog(this.getClass());
 		return log;
 	}
 
-	public void saveTeamHierarchy(TeamHierarchy TeamHierarchy) {
-		dao.saveTeamRole(TeamHierarchy);
+	public void saveTeamRole(TeamRole TeamRole) {
+		dao.saveTeamRole(TeamRole);
 	}
 
-	public List<TeamHierarchy> getAllTeamHierarchy() {
-		return dao.getAllTeamHierarchy();
+	public List<TeamRole> getAllTeamRole() {
+		return dao.getAllTeamRole();
 	}
 
-	public void purgeTeamRole(TeamHierarchy TeamRole) {
+	public void purgeTeamRole(TeamRole TeamRole) {
 		dao.purgeTeamRole(TeamRole);
 	}
 
-	public List<TeamHierarchy> searchTeamRoleByRole(String role) {
+	public List<TeamRole> searchTeamRoleByRole(String role) {
 		return dao.searchTeamRoleByRole(role);
 	}
 
-	public TeamHierarchy getTeamRoleById(Integer id) {
+	public TeamRole getTeamRoleById(Integer id) {
 		return dao.getTeamRoleById(id);
 	}
 	
-	public TeamHierarchy getTeamRoleByUuid(String uuid) {
+	public TeamRole getTeamRoleByUuid(String uuid) {
 		return dao.getTeamRoleByUuid(uuid);
+	}
+
+	@Override
+	public List<TeamRole> searchTeamRoleReportBy(int id) {
+		// TODO Auto-generated method stub
+		return dao.searchTeamRoleReportBy(id);
 	}
 
 }

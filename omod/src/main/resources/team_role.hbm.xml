@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-   <class name="org.openmrs.module.teammodule.TeamHierarchy" table="team_role">
-        <id column="team_role_id" name="teamHierarchyId" type="int">
+   <class name="org.openmrs.module.teammodule.TeamRole" table="team_role">
+        <id column="team_role_id" name="teamRoleId" type="int">
             <generator class="native"/>
         </id> 
 	    <property name="name" column="name" type="java.lang.String"/>
 		<property name="ownsTeam" column="owns_Team" type="java.lang.Boolean"/>
-		<many-to-one name="reportTo" column="report_to" class="org.openmrs.module.teammodule.TeamHierarchy" />
+		<many-to-one name="reportTo" column="report_to" class="org.openmrs.module.teammodule.TeamRole" />
 		
-		<property name="uuid" column="uuid" type="java.lang.String"/>
+		<property name="dateCreated" column="date_created" type="java.util.Date" not-null="true"/>
+		<many-to-one name="creator" column ="creator" class="org.openmrs.User" not-null="true"/>
+		<many-to-one name="changedBy" column="changed_by" class="org.openmrs.User" />
+		<property name="dateChanged" column="date_changed" type="java.util.Date" />
+		<property name="voided" column="voided" type="boolean" not-null="true"/>
+		<many-to-one name="voidedBy" column="voided_by" class="org.openmrs.User" />
+		<property name="dateVoided" column="date_voided" type="java.util.Date" />
+		<property name="voidReason" column="void_reason" type="java.lang.String" /> 
+		<property name="uuid" column="uuid" type="java.lang.String" not-null="true" />
 	</class>
 </hibernate-mapping>

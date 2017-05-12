@@ -2,9 +2,12 @@ package org.openmrs.module.teammodule.web.resource;
 
 import java.util.List;
 
+import org.apache.poi.hssf.record.formula.functions.If;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.TeamHierarchyLog;
-import org.openmrs.module.teammodule.api.TeamHierarchyLogService;
+import org.openmrs.module.teammodule.TeamRole;
+import org.openmrs.module.teammodule.TeamRoleLog;
+import org.openmrs.module.teammodule.api.TeamRoleLogService;
+import org.openmrs.module.teammodule.api.TeamRoleService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -23,9 +26,9 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  * @author Shakeeb raza
  * 
  */
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamhierarchylog", supportedClass = TeamHierarchyLog.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teamrolelog", supportedClass = TeamRoleLog.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
 		"1.12.*" })
-public class TeamHierarchyLogRequestResource extends DataDelegatingCrudResource<TeamHierarchyLog> {
+public class TeamRoleLogRequestResource extends DataDelegatingCrudResource<TeamRoleLog> {
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
@@ -53,43 +56,45 @@ public class TeamHierarchyLogRequestResource extends DataDelegatingCrudResource<
 	}
 
 	@Override
-	public TeamHierarchyLog newDelegate() {
-		return new TeamHierarchyLog();
+	public TeamRoleLog newDelegate() {
+		return new TeamRoleLog();
 	}
 
 	@Override
-	public TeamHierarchyLog save(TeamHierarchyLog teamHierarchyLog) {
-		Context.getService(TeamHierarchyLogService.class).saveTeamHierarchyLog(teamHierarchyLog);
+	public TeamRoleLog save(TeamRoleLog teamRoleLog) {
+		Context.getService(TeamRoleLogService.class).saveTeamRoleLog(teamRoleLog);
 		return null;
 	}
 
 	@Override
-	protected void delete(TeamHierarchyLog teamHierarchyLog, String reason, RequestContext context) throws ResponseException {
-		Context.getService(TeamHierarchyLogService.class).purgeTeamHierarchyLog(teamHierarchyLog);
+	protected void delete(TeamRoleLog teamRoleLog, String reason, RequestContext context) throws ResponseException {
+		Context.getService(TeamRoleLogService.class).purgeTeamRoleLog(teamRoleLog);
 	}
 
 	@Override
-	public void purge(TeamHierarchyLog teamHierarchyLog, RequestContext arg1) throws ResponseException {
-		Context.getService(TeamHierarchyLogService.class).purgeTeamHierarchyLog(teamHierarchyLog);
+	public void purge(TeamRoleLog teamRoleLog, RequestContext arg1) throws ResponseException {
+		Context.getService(TeamRoleLogService.class).purgeTeamRoleLog(teamRoleLog);
 	}
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamHierarchyLog> listTeam = Context.getService(TeamHierarchyLogService.class).searchTeamHierarchyLog(context.getParameter("q"),null,null);
-		return new NeedsPaging<TeamHierarchyLog>(listTeam, context).toSimpleObject(this);
+		if(context.getParameter("q") != null)
+		{
+		List<TeamRoleLog> listTeam = Context.getService(TeamRoleLogService.class).searchTeamRoleLog(Integer.parseInt(context.getParameter("q")),null,null);
+		return new NeedsPaging<TeamRoleLog>(listTeam, context).toSimpleObject(this);
+		}
+		else if( context.getParameter("teamRole")!=null)
+		{
+			TeamRole teamRole = Context.getService(TeamRoleService.class).getTeamRoleByUuid(context.getParameter("teamRole"));
+			List<TeamRoleLog> teamRoleLogs = Context.getService(TeamRoleLogService.class).searchTeamRoleLog(teamRole.getId(),null,null);
+			return new NeedsPaging<TeamRoleLog>(teamRoleLogs, context).toSimpleObject(this);
+		}
+		return null;
 	}
 	
-	@PropertyGetter("display")
-	public List<TeamHierarchyLog> getDisplayString(String teamHierarchy) {
-		if (teamHierarchy == null){		
-			return null;
-		}
-		
-		return Context.getService(TeamHierarchyLogService.class).searchTeamHierarchyLog(teamHierarchy,null,null);
-	}
 
 	@Override
-	public TeamHierarchyLog getByUniqueId(String uniqueId) {
-		return Context.getService(TeamHierarchyLogService.class).getTeamHierarchyLog(uniqueId);
+	public TeamRoleLog getByUniqueId(String uniqueId) {
+		return Context.getService(TeamRoleLogService.class).getTeamRoleLog(uniqueId);
 	}
 }

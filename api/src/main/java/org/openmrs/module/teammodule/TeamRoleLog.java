@@ -8,11 +8,11 @@ import org.openmrs.User;
 import org.openmrs.module.teammodule.TeamConstants.TeamAction;
 
 @SuppressWarnings("serial")
-public class TeamHierarchyLog extends BaseOpenmrsData implements Serializable{
+public class TeamRoleLog extends BaseOpenmrsData implements Serializable{
 
 	private Integer logId;
 
-	private TeamHierarchy teamRole;
+	private TeamRole teamRole;
 
 	private TeamAction action;
 
@@ -35,11 +35,11 @@ public class TeamHierarchyLog extends BaseOpenmrsData implements Serializable{
 		this.logId = logId;
 	}
 
-	public TeamHierarchy getTeamRole() {
+	public TeamRole getTeamRole() {
 		return teamRole;
 	}
 
-	public void setTeamRole(TeamHierarchy teamRole) {
+	public void setTeamRole(TeamRole teamRole) {
 		this.teamRole = teamRole;
 	}
 

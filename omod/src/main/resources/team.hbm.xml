@@ -9,6 +9,7 @@
 		<property name="teamIdentifier" column="identifier" type="java.lang.String"/>
 	    <many-to-one name="supervisor" column="supervisor_id" class="org.openmrs.module.teammodule.TeamMember"/>
 		<many-to-one name="location" column="location_id" class="org.openmrs.Location"/>
+		
 		<property name="dateCreated" column="date_created" type="java.util.Date" not-null="true"/>
 		<many-to-one name="creator" column ="creator" class="org.openmrs.User" not-null="true"/>
 		<many-to-one name="changedBy" column="changed_by" class="org.openmrs.User" />

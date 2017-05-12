@@ -5,10 +5,10 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
-import org.openmrs.module.teammodule.TeamHierarchy;
-import org.openmrs.module.teammodule.api.db.TeamHierarchyDAO;
+import org.openmrs.module.teammodule.TeamRole;
+import org.openmrs.module.teammodule.api.db.TeamRoleDAO;
 
-public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
+public class HibernateTeamRoleDAO implements TeamRoleDAO{
 
 
 	protected final Log log = LogFactory.getLog(getClass());
@@ -31,32 +31,38 @@ public class HibernateTeamHierarchyDAO implements TeamHierarchyDAO{
 		this.sessionFactory = sessionFactory;
 	}
 
-	public void saveTeamRole(TeamHierarchy TeamRole) {
+	public void saveTeamRole(TeamRole TeamRole) {
 		sessionFactory.getCurrentSession().saveOrUpdate(TeamRole);
 		
 	}
 
-	public TeamHierarchy getTeamRoleById(Integer id) {
-		return	(TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy where teamHierarchy.teamHierarchyId = :id").setInteger("id", id).uniqueResult();
+	public TeamRole getTeamRoleById(Integer id) {
+		return	(TeamRole)sessionFactory.getCurrentSession().createQuery("from TeamRole teamRole where teamRole.teamRoleId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamHierarchy> getAllTeamHierarchy() {
-		List<TeamHierarchy> createQuery = (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy").list();
+	public List<TeamRole> getAllTeamRole() {
+		List<TeamRole> createQuery = (List<TeamRole>)sessionFactory.getCurrentSession().createQuery("from TeamRole teamRole").list();
 		return	createQuery;
 		}
 
-	public void purgeTeamRole(TeamHierarchy TeamRole) {
+	public void purgeTeamRole(TeamRole TeamRole) {
 		sessionFactory.getCurrentSession().delete(TeamRole);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamHierarchy> searchTeamRoleByRole(String role) {
-		return (List<TeamHierarchy>)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy where teamHierarchy.teamHierarchyId = :role").setString("role", role).list();
+	public List<TeamRole> searchTeamRoleByRole(String role) {
+		return (List<TeamRole>)sessionFactory.getCurrentSession().createQuery("from TeamRole teamRole where teamRole.name = :role ").setString("role", role).list();
 	}
 	
-	public TeamHierarchy getTeamRoleByUuid(String uuid) {
-		return (TeamHierarchy)sessionFactory.getCurrentSession().createQuery("from TeamHierarchy teamHierarchy where teamHierarchy.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+	public TeamRole getTeamRoleByUuid(String uuid) {
+		return (TeamRole)sessionFactory.getCurrentSession().createQuery("from TeamRole teamRole where teamRole.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+	}
+
+	@Override
+	public List<TeamRole> searchTeamRoleReportBy(int id) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().createQuery("select count(*),teamRole.name,teamRole.teamRoleId,teamRole.ownsTeam from TeamRole teamRole where teamRole.reportTo= :id group by teamRole.name").setInteger("id", id).list();
 	}
 
 }

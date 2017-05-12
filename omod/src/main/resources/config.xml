@@ -37,7 +37,7 @@
 	</extension>
 
 	<mappingFiles>
-		team_hierarchy.hbm.xml
+		team_role.hbm.xml
 		team_log.hbm.xml
 		team_member_log.hbm.xml
 		team_member_patient.hbm.xml

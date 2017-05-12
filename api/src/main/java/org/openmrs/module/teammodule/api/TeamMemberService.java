@@ -9,7 +9,7 @@ import java.util.List;
 import org.openmrs.Location;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamHierarchy;
+import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.TeamMember;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +27,9 @@ public interface TeamMemberService extends OpenmrsService {
 	public List<TeamMember> getTeamMemberByPersonId(Integer personId);
 
 	public List<TeamMember> getAllTeamMember(Integer id, boolean voided, Integer offset, Integer pageSize);
-		
+	
+	public List<TeamMember> getAllTeamMember( boolean voided, Integer offset, Integer pageSize);
+	
 	public void saveTeamMember(TeamMember teamMember);
 	
 	public void purgeTeamMember(TeamMember teamMember);
@@ -38,7 +40,7 @@ public interface TeamMemberService extends OpenmrsService {
 
 	public List<TeamMember> searchTeamMemberByTeam(Integer teamId);
 
-	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize);
+	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamRole teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize);
 
 	public int count(Integer teamId);
 

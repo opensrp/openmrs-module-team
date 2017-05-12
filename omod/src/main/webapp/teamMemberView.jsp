@@ -30,7 +30,7 @@
 			var url = "/openmrs/ws/rest/v1/team/teammember?get=filter&v=full";
 			var id = document.getElementById("filterById").value;
 			var supervisor = document.getElementById("filterBySupervisor").value;
-			var role = document.getElementById("filterByTeamHierarchy").value;
+			var role = document.getElementById("filterByTeamRole").value;
 			var team = document.getElementById("filterByTeam").value;
 			var location = document.getElementById("filterByLocation").value;
 			
@@ -85,7 +85,7 @@
 	        cell.innerHTML = members[i].person.display; 
 	        /* Role */
 	        var cell = row.insertCell(-1);
-	        cell.innerHTML = members[i].teamHierarchy + "<a id='editTeamMemberRoleLink' name='editTeamMemberRoleLink' title='Edit Team Member Role' style='cursor:pointer' onclick='editTeamMember(\""+members[i].uuid+"\",\""+"memberRoleInfo"+"\");'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%;' ></a>";
+	        cell.innerHTML = members[i].teamRole + "<a id='editTeamMemberRoleLink' name='editTeamMemberRoleLink' title='Edit Team Member Role' style='cursor:pointer' onclick='editTeamMember(\""+members[i].uuid+"\",\""+"memberRoleInfo"+"\");'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%;' ></a>";
 	        /* Team */
 	        var cell = row.insertCell(-1);
 			/*if ((members[i].subTeams).includes(members[i].team.display)) {
@@ -111,7 +111,7 @@
 	        cell.innerHTML = members[i].location[0].name;
 	        /* Sub Ordinate Roles */
 	        var cell = row.insertCell(-1);
-	        cell.innerHTML = members[i].subTeamHierarchys;//().replace(", ", "<br>");
+	        cell.innerHTML = members[i].subTeamRoles;//().replace(", ", "<br>");
 	        /* Sub Ordinate Teams */
 	        var cell = row.insertCell(-1);
 	        cell.innerHTML = members[i].subTeams;//().replace(", ", "<br>");
@@ -269,12 +269,12 @@
 	    for (var i = 0; i < members.length; i++) {
 	    	if(members[i].uuid.toString() === uuid.toString()) {
 	    		if(type==="memberRoleInfo") {
-					var allTeamHierarchyNames = []; var allTeamHierarchyIds = []; 
-					<c:forEach items="${allTeamHierarchys}" var="teamHierarchy">allTeamHierarchyIds.push("${teamHierarchy.teamHierarchyId}");allTeamHierarchyNames.push("${teamHierarchy.name}");</c:forEach>
+					var allTeamRoleNames = []; var allTeamRoleIds = []; 
+					<c:forEach items="${allTeamRoles}" var="teamRole">allTeamRoleIds.push("${teamRole.teamRoleId}");allTeamRoleNames.push("${teamRole.name}");</c:forEach>
 	    			var html = "<table><form><tr><td>Role: </td><td><select id='teamMemberRole"+i+"' name='teamMemberRole"+i+"'>";
-		    		for (var j = 0; j < allTeamHierarchyNames.length; j++) {
-		    			if(allTeamHierarchyNames[j].toString() === members[i].teamHierarchy.toString()) { html += "<option value='"+allTeamHierarchyIds[j]+"' selected >"+allTeamHierarchyNames[j]+"</option>"; } 
-		    			else { html += "<option value='"+allTeamHierarchyIds[j]+"' selected >"+allTeamHierarchyNames[j]+"</option>"; }
+		    		for (var j = 0; j < allTeamRoleNames.length; j++) {
+		    			if(allTeamRoleNames[j].toString() === members[i].teamRole.toString()) { html += "<option value='"+allTeamRoleIds[j]+"' selected >"+allTeamRoleNames[j]+"</option>"; } 
+		    			else { html += "<option value='"+allTeamRoleIds[j]+"' selected >"+allTeamRoleNames[j]+"</option>"; }
 	    	    	} html += "</select></td></tr><tr><td><button type='button' id='teamMemberRoleEditClose' name='teamMemberRoleEditClose' onclick='editTeamMemberClose(\""+i+"\",\""+"memberRoleInfo"+"\");' >Cancel</button></td><td><button type='button' id='teamMemberRoleEditSuccess' name='teamMemberRoleEditSuccess' onclick='editTeamMemberSuccess(\""+i+"\",\""+"memberRoleInfo"+"\");' >Save</button></td></tr></form></table>";
 	    			document.getElementById("editTeamMemberRoleDiv").innerHTML = html;
 		    		$("#editTeamMemberRoleDiv").dialog({ width: "auto", height: "auto", title: "Team Member - Edit" , closeText: ""});
@@ -336,10 +336,10 @@
 				</select>
 			</td>
 			<td>
-				<select id="filterByTeamHierarchy" name="filterByTeamHierarchy">
+				<select id="filterByTeamRole" name="filterByTeamRole">
 					<option value="" selected>Select Team Role</option>
-				   	<c:forEach items="${allTeamHierarchys}" var="teamHierarchy">
-				    	<option value="${teamHierarchy.teamHierarchyId}" >${teamHierarchy.name}</option>
+				   	<c:forEach items="${allTeamRoles}" var="teamRole">
+				    	<option value="${teamRole.teamRoleId}" >${teamRole.name}</option>
 				   	</c:forEach>
 				</select>
 			</td>

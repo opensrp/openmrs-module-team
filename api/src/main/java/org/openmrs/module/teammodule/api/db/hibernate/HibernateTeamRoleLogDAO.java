@@ -6,10 +6,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.openmrs.module.teammodule.TeamHierarchyLog;
-import org.openmrs.module.teammodule.api.db.TeamHierarchyLogDAO;
+import org.openmrs.module.teammodule.TeamRoleLog;
+import org.openmrs.module.teammodule.api.db.TeamRoleLogDAO;
 
-public class HibernateTeamHierarchyLogDAO implements TeamHierarchyLogDAO{
+public class HibernateTeamRoleLogDAO implements TeamRoleLogDAO{
 
 
 	protected final Log log = LogFactory.getLog(getClass());
@@ -32,18 +32,18 @@ public class HibernateTeamHierarchyLogDAO implements TeamHierarchyLogDAO{
 		this.sessionFactory = sessionFactory;
 	}
 
-	public void saveTeamHierarchyLog(TeamHierarchyLog TeamHierarchyLog) {
-		sessionFactory.getCurrentSession().saveOrUpdate(TeamHierarchyLog);
+	public void saveTeamRoleLog(TeamRoleLog TeamRoleLog) {
+		sessionFactory.getCurrentSession().saveOrUpdate(TeamRoleLog);
 		
 	}
 
-	public TeamHierarchyLog getTeamHierarchyLog(int id) {
-		return (TeamHierarchyLog)sessionFactory.getCurrentSession().createQuery("from TeamHierarchyLog teamHierarchyLog where teamHierarchyLog.logId = :id").setInteger("id", id).uniqueResult();
+	public TeamRoleLog getTeamRoleLog(int id) {
+		return (TeamRoleLog)sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.logId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamHierarchyLog> getAllLogs(Integer offset, Integer pageSize) {
-		Query createQuery = sessionFactory.getCurrentSession().createQuery("from TeamHierarchyLog teamHierarchyLog");
+	public List<TeamRoleLog> getAllLogs(Integer offset, Integer pageSize) {
+		Query createQuery = sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog");
 		if(offset != null) {
 			createQuery.setFirstResult(offset);
 		}
@@ -53,13 +53,13 @@ public class HibernateTeamHierarchyLogDAO implements TeamHierarchyLogDAO{
 		return	createQuery.list();
 	}
 
-	public void purgeTeamHierarchyLog(TeamHierarchyLog TeamRoleLog) {
+	public void purgeTeamRoleLog(TeamRoleLog TeamRoleLog) {
 		sessionFactory.getCurrentSession().delete(TeamRoleLog);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamHierarchyLog> searchTeamHierarchyLog(String teamRole, Integer offset, Integer pageSize) {
-		Query createQuery =sessionFactory.getCurrentSession().createQuery("from TeamHierarchyLog teamHierarchyLog where teamHierarchyLog.teamRole = :teamRole").setInteger("teamRole", Integer.parseInt(teamRole));
+	public List<TeamRoleLog> searchTeamRoleLog(Integer teamRole, Integer offset, Integer pageSize) {
+		Query createQuery =sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.teamRole = :teamRole").setInteger("teamRole", teamRole);
 		if(offset != null) {
 			createQuery.setFirstResult(offset);
 		}
@@ -69,9 +69,11 @@ public class HibernateTeamHierarchyLogDAO implements TeamHierarchyLogDAO{
 		return createQuery.list();
 	}
 
-	public TeamHierarchyLog getTeamHierarchyLog(String uuid) {
-		Query createQuery=sessionFactory.getCurrentSession().createQuery("from TeamHierarchyLog teamHierarchyLog where teamHierarchyLog.uuid = :uuid").setString("uuid", uuid);
-		return (TeamHierarchyLog) createQuery.uniqueResult();
+	public TeamRoleLog getTeamRoleLog(String uuid) {
+		Query createQuery=sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.uuid = :uuid").setString("uuid", uuid);
+		return (TeamRoleLog) createQuery.uniqueResult();
 	}
+
+	
 
 }

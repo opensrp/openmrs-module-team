@@ -2,19 +2,21 @@ package org.openmrs.module.teammodule.api.db;
 
 import java.util.List;
 
-import org.openmrs.module.teammodule.TeamHierarchy;
+import org.openmrs.module.teammodule.TeamRole;
 
-public interface TeamHierarchyDAO {
+public interface TeamRoleDAO {
 
-	public void saveTeamRole(TeamHierarchy TeamRole);
+	public void saveTeamRole(TeamRole TeamRole);
 	
-	public TeamHierarchy getTeamRoleById(Integer id);
+	public TeamRole getTeamRoleById(Integer id);
 	
-	public List<TeamHierarchy> getAllTeamHierarchy();
+	public List<TeamRole> getAllTeamRole();
 	
-	public void purgeTeamRole(TeamHierarchy TeamRole);
+	public void purgeTeamRole(TeamRole TeamRole);
 	
-	public List<TeamHierarchy> searchTeamRoleByRole(String role);
+	public List<TeamRole> searchTeamRoleByRole(String role);
 	
-	public TeamHierarchy getTeamRoleByUuid(String uuid);
+	public TeamRole getTeamRoleByUuid(String uuid);
+
+	public List<TeamRole> searchTeamRoleReportBy(int id);
 }

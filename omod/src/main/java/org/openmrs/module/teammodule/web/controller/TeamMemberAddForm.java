@@ -18,9 +18,9 @@ import org.openmrs.PersonName;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.TeamHierarchy;
+import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamHierarchyService;
+import org.openmrs.module.teammodule.api.TeamRoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -103,9 +103,9 @@ public class TeamMemberAddForm {
 		System.out.println("\n selectedLocation: " + allLocations.get(0) + "\n");
 		model.addAttribute("selectedLocation",allLocations.get(0));
 		
-		List<TeamHierarchy> allTeamHierarchy = Context.getService(TeamHierarchyService.class).getAllTeamHierarchy();
-		System.out.println("\n allTeamHierarchy: " + allTeamHierarchy + "\n");
-		model.addAttribute("allTeamHierarchy",allTeamHierarchy);
+		List<TeamRole> allTeamRole = Context.getService(TeamRoleService.class).getAllTeamRole();
+		System.out.println("\n allTeamRole: " + allTeamRole + "\n");
+		model.addAttribute("allTeamRole",allTeamRole);
 		
 		
 		model.addAttribute("teamId",1);

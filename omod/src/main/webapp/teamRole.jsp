@@ -29,17 +29,13 @@
 	$(document).ready(function() {
 		$('#historyDialog').hide();
 		$('#memberDialog').hide();
-		$.get("/openmrs/ws/rest/v1/team/team?v=full", function(teamData) {
-			var table = document.getElementById("general");
-
-			var tbody = document.createElement("TBODY")
-			for(int i=0;i<teamDate.length;i++)
-			{
-			$.get("/openmrs/ws/rest/v1/team/teammember?v=full&teamName="+teamData[i].teamName+"&locationId="+teamData[i].location.uuid, function(teamMemberData) {
-			teams = teamMemberData.results;
-			team =teams[i];
-			teamMembers = teamMemberData.results;
-			GenerateTable();
+		var tbody,table,teamDataVar;
+		table = document.getElementById("general");
+		tbody= document.createElement("TBODY");
+			var  data = $.get("/openmrs/ws/rest/v1/team/teamrole?v=full", function(teamRoleData) {
+			teamRoles = teamRoleData.results;
+			GenerateTable(tbody);
+			table.appendChild(tbody);
 			$('#general').DataTable({
 				"language" : {
 					"search" : "_INPUT_",
@@ -53,59 +49,46 @@
 				"autoWidth" : true,
 				"sDom" : 'lfrtip',
 			});
-			}
 		});
 	});
-		table.appendChild(tbody);
-	});
 
-	function GenerateTable() {
-			row = tbody.insertRow(-1);
-			/* Edit */
-			var cell = row.insertCell(-1);
-			for(int i=0;i<teamMembers.length;i++)
+	function GenerateTable(tbody) {
+			for(var i=0;i<teamRoles.length;i++)
 			{
-			cell.innerHTML = "<a id='editTeaLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' href='/openmrs/module/teammodule/editTeamHierarchy.form?location="
-					+ team.location.uuid
-					+ "&name="
-					+ team.teamName
-					+ "&teamsHierarchy="
-					+ teamsHierarchies[i].uuid
-					+ "'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%;' ></a>";
-			/* Identifier */
+			row = tbody.insertRow(-1);
+				/* Edit */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = team.teamIdentifier;
+			cell.innerHTML = "Edit";
 			/* Name */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = team.teamName;
+			cell.innerHTML = teamRoles[i].name;
 			/* Role */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = team.numberOfMember;
+			cell.innerHTML = teamRoles.length;
 			
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teamMembers[i].reportTo;
+			cell.innerHTML = teamRoles[i].ReportToName;	
 			/* Team */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teamMembers[i].ownsTeam;
+			cell.innerHTML = teamRoles[i].ownsTeam;
 			
 			/* Report To */
 			var cell = row.insertCell(-1);
-			cell.innerHTML = teamMembers[i].name;
-
+			if(teamRoles[i].ReportByName != null)
+			for(var i=0;i<teamRoles[i].ReportByName.length;i++)
+				cell.innerHTML = teamRoles[i].ReportByName[i][1];
+			else
+			cell.innerHTML = "-";
+			
 			var cell = row.insertCell(-1);
-			cell.innerHTML = '<a onClick="teamHistory('
-					+ teamMembers[i].uuid + ')">History</a>';
-			/* Patients */
-			var cell = row.insertCell(-1);
-			cell.innerHTML = team.voided;
+			cell.innerHTML = '<a onClick="teamsHierarchyHistory(\''+ teamRoles[i].uuid + '\')">History</a>';
+			
 			}
 		
 	}
 
 	function teamsHierarchyHistory(teamId) {
-		$
-				.get(
-						"/openmrs/ws/rest/v1/team/teamlogteamsHierarchy/" + teamId,
+		$.get("/openmrs/ws/rest/v1/team/teamhierarchylog?teamRole=" + teamId,
 						function(data) {
 							var myTable = document.getElementById("history");
 							var rowCount = myTable.rows.length;
@@ -118,7 +101,7 @@
 										.append(
 												"<tr id=\"historyRow\">"
 														+ "<td style=\"text-align: left;\" valign=\"top\">"
-														+ data[i].team.teamName
+														+ data.results[i].teamRole.name
 														+ "</td>"
 														+ "<td style=\"text-align: left;\" valign=\"top\">"
 														+ data[i].action
@@ -127,7 +110,7 @@
 														+ data[i].dataNew
 														+ "</td>"
 														+ "<td style=\"text-align: left;\" valign=\"top\">"
-														+ data[i].dateCreated
+														+ data[i].log
 														+ "</td>" + "</tr>");
 							}
 						});
@@ -165,19 +148,13 @@
 		</tr>
 	</table>
 </div>
-<h1>Teams</h1>
+<h1>Teams Hierarchy</h1>
 
 <table class="extra">
 	<tr>
 		<openmrs:hasPrivilege privilege="Add Team">
-			<td><a href="/openmrs/module/teammodule/addTeam.form">Add
-					Team</a></td>
-		</openmrs:hasPrivilege>
-
-		<openmrs:hasPrivilege privilege="View Member">
-			<td><a
-				href="/openmrs/module/teammodule/allMember.form?searchMember=&from=&to=">View
-					All Members</a></td>
+			<td><a href="/openmrs/module/teammodule/addRole.form">Add
+					Role</a></td>
 		</openmrs:hasPrivilege>
 	</tr>
 </table>
@@ -187,17 +164,13 @@
 			<openmrs:hasPrivilege privilege="Edit Team">
 				<th>Edit</th>
 			</openmrs:hasPrivilege>
-			<th>Identifier</th>
-			<th>Team Name</th>
+			<th>Name</th>
 			<th>Number Of member</th>
 			<th>Report To</th>
 			<th>Owns Team</th>
 			<th>Report By</th>
 			<openmrs:hasPrivilege privilege="View Team">
 				<th>History</th>
-			</openmrs:hasPrivilege>
-			<openmrs:hasPrivilege privilege="View Team">
-				<th>Voided</th>
 			</openmrs:hasPrivilege>
 		</tr>
 	</thead>

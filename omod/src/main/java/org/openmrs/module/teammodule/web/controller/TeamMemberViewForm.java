@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamHierarchyService;
+import org.openmrs.module.teammodule.api.TeamRoleService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
@@ -53,7 +53,7 @@ public class TeamMemberViewForm {
 		try {
 			model.addAttribute("allTeams", Context.getService(TeamService.class).getAllTeams(false, 0, 1000));
 			model.addAttribute("allSupervisors", Context.getService(TeamMemberService.class).searchTeamMember(null, null, null, null, null, 0, 1000));
-			model.addAttribute("allTeamHierarchys", Context.getService(TeamHierarchyService.class).getAllTeamHierarchy());
+			model.addAttribute("allTeamRoles", Context.getService(TeamRoleService.class).getAllTeamRole());
 			model.addAttribute("allLocations", Context.getLocationService().getAllLocations());
 		}
 		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }

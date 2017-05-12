@@ -3,21 +3,21 @@ package org.openmrs.module.teammodule.api;
 import java.util.List;
 
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.teammodule.TeamHierarchyLog;
+import org.openmrs.module.teammodule.TeamRoleLog;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface TeamHierarchyLogService extends OpenmrsService {
+public interface TeamRoleLogService extends OpenmrsService {
 
-	public void saveTeamHierarchyLog(TeamHierarchyLog teamHierarchyLog);
+	public void saveTeamRoleLog(TeamRoleLog teamRoleLog);
 	
-	public TeamHierarchyLog getTeamHierarchyLog(int id);
+	public TeamRoleLog getTeamRoleLog(int id);
 	
-	public List<TeamHierarchyLog> getAllLogs(Integer offset, Integer pageSize);
+	public List<TeamRoleLog> getAllLogs(Integer offset, Integer pageSize);
 	
-	public void purgeTeamHierarchyLog(TeamHierarchyLog teamHierarchyLog);
+	public void purgeTeamRoleLog(TeamRoleLog teamRoleLog);
 	
-	public List<TeamHierarchyLog> searchTeamHierarchyLog(String teamHierarchyId,Integer offset, Integer pageSize);
+	public List<TeamRoleLog> searchTeamRoleLog(Integer teamRoleId,Integer offset, Integer pageSize);
 
-	public TeamHierarchyLog getTeamHierarchyLog(String uuid);
+	public TeamRoleLog getTeamRoleLog(String uuid);
 }

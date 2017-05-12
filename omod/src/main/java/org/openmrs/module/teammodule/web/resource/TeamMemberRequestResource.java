@@ -10,9 +10,9 @@ import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamHierarchy;
+import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.TeamMember;
-import org.openmrs.module.teammodule.api.TeamHierarchyService;
+import org.openmrs.module.teammodule.api.TeamRoleService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
@@ -71,8 +71,8 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 				description.addProperty("voided");
 				description.addProperty("subTeams");
 				
-				description.addProperty("teamHierarchy", Representation.DEFAULT);
-				//description.addProperty("subTeamHierarchys");
+				description.addProperty("teamRole", Representation.DEFAULT);
+				//description.addProperty("subTeamRoles");
 
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("identifier");
@@ -86,8 +86,8 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 				description.addProperty("auditInfo");
 				description.addSelfLink();
 				
-				description.addProperty("teamHierarchy", Representation.FULL);
-				//description.addProperty("subTeamHierarchys");
+				description.addProperty("teamRole", Representation.FULL);
+				//description.addProperty("subTeamRoles");
 			}
 		}
 		return description;
@@ -119,8 +119,8 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 		description.addProperty("patients");
 		description.addProperty("subTeams");
 		description.addProperty("voided");
-		//description.addProperty("teamHierarchy");
-		//description.addProperty("subTeamHierarchys");
+		//description.addProperty("teamRole");
+		//description.addProperty("subTeamRoles");
 		return description;
 	}
 
@@ -194,7 +194,7 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 
 				TeamMember supervisor = null; if(supervisorId != null) { supervisor = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(supervisorId)); }
 				Team team = null; if(teamId != null) { team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId)); }
-				TeamHierarchy teamRole = null; if(teamRoleId != null) { teamRole = Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(teamRoleId)); }
+				TeamRole teamRole = null; if(teamRoleId != null) { teamRole = Context.getService(TeamRoleService.class).getTeamRoleById(Integer.parseInt(teamRoleId)); }
 				Location location = null; if(locationId != null) { location = Context.getLocationService().getLocation(Integer.parseInt(locationId)); }
 				
 				//System.out.println("\nTo Function: " + id + ", " + supervisorId + ", " + teamRoleId + ", " + teamId + ", " + locationId + "\n");
@@ -279,7 +279,7 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 				System.out.println("roleId: " + roleId);
 
 				TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberByUuid(uuid);
-				teamMember.setTeamRole(Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(roleId)));
+				teamMember.setTeamRole(Context.getService(TeamRoleService.class).getTeamRoleById(Integer.parseInt(roleId)));
 				Context.getService(TeamMemberService.class).updateTeamMember(teamMember);
 				
 				List<TeamMember> teamMembers = new ArrayList<>();
@@ -415,7 +415,7 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 				if(isDataProvider != null) { if(isDataProvider.equals("true")) { teamMember.setIsDataProvider(true); teamMember.setProvider(provider); } else { teamMember.setIsDataProvider(false); teamMember.setProvider(null); } }
 
 				if(existingPersonId != null) { teamMember.setPerson(person); } else { teamMember.setPerson(null); }
-				if(teamRoleOption != null) { teamMember.setTeamHierarchy(Context.getService(TeamHierarchyService.class).getTeamRoleById(Integer.parseInt(teamRoleOption))); } else { teamMember.setTeamHierarchy(null); }
+				if(teamRoleOption != null) { teamMember.setTeamRole(Context.getService(TeamRoleService.class).getTeamRoleById(Integer.parseInt(teamRoleOption))); } else { teamMember.setTeamRole(null); }
 				if(teamId != null) { teamMember.setTeam(Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId))); } else { teamMember.setTeam(null); }
 				if(location != null) { Set<Location> locationSet = new HashSet<Location>(); locationSet.add(Context.getLocationService().getLocation(Integer.parseInt(location))); teamMember.setLocation(locationSet); } else { teamMember.setLocation(null); }
 				
@@ -458,29 +458,34 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 			} return str;
 		}
 	}
-	
-	/*@PropertyGetter("subTeamHierarchys")
+	 @Override
+	public SimpleObject getAll(RequestContext context) throws ResponseException {
+		 List<TeamMember> teamMembers = Context.getService(TeamMemberService.class).getAllTeamMember(true, 0, 25);
+			return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
+		
+	}
+	/*@PropertyGetter("subTeamRoles")
 	public String getSubTeamRole(TeamMember teamMember) {
 		List<TeamMember> tm = Context.getService(TeamMemberService.class).getTeamMemberByPersonId(teamMember.getPerson().getId());
 		if(tm == null) { return ""; }
 		else { String teamNames = "";
 			for (int j = 0; j < tm.size(); j++) { 
-				if(j==tm.size()-1) { teamNames += tm.get(j).getTeamHierarchy().getName() + ""; }
-				else { teamNames += tm.get(j).getTeamHierarchy().getName() + ", "; }
+				if(j==tm.size()-1) { teamNames += tm.get(j).getTeamRole().getName() + ""; }
+				else { teamNames += tm.get(j).getTeamRole().getName() + ", "; }
 			} return teamNames;
 		}
 	}
 	
-	@PropertyGetter("teamHierarchy")
+	@PropertyGetter("teamRole")
 	public String getTeamRoleName(TeamMember teamMember) {
 		if (teamMember == null){ return ""; }
-		return teamMember.getTeamHierarchy().getName().toString();
+		return teamMember.getTeamRole().getName().toString();
 	}
 
 	@PropertyGetter("reportTo")
 	public String getReportTo(TeamMember teamMember) {
 		if (teamMember == null){ return ""; }
-		return teamMember.getTeamHierarchy().getReportTo().getName();
+		return teamMember.getTeamRole().getReportTo().getName();
 	}*/
 	
 	

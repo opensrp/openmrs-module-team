@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-   <class name="org.openmrs.module.teammodule.TeamHierarchyLog" table="team_role_log">
+   <class name="org.openmrs.module.teammodule.TeamRoleLog" table="team_role_log">
         <id column="log_id" name="logId" type="int">
             <generator class="native"/>
         </id> 
-    	<many-to-one name="teamRole" column="team_role" class="org.openmrs.module.teammodule.TeamHierarchy"/>
+    	<many-to-one name="teamRole" column="team_role" class="org.openmrs.module.teammodule.TeamRole"/>
 	
 	    <property name="action" column="action" type="java.lang.String"/>
 		<property name="dataNew" column="data_new" type="java.lang.String"/>

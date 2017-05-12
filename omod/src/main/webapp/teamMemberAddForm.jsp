@@ -567,8 +567,8 @@
 			<td>
 				<select id="teamRoleOption"> <!-- multiple -->
 					<option value="" label="Please Select " />
-					<c:forEach items="${allTeamHierarchy}" var="memberRoles" varStatus="varStatus">
-						<option value="${memberRoles.teamHierarchyId}">${memberRoles.name}</option>
+					<c:forEach items="${allTeamRole}" var="memberRoles" varStatus="varStatus">
+						<option value="${memberRoles.teamRoleId}">${memberRoles.name}</option>
 					</c:forEach>
 				</select>
 			</td>

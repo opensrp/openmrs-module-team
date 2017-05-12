@@ -5,22 +5,22 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.teammodule.TeamHierarchyLog;
-import org.openmrs.module.teammodule.api.TeamHierarchyLogService;
-import org.openmrs.module.teammodule.api.db.TeamHierarchyLogDAO;
+import org.openmrs.module.teammodule.TeamRoleLog;
+import org.openmrs.module.teammodule.api.TeamRoleLogService;
+import org.openmrs.module.teammodule.api.db.TeamRoleLogDAO;
 
-public class TeamHierarchyLogServiceImpl extends BaseOpenmrsService implements TeamHierarchyLogService  {
+public class TeamRoleLogServiceImpl extends BaseOpenmrsService implements TeamRoleLogService  {
 
 private final Log log = LogFactory.getLog(this.getClass());
 	
-	private TeamHierarchyLogDAO dao;
+	private TeamRoleLogDAO dao;
 
 	
-	public TeamHierarchyLogDAO getDao() {
+	public TeamRoleLogDAO getDao() {
 		return dao;
 	}
 
-	public void setDao(TeamHierarchyLogDAO dao) {
+	public void setDao(TeamRoleLogDAO dao) {
 		this.dao = dao;
 	}
 
@@ -28,28 +28,28 @@ private final Log log = LogFactory.getLog(this.getClass());
 		return log;
 	}
 
-	public void saveTeamHierarchyLog(TeamHierarchyLog teamHierarchylog) {
-		dao.saveTeamHierarchyLog(teamHierarchylog);
+	public void saveTeamRoleLog(TeamRoleLog teamRolelog) {
+		dao.saveTeamRoleLog(teamRolelog);
 	}
 
-	public List<TeamHierarchyLog> getAllLogs(Integer offset, Integer pageSize) {
+	public List<TeamRoleLog> getAllLogs(Integer offset, Integer pageSize) {
 		return dao.getAllLogs(offset, pageSize);
 	}
 
-	public void purgeTeamHierarchyLog(TeamHierarchyLog TeamHierarchyLog) {
-		dao.purgeTeamHierarchyLog(TeamHierarchyLog);
+	public void purgeTeamRoleLog(TeamRoleLog TeamRoleLog) {
+		dao.purgeTeamRoleLog(TeamRoleLog);
 	}
 
-	public List<TeamHierarchyLog> searchTeamHierarchyLog(String teamHierarchy,Integer offset, Integer pageSize) {
-		return dao.searchTeamHierarchyLog(teamHierarchy,offset, pageSize);
+	public List<TeamRoleLog> searchTeamRoleLog(Integer teamRole,Integer offset, Integer pageSize) {
+		return dao.searchTeamRoleLog(teamRole,offset, pageSize);
 	}
 
-	public TeamHierarchyLog getTeamHierarchyLog(int id) {
-		return dao.getTeamHierarchyLog(id);
+	public TeamRoleLog getTeamRoleLog(int id) {
+		return dao.getTeamRoleLog(id);
 	}
 
-	public TeamHierarchyLog getTeamHierarchyLog(String uuid) {
-		return dao.getTeamHierarchyLog(uuid);
+	public TeamRoleLog getTeamRoleLog(String uuid) {
+		return dao.getTeamRoleLog(uuid);
 	}
 
 }

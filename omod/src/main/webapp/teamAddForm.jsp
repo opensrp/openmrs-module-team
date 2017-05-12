@@ -74,7 +74,6 @@
 						  contentType:"application/json;charset=UTF-8",
 						  dataType:"json",
 						  success: function(data,status){
-						alert(status)
 						if(status==200)
 							{
 							document.getElementById("saveTeam").submit();

@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * 
  */
 @Controller
-@RequestMapping(value = "module/teammodule/teamHierarchy.form")
-public class TeamHierarchyController {
+@RequestMapping(value = "module/teammodule/teamRole.form")
+public class TeamRoleController {
 	HttpServletRequest request;
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
 
 	/** Success form view name */
-	private final String SUCCESS_FORM_VIEW = "/module/teammodule/teamHierarchy";
+	private final String SUCCESS_FORM_VIEW = "/module/teammodule/teamRole";
 
 	/**
 	 * Initially called after the formBackingObject method to get the landing

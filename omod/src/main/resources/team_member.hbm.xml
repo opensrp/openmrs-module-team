@@ -28,7 +28,7 @@
 	       <many-to-many class="org.openmrs.Patient" column="patient_id" />
 	    </set>
 	
-		<many-to-one name="teamHierarchy" column="team_role_id" class="org.openmrs.module.teammodule.TeamHierarchy" />
+		<many-to-one name="teamRole" column="team_role_id" class="org.openmrs.module.teammodule.TeamRole" />
 
 		<property name="dateCreated" column="date_created" type="java.util.Date" not-null="true"/>
 		<property name="uuid" column="uuid" type="java.lang.String" not-null="true" />

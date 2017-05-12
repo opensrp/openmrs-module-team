@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamHierarchy;
+import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
@@ -87,7 +87,7 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 	
 	@Override
-	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamHierarchy teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize) {
+	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamRole teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize) {
 		return this.dao.searchTeamMember(identifier, supervisorId, teamRoleId, teamId, locationId, offset, pageSize);
 	}
 
@@ -95,5 +95,12 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	public int count(Integer teamId) {
 		// TODO Auto-generated method stub
 		return this.dao.count(teamId);
+	}
+
+	@Override
+	public List<TeamMember> getAllTeamMember(boolean voided, Integer offset,
+			Integer pageSize) {
+		// TODO Auto-generated method stub
+		return this.dao.getAllTeamMember(voided, offset, pageSize);
 	}
 }

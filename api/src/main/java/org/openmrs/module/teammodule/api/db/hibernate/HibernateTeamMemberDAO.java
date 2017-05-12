@@ -16,7 +16,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.ResultTransformer;
 import org.openmrs.Location;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamHierarchy;
+import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.db.TeamMemberDAO;
 
@@ -155,7 +155,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	
 	//id - TODO
 	@Override
-	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisor, TeamHierarchy teamRole, Team team, Location location, Integer offset, Integer pageSize) {
+	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisor, TeamRole teamRole, Team team, Location location, Integer offset, Integer pageSize) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
 		
 		if (location != null) {
@@ -163,7 +163,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		}
 		
 		if (teamRole != null) {
-			criteria.add(Restrictions.eq("teamHierarchy", teamRole));
+			criteria.add(Restrictions.eq("teamRole", teamRole));
 		}
 		
 		if (identifier != null) {
@@ -217,6 +217,13 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	@Override
 	public int count(Integer teamId) {
 		// TODO Auto-generated method stub
-		return (int) sessionFactory.getCurrentSession().createSQLQuery("select count(*) from team_member where team_id= :teamId").setInteger("teamId", teamId).list().get(0);
+		return (int) sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.team= :teamId").setInteger("teamId", teamId).list().size();
+	}
+
+	@Override
+	public List<TeamMember> getAllTeamMember(boolean voided, Integer offset,
+			Integer pageSize) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().createQuery("from TeamMember").list();
 	}
 }
