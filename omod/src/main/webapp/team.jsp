@@ -74,9 +74,11 @@
 	        if(teams[i].supervisor!=null)
 	        {
 	        var cell = row.insertCell(-1);
-	        cell.innerHTML = "<a id='editTeamLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' onClick=teamMember("+teams[i].supervisor.uuid+")'>"+teams[i].supervisor+"</a>" ;
+	        //cell.innerHTML = "<a id='editTeamLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' onClick=teamMember("+teams[i].supervisor.uuid+")'>"+teams[i].supervisor+"</a>" ;
+	        cell.innerHTML = "<a id='editTeamLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' onClick=teamMember("+teams[i].supervisorUuid+")'>"+teams[i].supervisor+"</a>" ;
 	        var cell = row.insertCell(-1);
-	        cell.innerHTML = "<a id='editTeamLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' onClick=supervisorTeamDetail("+teams[i].supervisor.team.uuid+")'>"+teams[i].supervisor.team+"</a>" ;
+	        //cell.innerHTML = "<a id='editTeamLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' onClick=supervisorTeamDetail("+teams[i].supervisor.team.uuid+")'>"+teams[i].supervisor.team+"</a>" ;
+	        cell.innerHTML = "<a id='editTeamLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' onClick=supervisorTeamDetail("+teams[i].uuid+")'>"+teams[i].teamName+"</a>" ;
 		    }
 	        else
 	        {

@@ -18,9 +18,9 @@ import org.openmrs.PersonName;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamRoleService;
+import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -63,55 +63,17 @@ public class TeamMemberAddForm {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm( @ModelAttribute("existingMember") TeamMember teamMember, Model model, HttpServletRequest request) throws IOException {
-
-		System.out.println("\nTeam Member Add");
-		
-		System.out.println("\n teamMember: " + teamMember + "\n");
-
-		String error = request.getParameter("error");
-		System.out.println("\n error: " + error);
-		model.addAttribute("error", error);
-		
-		String saved = request.getParameter("saved");
-		System.out.println("\n saved: " + saved);
-		model.addAttribute("saved", saved);
-		
-//		String teamId = request.getParameter("teamId");
-//		System.out.println("\n teamId: " + teamId);
-//		model.addAttribute("teamId", teamId);
-//		
-//		Team team = Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId));
-//		System.out.println("\n team: " + team);
-//		
-//		Date teamDate = team.getDateCreated();
-//		System.out.println("\n teamDate: " + teamDate);
-//		model.addAttribute("teamDate", teamDate);
-		
-		
-		List<Role> allRole=Context.getUserService().getAllRoles();
-		System.out.println("\n allRole: " + allRole + "\n");
-		model.addAttribute("allRoles",allRole);
-		
-		List<Location> allLocations = Context.getLocationService().getAllLocations();
-		System.out.println("\n allLocations: " + allLocations + "\n");
+		String error = request.getParameter("error"); model.addAttribute("error", error);
+		String saved = request.getParameter("saved"); model.addAttribute("saved", saved);
+		model.addAttribute("allRoles",Context.getUserService().getAllRoles());
+		List<Location> allLocations = Context.getLocationService().getAllLocations(); 
 		model.addAttribute("allLocations",allLocations);
-		
-		Location location = null;
-		System.out.println("\n location: " + location + "\n");
 		model.addAttribute("location", allLocations.get(0));
-		
-		System.out.println("\n selectedLocation: " + allLocations.get(0) + "\n");
 		model.addAttribute("selectedLocation",allLocations.get(0));
-		
-		List<TeamRole> allTeamRole = Context.getService(TeamRoleService.class).getAllTeamRole();
-		System.out.println("\n allTeamRole: " + allTeamRole + "\n");
-		model.addAttribute("allTeamRole",allTeamRole);
-		
-		
+		model.addAttribute("allTeamRole",Context.getService(TeamRoleService.class).getAllTeamRole());
+		model.addAttribute("allTeams",Context.getService(TeamService.class).getAllTeams(false, null, null));
 		model.addAttribute("teamId",1);
-		System.out.println("\n teamId: 1\n");
-
-		//model.addAttribute("json", getHierarchyAsJson());
+		//model.addAttribute("json", getRoleAsJson());
 		
 		//System.out.println("\n locationWidgetType: " + Context.getAdministrationService().saveGlobalProperty(new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE, "default")) + "\n");
 		//model.addAttribute("locationWidgetType", Context.getAdministrationService().saveGlobalProperty(new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE, "default")));
@@ -124,7 +86,7 @@ public class TeamMemberAddForm {
 	public User checkUserName(Model model, HttpServletRequest request) throws IOException {
 
 		String userName = request.getParameter("userName");
-		 //model.addAttribute("json", getHierarchyAsJson());
+		 //model.addAttribute("json", getRoleAsJson());
 		return Context.getUserService().getUserByUsername(userName);
 	}
 

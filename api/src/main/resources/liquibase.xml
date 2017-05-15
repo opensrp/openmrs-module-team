@@ -195,7 +195,7 @@
 			<column name="date_voided" type="datetime" />
 			<column name="void_reason" type="varchar(255)" />
 			<column name="uuid" type="varchar(255)" />
-	</createTable>
+		</createTable>
 	</changeSet>
 	<changeSet  id="teammodule-13.1.0A" author="Shakeeb Raza">
 	<createTable tableName="team_role_log">
@@ -270,11 +270,8 @@
 			<column name="creator" type="int(11)">
 				<constraints nullable="false" />
 			</column>
-				<column name="uuid" type="varchar(255)" />
+			<column name="uuid" type="varchar(255)" />
 		</addColumn>
-		
-		
-		
 		<addColumn tableName="team_member_log">
 			<column name="date_created" type="datetime">
 				<constraints nullable="false" />
@@ -353,19 +350,22 @@
 		</addColumn>
 	</changeSet>
 	
+	<changeSet author="Shakeeb Raza" id="teammodule-32.1.0A">
+		<addColumn tableName="team_log">
+			<column name="data_old" type="varchar(500)" />
+		</addColumn>
+	</changeSet>
+	
 	<changeSet author="Zohaib Masood" id="teammodule-33.1.0A">
 		<addColumn tableName="team_member">
-			<column name="provider" type="varchar(45)" />
 			<column name="is_data_provider" type="tinyint(4)">
 				<constraints nullable="false" />
 			</column>
 		</addColumn>
 	</changeSet>
 	
-	<changeSet author="Shakeeb Raza" id="teammodule-32.1.0A">
-		<addColumn tableName="team_log">
-			<column name="data_old" type="varchar(500)" />
-		</addColumn>
-	</changeSet>
+	<changeSet author="Zohaib Masood" id="teammodule-34.1.0A">
+	 	<renameTable newTableName="team_member_location" oldTableName="member_location"/>
+	 </changeSet>
 	
 </databaseChangeLog>

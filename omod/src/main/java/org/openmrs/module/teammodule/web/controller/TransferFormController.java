@@ -131,10 +131,10 @@ public class TransferFormController {
 		/*Context.getService(TeamMemberService.class).save(teamMember);*/
 		Context.getService(TeamMemberService.class).saveTeamMember(teamMember);
 		
-		for(int i = 0; i < teamMember.getLocation().size(); i++){
-			Integer locationId = teamMember.getLocation().iterator().next().getLocationId();
+		for(int i = 0; i < teamMember.getLocations().size(); i++){
+			Integer locationId = teamMember.getLocations().iterator().next().getLocationId();
 			Location location = Context.getLocationService().getLocation(locationId);
-			teamMember.getLocation().add(location);		
+			teamMember.getLocations().add(location);		
 			
 			/*Context.getService(TeamMemberService.class).saveLocation(location);*/
 			Context.getLocationService().saveLocation(location);

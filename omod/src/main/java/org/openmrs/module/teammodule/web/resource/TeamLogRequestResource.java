@@ -93,7 +93,6 @@ public class TeamLogRequestResource extends DataDelegatingCrudResource<TeamLog> 
 
 	@Override
 	public TeamLog getByUniqueId(String uniqueId) {
-		// TODO Auto-generated method stub
 		return Context.getService(TeamLogService.class).getTeamLog(uniqueId);
 	}
 }

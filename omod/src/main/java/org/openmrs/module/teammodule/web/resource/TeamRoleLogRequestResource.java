@@ -2,7 +2,6 @@ package org.openmrs.module.teammodule.web.resource;
 
 import java.util.List;
 
-import org.apache.poi.hssf.record.formula.functions.If;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.TeamRoleLog;
@@ -12,7 +11,6 @@ import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceContro
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
-import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;

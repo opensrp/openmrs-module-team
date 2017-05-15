@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
+import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.api.db.TeamRoleDAO;
 
@@ -52,13 +53,20 @@ public class HibernateTeamRoleDAO implements TeamRoleDAO{
 
 	@SuppressWarnings("unchecked")
 	public List<TeamRole> searchTeamRoleByRole(String role) {
-		return (List<TeamRole>)sessionFactory.getCurrentSession().createQuery("from TeamRole teamRole where teamRole.name = :role ").setString("role", role).list();
+		return (List<TeamRole>)sessionFactory.getCurrentSession().createQuery("from TeamRole teamRole where teamRole.name = :role").setString("role", role).list();
 	}
 	
 	public TeamRole getTeamRoleByUuid(String uuid) {
 		return (TeamRole)sessionFactory.getCurrentSession().createQuery("from TeamRole teamRole where teamRole.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<TeamRole> getSubTeamRoles(TeamMember teamMember) {
+		return sessionFactory.getCurrentSession().createQuery("from TeamRole teamRole where teamRole.reportTo = :id").setInteger("id", teamMember.getTeamRole().getId()).list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<TeamRole> searchTeamRoleReportBy(int id) {
 		// TODO Auto-generated method stub

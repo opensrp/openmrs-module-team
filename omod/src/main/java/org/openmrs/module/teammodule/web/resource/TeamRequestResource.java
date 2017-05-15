@@ -44,23 +44,28 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 			description = new DelegatingResourceDescription();
 			if (rep instanceof DefaultRepresentation) {
 				description.addProperty("display");
+				description.addProperty("uuid");
 				description.addProperty("teamName");
 				description.addProperty("teamIdentifier");
-				description.addProperty("uuid");
-				description.addProperty("location");
+				description.addProperty("supervisor");
+				description.addProperty("supervisorUuid");
+				description.addProperty("voided");
+				description.addProperty("members");
+				description.addProperty("location", Representation.DEFAULT);
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("display");
-				description.addProperty("teamIdentifier");
-				description.addProperty("teamName");
-				description.addProperty("supervisor");
-				description.addProperty("voided");
-				description.addProperty("location");
 				description.addProperty("uuid");
+				description.addProperty("teamName");
+				description.addProperty("teamIdentifier");
+				description.addProperty("supervisor");
+				description.addProperty("supervisorUuid");
+				description.addProperty("voided");
+				description.addProperty("location", Representation.FULL);
 				description.addProperty("members");
 				description.addProperty("auditInfo");
+				description.addSelfLink();
 			}
-		}
-		return description;
+		} return description;
 	}
 
 	@Override
@@ -122,32 +127,23 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	
 	@PropertyGetter("display")
 	public String getDisplayString(Team team) {
-		if (team == null){		
-			return "";
-		}
-		return team.getTeamName();
+		if (team == null) { return ""; } return team.getTeamName();
 	}
 	
 	@PropertyGetter("members")
 	public int getNumberOfMember(Team team) {
-		try{
-		return Context.getService(TeamMemberService.class).count(team.getTeamId());
-		}catch(Exception ex)
-		{
-		return 0;	
-		}
-		}
+		if (team == null) { return 0; } return Context.getService(TeamMemberService.class).count(team.getTeamId());
+	}
 	
 	@PropertyGetter("supervisor")
-	public TeamMember getSuperVisor(Team team) {
-		try{
-		TeamMember teamMember = (TeamMember) Context.getService(TeamMemberService.class).searchTeamMember(null, team.getSupervisor(), null, null, null, null, null);
-		return teamMember;
-		}catch(Exception ex)
-		{
-		return null;
-		}
-		}
+	public String getSuperVisor(Team team) {
+		if (team == null || team.getSupervisor() == null) { return ""; } return team.getSupervisor().getPerson().getPersonName().toString();
+	}
+	
+	@PropertyGetter("supervisorUuid")
+	public String getSuperVisorUuid(Team team) {
+		if (team == null || team.getSupervisor() == null) { return ""; } return team.getSupervisor().getUuid();
+	}
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context)

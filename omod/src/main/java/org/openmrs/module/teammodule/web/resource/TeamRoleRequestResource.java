@@ -3,10 +3,8 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.api.TeamRoleService;
-import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -37,16 +35,19 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 		if (rep instanceof DefaultRepresentation) {
 			description.addProperty("display");
 			description.addProperty("uuid");
+			description.addProperty("name");
 			description.addProperty("ownsTeam");
+			description.addProperty("reportTo");
+			description.addProperty("reportByName");
 			} else if (rep instanceof FullRepresentation) {
 			description.addProperty("display");
 			description.addProperty("name");
 			description.addProperty("uuid");
 			description.addProperty("ownsTeam");
-			description.addProperty("ReportToName");
-			description.addProperty("ReportByName", Representation.FULL);
+			description.addProperty("reportTo");
+			description.addProperty("reportByName");
 			description.addProperty("auditInfo");
-			
+			description.addSelfLink();
 			}
 		}
 
@@ -75,7 +76,6 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 		Context.getService(TeamRoleService.class).purgeTeamRole(teamRole);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public SimpleObject search(RequestContext context) {
 		if(context.getParameter("q")!=null)
@@ -90,18 +90,17 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	
 	@PropertyGetter("display")
 	public String getDisplayString(TeamRole teamRole) {
-		return teamRole.getName();
+		if(teamRole == null) { return ""; } return teamRole.getName();
 	}
 	
-	@PropertyGetter("ReportToName")
+	@PropertyGetter("reportTo")
 	public String getReportToName(TeamRole teamRole) {
-		return teamRole.getReportTo().getName();
+		if(teamRole == null || teamRole.getReportTo() == null) { return ""; } return teamRole.getReportTo().getName();
 	}
 	
-	@PropertyGetter("ReportByName")
+	@PropertyGetter("reportByName")
 	public List<TeamRole> getReportByName(TeamRole teamRole) {
-		List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).searchTeamRoleReportBy(teamRole.getTeamRoleId());
-		return teamRoles;
+		List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).searchTeamRoleReportBy(teamRole.getTeamRoleId()); if(teamRoles == null) { return null; } else { return teamRoles; }
 	}
 
 	@Override

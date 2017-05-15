@@ -64,7 +64,7 @@ public class TeamMemberResponsibilityController {
 		m.put("size", tprs.size());
 		m.put("size", 0);
 		m.put("memberId", teamMember.get(i).getTeamMemberId());
-		Set<Location> location = teamMember.get(i).getLocation();
+		Set<Location> location = teamMember.get(i).getLocations();
 		m.put("location",location);
 		list.add(m);
 		}

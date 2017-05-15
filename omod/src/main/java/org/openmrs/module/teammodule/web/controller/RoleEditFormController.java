@@ -3,34 +3,22 @@
  */
 package org.openmrs.module.teammodule.web.controller;
 
-//import java.util.ArrayList;
-//import java.util.List;
-
-//import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-//import net.sf.ehcache.hibernate.HibernateUtil;
-
-
-
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 //import org.openmrs.module.teammodule.api.TeamMemberService;
 //import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.api.TeamRoleService;
-import org.openmrs.module.teammodule.api.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

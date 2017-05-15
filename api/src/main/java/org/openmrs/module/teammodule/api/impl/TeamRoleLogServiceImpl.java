@@ -40,7 +40,7 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.purgeTeamRoleLog(TeamRoleLog);
 	}
 
-	public List<TeamRoleLog> searchTeamRoleLog(Integer teamRole,Integer offset, Integer pageSize) {
+	public List<TeamRoleLog> searchTeamRoleLog(String teamRole,Integer offset, Integer pageSize) {
 		return dao.searchTeamRoleLog(teamRole,offset, pageSize);
 	}
 
@@ -52,4 +52,7 @@ private final Log log = LogFactory.getLog(this.getClass());
 		return dao.getTeamRoleLog(uuid);
 	}
 
+	public List<TeamRoleLog> searchTeamRoleLog(Integer teamRoleId,Integer offset, Integer pageSize) {
+		return dao.searchTeamRoleLog(teamRoleId, offset, pageSize);
+	}
 }

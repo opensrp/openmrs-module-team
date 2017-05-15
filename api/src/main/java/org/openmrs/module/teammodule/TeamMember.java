@@ -33,17 +33,13 @@ public class TeamMember extends BaseOpenmrsData implements Serializable {
 	
 	private Date leaveDate;
 	
-	private Set<Location> location = new HashSet<Location>();
+	private Set<Location> locations = new HashSet<Location>();
 	
 	private Set<TeamMemberPatientRelation> patients = new HashSet<TeamMemberPatientRelation>();
 	
-//	private Set<Team> subTeams = new HashSet<Team>(0);
-
 	private TeamRole teamRole;
-	
-	private String provider;
-	
-	private boolean isDataProvider;
+		
+	private Boolean isDataProvider;
 	
 	public TeamMember() { }
 
@@ -89,12 +85,12 @@ public class TeamMember extends BaseOpenmrsData implements Serializable {
 		this.leaveDate = leaveDate;
 	}
 
-	public Set<Location> getLocation() {
-		return location;
+	public Set<Location> getLocations() {
+		return locations;
 	}
 
-	public void setLocation(Set<Location> location) {
-		this.location = location;
+	public void setLocations(Set<Location> locations) {
+		this.locations = locations;
 	}
 
 	public Set<TeamMemberPatientRelation> getPatients() {
@@ -131,19 +127,11 @@ public class TeamMember extends BaseOpenmrsData implements Serializable {
 		this.teamRole = teamRole;
 	}
 	
-	public String getProvider() {
-		return provider;
-	}
-
-	public void setProvider(String provider) {
-		this.provider = provider;
-	}
-	
-	public boolean getIsDataProvider() {
+	public Boolean getIsDataProvider() {
 		return isDataProvider;
 	}
 
-	public void setIsDataProvider(boolean isDataProvider) {
+	public void setIsDataProvider(Boolean isDataProvider) {
 		this.isDataProvider = isDataProvider;
 	}
 }

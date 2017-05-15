@@ -59,8 +59,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	}
 
 	@Override
-	public List<TeamMember> getAllTeamMember(Integer id, boolean voided, Integer offset, Integer pageSize) {
-	
+	public List<TeamMember> getAllTeamMember(Integer id, Boolean voided, Integer offset, Integer pageSize) {
 		if(id != null) {// id is not null
 			if (!voided) { // get by team member id & voided
 				Criteria criteria_member = sessionFactory.getCurrentSession().createCriteria(TeamMember.class).add(Restrictions.eq("voided", false));
@@ -153,13 +152,12 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		return sessionFactory.getCurrentSession().createQuery("from TeamMember teamMember where teamMember.team = :teamId").setInteger("teamId", teamId).list();
 	}
 	
-	//id - TODO
 	@Override
 	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisor, TeamRole teamRole, Team team, Location location, Integer offset, Integer pageSize) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
 		
 		if (location != null) {
-			criteria.createAlias("location", "l").add(Restrictions.eq("l.locationId", location.getId()));
+			criteria.createAlias("locations", "l").add(Restrictions.eq("l.locationId", location.getId()));
 		}
 		
 		if (teamRole != null) {
@@ -167,8 +165,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		}
 		
 		if (identifier != null) {
-			criteria.add(Restrictions.like("identifier", "%"+identifier+"%"));
-			//criteria.add(Restrictions.or(Restrictions.or(Restrictions.like("identifier", "%"+identifier+"%"),Restrictions.like("identifier", "%"+identifier+"%")),Restrictions.or(Restrictions.like("identifier", "%"+identifier+"%"),Restrictions.like("identifier", "%"+identifier+"%"))));
+			criteria.createAlias("person", "p").createAlias("p.names", "pn").add(Restrictions.or(Restrictions.like("pn.givenName", "%"+identifier+"%"),Restrictions.or(Restrictions.like("pn.middleName", "%"+identifier+"%"),Restrictions.or(Restrictions.like("pn.familyName", "%"+identifier+"%"),Restrictions.like("identifier", "%"+identifier+"%")))));
 		}
 		
 		if (team != null) {
@@ -217,13 +214,6 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	@Override
 	public int count(Integer teamId) {
 		// TODO Auto-generated method stub
-		return (int) sessionFactory.getCurrentSession().createQuery("from TeamMember tm where tm.team= :teamId").setInteger("teamId", teamId).list().size();
-	}
-
-	@Override
-	public List<TeamMember> getAllTeamMember(boolean voided, Integer offset,
-			Integer pageSize) {
-		// TODO Auto-generated method stub
-		return sessionFactory.getCurrentSession().createQuery("from TeamMember").list();
+		return (int) sessionFactory.getCurrentSession().createQuery("from TeamMember teammember where team= :teamId").setInteger("teamId", teamId).list().size();
 	}
 }
