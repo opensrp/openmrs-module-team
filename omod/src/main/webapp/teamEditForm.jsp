@@ -31,6 +31,7 @@
 	 }); 
 	function validation() {
 		document.getElementById("saveButton").disabled = true;
+		document.getElementById("teamName").disabled = true;
 		var regexp = /^[a-z/i][a-z\- ]*[a-z/i\-|0-9]{2,}$/i;
 		var idRegExp = /^[a-z|0-9]+[a-z.\-_]*[a-z|0-9]{2,}$/i;
 		var name = teamName.value;
@@ -64,18 +65,16 @@
 					alertify.alert(dataTypeMessage);
 					document.getElementById("saveButton").disabled = false;
 				}else{jQuery.ajax({
-					  url:"/openmrs/ws/rest/v1/team/team?teamName="+name+"&locationId="+selectedValue+"&v=full",
+					  url:"/openmrs/ws/rest/v1/team/team?identifier="+id+"&teamName="+name+"&locationId="+selectedValue+"&v=full",
 					  type:"GET",
 					  contentType:"application/json;charset=UTF-8",
 					  dataType:"json",
 					  success: function(data,status){
-					alert(status)
-					if(status==200)
-						{
-						document.getElementById("saveTeam").submit();
-						}
+							//document.getElementById("saveTeam").submit();
+							document.getElementById("savedId").innerHTML = "Team Updated Successfully";
+							document.getElementById("saveButton").disabled = false;
 					  }
-					  });
+				  });
 			}
 			 
 				
@@ -83,10 +82,10 @@
 
 </script>
 
-<h3 style="color: red; display: inline">${error}</h3>
-<h3 style="color: green; display: inline">${saved}</h3>
-<h3 align="center" style="color: green;">${edit}</h3>
 <h2 align="center">Edit Team</h2>
+<h3 id="errorId" style="color: red; display: inline">${error}</h3>
+<h3 id="savedId" align="center" style="color: green;">${saved}</h3>
+<h3 id="editId" align="center" style="color: green;">${edit}</h3>
 <table class="team">
 	<form:form id="saveTeam" name="saveTeam" method="post"
 		commandName="teamData">
@@ -94,10 +93,10 @@
 			<td>Team Name</td>
 			<td><form:input id="teamName" path="teamName" maxlength="20"
 					onfocus="jQuery('#nameTip').show();"
-					onblur="jQuery('#nameTip').hide();" /><span style="color: red">*</span>
+					onblur="jQuery('#nameTip').hide();" readonly="true" /><!-- <span style="color: red">*</span> -->
 			</td>
-			<td><span id="nameTip">Must start with alphabet.Min 3 and
-					max 20.Alphanumeric text,- is allowed</span></td>
+			<td><!-- <span id="nameTip">Must start with alphabet.Min 3 and
+					max 20.Alphanumeric text,- is allowed</span> --></td>
 		<tr>
 			<td>Team Identifier</td>
 			<td><form:input id="teamIdentfier" path="teamIdentifier"
@@ -111,13 +110,15 @@
 			<td><form:select id="location" path="location"
 					cssStyle="width:165px">
 					<!-- <form:option value="0" label=" Please Select " /> -->
-					<form:option value="${defaultLocation.locationId}">${defaultLocation.name}</form:option>
-					<c:forEach var="location" items="${location}" varStatus="loop">
-						<c:if test="${location.locationId ne defaultLocation.locationId}">
-							<form:option value="${location.locationId}">${location.name}</form:option>
+					<form:option value="${defaultLocation.uuid}">${defaultLocation.name}</form:option>
+					<c:forEach var="locations" items="${locations}" varStatus="loop">
+						<c:if test="${locations.uuid ne defaultLocation.uuid}">
+							<form:option value="${locations.uuid}">${locations.name}</form:option>
 						</c:if>
 					</c:forEach>
 				</form:select><span style="color: red">*</span></td>
+				
+				
 		</tr>
 		<tr>
 			<td>Retire Team ?</td>

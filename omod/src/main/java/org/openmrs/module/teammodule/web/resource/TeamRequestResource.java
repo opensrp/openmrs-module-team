@@ -114,8 +114,18 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 			listTeam.add(team);
 			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
 		}
+		else if(context.getParameter("teamName")!=null && context.getParameter("locationId")!=null && context.getParameter("identifier")!=null) {
+			Location l = Context.getLocationService().getLocationByUuid(context.getParameter("locationId"));
+			Team team = (Context.getService(TeamService.class).searchTeam(context.getParameter("teamName"))).get(0);
+			team.setTeamIdentifier(context.getParameter("identifier"));
+			team.setLocation(l);
+			Context.getService(TeamService.class).updateTeam(team);
+			List<Team> listTeam = new ArrayList<>();
+			listTeam.add(team);
+			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
+		}
 		else if(context.getParameter("teamName")!=null && context.getParameter("locationId")!=null) {
-			Team team = Context.getService(TeamService.class).getTeam(context.getParameter("teamName"),Integer.parseInt(context.getParameter("locationId")));
+			Team team = Context.getService(TeamService.class).getTeam(context.getParameter("teamName"), Integer.parseInt(context.getParameter("locationId")));
 			List<Team> listTeam = new ArrayList<>();
 			listTeam.add(team);
 			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);

@@ -72,11 +72,14 @@ public class RoleAddFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String onSubmit(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
-	@ModelAttribute("roleData") TeamRole teamRole,  Model model) {
-		
+	@ModelAttribute("roleData") TeamRole teamRole, Model model) {
+		String reportsToUuid = request.getParameter("reportsTo"); 
+		System.out.println("reportsTo: " + reportsToUuid);
+		TeamRole tr = Context.getService(TeamRoleService.class).getTeamRoleByUuid(reportsToUuid); 
+		if(tr!=null) { teamRole.setReportTo(tr); }
 		teamRole.setUuid(UUID.randomUUID().toString());
 		Context.getService(TeamRoleService.class).saveTeamRole(teamRole);
-		String saved = "Role saved successfully";
+		String saved = "Role Saved Successfully";
 		model.addAttribute("saved", saved);
 		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole();
 		model.addAttribute("reportsTo", roles);

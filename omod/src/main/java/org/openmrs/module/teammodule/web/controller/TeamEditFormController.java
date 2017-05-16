@@ -47,6 +47,7 @@ public class TeamEditFormController {
 		teamData = Context.getService(TeamService.class).getTeam(teamId);
 		String error = request.getParameter("error");
 		model.addAttribute("error", error);
+		model.addAttribute("defaultLocation", teamData.getLocation());
 		String edit = request.getParameter("edit");
 		model.addAttribute("edit", edit);
 		model.addAttribute("teamData", teamData);
@@ -60,6 +61,12 @@ public class TeamEditFormController {
 		Location location = Context.getLocationService().getLocationByUuid(locationUuid);
 		teamData = Context.getService(TeamService.class).getTeam(teamName, location.getLocationId());
 		String error = request.getParameter("error");
+		System.out.println(teamData);
+		System.out.println(teamData.getLocation());
+		System.out.println(teamData.getLocation());
+		model.addAttribute("defaultLocation", location);
+		model.addAttribute("locations", Context.getLocationService().getAllLocations());
+		
 		model.addAttribute("error", error);
 		String edit = request.getParameter("edit");
 		model.addAttribute("edit", edit);

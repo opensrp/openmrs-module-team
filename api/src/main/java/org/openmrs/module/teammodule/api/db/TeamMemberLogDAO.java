@@ -8,6 +8,8 @@ public interface TeamMemberLogDAO {
 
 	public void saveTeamMemberLog(TeamMemberLog teamMemberLog);
 	
+	public void updateTeamMemberLog(TeamMemberLog teamMemberlog);
+
 	public TeamMemberLog getTeamMemberLog(int id);
 	
 	public TeamMemberLog getTeamMemberLog(String id);

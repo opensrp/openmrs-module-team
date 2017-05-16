@@ -14,22 +14,20 @@
 <script src="/openmrs/moduleResources/teammodule/alertify.min.js"></script>
 
 <script type="text/javascript">
-
 	jQuery(document).ready(function() {
 		jQuery("#ownsTeam").attr('checked', false);
 	});
 	function validation() {
 		document.getElementById("saveButton").disabled = true;
 		var name = roleName.value;
-		var reportsTo = document.getElementById("reportsTo");
-		var selectedValue = reportsTo.options[reportsTo.selectedIndex].value;
+		var reportsTo = document.getElementById("reportsTo").value;
 		var mustSelectMessage = "";
 		if (name == null || name == "") {
 			mustSelectMessage += "Role name can't be empty.";
 			alertify.alert(mustSelectMessage);
 			document.getElementById("saveButton").disabled = false;
 		}
-		if (selectedValue == 0) {
+		if (reportsTo == 0) {
 			mustSelectMessage += "Must Select Report To Field";
 			alertify.alert(mustSelectMessage);
 			document.getElementById("saveButton").disabled = false;
@@ -42,8 +40,7 @@
 				contentType : "application/json;charset=UTF-8",
 				dataType : "json",
 				success : function(data, status) {
-					if(status==200)
-						document.getElementById("saveRole").submit();
+					document.getElementById("saveRole").submit();
 				}
 			});
 		}
@@ -51,6 +48,9 @@
 </script>
 
 <h2 align="center">Add Role</h2>
+<h3 style="color: red; display: inline">${error}</h3>
+<h3 align="center" style="color: green;">${saved}</h3>
+<h3 style="color: green; display: inline">${edit}</h3>
 <table class="role">
 	<form:form id="saveRole" name="saveRole" method="post" commandName="roleData">
 		<tr>
@@ -60,13 +60,12 @@
 		</tr>
 		<tr>
 			<td>Reports To</td>
-			<td><form:select id="reportsTo" path="reportTo"
-					cssStyle="width:165px">
-					<form:option value="0" label=" Please Select " />
+			<td><select id="reportsTo" name="reportsTo" style="width:165px">
+					<option value="0" label=" Please Select " />
 					<c:forEach var="reportsTo" items="${reportsTo}" varStatus="loop">
-						<form:option value="${reportsTo}">${reportsTo.name}</form:option>
+						<option value="${reportsTo.uuid}">${reportsTo.name}</option>
 					</c:forEach>
-				</form:select>
+				<select>
 		</tr>
 		<tr>
 			<td>Owns Team ?</td>

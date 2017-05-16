@@ -17,19 +17,22 @@
 
 	jQuery(document).ready(function() {
 		jQuery("#ownsTeam").attr('checked', false);
+		console.log("edit")
 	});
 	function validation() {
 		document.getElementById("saveButton").disabled = true;
 		var name = roleName.value;
-		var reportsTo = document.getElementById("reportsTo");
-		var selectedValue = reportsTo.options[reportsTo.selectedIndex].value;
+		var reportsTo = document.getElementById("reportsTo").value;
+		
+		console.log("name: "+name);
+		console.log("reportsTo: "+reportsTo);
 		var mustSelectMessage = "";
 		if (name == null || name == "") {
 			mustSelectMessage += "Role name can't be empty.";
 			alertify.alert(mustSelectMessage);
 			document.getElementById("saveButton").disabled = false;
 		}
-		if (selectedValue == 0) {
+		if (reportsTo == 0) {
 			mustSelectMessage += "Must Select Report To Field";
 			alertify.alert(mustSelectMessage);
 			document.getElementById("saveButton").disabled = false;
@@ -42,7 +45,9 @@
 				contentType : "application/json;charset=UTF-8",
 				dataType : "json",
 				success : function(data, status) {
-						document.getElementById("saveRole").submit();
+					console.log(data)
+					console.log(status)
+					document.getElementById("saveRole").submit();
 				}
 			});
 		}
@@ -51,6 +56,9 @@
 </script>
 
 <h2 align="center">Edit Role</h2>
+<h3 style="color: red; display: inline">${error}</h3>
+<h3 align="center" style="color: green;">${saved}</h3>
+<h3 style="color: green; display: inline">${edit}</h3>
 <table class="role">
 	<form:form id="saveRole" name="saveRole" method="post" commandName="roleData">
 		<tr>
@@ -60,13 +68,16 @@
 		</tr>
 		<tr>
 			<td>Reports To</td>
-			<td><form:select id="reportsTo" path="reportTo"
-					cssStyle="width:165px">
-					<form:option value="0" label=" Please Select " />
-					<c:forEach var="reportsTo" items="${reportsTo}" varStatus="loop">
-						<form:option value="${reportsTo.teamRoleId}">${reportsTo.name}</form:option>
-					</c:forEach>
-				</form:select>
+			<td>
+			<select id="reportsTo" name="reportsTo" style="width:165px">
+				<option value="${reportsTo.uuid}">${reportsTo.name}</option>
+				<c:forEach var="reportsToOptions" items="${reportsToOptions}" varStatus="loop">
+					<c:if test="${reportsToOptions.uuid ne reportsTo.uuid}">
+						<option value="${reportsToOptions.uuid}">${reportsToOptions.name}</option>
+					</c:if>
+				</c:forEach>
+			</select>
+			</td>
 		</tr>
 		<tr>
 			<td>Owns Team ?</td>

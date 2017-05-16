@@ -432,15 +432,8 @@
 				 Choose Existing Person
 			</td>
 			<td></td>
+			<td></td>
 		</tr>
-		<!-- <tr id="heading">
-			<td>
-				style="padding-left: 5em"
-				<h3>
-					Existing Person
-				</h3>
-			</td>
-		</tr> -->
 		<tr id="exist">
 			<td>
 				<h3>
@@ -452,6 +445,7 @@
 				<input type="hidden" name="person_val" id="person_val" />
 				<!-- <br /> -->
 			</td>
+			<td></td>
 		</tr>
 		<tr id="memberName" type="hide">
 			<td>
@@ -476,6 +470,7 @@
 				<span style="color: red">*</span>
 				<span id="mNameTip">Min 3 and max 20.Alphabets,[-.] are allowed</span>
 			</td>
+			<td></td>
 		</tr>
 		<tr id="memberFamilyName" type="hide">
 			<td>
@@ -486,6 +481,7 @@
 				<span style="color: red">*</span>
 				<span id="fNameTip">Min 3 and max 20.Alphabets,[-.] are allowed</span>
 			</td>
+			<td></td>
 		</tr>
 		<tr id="memberBirth" type="hide">
 			<td>
@@ -500,6 +496,7 @@
 					Date shouldn't be in future
 				</span>
 			</td>
+			<td></td>
 		</tr> 
 		<tr id="memberGender" type="hide">
 			<td>
@@ -513,11 +510,14 @@
 				</form:select>
 				<span style="color: red">*</span>
 			</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td style="padding-bottom: 15px" id="loginChoicebox">
 				<input type="checkbox" id="loginChoice" name="loginChoice" /> Add Login Detail
 			</td>
+			<td></td>
+			<td></td>
 		</tr>
 		<tr id="memberUsername" type="hide">
 			<td>
@@ -526,6 +526,7 @@
 			<td>
 				<input type="text" name="userName" id="userName" autocomplete="on" />
 			</td>
+			<td></td>
 		</tr>
 		<tr id="memberPassword" type="hide">
 			<td>
@@ -561,6 +562,7 @@
 					</c:forEach>
 				</select>
 			</td>
+			<td></td>
 		</tr>
 		<tr id="memberIdentifier">
 			<td>
@@ -571,6 +573,7 @@
 				<span style="color: red">*</span>
 				<span style="padding-left: 12px" id="idTip">Min 3 and max 20.All data types and [-_] are allowed</span>
 			</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>
@@ -585,6 +588,7 @@
 				</select>
 				<span style="color: red">*</span>
 			</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>
@@ -599,6 +603,7 @@
 				</select>
 				<span style="color: red">*</span>
 			</td>
+			<td></td>
 		</tr>
 		<tr id="memberJoin">
 			<td>
@@ -608,6 +613,7 @@
 				<form:input id="joinDate" path="joinDate" onblur="jQuery('#joinTip').hide();" onfocus="showCalendar(this,60);jQuery('#joinTip').show();join();" />
 				<span id="joinTip">Date shouldn't be in future</span>
 			</td>
+			<td></td>
 		</tr> 
 		<tr id="memberEnd">
 			<td>
@@ -617,6 +623,7 @@
 				<form:input id="leaveDate" path="leaveDate" onfocus="showCalendar(this,60);jQuery('#leaveTip').show();leave();" onblur="jQuery('#leaveTip').hide();" />
 				<span id="leaveTip">Date shouldn't be in future</span>
 			</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>
@@ -625,6 +632,7 @@
 			<td>
 				<openmrs:fieldGen type="org.openmrs.Location" formFieldName="location" val="${selectedLocation}" />
 			</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td>
@@ -633,6 +641,7 @@
 			<td>
 				<form:checkbox id="isDataProvider" path="isDataProvider" />
 			</td>
+			<td></td>
 		</tr>
 		<tr>
 			<td></td>
@@ -641,12 +650,16 @@
 					Add
 				</button>
 			</td>
+			<td></td>
 		</tr>
-		<tr></tr>
+		<tr><td></td><td></td><td></td></tr>
+		<tr><td></td><td></td><td></td></tr>
 		<tr>
 			<td>
-				<a href="/openmrs/module/teammodule/team.form">Back to Team List</a>
+				<a href="/openmrs/module/teammodule/teamMemberView.form">Back to Team Member List</a>
 			</td>
+			<td></td>
+			<td></td>
 		</tr>
 	</table>
 </form:form>

@@ -11,6 +11,8 @@ import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
@@ -30,15 +32,48 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 		DelegatingResourceDescription description = null;
 		if (Context.isAuthenticated()) {
 			description = new DelegatingResourceDescription();
-				description.addProperty("logId");
+			if (rep instanceof DefaultRepresentation) {
+				description.addProperty("display");
 				description.addProperty("teamMember");
 				description.addProperty("action");
 				description.addProperty("dataNew");
 				description.addProperty("dataOld");
 				description.addProperty("log");
-				description.addProperty("dateCreated");
+			} else if (rep instanceof FullRepresentation) {
+				description.addProperty("display");
+				description.addProperty("teamMember");
+				description.addProperty("action");
+				description.addProperty("dataNew");
+				description.addProperty("dataOld");
+				description.addProperty("log");
+				description.addProperty("auditInfo");
+				description.addSelfLink();
+			}
 		}
-
+		return description;
+	}
+	
+	@Override
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("display");
+		description.addProperty("teamMember");
+		description.addProperty("action");
+		description.addProperty("dataNew");
+		description.addProperty("dataOld");
+		description.addProperty("log");
+		return description;
+	}
+	
+	@Override
+	public DelegatingResourceDescription getUpdatableProperties()  {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("display");
+		description.addProperty("teamMember");
+		description.addProperty("action");
+		description.addProperty("dataNew");
+		description.addProperty("dataOld");
+		description.addProperty("log");
 		return description;
 	}
 
@@ -48,18 +83,22 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 	}
 
 	@Override
-	public TeamMemberLog save(TeamMemberLog teamLog) {
-		return null;
+	public TeamMemberLog save(TeamMemberLog delegate) {
+		try {
+			if(delegate.getId() != null && delegate.getId() > 0) { Context.getService(TeamMemberLogService.class).updateTeamMemberLog(delegate); return delegate; }
+			else { Context.getService(TeamMemberLogService.class).saveTeamMemberLog(delegate); return delegate; }
+		}
+		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }
 	}
 
 	@Override
-	protected void delete(TeamMemberLog teamMemberLog, String reason, RequestContext context) throws ResponseException {
-		// TODO Auto-generated method stub
+	protected void delete(TeamMemberLog delegate, String reason, RequestContext context) throws ResponseException {
+		Context.getService(TeamMemberLogService.class).purgeTeamMemberLog(delegate);
 	}
 
 	@Override
-	public void purge(TeamMemberLog arg0, RequestContext arg1) throws ResponseException {
-		// TODO Auto-generated method stub
+	public void purge(TeamMemberLog delegate, RequestContext arg1) throws ResponseException {
+		Context.getService(TeamMemberLogService.class).purgeTeamMemberLog(delegate);
 	}
 	
 	@Override
@@ -69,17 +108,13 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 	}
 	
 	@PropertyGetter("display")
-	public List<TeamMemberLog> getDisplayString(int team) {
-		return Context.getService(TeamMemberLogService.class).searchTeamMemberLogByTeamMember(team);
+	public String getDisplayString(TeamMemberLog teamMemberLog) {
+		if (teamMemberLog == null) { return ""; } return teamMemberLog.getTeamMember().getPerson().getPersonName().toString();
 	}
-
+	
 	@Override
 	public TeamMemberLog getByUniqueId(String uniqueId) {
 		return Context.getService(TeamMemberLogService.class).getTeamMemberLog(uniqueId);
-	}
-	
-	public TeamMemberLog getById(Integer id) {
-		return Context.getService(TeamMemberLogService.class).getTeamMemberLog(id);
 	}
 }
 

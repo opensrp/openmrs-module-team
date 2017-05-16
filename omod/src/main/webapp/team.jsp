@@ -41,16 +41,16 @@
 			GenerateTable();
 			$('#general').DataTable({
 				"language": {
-					 			        "search": "_INPUT_",
-					 			        "searchPlaceholder": "Search..."
-					 			    },
-					 			    "paging" : true,
-					 				"lengthChange" : false,
-					 				"searching" : true,
-					 				"ordering" : true,
-					 				"info" : false,
-					 				"autoWidth" : true,
-					 				"sDom" : 'lfrtip',
+ 			        "search": "_INPUT_",
+ 			        "searchPlaceholder": "Search..."
+ 			    },
+ 			    "paging" : true,
+ 				"lengthChange" : false,
+ 				"searching" : true,
+ 				"ordering" : true,
+ 				"info" : false,
+ 				"autoWidth" : true,
+ 				"sDom" : 'lfrtip',
 			});
 		});
 	  });

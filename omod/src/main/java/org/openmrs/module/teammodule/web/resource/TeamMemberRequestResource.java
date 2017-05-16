@@ -75,7 +75,6 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 				description.addProperty("teamRole", Representation.DEFAULT);
 				description.addProperty("locations", Representation.DEFAULT);
 				description.addProperty("patients", Representation.DEFAULT);
-
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("display");
 				description.addProperty("identifier");
@@ -259,8 +258,9 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 	}
 	
 	@PropertyGetter("subTeams")
-	public String getSubTeam(TeamMember teamMember) {
-		List<Team> teams = Context.getService(TeamService.class).getSubTeams(teamMember); if(teams == null) { return ""; } else { String str = ""; for (int i = 0; i < teams.size(); i++) { if(i==teams.size()-1) { str += teams.get(i).getTeamName(); } else { str += teams.get(i).getTeamName() + ", "; } } return str; }
+	public List<Team> getSubTeam(TeamMember teamMember) {
+		List<Team> teams = Context.getService(TeamService.class).getSubTeams(teamMember); //if(teams == null) { return ""; } else { String str = ""; for (int i = 0; i < teams.size(); i++) { if(i==teams.size()-1) { str += teams.get(i).getTeamName(); } else { str += teams.get(i).getTeamName() + ", "; } } return str; }
+		if(teams == null) return null; else { return teams; } 
 	}
 	
 	@PropertyGetter("subTeamRoles")

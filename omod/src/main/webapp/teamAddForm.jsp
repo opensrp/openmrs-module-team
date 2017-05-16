@@ -16,22 +16,12 @@
 <script type="text/javascript">
 	   \$j=jQuery;
 	 jQuery(document).ready(function() {
-		 jQuery("#voided").attr('checked',false);
-		 jQuery("#voidReason").val("");
 		 jQuery("#nameTip").hide();
 		 jQuery("#idTip").hide();
-		 jQuery("#voidTip").hide();
 		 document.getElementById("teamName").value = "";
 		 document.getElementById("teamIdentifier").value = "";
-		 
-		 jQuery('#voided').change(function(){
-		        if(this.checked)
-		            jQuery('#voidTip').show();
-		        else
-		            jQuery('#voidTip').hide();
-
-		    });
-	 }); 
+	 });
+	 
 	function validation() {
 		document.getElementById("saveButton").disabled = true;
 		var regexp = /^[a-z/i][a-z\- ]*[a-z/i\-|0-9]{2,}$/i;
@@ -40,7 +30,6 @@
 		var id = teamIdentifier.value;
 		var location = document.getElementById("location");
 		var selectedValue = location.options[location.selectedIndex].value;
-		var reason = voidReason.value;
 		var mustSelectMessage= "";
 		var dataTypeMessage = "";
 		if (name == null || name == "") {
@@ -57,9 +46,6 @@
 		}  if (selectedValue == 0) {
 			mustSelectMessage += "<br>Please select a location.";
 			//alertify.alert("Please select a location");
-		} if (document.getElementById("voided").checked && (reason == null || reason == "")) {
-			mustSelectMessage += "<br>Either write a reason or uncheck the box please.";
-			//alertify.alert("Either write a reason or uncheck the box please");
 		} 
 			 if(mustSelectMessage != ""){
 					alertify.alert(mustSelectMessage);
@@ -74,22 +60,19 @@
 						  contentType:"application/json;charset=UTF-8",
 						  dataType:"json",
 						  success: function(data,status){
-						if(status==200)
-							{
 							document.getElementById("saveTeam").submit();
-							}
 						  }
-						  });
+				 });
 			}			 
 				
 		}
 
 </script>
 
+<h2 align="center">Add Team</h2>
 <h3 style="color: red; display: inline">${error}</h3>
 <h3 align="center" style="color: green;">${saved}</h3>
 <h3 style="color: green; display: inline">${edit}</h3>
-<h2 align="center">Add Team</h2>
 <table class="team">
 	<form:form id="saveTeam" name="saveTeam" method="post" commandName="teamData">
 		<tr>
@@ -122,19 +105,6 @@
 						<form:option value="${location.locationId}">${location.name}</form:option>
 					</c:forEach>
 				</form:select><span style="color: red">*</span></td>
-		</tr>
-		<tr>
-			<td>Retire Team ?</td>
-			<td><form:checkbox id="voided" path="voided" /></td>
-			<!-- USE VOIDED STUPID -->
-		</tr>
-		<tr><td></td>
-			<td><span id="voidTip">Reason
-					must be written</span></td>
-		</tr>
-		<tr>
-			<td>Retire Reason</td>
-			<td><form:textarea id="voidReason" path="voidReason" /></td>
 		</tr>
 		<tr>
 			<input type="hidden" value="save" name="type" />

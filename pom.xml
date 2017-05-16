@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>teammodule</artifactId>
-	<version>2.0.0</version>
+	<version>2.0.0A</version>
 	<packaging>pom</packaging>
 	<name>Team Management Module</name>
 	<description>A module that manages the teams.</description>

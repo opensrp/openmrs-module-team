@@ -37,6 +37,10 @@ public class HibernateTeamMemberLogDAO implements TeamMemberLogDAO{
 		sessionFactory.getCurrentSession().saveOrUpdate(teamMemberLog);
 	}
 
+	public void updateTeamMemberLog(TeamMemberLog teamMemberLog) {
+		sessionFactory.getCurrentSession().update(teamMemberLog);
+	}
+
 	public TeamMemberLog getTeamMemberLog(int id) {
 		return	(TeamMemberLog)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.logId = :id").setInteger("id", id).uniqueResult();
 	}

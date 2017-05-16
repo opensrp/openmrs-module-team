@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface TeamMemberLogService extends OpenmrsService {
 
 	public void saveTeamMemberLog(TeamMemberLog teamMemberLog);
-	
+
+	public void updateTeamMemberLog(TeamMemberLog teamMemberLog);
+
 	public TeamMemberLog getTeamMemberLog(int id);
 	
 	public TeamMemberLog getTeamMemberLog(String uuid);

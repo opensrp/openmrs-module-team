@@ -25,104 +25,107 @@
 	border-collapse: collapse;
 }
 </style>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#historyDialog').hide();
-		$('#memberDialog').hide();
-		var tbody,table,teamDataVar;
-		table = document.getElementById("general");
-		tbody= document.createElement("TBODY");
-			var  data = $.get("/openmrs/ws/rest/v1/team/teamrole?v=full", function(teamRoleData) {
-			teamRoles = teamRoleData.results;
-			GenerateTable(tbody);
-			table.appendChild(tbody);
-			$('#general').DataTable({
-				"language" : {
-					"search" : "_INPUT_",
-					"searchPlaceholder" : "Search..."
-				},
-				"paging" : true,
-				"lengthChange" : false,
-				"searching" : true,
-				"ordering" : true,
-				"info" : false,
-				"autoWidth" : true,
-				"sDom" : 'lfrtip',
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#historyDialog').hide();
+			$('#memberDialog').hide();
+			var tbody,table,teamDataVar;
+			table = document.getElementById("general");
+			tbody= document.createElement("TBODY");
+				var  data = $.get("/openmrs/ws/rest/v1/team/teamrole?v=full", function(teamRoleData) {
+				teamRoles = teamRoleData.results;
+				GenerateTable(tbody);
+				table.appendChild(tbody);
+				$('#general').DataTable({
+					"language" : {
+						"search" : "_INPUT_",
+						"searchPlaceholder" : "Search..."
+					},
+					"paging" : true,
+					"lengthChange" : false,
+					"searching" : true,
+					"ordering" : true,
+					"info" : false,
+					"autoWidth" : true,
+					"sDom" : 'lfrtip',
+				});
 			});
 		});
-	});
-
-	function GenerateTable(tbody) {
-			for(var i=0;i<teamRoles.length;i++)
-			{
-			row = tbody.insertRow(-1);
-				/* Edit */
-			var cell = row.insertCell(-1);
-			cell.innerHTML = "Edit";
-			/* Name */
-			var cell = row.insertCell(-1);
-			cell.innerHTML = teamRoles[i].name;
-			/* Role */
-			var cell = row.insertCell(-1);
-			cell.innerHTML = teamRoles.length;
-			
-			var cell = row.insertCell(-1);
-			cell.innerHTML = teamRoles[i].ReportToName;	
-			/* Team */
-			var cell = row.insertCell(-1);
-			cell.innerHTML = teamRoles[i].ownsTeam;
-			
-			/* Report To */
-			var cell = row.insertCell(-1);
-			if(teamRoles[i].ReportByName != null)
-			for(var i=0;i<teamRoles[i].ReportByName.length;i++)
-				cell.innerHTML = teamRoles[i].ReportByName[i][1];
-			else
-			cell.innerHTML = "-";
-			
-			var cell = row.insertCell(-1);
-			cell.innerHTML = '<a onClick="teamsHierarchyHistory(\''+ teamRoles[i].uuid + '\')">History</a>';
-			
-			}
-		
-	}
-
-	function teamsHierarchyHistory(teamId) {
-		$.get("/openmrs/ws/rest/v1/team/teamhierarchylog?teamRole=" + teamId,
-						function(data) {
-							var myTable = document.getElementById("history");
-							var rowCount = myTable.rows.length;
-
-							for (i = 0; i < rowCount; i++) {
-								$("#historyRow").remove();
-							}
-							for (i = 0; i < data.length; i++) {
-								$("#history")
-										.append(
-												"<tr id=\"historyRow\">"
-														+ "<td style=\"text-align: left;\" valign=\"top\">"
-														+ data.results[i].teamRole.name
-														+ "</td>"
-														+ "<td style=\"text-align: left;\" valign=\"top\">"
-														+ data[i].action
-														+ "</td>"
-														+ "<td style=\"text-align: left;\" valign=\"top\">"
-														+ data[i].dataNew
-														+ "</td>"
-														+ "<td style=\"text-align: left;\" valign=\"top\">"
-														+ data[i].log
-														+ "</td>" + "</tr>");
-							}
-						});
-		$("#historyDialog").dialog({
-			width : "auto",
-			height : "auto",
-			title : "History",
-			closeText : ""
-		});
-	}
 	
-</script>
+		function GenerateTable(tbody) {
+				console.log(teamRoles);
+				for(var i=0;i<teamRoles.length;i++)
+				{
+				row = tbody.insertRow(-1);
+				/* Edit */
+				var cell = row.insertCell(-1);
+		        cell.innerHTML = "Edit<a id='editTeamRoleLink' name='editTeamRoleLink' title='Edit Team Role' style='cursor:pointer' href='/openmrs/module/teammodule/editRole.form?roleId="+teamRoles[i].uuid+"'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: right;' ></a>";
+				/* Name */
+				var cell = row.insertCell(-1);
+				cell.innerHTML = teamRoles[i].name;
+				/* Role */
+				var cell = row.insertCell(-1);
+				cell.innerHTML = teamRoles.length;
+				
+				var cell = row.insertCell(-1);
+				cell.innerHTML = teamRoles[i].reportToName;	
+				/* Team */
+				var cell = row.insertCell(-1);
+				cell.innerHTML = teamRoles[i].ownsTeam;
+				
+				/* Report To */
+				var cell = row.insertCell(-1);
+				if(teamRoles[i].reportByName != null) {
+					for(var j=0;j<teamRoles[i].reportByName.length;j++) {
+						cell.innerHTML = teamRoles[i].reportByName[j][1];
+					}
+				}
+				else {
+					cell.innerHTML = "-";
+				}
+				var cell = row.insertCell(-1);
+				cell.innerHTML = '<a onClick="teamsHierarchyHistory(\''+ teamRoles[i].uuid + '\')">History</a>';
+				
+			}
+			
+		}
+	
+		function teamsHierarchyHistory(teamId) {
+			$.get("/openmrs/ws/rest/v1/team/teamrolelog?teamRole=" + teamId,
+							function(data) {
+								var myTable = document.getElementById("history");
+								var rowCount = myTable.rows.length;
+	
+								for (i = 0; i < rowCount; i++) {
+									$("#historyRow").remove();
+								}
+								for (i = 0; i < data.length; i++) {
+									$("#history")
+											.append(
+													"<tr id=\"historyRow\">"
+															+ "<td style=\"text-align: left;\" valign=\"top\">"
+															+ data.results[i].teamRole.name
+															+ "</td>"
+															+ "<td style=\"text-align: left;\" valign=\"top\">"
+															+ data[i].action
+															+ "</td>"
+															+ "<td style=\"text-align: left;\" valign=\"top\">"
+															+ data[i].dataNew
+															+ "</td>"
+															+ "<td style=\"text-align: left;\" valign=\"top\">"
+															+ data[i].log
+															+ "</td>" + "</tr>");
+								}
+							});
+			$("#historyDialog").dialog({
+				width : "auto",
+				height : "auto",
+				title : "History",
+				closeText : ""
+			});
+		}
+		
+	</script>
 </head>
 
 <div id="historyDialog">
@@ -148,7 +151,7 @@
 		</tr>
 	</table>
 </div>
-<h1>Teams Hierarchy</h1>
+<h1>Teams Role</h1>
 
 <table class="extra">
 	<tr>

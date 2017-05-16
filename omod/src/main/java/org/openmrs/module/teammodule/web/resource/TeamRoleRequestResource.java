@@ -37,14 +37,14 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 			description.addProperty("uuid");
 			description.addProperty("name");
 			description.addProperty("ownsTeam");
-			description.addProperty("reportTo");
+			description.addProperty("reportToName");
 			description.addProperty("reportByName");
 			} else if (rep instanceof FullRepresentation) {
 			description.addProperty("display");
 			description.addProperty("name");
 			description.addProperty("uuid");
 			description.addProperty("ownsTeam");
-			description.addProperty("reportTo");
+			description.addProperty("reportToName");
 			description.addProperty("reportByName");
 			description.addProperty("auditInfo");
 			description.addSelfLink();
@@ -93,7 +93,7 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 		if(teamRole == null) { return ""; } return teamRole.getName();
 	}
 	
-	@PropertyGetter("reportTo")
+	@PropertyGetter("reportToName")
 	public String getReportToName(TeamRole teamRole) {
 		if(teamRole == null || teamRole.getReportTo() == null) { return ""; } return teamRole.getReportTo().getName();
 	}
