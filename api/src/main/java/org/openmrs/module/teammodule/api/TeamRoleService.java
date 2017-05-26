@@ -12,6 +12,8 @@ public interface TeamRoleService extends OpenmrsService {
 
 	public void saveTeamRole(TeamRole teamRole);
 	
+	public void updateTeamRole(TeamRole teamRole);
+
 	public TeamRole getTeamRoleById(Integer id);
 	
 	public List<TeamRole> getAllTeamRole();

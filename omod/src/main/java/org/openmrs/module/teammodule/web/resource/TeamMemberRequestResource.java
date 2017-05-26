@@ -45,7 +45,6 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 
 	@Override
 	public TeamMember save(TeamMember delegate) {
-		System.out.println(delegate.getIdentifier());
 		try {
 			if(delegate.getId() != null && delegate.getId() > 0) { Context.getService(TeamMemberService.class).updateTeamMember(delegate); return delegate; }
 			else { Context.getService(TeamMemberService.class).saveTeamMember(delegate); return delegate; }

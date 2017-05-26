@@ -59,7 +59,7 @@
 <h3 style="color: red; display: inline">${error}</h3>
 <h3 align="center" style="color: green;">${saved}</h3>
 <h3 style="color: green; display: inline">${edit}</h3>
-<table class="role">
+<table class="team">
 	<form:form id="saveRole" name="saveRole" method="post" commandName="roleData">
 		<tr>
 			<td>Name</td>

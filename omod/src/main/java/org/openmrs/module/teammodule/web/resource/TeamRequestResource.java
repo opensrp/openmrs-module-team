@@ -114,11 +114,43 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 			listTeam.add(team);
 			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
 		}
-		else if(context.getParameter("teamName")!=null && context.getParameter("locationId")!=null && context.getParameter("identifier")!=null) {
-			Location l = Context.getLocationService().getLocationByUuid(context.getParameter("locationId"));
+		else if(context.getParameter("supervisorId")!=null && context.getParameter("teamName")!=null && context.getParameter("locationId")!=null && context.getParameter("identifier")!=null && context.getParameter("voided")!=null && context.getParameter("voidReason")!=null) {
 			Team team = (Context.getService(TeamService.class).searchTeam(context.getParameter("teamName"))).get(0);
 			team.setTeamIdentifier(context.getParameter("identifier"));
-			team.setLocation(l);
+			if(context.getParameter("voided").equals("true")) { team.setVoided(true); team.setVoidReason(context.getParameter("voidReason")); }
+			if(context.getParameter("supervisorId") != "0") { team.setSupervisor(Context.getService(TeamMemberService.class).getTeamMemberByUuid(context.getParameter("supervisorId"))); }
+			team.setTeamIdentifier(context.getParameter("identifier"));
+			team.setLocation(Context.getLocationService().getLocationByUuid(context.getParameter("locationId")));
+			Context.getService(TeamService.class).updateTeam(team);
+			List<Team> listTeam = new ArrayList<>();
+			listTeam.add(team);
+			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
+		}
+		else if(context.getParameter("supervisorId")!=null && context.getParameter("teamName")!=null && context.getParameter("locationId")!=null && context.getParameter("identifier")!=null) {
+			Team team = (Context.getService(TeamService.class).searchTeam(context.getParameter("teamName"))).get(0);
+			if(context.getParameter("supervisorId") != "0") { team.setSupervisor(Context.getService(TeamMemberService.class).getTeamMemberByUuid(context.getParameter("supervisorId"))); }
+			team.setTeamIdentifier(context.getParameter("identifier"));
+			team.setLocation(Context.getLocationService().getLocationByUuid(context.getParameter("locationId")));
+			Context.getService(TeamService.class).saveTeam(team);
+			List<Team> listTeam = new ArrayList<>();
+			listTeam.add(team);
+			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
+		}
+		else if(context.getParameter("teamName")!=null && context.getParameter("locationId")!=null && context.getParameter("identifier")!=null && context.getParameter("voided")!=null && context.getParameter("voidReason")!=null) {
+			Team team = (Context.getService(TeamService.class).searchTeam(context.getParameter("teamName"))).get(0);
+			team.setTeamIdentifier(context.getParameter("identifier"));
+			if(context.getParameter("voided").equals("true")) { team.setVoided(true); team.setVoidReason(context.getParameter("voidReason")); }
+			team.setTeamIdentifier(context.getParameter("identifier"));
+			team.setLocation(Context.getLocationService().getLocationByUuid(context.getParameter("locationId")));
+			Context.getService(TeamService.class).updateTeam(team);
+			List<Team> listTeam = new ArrayList<>();
+			listTeam.add(team);
+			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
+		}
+		else if(context.getParameter("teamName")!=null && context.getParameter("locationId")!=null && context.getParameter("identifier")!=null) {
+			Team team = (Context.getService(TeamService.class).searchTeam(context.getParameter("teamName"))).get(0);
+			team.setTeamIdentifier(context.getParameter("identifier"));
+			team.setLocation(Context.getLocationService().getLocationByUuid(context.getParameter("locationId")));
 			Context.getService(TeamService.class).updateTeam(team);
 			List<Team> listTeam = new ArrayList<>();
 			listTeam.add(team);

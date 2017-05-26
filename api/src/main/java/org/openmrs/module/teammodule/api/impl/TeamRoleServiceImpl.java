@@ -33,6 +33,10 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.saveTeamRole(TeamRole);
 	}
 
+	public void updateTeamRole(TeamRole TeamRole) {
+		dao.updateTeamRole(TeamRole);
+	}
+
 	public List<TeamRole> getAllTeamRole() {
 		return dao.getAllTeamRole();
 	}

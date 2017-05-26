@@ -43,37 +43,38 @@
 		var dataTypeMessage = "";
 		if (name == null || name == "") {
 			mustSelectMessage += "Team name can't be empty.";
-			//alertify.alert("Team name can't be empty");
 		} if (!regexp.test(name)) {
 			dataTypeMessage += "<br>Must start with alphabet.Min 3 and max 20.Alphanumeric text,- is allowed for name.";
-			//alertify.alert("Team Name can contain only letters and numbers.\nMinimum 3 characters allowed");
 		} if (id != null && id != "") {
-			if(!idRegExp.test(id)){
+			if(!idRegExp.test(id)) {
 				dataTypeMessage += "<br>Min 3, max 20 All data types and either [- . Or _ ] are allowed for identifier.";
-				//alertify.alert("Only letters and numbers are allowed for Identifier");	
 			}
 		} if (selectedValue == 0) {
 			mustSelectMessage += "<br>Please select a location.";
-			//alertify.alert("Please select a location");
 		} if (document.getElementById("voided").checked && (reason == null || reason == "")) {
 			mustSelectMessage += "<br>Either write a reason or uncheck the box please.";
-			//alertify.alert("Either write a reason or uncheck the box please");
+		} if (document.getElementById("voided").checked && (reason !== null || reason !== "")) {
+			if(reason.length > 255) {
+				mustSelectMessage += "<br>Retire reason must be 255 charachers long.";
+			}
+		} if (!(document.getElementById("voided").checked)) {
+			document.getElementById("voidReason").value = "";
 		} if(mustSelectMessage != ""){
 					alertify.alert(mustSelectMessage);
 					document.getElementById("saveButton").disabled = false;
 				}else if(dataTypeMessage != ""){
 					alertify.alert(dataTypeMessage);
 					document.getElementById("saveButton").disabled = false;
-				}else{jQuery.ajax({
-					  url:"/openmrs/ws/rest/v1/team/team?identifier="+id+"&teamName="+name+"&locationId="+selectedValue+"&v=full",
-					  type:"GET",
-					  contentType:"application/json;charset=UTF-8",
-					  dataType:"json",
-					  success: function(data,status){
-							//document.getElementById("saveTeam").submit();
+				}else{
+					jQuery.ajax({
+						url:"/openmrs/ws/rest/v1/team/team?identifier="+id+"&teamName="+name+"&locationId="+selectedValue+"&voided="+document.getElementById("voided").checked+"&voidReason="+reason+"&v=full",
+						type:"GET",
+						contentType:"application/json;charset=UTF-8",
+						dataType:"json",
+						success: function(data,status){
 							document.getElementById("savedId").innerHTML = "Team Updated Successfully";
 							document.getElementById("saveButton").disabled = false;
-					  }
+					  	}
 				  });
 			}
 			 
@@ -107,8 +108,7 @@
 		</tr>
 		<tr>
 			<td>Location</td>
-			<td><form:select id="location" path="location"
-					cssStyle="width:165px">
+			<td><form:select id="location" path="location" cssStyle="width:181px">
 					<!-- <form:option value="0" label=" Please Select " /> -->
 					<form:option value="${defaultLocation.uuid}">${defaultLocation.name}</form:option>
 					<c:forEach var="locations" items="${locations}" varStatus="loop">
@@ -116,7 +116,7 @@
 							<form:option value="${locations.uuid}">${locations.name}</form:option>
 						</c:if>
 					</c:forEach>
-				</form:select><span style="color: red">*</span></td>
+				</form:select><span style="color: red"> *</span></td>
 				
 				
 		</tr>

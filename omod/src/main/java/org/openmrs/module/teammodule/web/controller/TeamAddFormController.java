@@ -3,26 +3,20 @@
  */
 package org.openmrs.module.teammodule.web.controller;
 
-//import java.util.ArrayList;
-//import java.util.List;
-
-//import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-//import net.sf.ehcache.hibernate.HibernateUtil;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
-//import org.openmrs.module.teammodule.api.TeamMemberService;
-//import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamService;
+import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -63,6 +57,11 @@ public class TeamAddFormController {
 		model.addAttribute("saved", saved);
 		model.addAttribute("teamData", team);
 		model.addAttribute("location", location);
+
+		List<TeamMember> teamSupervisors = Context.getService(TeamMemberService.class).getAllTeamMember(null, false, null, null);
+		
+		System.out.print("teamSupervisors: " + teamSupervisors);
+		model.addAttribute("teamSupervisors", teamSupervisors);
 
 		return SUCCESS_FORM_VIEW;
 

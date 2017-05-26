@@ -33,8 +33,11 @@ public class HibernateTeamRoleDAO implements TeamRoleDAO{
 	}
 
 	public void saveTeamRole(TeamRole TeamRole) {
-		sessionFactory.getCurrentSession().saveOrUpdate(TeamRole);
-		
+		sessionFactory.getCurrentSession().save(TeamRole);
+	}
+
+	public void updateTeamRole(TeamRole TeamRole) {
+		sessionFactory.getCurrentSession().update(TeamRole);
 	}
 
 	public TeamRole getTeamRoleById(Integer id) {

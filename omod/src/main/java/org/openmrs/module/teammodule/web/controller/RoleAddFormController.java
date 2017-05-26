@@ -83,7 +83,6 @@ public class RoleAddFormController {
 		model.addAttribute("saved", saved);
 		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole();
 		model.addAttribute("reportsTo", roles);
-
 		return SUCCESS_FORM_VIEW;
 	}
 

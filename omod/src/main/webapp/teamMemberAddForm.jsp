@@ -55,8 +55,8 @@
 				jQuery("#memberPassword").hide();
 				jQuery("#memberRole").hide();
 				jQuery("#memberConfirmPassword").hide();
-				
-			} else {
+			} 
+			else {
 				jQuery("#memberName").show();
 				jQuery("#memberMiddleName").show();
 				jQuery("#memberFamilyName").show();
@@ -73,18 +73,17 @@
 				jQuery("#memberPassword").show();
 				jQuery("#memberRole").show();
 				jQuery("#memberConfirmPassword").show();
-				
-			} else {
+			} 
+			else {
 				jQuery("#memberUsername").hide();
 				jQuery("#memberPassword").hide();
 				jQuery("#memberRole").hide();
 				jQuery("#memberConfirmPassword").hide();
-				
 			}
 		});
 		
 		jQuery("#joinDate" ).datepicker({ maxDate: new Date(), dateFormat: 'yy-mm-dd' });
-		jQuery("#leaveDate").datepicker({ maxDate: new Date(), dateFormat: 'yy-mm-dd' });
+		jQuery("#leaveDate").datepicker({ dateFormat: 'yy-mm-dd' });
 		jQuery("#birthDate").datepicker({ maxDate: new Date(), dateFormat: 'yy-mm-dd' });
 		
 		document.getElementById("location").multiple = true;
@@ -159,28 +158,18 @@
 				if (selectedValue == 0) { mustSelectMessage += "<br>Please select a gender."; }
 			}
 			  
-			if (id == null || id == "") {
-				mustSelectMessage += "<br>Identifier can't be empty.";
-			}
+			if (id == null || id == "") { mustSelectMessage += "<br>Identifier can't be empty."; }
 			if(!idRegExp.test(id)){
 				dataTypeMessage += "<br>All data types and [-._] are allowed for identifier,min 3, max 20.";
 			} if (jDate > currentDate) {
 				mustSelectMessage += "<br>Join date can't be in future.";
 				jQuery("#joinTip").hide();
 				document.getElementById("joinDate").value = "";
-			} if (lDate > currentDate) {
-				mustSelectMessage += "<br>Leave date can't be in future.";
-				jQuery("#leaveTip").hide();
-				document.getElementById("leaveDate").value = "";
 			} if (dobDate > currentDate) {
 				mustSelectMessage += "<br>Birth date can't be in future.";
 				jQuery("#birthTip").hide();
 				document.getElementById("birthDate").value = "";
-			} if (dobDate > currentDate) {
-				mustSelectMessage += "<br>Birth date can't be in future.";
-				jQuery("#birthTip").hide();
-				document.getElementById("birthDate").value = "";
-			}
+			} 
 			if (selectedMemberRoleValue == 0) { mustSelectMessage += "<br>Please select a Member Role."; }
 			if (selectedMemberValue == 0) { mustSelectMessage += "<br>Please select a Member Team."; }
 			if(document.getElementById("loginChoice").checked) {
@@ -191,15 +180,15 @@
 			if(mustSelectMessage != ""){ alertify.alert(mustSelectMessage); }
 			else if(dataTypeMessage != ""){ alertify.alert(dataTypeMessage); } 
 			else {
-				var xmlhttp = new XMLHttpRequest();
-				var x;
-				xmlhttp.open('POST', '/openmrs/module/teammodule/ajax/getMembers.form', true);  //"false" makes the request synchronous
-				xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-				xmlhttp.send("identifier="+id+"&teamId="+teamId);
-				xmlhttp.onreadystatechange=function() {
-					if(xmlhttp.readyState==4 && xmlhttp.status==200) { 
-						x=xmlhttp.responseText; 
-						if(x == "" || x == null) { 
+				var ident = document.getElementById("identifier").value;
+				var url1 = "/openmrs/ws/rest/v1/team/teammember?get=filter&v=full";
+				if(ident != "") { url1 += "&identifier=" + ident; }
+				console.log(url1);
+				jQuery.ajax({
+					url: url1,
+					success : function(result) { console.log("SUCCESS-FILTER"); var myIdentifiers = []; for(var loop=0; loop<result.results.length; loop++) { myIdentifiers.push(result.results[loop].identifier); }
+						if(myIdentifiers.includes(ident)) { alertify.alert("Identifier must be unique"); }
+						else {
 							var givenName = document.getElementById("givenName").value;
 							var middleName = document.getElementById("middleName").value;
 							var familyName = document.getElementById("familyName").value;
@@ -212,21 +201,16 @@
 							var isDataProvider = document.getElementById("isDataProvider").checked;
 							var teamRoleOption = document.getElementById("teamRoleOption").value;
 							var teamOption = document.getElementById("teamOption").value;
-
 							var choice = document.getElementById("choice").checked;
 							var existingPersonId_selection = document.getElementById("existingPersonId_selection").value;
-							
 							document.getElementById("person_val").value = existingPersonId_selection;
 							var pId = document.getElementById("person_val").value;
-							
 							var loginChoice = document.getElementById("loginChoice").checked;
 							var userName = document.getElementById("userName").value;
 							var password = document.getElementById("password").value;
 							var confirmPassword = document.getElementById("confirmPassword").value;
 							var roleOption = document.getElementById("roleOption").value;
-
 							var person = "";
-
 							if(!choice) {
 								var url3 = "/openmrs/ws/rest/v1/person";
 								var names = '[{ ';
@@ -245,8 +229,8 @@
 								jQuery.ajax({
 									url: url3,
 									data : data3,
-								 	type: "POST",
-					     			contentType: "application/json",
+									type: "POST",
+									contentType: "application/json",
 									success : function(result) { console.log("SUCCESS-PERSON IF"); console.log(result);
 										person = result.uuid;
 										//console.log(person);
@@ -270,8 +254,8 @@
 											jQuery.ajax({
 												url: url2,
 												data : data2,
-											 	type: "POST",
-								     			contentType: "application/json",
+												type: "POST",
+												contentType: "application/json",
 												success : function(result) { console.log("SUCCESS-USER"); console.log(result);
 												}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-USER"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
 											});
@@ -298,9 +282,9 @@
 										jQuery.ajax({
 											url: url,
 											data : data,
-										 	type: "POST",
-							     			contentType: "application/json",
-											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); console.log(result);
+											type: "POST",
+											contentType: "application/json",
+											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); console.log(result); resetForm();
 												document.getElementById("errorHead").innerHTML = ""; 
 												document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
 											}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-TEAM MEMBER"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
@@ -308,11 +292,13 @@
 									}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-PERSON IF"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
 								});
 							} else {
+								console.log(existingPersonId_selection);
+								console.log(pId);
 								jQuery.ajax({
-									url: "/openmrs/ws/rest/v1/person?v=full&q="+existingPersonId_selection,
-					     			contentType: "application/json",
+									url: "/openmrs/ws/rest/v1/person?v=full&q="+pId,
+									contentType: "application/json",
 									success : function(result) { console.log("SUCCESS-PERSON ELSE"); console.log(result);
-										person = result.results[0].uuid;
+										for(var p=0; p<result.results.length; p++) { if(pId === result.results[p].display) { person = result.results[p].uuid; } }
 										//console.log(person);
 										var url = "/openmrs/ws/rest/v1/team/teammember";
 										var data = '{ '; 
@@ -336,9 +322,9 @@
 										jQuery.ajax({
 											url: url,
 											data : data,
-										 	type: "POST",
-							     			contentType: "application/json",
-											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); console.log(result);
+											type: "POST",
+											contentType: "application/json",
+											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); console.log(result); resetForm();
 												document.getElementById("errorHead").innerHTML = ""; 
 												document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
 											}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-TEAM MEMBER"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
@@ -346,12 +332,36 @@
 									}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-PERSON ELSE"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
 								});
 							}
-						} else { alertify.alert(x); }
-					}
-	  			}
+						}
+					}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-FILTER"); console.log(jqXHR); }
+				});			
 			}
 		});
 	});
+	
+	function resetForm() {
+		document.getElementById("givenName").value = "";
+		document.getElementById("middleName").value = "";
+		document.getElementById("familyName").value = "";
+		document.getElementById("birthDate").value = "";
+		document.getElementById("gender").value = "0";
+		document.getElementById("identifier").value = "";
+		document.getElementById("joinDate").value = "";
+		document.getElementById("leaveDate").value = "";
+		document.getElementById("location").value = "2";
+		document.getElementById("isDataProvider").checked=false;
+		document.getElementById("teamRoleOption").value = "0";
+		document.getElementById("teamOption").value = "0";
+		document.getElementById("choice").checked=false;
+		document.getElementById("existingPersonId_selection").value = "";
+		document.getElementById("person_val").value = "";
+		document.getElementById("loginChoice").checked=false;
+		document.getElementById("userName").value = "";
+		document.getElementById("password").value = "";
+		document.getElementById("confirmPassword").value = "";
+		document.getElementById("roleOption").value = "";
+		window.scrollTo(0, 0);
+	}
 	
 	function showCalendar(obj, yearsPrevious) {
 		if (!obj.id) { obj.id = "something_random" + (Math.random() * 1000); }
@@ -376,7 +386,7 @@
 	
 	function leave() {
 		startDate = jQuery('#joinDate').datepicker("getDate");
-		jQuery( "#leaveDate" ).datepicker("option", { minDate: new Date(startDate), dateFormat: 'yyyy-mm-dd' });
+		jQuery("#leaveDate").datepicker("option", { minDate: new Date(startDate), dateFormat: 'yy-mm-dd' });
 	}
 	
 	function birth() {
@@ -419,10 +429,10 @@
 	}
 </script>
 
+<h2 align="center">Add Team Member</h2>
+
 <h3 id="errorHead" name="errorHead" style="color: red; display: inline">${error}</h3>
 <h3 id="saveHead" name="saveHead" align="center" style="color: green">${saved}</h3>
-
-<h2 align="center">Add Team Member</h2>
 
 <form:form id="saveMember" name="saveMember" commandName="memberData">
 	<table class="team">

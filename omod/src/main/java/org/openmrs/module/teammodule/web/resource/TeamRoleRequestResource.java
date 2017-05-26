@@ -55,14 +55,27 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	}
 
 	@Override
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("name");
+		description.addProperty("ownsTeam");
+		description.addProperty("reportToName");
+		description.addProperty("reportByName");
+		return description;
+	}
+	
+	@Override
 	public TeamRole newDelegate() {
 		return new TeamRole();
 	}
 
 	@Override
-	public TeamRole save(TeamRole teamRole) {
-		Context.getService(TeamRoleService.class).saveTeamRole(teamRole);
-		return teamRole;
+	public TeamRole save(TeamRole delegate) {
+		try {
+			if(delegate.getId() != null && delegate.getId() > 0) { Context.getService(TeamRoleService.class).updateTeamRole(delegate); return delegate; }
+			else { Context.getService(TeamRoleService.class).saveTeamRole(delegate); return delegate; }
+		}
+		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }
 	}
 
 	@Override
@@ -78,14 +91,13 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		if(context.getParameter("q")!=null)
-		{
-		List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).searchTeamRoleByRole(context.getParameter("q"));
-		System.out.println(teamRoles);
-		return new NeedsPaging<TeamRole>(teamRoles, context).toSimpleObject(this);
+		if(context.getParameter("q")!=null) {
+			List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).searchTeamRoleByRole(context.getParameter("q"));
+			System.out.println(teamRoles);
+			return new NeedsPaging<TeamRole>(teamRoles, context).toSimpleObject(this);
 		}
-		return null;
-		}
+		else { return null; }
+	}
 	
 	
 	@PropertyGetter("display")
@@ -102,7 +114,7 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	public List<TeamRole> getReportByName(TeamRole teamRole) {
 		List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).searchTeamRoleReportBy(teamRole.getTeamRoleId()); if(teamRoles == null) { return null; } else { return teamRoles; }
 	}
-
+	
 	@Override
 	public TeamRole getByUniqueId(String uniqueId) {
 		return Context.getService(TeamRoleService.class).getTeamRoleByUuid(uniqueId);

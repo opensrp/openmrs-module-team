@@ -9,6 +9,8 @@ public interface TeamRoleDAO {
 
 	public void saveTeamRole(TeamRole TeamRole);
 	
+	public void updateTeamRole(TeamRole teamRole);
+	
 	public TeamRole getTeamRoleById(Integer id);
 	
 	public List<TeamRole> getAllTeamRole();
