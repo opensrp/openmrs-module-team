@@ -14,6 +14,8 @@ public interface TeamRoleLogDAO {
 	
 	public void purgeTeamRoleLog(TeamRoleLog teamRoleLog);
 	
+	public void updateTeamRoleLog(TeamRoleLog teamRoleLog);
+	
 	public List<TeamRoleLog> searchTeamRoleLog(String teamRole, Integer offset, Integer pageSize);
 
 	public TeamRoleLog getTeamRoleLog(String uuid);

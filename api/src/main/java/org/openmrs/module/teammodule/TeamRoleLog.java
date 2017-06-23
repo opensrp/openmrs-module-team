@@ -2,10 +2,10 @@ package org.openmrs.module.teammodule;
 
 import java.io.Serializable;
 
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.User;
-import org.openmrs.module.teammodule.TeamConstants.TeamAction;
 
 @SuppressWarnings("serial")
 public class TeamRoleLog extends BaseOpenmrsData implements Serializable{
@@ -14,7 +14,7 @@ public class TeamRoleLog extends BaseOpenmrsData implements Serializable{
 
 	private TeamRole teamRole;
 
-	private TeamAction action;
+	private String action;
 
 	@JsonProperty
 	private String dataOld;
@@ -43,11 +43,11 @@ public class TeamRoleLog extends BaseOpenmrsData implements Serializable{
 		this.teamRole = teamRole;
 	}
 
-	public TeamAction getAction() {
+	public String getAction() {
 		return action;
 	}
 
-	public void setAction(TeamAction action) {
+	public void setAction(String action) {
 		this.action = action;
 	}
 

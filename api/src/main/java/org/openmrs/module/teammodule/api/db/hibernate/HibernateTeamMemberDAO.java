@@ -59,7 +59,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	}
 
 	@Override
-	public List<TeamMember> getAllTeamMember(Integer id, Boolean voided, Integer offset, Integer pageSize) {
+	public List<TeamMember> getAllTeamMember(Integer id, boolean voided, Integer offset, Integer pageSize) {
 		if(id != null) {// id is not null
 			if (!voided) { // get by team member id & voided
 				Criteria criteria_member = sessionFactory.getCurrentSession().createCriteria(TeamMember.class).add(Restrictions.eq("voided", false));
@@ -154,8 +154,8 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	
 	@Override
 	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisor, TeamRole teamRole, Team team, Location location, Integer offset, Integer pageSize) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
-		
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class).add(Restrictions.eq("voided", false));
+
 		if (location != null) {
 			criteria.createAlias("locations", "l").add(Restrictions.eq("l.locationId", location.getId()));
 		}
@@ -212,8 +212,12 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	}
 
 	@Override
-	public int count(Integer teamId) {
-		// TODO Auto-generated method stub
+	public int countTeam(Integer teamId) {
 		return (int) sessionFactory.getCurrentSession().createQuery("from TeamMember teammember where team= :teamId").setInteger("teamId", teamId).list().size();
+	}
+
+	@Override
+	public int countTeamRole(Integer teamRoleId) {
+		return (int) sessionFactory.getCurrentSession().createQuery("from TeamMember teammember where teamRole= :teamRoleId").setInteger("teamRoleId", teamRoleId).list().size();
 	}
 }

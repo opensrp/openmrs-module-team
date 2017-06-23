@@ -8,7 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.teammodule.api.TeamRoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +40,7 @@ public class TeamRoleController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
+		model.addAttribute("allRoles", Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null));
 		return SUCCESS_FORM_VIEW;
 	}
 

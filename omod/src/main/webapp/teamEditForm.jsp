@@ -72,7 +72,7 @@
 						contentType:"application/json;charset=UTF-8",
 						dataType:"json",
 						success: function(data,status){
-							document.getElementById("savedId").innerHTML = "Team Updated Successfully";
+							document.getElementById("saveHead").innerHTML = "Team Updated Successfully";
 							document.getElementById("saveButton").disabled = false;
 					  	}
 				  });
@@ -84,9 +84,11 @@
 </script>
 
 <h2 align="center">Edit Team</h2>
-<h3 id="errorId" style="color: red; display: inline">${error}</h3>
-<h3 id="savedId" align="center" style="color: green;">${saved}</h3>
-<h3 id="editId" align="center" style="color: green;">${edit}</h3>
+
+<h3 id="errorHead" style="color: red; display: inline">${error}</h3>
+<h3 id="saveHead" align="center" style="color: green">${saved}</h3>
+<h3 id="editHead" align="center" style="color: green;">${edit}</h3>
+
 <table class="team">
 	<form:form id="saveTeam" name="saveTeam" method="post"
 		commandName="teamData">

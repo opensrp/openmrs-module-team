@@ -47,7 +47,7 @@ public class RoleEditFormController {
 
 		System.out.println(uuid);
 		TeamRole roleData = Context.getService(TeamRoleService.class).getTeamRoleByUuid(uuid);
-		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole();
+		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null);
 
 		
 		System.out.println(uuid);
@@ -85,7 +85,7 @@ public class RoleEditFormController {
 		TeamRole roleData = Context.getService(TeamRoleService.class).getTeamRoleById(teamRole.getTeamRoleId());
 		model.addAttribute("roleData", roleData);
 		
-		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole();
+		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null);
 		model.addAttribute("reportsTo", roles);
 
 		return SUCCESS_FORM_VIEW;

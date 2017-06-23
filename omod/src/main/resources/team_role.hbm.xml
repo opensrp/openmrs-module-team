@@ -6,6 +6,7 @@
             <generator class="native"/>
         </id> 
 	    <property name="name" column="name" type="java.lang.String"/>
+	    <property name="identifier" column="identifier" type="java.lang.String"/>
 		<property name="ownsTeam" column="owns_Team" type="java.lang.Boolean"/>
 		<many-to-one name="reportTo" column="report_to" class="org.openmrs.module.teammodule.TeamRole" />
 		

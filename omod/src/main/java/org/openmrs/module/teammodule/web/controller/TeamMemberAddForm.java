@@ -70,7 +70,7 @@ public class TeamMemberAddForm {
 		model.addAttribute("allLocations",allLocations);
 		model.addAttribute("location", allLocations.get(0));
 		model.addAttribute("selectedLocation",allLocations.get(0));
-		model.addAttribute("allTeamRole",Context.getService(TeamRoleService.class).getAllTeamRole());
+		model.addAttribute("allTeamRole",Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null));
 		model.addAttribute("allTeams",Context.getService(TeamService.class).getAllTeams(false, null, null));
 		model.addAttribute("teamId",1);
 		//model.addAttribute("json", getRoleAsJson());

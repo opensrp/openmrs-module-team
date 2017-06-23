@@ -57,6 +57,10 @@ public class HibernateTeamRoleLogDAO implements TeamRoleLogDAO{
 		sessionFactory.getCurrentSession().delete(TeamRoleLog);
 	}
 
+	public void updateTeamRoleLog(TeamRoleLog TeamRoleLog) {
+		sessionFactory.getCurrentSession().update(TeamRoleLog);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<TeamRoleLog> searchTeamRoleLog(String teamRole, Integer offset, Integer pageSize) {
 		Query createQuery =sessionFactory.getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.teamRole = :teamRole").setInteger("teamRole", Integer.parseInt(teamRole));

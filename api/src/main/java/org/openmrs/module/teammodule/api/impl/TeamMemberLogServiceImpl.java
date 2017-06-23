@@ -44,11 +44,11 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.purgeTeamMemberLog(teamMemberLog);
 	}
 
-	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(int teamMember) {
-		return dao.searchTeamMemberLogByTeamMember(teamMember);
+	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(Integer teamMember, Integer offset, Integer pageSize) {
+		return dao.searchTeamMemberLogByTeamMember(teamMember, offset, pageSize);
 	}
 
-	public TeamMemberLog getTeamMemberLog(int id) {
+	public TeamMemberLog getTeamMemberLog(Integer id) {
 		return dao.getTeamMemberLog(id);
 	}
 

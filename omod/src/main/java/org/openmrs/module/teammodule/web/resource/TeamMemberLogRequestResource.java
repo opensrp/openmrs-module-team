@@ -3,8 +3,10 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberLog;
 import org.openmrs.module.teammodule.api.TeamMemberLogService;
+import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -14,6 +16,7 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
@@ -23,9 +26,13 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  * @author Zohaib Masood
  * 
  */
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teammemberlog", supportedClass = TeamMemberLog.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
-		"1.12.*" })
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teammemberlog", supportedClass = TeamMemberLog.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*" })
 public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<TeamMemberLog> {
+
+	@Override
+	public TeamMemberLog newDelegate() {
+		return new TeamMemberLog();
+	}
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
@@ -38,6 +45,7 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 				description.addProperty("action");
 				description.addProperty("dataNew");
 				description.addProperty("dataOld");
+				description.addProperty("uuid");
 				description.addProperty("log");
 			} else if (rep instanceof FullRepresentation) {
 				description.addProperty("display");
@@ -46,6 +54,7 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 				description.addProperty("dataNew");
 				description.addProperty("dataOld");
 				description.addProperty("log");
+				description.addProperty("uuid");
 				description.addProperty("auditInfo");
 				description.addSelfLink();
 			}
@@ -56,7 +65,6 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("display");
 		description.addProperty("teamMember");
 		description.addProperty("action");
 		description.addProperty("dataNew");
@@ -68,7 +76,6 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 	@Override
 	public DelegatingResourceDescription getUpdatableProperties()  {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("display");
 		description.addProperty("teamMember");
 		description.addProperty("action");
 		description.addProperty("dataNew");
@@ -76,12 +83,7 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 		description.addProperty("log");
 		return description;
 	}
-
-	@Override
-	public TeamMemberLog newDelegate() {
-		return new TeamMemberLog();
-	}
-
+	
 	@Override
 	public TeamMemberLog save(TeamMemberLog delegate) {
 		try {
@@ -103,18 +105,42 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		List<TeamMemberLog> listTeamMemberLog = Context.getService(TeamMemberLogService.class).searchTeamMemberLogByTeamMember(Integer.parseInt(context.getParameter("q")));
-		return new NeedsPaging<TeamMemberLog>(listTeamMemberLog, context).toSimpleObject(this);
+		if(context.getParameter("q") != null) {
+			List<TeamMemberLog> teamMemberLogs = Context.getService(TeamMemberLogService.class).searchTeamMemberLogByTeamMember(Integer.parseInt(context.getParameter("q")), null, null);
+			return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context).toSimpleObject(this);
+		} else if(context.getParameter("teamMember")!=null) {
+			TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberByUuid(context.getParameter("teamMember"));
+			List<TeamMemberLog> teamMemberLogs = Context.getService(TeamMemberLogService.class).searchTeamMemberLogByTeamMember(teamMember.getId(),null,null);
+			return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context).toSimpleObject(this);
+		} else { return null; }
 	}
 	
 	@PropertyGetter("display")
 	public String getDisplayString(TeamMemberLog teamMemberLog) {
-		if (teamMemberLog == null) { return ""; } return teamMemberLog.getTeamMember().getPerson().getPersonName().toString();
+		if (teamMemberLog == null) { return ""; }
+		else if(teamMemberLog.getTeamMember() == null) { return ""; }
+		else if(teamMemberLog.getTeamMember().getPerson() == null) { return ""; }
+		else if(teamMemberLog.getTeamMember().getPerson().getPersonName() == null) { return ""; }
+		else { return teamMemberLog.getTeamMember().getPerson().getPersonName().toString(); } 
 	}
 	
 	@Override
-	public TeamMemberLog getByUniqueId(String uniqueId) {
-		return Context.getService(TeamMemberLogService.class).getTeamMemberLog(uniqueId);
+	public TeamMemberLog getByUniqueId(String uuid) {
+		TeamMemberLog teamMemberLog = Context.getService(TeamMemberLogService.class).getTeamMemberLog(uuid);
+		if(teamMemberLog != null) { return teamMemberLog; }
+		else { return null; }
+	}
+	
+	@Override
+	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
+		List<TeamMemberLog> teamMemberLogs = Context.getService(TeamMemberLogService.class).getAllLogs(0, 100);
+		return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context);	
+	}
+	
+	@Override
+	public SimpleObject getAll(RequestContext context) throws ResponseException {
+		List<TeamMemberLog> teamMemberLogs = Context.getService(TeamMemberLogService.class).getAllLogs(null, null);
+		return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context).toSimpleObject(this);
 	}
 }
 

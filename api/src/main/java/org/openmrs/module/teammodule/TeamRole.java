@@ -12,7 +12,9 @@ public class TeamRole extends BaseOpenmrsData implements Serializable {
 	private Integer teamRoleId;
 	
 	private String name;
-	
+
+	private String identifier;
+
 	private Boolean ownsTeam;
 
 	private TeamRole reportTo;
@@ -67,4 +69,11 @@ public class TeamRole extends BaseOpenmrsData implements Serializable {
 		this.reportTo = reportTo;
 	}
 
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
 }

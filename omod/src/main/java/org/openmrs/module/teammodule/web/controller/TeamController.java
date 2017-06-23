@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,12 @@ public class TeamController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
+		try {
+			model.addAttribute("allLocations", Context.getLocationService().getAllLocations());
+		}
+		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }
+		
+		
 		return SUCCESS_FORM_VIEW;
 	}
 

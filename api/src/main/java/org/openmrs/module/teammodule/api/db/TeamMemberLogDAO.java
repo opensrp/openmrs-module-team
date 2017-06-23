@@ -10,7 +10,7 @@ public interface TeamMemberLogDAO {
 	
 	public void updateTeamMemberLog(TeamMemberLog teamMemberlog);
 
-	public TeamMemberLog getTeamMemberLog(int id);
+	public TeamMemberLog getTeamMemberLog(Integer id);
 	
 	public TeamMemberLog getTeamMemberLog(String id);
 
@@ -18,5 +18,5 @@ public interface TeamMemberLogDAO {
 	
 	public void purgeTeamMemberLog(TeamMemberLog teamMemberLog);
 	
-	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(int teamMember);
+	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(Integer teamMember, Integer offset, Integer pageSize);
 }

@@ -4,20 +4,16 @@
 
 <openmrs:require privilege="Add Team" otherwise="/login.htm" />
 
-<link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1"
-	type="text/css" rel="stylesheet">
-<link rel="stylesheet"
-	href="/openmrs/moduleResources/teammodule/themes/alertify.core.css" />
-<link rel="stylesheet"
-	href="/openmrs/moduleResources/teammodule/themes/alertify.default.css"
-	id="toggleCSS" />
+<link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="/openmrs/moduleResources/teammodule/themes/alertify.core.css" />
+<link rel="stylesheet" href="/openmrs/moduleResources/teammodule/themes/alertify.default.css" id="toggleCSS" />
 <script src="/openmrs/moduleResources/teammodule/alertify.min.js"></script>
 
 <script type="text/javascript">
 
 	jQuery(document).ready(function() {
-		jQuery("#ownsTeam").attr('checked', false);
-		console.log("edit")
+		//jQuery("#ownsTeam").attr('checked', false);
+		console.log("edit");
 	});
 	function validation() {
 		document.getElementById("saveButton").disabled = true;
@@ -39,8 +35,7 @@
 		}
 		else {
 			jQuery.ajax({
-				url : "/openmrs/ws/rest/v1/team/teamrole?q=" + name
-						+ "&v=full",
+				url : "/openmrs/ws/rest/v1/team/teamrole?q=" + name + "&v=full",
 				type : "GET",
 				contentType : "application/json;charset=UTF-8",
 				dataType : "json",
@@ -56,9 +51,12 @@
 </script>
 
 <h2 align="center">Edit Role</h2>
-<h3 style="color: red; display: inline">${error}</h3>
-<h3 align="center" style="color: green;">${saved}</h3>
-<h3 style="color: green; display: inline">${edit}</h3>
+
+<h3 id="errorHead" style="color: red; display: inline">${error}</h3>
+<h3 id="savedHead" align="center" style="color: green;">${saved}</h3>
+<h3 id="editHead" align="center" style="color: green;">${edit}</h3>
+
+
 <table class="team">
 	<form:form id="saveRole" name="saveRole" method="post" commandName="roleData">
 		<tr>

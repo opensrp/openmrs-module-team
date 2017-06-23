@@ -16,7 +16,7 @@ public interface TeamRoleService extends OpenmrsService {
 
 	public TeamRole getTeamRoleById(Integer id);
 	
-	public List<TeamRole> getAllTeamRole();
+	public List<TeamRole> getAllTeamRole(boolean ownsTeam, boolean voided, Integer offset, Integer pageSize);
 	
 	public void purgeTeamRole(TeamRole TeamRole);
 	
@@ -26,5 +26,5 @@ public interface TeamRoleService extends OpenmrsService {
 
 	public List<TeamRole> getSubTeamRoles(TeamMember teamMember);		
 
-	public List<TeamRole> searchTeamRoleReportBy(int id);
+	public List<TeamRole> searchTeamRoleReportBy(Integer id);
 }

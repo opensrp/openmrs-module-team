@@ -4,10 +4,10 @@
 
 <openmrs:require privilege="Add Team" otherwise="/login.htm" />
 
-<link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1" type="text/css" >
 <link rel="stylesheet" href="/openmrs/moduleResources/teammodule/themes/alertify.core.css" />
 <link rel="stylesheet" href="/openmrs/moduleResources/teammodule/themes/alertify.default.css" id="toggleCSS" />
-<script src="/openmrs/moduleResources/teammodule/alertify.min.js"></script>
+<script type="text/javascript" src="/openmrs/moduleResources/teammodule/alertify.min.js"></script>
 
 <script type="text/javascript">
 	\$j=jQuery;
@@ -48,43 +48,37 @@
 			alertify.alert(dataTypeMessage);
 			document.getElementById("saveButton").disabled = false;
 		} else { var str = "";
-			console.log(name);
-			console.log(id);
-			console.log(selectedValue);
-			console.log(supervisor);
 			jQuery.ajax({
 				url:"/openmrs/ws/rest/v1/team/team?v=full&q="+name,
-				success: function(data,status) { var myNames = []; console.log("name");
+				success: function(data,status) { var myNames = []; 
 					for(var i=0; i<data.results.length; i++) { myNames.push(data.results[i].teamName); }
-					if(myNames.includes(name)) { 
-						console.log("if");
-						str += "Name must be unique";
+					if(myNames.includes(name)) { str += "Name must be unique";
 						jQuery.ajax({
 							url:"/openmrs/ws/rest/v1/team/team?v=full&q="+id,
-							success: function(data,status) { var myIdentifiers = []; console.log("id");
+							success: function(data,status) { var myIdentifiers = []; 
 								for(var i=0; i<data.results.length; i++) { myIdentifiers.push(data.results[i].teamIdentifier); }
 								if(myIdentifiers.includes(id)) { str += "<br>Identifier must be unique"; }
 								document.getElementById("saveButton").disabled = false;
 								alertify.alert(str);
-								console.log(str);
 							}, error: function(jqXHR, textStatus, errorThrown) { console.log(jqXHR); }
 						});
 					}
 					else {
-						console.log("else");
 						jQuery.ajax({
 							url:"/openmrs/ws/rest/v1/team/team?v=full&q="+id,
-							success: function(data,status) { var myIdentifiers = []; console.log("id");
+							success: function(data,status) { var myIdentifiers = []; 
 								for(var i=0; i<data.results.length; i++) { myIdentifiers.push(data.results[i].teamIdentifier); }
 								if(myIdentifiers.includes(id)) { alertify.alert("Identifier must be unique"); alertify.alert(str); }
 								else {
+									var url = "/openmrs/ws/rest/v1/team/team";
+									var data = '{ "teamName": "'+name+'", "location": "'+selectedValue+'", "teamIdentifier": "'+id+'", "supervisor": "'+supervisor+'" }';
 									jQuery.ajax({
-										url:"/openmrs/ws/rest/v1/team/team?identifier="+id+"&teamName="+name+"&locationId="+selectedValue+"&supervisorId="+supervisor+"&v=full",
-										success: function(data,status){ 
-											document.getElementById("errorId").innerHTML = "";
-											document.getElementById("savedId").innerHTML = "Team Saved Successfully";
-											document.getElementById("saveButton").disabled = false;
-										}, error: function(jqXHR, textStatus, errorThrown) { console.log(jqXHR); document.getElementById("errorId").innerHTML = "Error Occured While Creating Team"; document.getElementById("savedId").innerHTML = ""; }
+										url : url,
+										data: data,
+										type: "POST",
+										contentType: "application/json",
+										success : function(result) { console.log("SUCCESS-TEAM ROLE"); resetForm();  saveLog("team", result.uuid.toString(), "", result.teamName.toString(), "TEAM_ADDED", ""); document.getElementById("saveButton").disabled = false; document.getElementById("errorHead").innerHTML = ""; document.getElementById("savedHead").innerHTML = "<p>Team Created Successfully</p>";
+										}, error: function(jqXHR, textStatus, errorThrown) { console.log(jqXHR); document.getElementById("errorHead").innerHTML = "Error Occured While Creating Team"; document.getElementById("savedHead").innerHTML = ""; document.getElementById("saveButton").disabled = false; }
 									});
 								}
 							}
@@ -94,19 +88,59 @@
 			});
 		}			 
 	}
+	function saveLog(type, uuid, dataNew, dataOld, action, log) {
+		if(action.length <= 45 && dataNew.length <= 500 && dataOld.length <= 500 && log.length <= 500) { 
+			var url = "/openmrs/ws/rest/v1/team/"+type.toLowerCase()+"log/";
+			var data = '{ "'+type+'":"'+uuid+'", "dataNew":"'+dataNew+'", "dataOld":"'+dataOld+'", "action":"'+action+'", "log":"'+log+'" }';
+			$.ajax({
+				url: url,
+				data : data,
+			 	type: "POST",
+     			contentType: "application/json",
+				success : function(result) { console.log("SUCCESS-SAVE "+type.toUpperCase()+" LOG"); 
+				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-SAVE "+type.toUpperCase()+" LOG"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Location(s)</p>"; }
+			});
+		}
+		else { 
+			var errorStr = "";
+			if(action.length > 45) { errorStr += "Action must have atleast 45 Characters.<br/>" }
+			if(dataNew.length > 500) { errorStr += "New Data must have atleast 500 Characters.<br/>" }
+			if(dataOld.length > 500) { errorStr += "Old Data must have atleast 500 Characters.<br/>" }
+			if(log.length > 500) { errorStr += "Log must have atleast 500 Characters.<br/>" }
+			console.log("errorStr: "+errorStr);
+			document.getElementById("editHead").innerHTML = errorStr;
+		}
+	}
+	function resetForm() {
+		document.getElementById("teamName").value = "";
+		document.getElementById("teamIdentifier").value = "";
+		document.getElementById("teamSupervisorOption").value = "0";
+		document.getElementById("location").value = "0";
+		window.scrollTo(0, 0);
+	}
 </script>
+
+<ul id="menu">
+	<li class="first"><a href="/openmrs/module/teammodule/addRole.form" title="New Team Hierarchy (Role)">New Team Hierarchy (Role)</a></li>
+	<li class="active"><a href="/openmrs/module/teammodule/addTeam.form" title="New Team">New Team</a></li>
+	<li><a href="/openmrs/module/teammodule/teamMemberAddForm.form" title="New Team Member">New Team Member</a></li>
+	<li><a href="/openmrs/module/teammodule/teamRole.form" title="Manage Team Hierarchy (Roles)">Manage Team Hierarchy (Roles)</a></li>
+	<li><a href="/openmrs/module/teammodule/team.form" title="Manage Teams">Manage Teams</a></li>
+	<li><a href="/openmrs/module/teammodule/teamMemberView.form" title="Manage Team Members">Manage Team Members</a></li>
+</ul>
 
 <h2 align="center">Add Team</h2>
 
-<h3 id="errorId" style="color: red; display: inline">${error}</h3>
-<h3 id="savedId" align="center" style="color: green;">${saved}</h3>
-<h3 id="editId" align="center" style="color: green;">${edit}</h3>
+<h3 id="errorHead" style="color: red; display: inline">${error}</h3>
+<h3 id="savedHead" align="center" style="color: green;">${saved}</h3>
+<h3 id="editHead" align="center" style="color: green;">${edit}</h3>
+
 
 <form:form id="saveTeam" name="saveTeam" method="post" commandName="teamData">
 	<table class="team">
 		<tr>
 			<td>
-				Team Name:
+				Name:
 			</td>
 			<td>
 				<form:input id="teamName" path="teamName" maxlength="20" onfocus="jQuery('#nameTip').show();" onblur="jQuery('#nameTip').hide();" />
@@ -125,7 +159,7 @@
 		</tr>
 		<tr>
 			<td>
-				Team Identifier:
+				Identifier:
 			</td>
 			<td>
 				<form:input id="teamIdentifier" path="teamIdentifier" maxlength="20" onfocus="jQuery('#idTip').show();" onblur="jQuery('#idTip').hide();" />
@@ -144,7 +178,23 @@
 		</tr>
 		<tr>
 			<td>
-				Team Supervisor:
+				Location:
+			</td>
+			<td>
+				<form:select id="location" path="location" cssStyle="width:181px">
+					<form:option value="0" label=" Please Select " />
+					<c:forEach var="location" items="${location}" varStatus="loop">
+						<form:option value="${location.uuid}">${location.name}</form:option>
+					</c:forEach>
+				</form:select>
+				<span style="color: red">
+					 *
+				 </span>
+			 </td>
+		</tr>
+		<tr>
+			<td>
+				Supervisor:
 			</td>
 			<td>
 				<select id="teamSupervisorOption" style="width: 181px;">
@@ -153,25 +203,6 @@
 						<option value="${teamSupervisor.uuid}">${teamSupervisor.person.personName}</option>
 					</c:forEach>
 				</select>
-				<!-- <span style="color: red">
-					 *
-				</span> -->
-			 </td>
-		</tr>
-		<tr>
-			<td>
-				Location:
-			</td>
-			<td>
-				<form:select id="location" path="location" cssStyle="width:181px">
-					<form:option value="0" label=" Please Select " />
-					<c:forEach var="location" items="${location}" varStatus="loop">
-						<form:option value="${location.locationId}">${location.name}</form:option>
-					</c:forEach>
-				</form:select>
-				<span style="color: red">
-					 *
-				 </span>
 			 </td>
 		</tr>
 		<tr>

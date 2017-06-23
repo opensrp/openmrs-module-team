@@ -72,7 +72,7 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 	
 	@Override
-	public List<TeamMember> getAllTeamMember(Integer id, Boolean voided, Integer offset, Integer pageSize) {
+	public List<TeamMember> getAllTeamMember(Integer id, boolean voided, Integer offset, Integer pageSize) {
 		return this.dao.getAllTeamMember(id, voided, offset, pageSize);
 	}
 	
@@ -92,7 +92,12 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 
 	@Override
-	public int count(Integer teamId) {
-		return this.dao.count(teamId);
+	public int countTeam(Integer teamId) {
+		return this.dao.countTeam(teamId);
+	}
+
+	@Override
+	public int countTeamRole(Integer teamRoleId) {
+		return this.dao.countTeamRole(teamRoleId);
 	}
 }

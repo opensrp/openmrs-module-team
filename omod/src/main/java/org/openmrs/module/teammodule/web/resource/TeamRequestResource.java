@@ -32,10 +32,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Muhammad Safwan and Shakeeb raza
  * 
  */
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/team", supportedClass = Team.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*",
-		"1.12.*" })
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/team", supportedClass = Team.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*" })
 public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
+	
+	@Override
+	public Team newDelegate() {
+		return new Team();
+	}
 
+	@Override
+	public Team save(Team delegate) {
+		try {
+			if(delegate.getId() != null && delegate.getId() > 0) { Context.getService(TeamService.class).updateTeam(delegate); return delegate; }
+			else { Context.getService(TeamService.class).saveTeam(delegate); return delegate; }
+		}
+		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }
+	}
+	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = null;
@@ -49,7 +62,11 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("teamIdentifier");
 				description.addProperty("supervisor");
 				description.addProperty("supervisorUuid");
+				description.addProperty("supervisorTeam");
+				description.addProperty("supervisorTeamUuid");
+				description.addProperty("supervisorIdentifier");
 				description.addProperty("voided");
+				description.addProperty("voidReason");
 				description.addProperty("members");
 				description.addProperty("location", Representation.DEFAULT);
 			} else if (rep instanceof FullRepresentation) {
@@ -59,7 +76,11 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("teamIdentifier");
 				description.addProperty("supervisor");
 				description.addProperty("supervisorUuid");
+				description.addProperty("supervisorTeam");
+				description.addProperty("supervisorTeamUuid");
+				description.addProperty("supervisorIdentifier");
 				description.addProperty("voided");
+				description.addProperty("voidReason");
 				description.addProperty("location", Representation.FULL);
 				description.addProperty("members");
 				description.addProperty("auditInfo");
@@ -69,19 +90,31 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	}
 
 	@Override
-	public Team newDelegate() {
-		return new Team();
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("teamName");
+		description.addProperty("teamIdentifier");
+		description.addProperty("supervisor");
+		description.addProperty("voided");
+		description.addProperty("voidReason");
+		description.addProperty("location");
+		return description;
 	}
-
+	
 	@Override
-	public Team save(Team team) {
-		Context.getService(TeamService.class).saveTeam(team);
-		return team;
+	public DelegatingResourceDescription getUpdatableProperties()  {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("teamName");
+		description.addProperty("teamIdentifier");
+		description.addProperty("supervisor");
+		description.addProperty("voided");
+		description.addProperty("voidReason");
+		description.addProperty("location");
+		return description;
 	}
-
+	
 	@Override
 	protected void delete(Team team, String reason, RequestContext context) throws ResponseException {
-
 		Context.getService(TeamService.class).purgeTeam(team);
 	}
 
@@ -174,7 +207,7 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	
 	@PropertyGetter("members")
 	public int getNumberOfMember(Team team) {
-		if (team == null) { return 0; } return Context.getService(TeamMemberService.class).count(team.getTeamId());
+		if (team == null) { return 0; } return Context.getService(TeamMemberService.class).countTeam(team.getTeamId());
 	}
 	
 	@PropertyGetter("supervisor")
@@ -186,12 +219,33 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	public String getSuperVisorUuid(Team team) {
 		if (team == null || team.getSupervisor() == null) { return ""; } return team.getSupervisor().getUuid();
 	}
+
+	@PropertyGetter("supervisorTeam")
+	public String getSuperVisorTeam(Team team) {
+		if (team == null || team.getSupervisor() == null || team.getSupervisor().getTeam() == null) { return ""; } return team.getSupervisor().getTeam().getTeamName();
+	}
+
+	@PropertyGetter("supervisorTeamUuid")
+	public String getSuperVisorTeamUuid(Team team) {
+		if (team == null || team.getSupervisor() == null || team.getSupervisor().getTeam() == null) { return ""; } return team.getSupervisor().getTeam().getUuid();
+	}
+
+	@PropertyGetter("supervisorIdentifier")
+	public String getSuperVisorIdentifier(Team team) {
+		if (team == null || team.getSupervisor() == null) { return ""; } return team.getSupervisor().getIdentifier();
+	}
 	
 	@Override
-	protected PageableResult doGetAll(RequestContext context)
-			throws ResponseException {
+	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
+		System.out.println("doGetAll");
 		List<Team> teams = Context.getService(TeamService.class).getAllTeams(false, 0, 25);
 		return new NeedsPaging<Team>(teams,context);	
-		
+	}
+	
+	@Override
+	public SimpleObject getAll(RequestContext context) throws ResponseException {
+		System.out.println("getAll");
+		List<Team> teams = Context.getService(TeamService.class).getAllTeams(false, null, null);
+		return new NeedsPaging<Team>(teams, context).toSimpleObject(this);
 	}
 }

@@ -368,4 +368,11 @@
 	 	<renameTable newTableName="team_member_location" oldTableName="member_location"/>
 	 </changeSet>
 	
+	<changeSet author="Zohaib Masood" id="teammodule-35.1.0A">
+	 	<addColumn tableName="team_role">
+			<column name="identifier" type="varchar(45)">
+			</column>
+		</addColumn>
+	 </changeSet>
+	
 </databaseChangeLog>

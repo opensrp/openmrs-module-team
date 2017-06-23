@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.Location;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamMember;
@@ -61,12 +62,12 @@ public class HibernateTeamDAO implements TeamDAO {
 	public List<Team> getAllTeams(boolean voided, Integer offset, Integer pageSize) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Team.class);
 		if (!voided) {
-			return sessionFactory.getCurrentSession().createQuery("from Team team where team.voided = :voided").setBoolean("voided", voided).list();
+			criteria.add(Restrictions.eq("voided", false));
 		}
-		if(offset != null) {
+		if (offset != null) {
 			criteria.setFirstResult(offset);
 		}
-		if(pageSize != null) {
+		if (pageSize != null) {
 			criteria.setMaxResults(pageSize);
 		}
 		return criteria.list();

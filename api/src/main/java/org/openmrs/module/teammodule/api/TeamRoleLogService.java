@@ -17,6 +17,8 @@ public interface TeamRoleLogService extends OpenmrsService {
 	
 	public void purgeTeamRoleLog(TeamRoleLog teamRoleLog);
 	
+	public void updateTeamRoleLog(TeamRoleLog teamRoleLog);
+	
 	public List<TeamRoleLog> searchTeamRoleLog(String teamRoleId,Integer offset, Integer pageSize);
 
 	public TeamRoleLog getTeamRoleLog(String uuid);

@@ -8,11 +8,11 @@
 <openmrs:htmlInclude file="/openmrs.js" />
 <openmrs:htmlInclude file="/scripts/openmrsmessages.js" appendLocale="true" />
 
-<link href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1" type="text/css" >
 <link rel="stylesheet" href="/openmrs/moduleResources/teammodule/themes/alertify.core.css" />
 <link rel="stylesheet" href="/openmrs/moduleResources/teammodule/themes/alertify.default.css" id="toggleCSS" />
-<script src="/openmrs/scripts/jquery-ui/js/jquery-ui-datepicker-i18n.js?v=1.9.3.f535e9" type="text/javascript"></script>
-<script src="/openmrs/moduleResources/teammodule/alertify.min.js"></script>
+<script type="text/javascript" src="/openmrs/scripts/jquery-ui/js/jquery-ui-datepicker-i18n.js?v=1.9.3.f535e9"></script>
+<script type="text/javascript" src="/openmrs/moduleResources/teammodule/alertify.min.js"></script>
 
 <script type="text/javascript">
 	\$j = jQuery;
@@ -104,14 +104,6 @@
 			if(pass1 != pass2) jQuery("#confirmPasswordText").show();	
 			else jQuery("#confirmPasswordText").hide();	
 		});
-		
-		/* jQuery( "#userName" ).blur(function() {
-			var user= jQuery( "#userName" ).val();
-			console.log("user: " + user);
-			if(user != "") {
-			    jQuery.get("/openmrs/ws/rest/v1/team/teammember?getUserNameBy="+user, function(data){ console.log(data); });
-			}
-		}); */
 
 		jQuery("#addBtn").bind("click", function() {
 			var teamId = "${teamId}";
@@ -183,7 +175,6 @@
 				var ident = document.getElementById("identifier").value;
 				var url1 = "/openmrs/ws/rest/v1/team/teammember?get=filter&v=full";
 				if(ident != "") { url1 += "&identifier=" + ident; }
-				console.log(url1);
 				jQuery.ajax({
 					url: url1,
 					success : function(result) { console.log("SUCCESS-FILTER"); var myIdentifiers = []; for(var loop=0; loop<result.results.length; loop++) { myIdentifiers.push(result.results[loop].identifier); }
@@ -224,8 +215,6 @@
 								if(gender != "") { data3 += '"gender":"' + gender + '", '; }
 								if(birthDate != "") { data3 += '"birthdate":"' + birthDate + '"'; }
 								data3 += ' }';
-								console.log(url3);
-								console.log(data3);
 								jQuery.ajax({
 									url: url3,
 									data : data3,
@@ -233,7 +222,6 @@
 									contentType: "application/json",
 									success : function(result) { console.log("SUCCESS-PERSON IF"); console.log(result);
 										person = result.uuid;
-										//console.log(person);
 										if(loginChoice) {
 											var url2 = "/openmrs/ws/rest/v1/user";
 											var data2 = '{ ';
@@ -249,14 +237,12 @@
 											data2 += '"person":{"uuid":"' + person + '"}, ';
 											data2 += '"systemId":"' + userName + '"';
 											data2 += ' }';
-											console.log(url2);
-											console.log(data2);
 											jQuery.ajax({
 												url: url2,
 												data : data2,
 												type: "POST",
 												contentType: "application/json",
-												success : function(result) { console.log("SUCCESS-USER"); console.log(result);
+												success : function(result) { console.log("SUCCESS-USER"); 
 												}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-USER"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
 											});
 										}
@@ -277,14 +263,12 @@
 										data += '"person":{"uuid":"' + person + '"}, ';
 										data += '"isDataProvider":"' + isDataProvider + '"';
 										data += ' }';
-										console.log(url);
-										console.log(data);
 										jQuery.ajax({
 											url: url,
 											data : data,
 											type: "POST",
 											contentType: "application/json",
-											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); console.log(result); resetForm();
+											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); resetForm(); saveLog("teamMember", result.uuid.toString(), "", result.display.toString(), "TEAM_MEMBER_ADDED", "");
 												document.getElementById("errorHead").innerHTML = ""; 
 												document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
 											}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-TEAM MEMBER"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
@@ -292,14 +276,11 @@
 									}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-PERSON IF"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
 								});
 							} else {
-								console.log(existingPersonId_selection);
-								console.log(pId);
 								jQuery.ajax({
 									url: "/openmrs/ws/rest/v1/person?v=full&q="+pId,
 									contentType: "application/json",
-									success : function(result) { console.log("SUCCESS-PERSON ELSE"); console.log(result);
+									success : function(result) { console.log("SUCCESS-PERSON ELSE"); 
 										for(var p=0; p<result.results.length; p++) { if(pId === result.results[p].display) { person = result.results[p].uuid; } }
-										//console.log(person);
 										var url = "/openmrs/ws/rest/v1/team/teammember";
 										var data = '{ '; 
 										if(identifier != "") { data += '"identifier":"' + identifier + '", '; }
@@ -317,14 +298,12 @@
 										data += '"person":{"uuid":"' + person + '"}, ';
 										data += '"isDataProvider":"' + isDataProvider + '"';
 										data += ' }';
-										console.log(url);
-										console.log(data);
 										jQuery.ajax({
 											url: url,
 											data : data,
 											type: "POST",
 											contentType: "application/json",
-											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); console.log(result); resetForm();
+											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); resetForm(); saveLog("teamMember", result.uuid.toString(), "", result.display.toString(), "TEAM_MEMBER_ADDED", "");
 												document.getElementById("errorHead").innerHTML = ""; 
 												document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
 											}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-TEAM MEMBER"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
@@ -427,12 +406,47 @@
 			}
 		} userRoles = removeDuplicates(array);
 	}
+	
+	function saveLog(type, uuid, dataNew, dataOld, action, log) {
+		if(action.length <= 45 && dataNew.length <= 500 && dataOld.length <= 500 && log.length <= 500) { 
+			var url = "/openmrs/ws/rest/v1/team/"+type.toLowerCase()+"log/";
+			var data = '{ "'+type+'":"'+uuid+'", "dataNew":"'+dataNew+'", "dataOld":"'+dataOld+'", "action":"'+action+'", "log":"'+log+'" }';
+			$.ajax({
+				url: url,
+				data : data,
+			 	type: "POST",
+     			contentType: "application/json",
+				success : function(result) {
+					console.log("SUCCESS-SAVE "+type.toUpperCase()+" LOG"); 
+				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-SAVE "+type.toUpperCase()+" LOG"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Location(s)</p>"; }
+			});
+		}
+		else { 
+			var errorStr = "";
+			if(action.length > 45) { errorStr += "Action must have atleast 45 Characters.<br/>" }
+			if(dataNew.length > 500) { errorStr += "New Data must have atleast 500 Characters.<br/>" }
+			if(dataOld.length > 500) { errorStr += "Old Data must have atleast 500 Characters.<br/>" }
+			if(log.length > 500) { errorStr += "Log must have atleast 500 Characters.<br/>" }
+			console.log("errorStr: "+errorStr);
+			document.getElementById("editHead").innerHTML = errorStr;
+		}
+	}
 </script>
+
+<ul id="menu">
+	<li class="first"><a href="/openmrs/module/teammodule/addRole.form" title="New Team Hierarchy (Role)">New Team Hierarchy (Role)</a></li>
+	<li><a href="/openmrs/module/teammodule/addTeam.form" title="New Team">New Team</a></li>
+	<li class="active"><a href="/openmrs/module/teammodule/teamMemberAddForm.form" title="New Team Member">New Team Member</a></li>
+	<li><a href="/openmrs/module/teammodule/teamRole.form" title="Manage Team Hierarchy (Roles)">Manage Team Hierarchy (Roles)</a></li>
+	<li><a href="/openmrs/module/teammodule/team.form" title="Manage Teams">Manage Teams</a></li>
+	<li><a href="/openmrs/module/teammodule/teamMemberView.form" title="Manage Team Members">Manage Team Members</a></li>
+</ul>
 
 <h2 align="center">Add Team Member</h2>
 
-<h3 id="errorHead" name="errorHead" style="color: red; display: inline">${error}</h3>
-<h3 id="saveHead" name="saveHead" align="center" style="color: green">${saved}</h3>
+<h3 id="errorHead" style="color: red; display: inline">${error}</h3>
+<h3 id="saveHead" align="center" style="color: green">${saved}</h3>
+<h3 id="editHead" align="center" style="color: green;">${edit}</h3>
 
 <form:form id="saveMember" name="saveMember" commandName="memberData">
 	<table class="team">

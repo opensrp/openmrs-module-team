@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberLog;
@@ -41,7 +42,7 @@ public class HibernateTeamMemberLogDAO implements TeamMemberLogDAO{
 		sessionFactory.getCurrentSession().update(teamMemberLog);
 	}
 
-	public TeamMemberLog getTeamMemberLog(int id) {
+	public TeamMemberLog getTeamMemberLog(Integer id) {
 		return	(TeamMemberLog)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.logId = :id").setInteger("id", id).uniqueResult();
 	}
 
@@ -66,7 +67,14 @@ public class HibernateTeamMemberLogDAO implements TeamMemberLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(int teamMember) {
-		return (List<TeamMemberLog>)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.teamMember = :teamMember").setInteger("teamMember", teamMember).list();
+	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(Integer teamMember, Integer offset, Integer pageSize) {
+		Query createQuery =sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.teamMember = :teamMember").setInteger("teamMember", teamMember);
+		if(offset != null) {
+			createQuery.setFirstResult(offset);
+		}
+		if(pageSize != null) {
+			createQuery.setMaxResults(pageSize);	
+		}
+		return createQuery.list();
 	}
 }

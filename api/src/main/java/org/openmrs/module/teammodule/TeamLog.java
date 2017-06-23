@@ -2,10 +2,10 @@ package org.openmrs.module.teammodule;
 
 import java.io.Serializable;
 
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.User;
-import org.openmrs.module.teammodule.TeamConstants.TeamAction;
 
 @SuppressWarnings("serial")
 public class TeamLog extends BaseOpenmrsData implements Serializable {
@@ -37,13 +37,10 @@ public class TeamLog extends BaseOpenmrsData implements Serializable {
 		return action;
 	}
 
-	public void setAction(TeamAction action) {
-		this.action = action.name();
-	}
-	
-	 void setAction(String action) {
+	public void setAction(String action) {
 		this.action = action;
 	}
+	
 
 	public String getDataNew() {
 		return dataNew;

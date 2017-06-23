@@ -13,7 +13,7 @@ public interface TeamMemberLogService extends OpenmrsService {
 
 	public void updateTeamMemberLog(TeamMemberLog teamMemberLog);
 
-	public TeamMemberLog getTeamMemberLog(int id);
+	public TeamMemberLog getTeamMemberLog(Integer id);
 	
 	public TeamMemberLog getTeamMemberLog(String uuid);
 
@@ -21,6 +21,6 @@ public interface TeamMemberLogService extends OpenmrsService {
 	
 	public void purgeTeamMemberLog(TeamMemberLog teamMemberLog);
 	
-	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(int teamMember);
+	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(Integer teamMemberId, Integer offset, Integer pageSize);
 
 }

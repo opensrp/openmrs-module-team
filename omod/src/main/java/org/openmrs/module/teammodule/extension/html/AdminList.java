@@ -34,12 +34,12 @@ public class AdminList extends AdministrationSectionExt {
 	 */
 	public Map<String, String> getLinks() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+		map.put("module/teammodule/addRole.form", "New Team Hierarchy (Role)");
 		map.put("module/teammodule/addTeam.form", "New Team");
 		map.put("module/teammodule/teamMemberAddForm.form", "New Team Member");
-		map.put("module/teammodule/addRole.form", "New Team Hierarchy (Role)");
+		map.put("module/teammodule/teamRole.form", "Manage Team Hierarchy (Roles)");
 		map.put("module/teammodule/team.form", "Manage Teams");
 		map.put("module/teammodule/teamMemberView.form", "Manage Team Members");
-		map.put("module/teammodule/teamRole.form", "Manage Team Hierarchy (Roles)");
 		return map;
 	}
 }

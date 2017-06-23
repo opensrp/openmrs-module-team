@@ -37,8 +37,8 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.updateTeamRole(TeamRole);
 	}
 
-	public List<TeamRole> getAllTeamRole() {
-		return dao.getAllTeamRole();
+	public List<TeamRole> getAllTeamRole(boolean ownsTeam, boolean voided, Integer offset, Integer pageSize) {
+		return dao.getAllTeamRole(ownsTeam, voided, offset, pageSize);
 	}
 
 	public void purgeTeamRole(TeamRole TeamRole) {
@@ -63,7 +63,7 @@ private final Log log = LogFactory.getLog(this.getClass());
 	}
 
 	@Override
-	public List<TeamRole> searchTeamRoleReportBy(int id) {
+	public List<TeamRole> searchTeamRoleReportBy(Integer id) {
 		return dao.searchTeamRoleReportBy(id);
 	}
 }

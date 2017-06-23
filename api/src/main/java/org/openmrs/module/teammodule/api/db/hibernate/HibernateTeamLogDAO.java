@@ -37,7 +37,7 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 		
 	}
 
-	public TeamLog getTeamLog(int id) {
+	public TeamLog getTeamLog(Integer id) {
 		return (TeamLog)sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog where teamLog.logId = :id").setInteger("id", id).uniqueResult();
 	}
 
@@ -57,8 +57,12 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 		sessionFactory.getCurrentSession().delete(TeamLog);
 	}
 
+	public void updateTeamLog(TeamLog TeamLog) {
+		sessionFactory.getCurrentSession().update(TeamLog);
+	}
+
 	@SuppressWarnings("unchecked")
-	public List<TeamLog> searchTeamLogByTeam(int team,Integer offset, Integer pageSize) {
+	public List<TeamLog> searchTeamLogByTeam(Integer team, Integer offset, Integer pageSize) {
 		Query createQuery=sessionFactory.getCurrentSession().createQuery("from TeamLog teamLog where teamLog.team = :team").setInteger("team", team);
 		if( offset != null) {
 			createQuery.setFirstResult(offset);

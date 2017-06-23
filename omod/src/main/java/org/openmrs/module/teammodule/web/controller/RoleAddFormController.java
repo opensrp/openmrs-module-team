@@ -53,7 +53,7 @@ public class RoleAddFormController {
 	public String showForm(Model model, HttpServletRequest request) {
 
 		TeamRole teamRole= new TeamRole();
-		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole();
+		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null);
 		model.addAttribute("reportsTo", roles);
 		model.addAttribute("roleData", teamRole);
 		
@@ -81,7 +81,7 @@ public class RoleAddFormController {
 		Context.getService(TeamRoleService.class).saveTeamRole(teamRole);
 		String saved = "Role Saved Successfully";
 		model.addAttribute("saved", saved);
-		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole();
+		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null);
 		model.addAttribute("reportsTo", roles);
 		return SUCCESS_FORM_VIEW;
 	}
