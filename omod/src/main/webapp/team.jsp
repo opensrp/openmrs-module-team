@@ -92,7 +92,7 @@
 		    	if(i%2 === 0) { row.setAttribute("class", "odd"); } else { row.setAttribute("class", "even"); }
 		    	/* Edit */
 		    	var cell = row.insertCell(-1);
-		        cell.innerHTML = "<a id='editTeamLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' onclick='editTeam(\""+teams[i].uuid+"\",\""+"teamInfo"+"\");' ><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: left;' ></a>"
+		        cell.innerHTML = "<a id='editTeamLink' name='editTeamLink' title='Edit Team' style='cursor:pointer' onclick='editTeam(\""+teams[i].uuid+"\",\""+"teamInfo"+"\");' ><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: left; ' ></a>"
 		        /* Identifier */
 		        var cell = row.insertCell(-1);
 				cell.innerHTML = "<a id='editTeamIdentifierLink' name='editTeamIdentifierLink' title='Team Detail' style='cursor:pointer' onclick='editTeam(\""+teams[i].uuid+"\",\""+"teamDetail"+"\");'>"+teams[i].teamIdentifier+"</a>";
