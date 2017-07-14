@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Muhammad Safwan and Shakeeb raza
  * 
  */
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/team", supportedClass = Team.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*" })
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/team", supportedClass = Team.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*", "2.0.*", "2.1.*" })
 public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	
 	@Override
@@ -137,12 +137,12 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 		}
 		else if(context.getParameter("location")!=null) {
 			Location location = Context.getLocationService().getLocation(Integer.parseInt(context.getParameter("location")));
-			List<Team> listTeam = Context.getService(TeamService.class).getTeambyLocation(location, 0,20);
+			List<Team> listTeam = Context.getService(TeamService.class).getTeamByLocation(location.getId(), 0,20);
 			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);
 		}
 		else if(context.getParameter("supervisor")!=null) {
 			TeamMember supervisor = Context.getService(TeamMemberService.class).getTeamMember(Integer.parseInt(context.getParameter("supervisor")));
-			Team team =  Context.getService(TeamService.class).getTeamBySupervisor(supervisor);
+			Team team =  Context.getService(TeamService.class).getTeamBySupervisor(supervisor.getId());
 			List<Team> listTeam = new ArrayList<>();
 			listTeam.add(team);
 			return new NeedsPaging<Team>(listTeam, context).toSimpleObject(this);

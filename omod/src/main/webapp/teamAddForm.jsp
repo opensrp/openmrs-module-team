@@ -77,7 +77,7 @@
 										data: data,
 										type: "POST",
 										contentType: "application/json",
-										success : function(result) { console.log("SUCCESS-TEAM ROLE"); resetForm();  saveLog("team", result.uuid.toString(), "", result.teamName.toString(), "TEAM_ADDED", ""); document.getElementById("saveButton").disabled = false; document.getElementById("errorHead").innerHTML = ""; document.getElementById("savedHead").innerHTML = "<p>Team Created Successfully</p>";
+										success : function(result) { console.log("SUCCESS-TEAM"); resetForm();  saveLog("team", result.uuid.toString(), "", result.teamName.toString(), "TEAM_ADDED", ""); document.getElementById("saveButton").disabled = false; document.getElementById("errorHead").innerHTML = ""; document.getElementById("savedHead").innerHTML = "<p>Team Created Successfully</p>";
 										}, error: function(jqXHR, textStatus, errorThrown) { console.log(jqXHR); document.getElementById("errorHead").innerHTML = "Error Occured While Creating Team"; document.getElementById("savedHead").innerHTML = ""; document.getElementById("saveButton").disabled = false; }
 									});
 								}
@@ -92,7 +92,7 @@
 		if(action.length <= 45 && dataNew.length <= 500 && dataOld.length <= 500 && log.length <= 500) { 
 			var url = "/openmrs/ws/rest/v1/team/"+type.toLowerCase()+"log/";
 			var data = '{ "'+type+'":"'+uuid+'", "dataNew":"'+dataNew+'", "dataOld":"'+dataOld+'", "action":"'+action+'", "log":"'+log+'" }';
-			$.ajax({
+			jQuery.ajax({
 				url: url,
 				data : data,
 			 	type: "POST",
@@ -218,7 +218,7 @@
 		<tr>
 			<td>
 				<a href="/openmrs/module/teammodule/team.form">
-					Back to teams
+					Show all Teams
 				</a>
 			</td>
 		</tr>

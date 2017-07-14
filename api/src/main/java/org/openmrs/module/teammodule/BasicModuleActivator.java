@@ -15,28 +15,78 @@ package org.openmrs.module.teammodule;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.Activator;
+//import org.openmrs.module.Activator;
+import org.openmrs.module.Module;
+import org.openmrs.module.ModuleActivator;
+import org.openmrs.module.ModuleFactory;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
  */
-@SuppressWarnings("deprecation")
-public class BasicModuleActivator implements Activator {
+//@SuppressWarnings("deprecation")
+//public class BasicModuleActivator implements Activator {
+public class BasicModuleActivator implements ModuleActivator {
 	
 	private Log log = LogFactory.getLog(this.getClass());
 	
-	/**
-	 * @see org.openmrs.module.Activator#startup()
-	 */
-	public void startup() {
-		log.info("Starting Basic Module");
+//	/**
+//	 * @see org.openmrs.module.Activator#startup()
+//	 */
+//	public void startup() {
+//		log.info("Starting Basic Module");
+//	}
+//	
+//	/**
+//	 * @see org.openmrs.module.Activator#shutdown()
+//	 */
+//	public void shutdown() {
+//		log.info("Shutting down Basic Module");
+//	}
+
+	@Override
+	public void contextRefreshed() {
+		log.info("Context Refreshed Basic Module");
 	}
-	
-	/**
-	 * @see org.openmrs.module.Activator#shutdown()
-	 */
-	public void shutdown() {
-		log.info("Shutting down Basic Module");
+
+	@Override
+	public void started() {
+		try {
+			Module mod = ModuleFactory.getModuleById("teammodule");
+            ModuleFactory.startModule(mod);
+		}
+		catch (NoSuchMethodError e) {
+			Module mod = ModuleFactory.getStartedModuleById("teammodule");
+            ModuleFactory.stopModule(mod);
+			e.printStackTrace();
+		}
+		catch(Exception e) {
+			Module mod = ModuleFactory.getModuleById("teammodule");
+            ModuleFactory.stopModule(mod);
+			e.printStackTrace();
+		}
+		
+		
+		log.info("Started Basic Module");
+	}
+
+	@Override
+	public void stopped() {
+		log.info("Stoped Basic Module");
+	}
+
+	@Override
+	public void willRefreshContext() {
+		log.info("Will Refresh Context Basic Module");
+	}
+
+	@Override
+	public void willStart() {
+		log.info("Will Start Basic Module");
+	}
+
+	@Override
+	public void willStop() {
+		log.info("Will Stop Basic Module");
 	}
 	
 }

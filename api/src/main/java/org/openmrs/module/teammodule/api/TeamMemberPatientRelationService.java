@@ -10,15 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface TeamMemberPatientRelationService extends OpenmrsService {
 
-	public void saveTeamMemberPatientRelation(TeamMemberPatientRelation tmpr);
+	public void saveTeamMemberPatientRelation(TeamMemberPatientRelation teamMemberPatientRelation);
 
-	public void purgeTeamMemberPatientRelation(TeamMemberPatientRelation tmpr);
+	public void purgeTeamMemberPatientRelation(TeamMemberPatientRelation teamMemberPatientRelation);
 
-	public TeamMemberPatientRelation getTeamMemberPatientRelation(Integer Id);
+	public TeamMemberPatientRelation getTeamMemberPatientRelation(Integer id);
 	
 	public TeamMemberPatientRelation getTeamMemberPatientRelation(String uuid);
 
-	public void updateTeamMemberPatientRelation(TeamMemberPatientRelation tmpr);
+	public void updateTeamMemberPatientRelation(TeamMemberPatientRelation teamMemberPatientRelation);
 
-	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(TeamMember tm);
+	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(TeamMember teamMember);
 }

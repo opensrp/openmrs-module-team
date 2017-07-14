@@ -5,9 +5,7 @@ package org.openmrs.module.teammodule.api.db;
 
 import java.util.List;
 
-import org.openmrs.Location;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamMember;
 /**
  * @author Muhammad Safwan
  *
@@ -18,7 +16,7 @@ public interface TeamDAO {
 	
 	public Team getTeam(Integer id);
 	
-	public Team getTeam(String teamName,int locationId);
+	public Team getTeam(String teamName, Integer locationId);
 	
 	public Team getTeam(String name);
 	
@@ -30,9 +28,9 @@ public interface TeamDAO {
 	
 	public List<Team> searchTeam(String name);
 
-	public Team getTeamBySupervisor(TeamMember teamSupervisor);
+	public Team getTeamBySupervisor(Integer teamSupervisorId);
 
-	public List<Team> getTeambyLocation(Location locationId, Integer offset, Integer pageSize);
+	public List<Team> getTeamByLocation(Integer locationId, Integer offset, Integer pageSize);
 
-	public List<Team> getSubTeams(TeamMember teamSupervisor);
+	public List<Team> getSubTeams(Integer teamSupervisorId);
 }

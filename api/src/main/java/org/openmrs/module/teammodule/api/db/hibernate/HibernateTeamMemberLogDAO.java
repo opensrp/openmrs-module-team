@@ -1,11 +1,13 @@
 package org.openmrs.module.teammodule.api.db.hibernate;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberLog;
@@ -35,46 +37,61 @@ public class HibernateTeamMemberLogDAO implements TeamMemberLogDAO{
 	}
 
 	public void saveTeamMemberLog(TeamMemberLog teamMemberLog) {
-		sessionFactory.getCurrentSession().saveOrUpdate(teamMemberLog);
+		getCurrentSession().saveOrUpdate(teamMemberLog);
 	}
 
 	public void updateTeamMemberLog(TeamMemberLog teamMemberLog) {
-		sessionFactory.getCurrentSession().update(teamMemberLog);
+		getCurrentSession().update(teamMemberLog);
 	}
 
 	public TeamMemberLog getTeamMemberLog(Integer id) {
-		return	(TeamMemberLog)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.logId = :id").setInteger("id", id).uniqueResult();
+		return (TeamMemberLog) getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.logId = :id").setInteger("id", id).uniqueResult();
 	}
 
 	public TeamMemberLog getTeamMemberLog(String uuid) {
-		return	(TeamMemberLog)sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.uuid = :uuid").setString("uuid", uuid).uniqueResult();
+		return (TeamMemberLog) getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<TeamMemberLog> getAllLogs(Integer offset, Integer pageSize) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeamMember.class);
+		Criteria criteria = getCurrentSession().createCriteria(TeamMember.class);
 		if (pageSize != null) {
 			criteria.setFirstResult(offset);
 		}
 		if (pageSize != null) {
 			criteria.setMaxResults(pageSize);
 		}
-		return criteria.list();
+		return (List<TeamMemberLog>) criteria.list();
 	}
 
 	public void purgeTeamMemberLog(TeamMemberLog teamMemberLog) {
-		sessionFactory.getCurrentSession().delete(teamMemberLog);
+		getCurrentSession().delete(teamMemberLog);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TeamMemberLog> searchTeamMemberLogByTeamMember(Integer teamMember, Integer offset, Integer pageSize) {
-		Query createQuery =sessionFactory.getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.teamMember = :teamMember").setInteger("teamMember", teamMember);
+		Query createQuery =getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.teamMember = :teamMember").setInteger("teamMember", teamMember);
 		if(offset != null) {
 			createQuery.setFirstResult(offset);
 		}
 		if(pageSize != null) {
 			createQuery.setMaxResults(pageSize);	
 		}
-		return createQuery.list();
+		return (List<TeamMemberLog>) createQuery.list();
+	}
+
+	private Session getCurrentSession() {
+		try {
+			return sessionFactory.getCurrentSession();
+		}
+		catch (NoSuchMethodError ex) {
+			try {
+				Method method = sessionFactory.getClass().getMethod("getCurrentSession",null);
+				return (Session)method.invoke(sessionFactory, null);
+			}
+			catch (Exception e) {
+				throw new RuntimeException("Failed to get the current hibernate session from HibernateTeamMemberLogDAO", e);
+			}
+		}
 	}
 }

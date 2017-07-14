@@ -89,6 +89,7 @@
 		document.getElementById("location").multiple = true;
 		document.getElementById("location").size = 7;
 		document.getElementById("location").setAttribute("style", "width: 181px");
+		document.getElementById("location").value = "";
 		document.getElementById("location").setAttribute("onchange", "getSelectedLocations(this)");
 
 		jQuery( "#password" ).blur(function() {
@@ -149,26 +150,16 @@
 				if (!regexp.test(fName)) { dataTypeMessage += "<br>Family Name can contain [alphabets,.,-] min 3, max 20."; }
 				if (selectedValue == 0) { mustSelectMessage += "<br>Please select a gender."; }
 			}
-			  
 			if (id == null || id == "") { mustSelectMessage += "<br>Identifier can't be empty."; }
-			if(!idRegExp.test(id)){
-				dataTypeMessage += "<br>All data types and [-._] are allowed for identifier,min 3, max 20.";
-			} if (jDate > currentDate) {
-				mustSelectMessage += "<br>Join date can't be in future.";
-				jQuery("#joinTip").hide();
-				document.getElementById("joinDate").value = "";
-			} if (dobDate > currentDate) {
-				mustSelectMessage += "<br>Birth date can't be in future.";
-				jQuery("#birthTip").hide();
-				document.getElementById("birthDate").value = "";
-			} 
-			if (selectedMemberRoleValue == 0) { mustSelectMessage += "<br>Please select a Member Role."; }
-			if (selectedMemberValue == 0) { mustSelectMessage += "<br>Please select a Member Team."; }
+			if(!idRegExp.test(id)){ dataTypeMessage += "<br>All data types and [-._] are allowed for identifier,min 3, max 20."; }
+			if (jDate > currentDate) { mustSelectMessage += "<br>Join date can't be in future."; jQuery("#joinTip").hide(); document.getElementById("joinDate").value = ""; } 
+			if (dobDate > currentDate) { mustSelectMessage += "<br>Birth date can't be in future."; jQuery("#birthTip").hide(); document.getElementById("birthDate").value = ""; } 
+			//if (selectedMemberRoleValue == 0) { mustSelectMessage += "<br>Please select a Member Role."; }
+			//if (selectedMemberValue == 0) { mustSelectMessage += "<br>Please select a Member Team."; }
 			if(document.getElementById("loginChoice").checked) {
 				if (user == null || user == "") { mustSelectMessage += "<br>UserName can't be empty."; }
 				if (!regexp.test(user)) { dataTypeMessage += "<br>In UserName Min 3, max 20 All data types and either [- . Or _ ] are allowed for text field."; }
 			}
-
 			if(mustSelectMessage != ""){ alertify.alert(mustSelectMessage); }
 			else if(dataTypeMessage != ""){ alertify.alert(dataTypeMessage); } 
 			else {
@@ -227,13 +218,7 @@
 											var data2 = '{ ';
 											if(userName != "") { data2 += '"username":"' + userName + '", '; }
 											if(password != "") { data2 += '"password":"' + password + '", '; }
-											if(roleOption != "") { 
-												data2 += '"roles":[';
-												for(var k = 0; k < userRoles.length; k++) { 
-													if(k === userRoles.length-1) { data2 += '{"uuid":"'+userRoles[k]+'"} '; }
-													else { data2 += '{"uuid":"'+userRoles[k]+'"}, '; }
-												} data2 += '], ';
-											}
+											if(roleOption != "") { data2 += '"roles":['; for(var k = 0; k < userRoles.length; k++) { if(k === userRoles.length-1) { data2 += '{"uuid":"'+userRoles[k]+'"} '; } else { data2 += '{"uuid":"'+userRoles[k]+'"}, '; } } data2 += '], '; }
 											data2 += '"person":{"uuid":"' + person + '"}, ';
 											data2 += '"systemId":"' + userName + '"';
 											data2 += ' }';
@@ -249,28 +234,33 @@
 										var url = "/openmrs/ws/rest/v1/team/teammember";
 										var data = '{ '; 
 										if(identifier != "") { data += '"identifier":"' + identifier + '", '; }
-										if(location != "") { 
-											data += '"locations":[';
+										if(location != "") {
+											console.log(location);
+											data += '"locations":['; 
 											for(var k = 0; k < locations.length; k++) { 
-												if(k === locations.length-1) { data += '{"uuid":"'+locations[k]+'"}'; }
-												else { data += '{"uuid":"'+locations[k]+'"}, '; }
-											} data += '], ';
+												if(k === locations.length-1) { 
+													data += '{"uuid":"'+locations[k]+'"}'; 
+												} 
+												else { 
+													data += '{"uuid":"'+locations[k]+'"}, '; 
+												}
+											} 
+											data += '], '; 
 										}
 										if(joinDate != "") { data += '"joinDate":"' + joinDate + '", '; }
 										if(leaveDate != "") { data += '"leaveDate":"' + leaveDate + '", '; }
-										data += '"team":{"uuid":"' + teamOption + '"}, ';
-										data += '"teamRole":{"uuid":"' + teamRoleOption + '"}, ';
+										if(teamOption != "0") { data += '"team":{"uuid":"' + teamOption + '"}, '; }
+										if(teamRoleOption != "0") { data += '"teamRole":{"uuid":"' + teamRoleOption + '"}, '; }
 										data += '"person":{"uuid":"' + person + '"}, ';
 										data += '"isDataProvider":"' + isDataProvider + '"';
 										data += ' }';
+										console.log(data);
 										jQuery.ajax({
 											url: url,
 											data : data,
 											type: "POST",
 											contentType: "application/json",
-											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); resetForm(); saveLog("teamMember", result.uuid.toString(), "", result.display.toString(), "TEAM_MEMBER_ADDED", "");
-												document.getElementById("errorHead").innerHTML = ""; 
-												document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
+											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); resetForm(); saveLog("teamMember", result.uuid.toString(), "", result.display.toString(), "TEAM_MEMBER_ADDED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
 											}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-TEAM MEMBER"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
 										});
 									}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-PERSON IF"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
@@ -284,28 +274,21 @@
 										var url = "/openmrs/ws/rest/v1/team/teammember";
 										var data = '{ '; 
 										if(identifier != "") { data += '"identifier":"' + identifier + '", '; }
-										if(location != "") { 
-											data += '"locations":[';
-											for(var k = 0; k < locations.length; k++) { 
-												if(k === locations.length-1) { data += '{"uuid":"'+locations[k]+'"}'; }
-												else { data += '{"uuid":"'+locations[k]+'"}, '; }
-											} data += '], ';
-										}
+										if(location != "") { data += '"locations":['; for(var k = 0; k < locations.length; k++) { if(k === locations.length-1) { data += '{"uuid":"'+locations[k]+'"}'; } else { data += '{"uuid":"'+locations[k]+'"}, '; } } data += '], '; }
 										if(joinDate != "") { data += '"joinDate":"' + joinDate + '", '; }
 										if(leaveDate != "") { data += '"leaveDate":"' + leaveDate + '", '; }
-										data += '"team":{"uuid":"' + teamOption + '"}, ';
-										data += '"teamRole":{"uuid":"' + teamRoleOption + '"}, ';
+										if(teamOption != "0") { data += '"team":{"uuid":"' + teamOption + '"}, '; }
+										if(teamRoleOption != "0") { data += '"teamRole":{"uuid":"' + teamRoleOption + '"}, '; }
 										data += '"person":{"uuid":"' + person + '"}, ';
 										data += '"isDataProvider":"' + isDataProvider + '"';
 										data += ' }';
+										console.log(data);
 										jQuery.ajax({
 											url: url,
 											data : data,
 											type: "POST",
 											contentType: "application/json",
-											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); resetForm(); saveLog("teamMember", result.uuid.toString(), "", result.display.toString(), "TEAM_MEMBER_ADDED", "");
-												document.getElementById("errorHead").innerHTML = ""; 
-												document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
+											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); resetForm(); saveLog("teamMember", result.uuid.toString(), "", result.display.toString(), "TEAM_MEMBER_ADDED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
 											}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-TEAM MEMBER"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
 										});
 									}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-PERSON ELSE"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
@@ -327,7 +310,7 @@
 		document.getElementById("identifier").value = "";
 		document.getElementById("joinDate").value = "";
 		document.getElementById("leaveDate").value = "";
-		document.getElementById("location").value = "2";
+		document.getElementById("location").value = "";
 		document.getElementById("isDataProvider").checked=false;
 		document.getElementById("teamRoleOption").value = "0";
 		document.getElementById("teamOption").value = "0";
@@ -348,76 +331,26 @@
 		if (yearsPrevious) { opts["yearRange"] = "c-" + yearsPrevious + ":c10"; }
 		var dp = new DatePicker('yyyy-mm-dd', obj.id, opts);
 		jQuery.datepicker.setDefaults(jQuery.datepicker.regional['en_GB']);
-		obj.onclick = null;
-		dp.show();
-		return false;
+		obj.onclick = null; dp.show(); return false;
 	}
-	
-	function join() {
-		/* var date = "${teamDate}";
-		var array = date.split(" ");
-		var array = array[0].split("-");
-		date = array[1] + "/" + array[2] + "/" + array[0];
-		var d = new Date(date);
-		jQuery( "#joinDate" ).datepicker("option", { minDate: new Date()}); */
-		jQuery( "#joinDate" ).datepicker();
-	}
-	
-	function leave() {
-		startDate = jQuery('#joinDate').datepicker("getDate");
-		jQuery("#leaveDate").datepicker("option", { minDate: new Date(startDate), dateFormat: 'yy-mm-dd' });
-	}
-	
-	function birth() {
-		jQuery( "#birthDate" ).datepicker();
-	}
-
-	function personSelectedCallback(relType, person) {
-		if (person != null && person.personId != null) {
-			document.getElementById('useExistingButton').disabled = false;
-		} else {
-			document.getElementById('useExistingButton').disabled = true;
-		}
-	}
-	
-	function removeDuplicates(arr) { 
-		var tmp = []; 
-		for(var i = 0; i < arr.length; i++) { 
-			if(tmp.indexOf(arr[i]) == -1) { 
-				tmp.push(arr[i]); 
-			} 
-		} return tmp; 
-	}
-
-	function getSelectedLocations(select) { 
-		var array = []; 
-		for (var i = 0; i < select.options.length; i++) { 
-			if (select.options[i].selected) { 
-				array.push(allLocationUuids[allLocationIds.indexOf(select.options[i].value)]); 
-			}
-		} locations = removeDuplicates(array);
-	}
-	
-	function getSelectedUserRoles(select) { 
-		var array = []; 
-		for (var i = 0; i < select.options.length; i++) { 
-			if (select.options[i].selected) { 
-				array.push(select.options[i].value); 
-			}
-		} userRoles = removeDuplicates(array);
-	}
+	function join() { jQuery( "#joinDate" ).datepicker(); }	
+	function leave() { jQuery("#leaveDate").datepicker("option", { minDate: new Date(jQuery('#joinDate').datepicker("getDate")), dateFormat: 'yy-mm-dd' }); }
+	function birth() { jQuery( "#birthDate" ).datepicker(); }
+	function personSelectedCallback(relType, person) { if (person != null && person.personId != null) { document.getElementById('useExistingButton').disabled = false; } else { document.getElementById('useExistingButton').disabled = true; } }
+	function removeDuplicates(arr) { var tmp = [];  for(var i = 0; i < arr.length; i++) {  if(tmp.indexOf(arr[i]) == -1) { tmp.push(arr[i]); } } return tmp; }
+	function getSelectedLocations(select) { var array = []; for (var i = 0; i < select.options.length; i++) { if (select.options[i].selected) { array.push(allLocationUuids[allLocationIds.indexOf(select.options[i].value)]); } } locations = removeDuplicates(array); }
+	function getSelectedUserRoles(select) { var array = []; for (var i = 0; i < select.options.length; i++) { if (select.options[i].selected) { array.push(select.options[i].value); } } userRoles = removeDuplicates(array); }
 	
 	function saveLog(type, uuid, dataNew, dataOld, action, log) {
 		if(action.length <= 45 && dataNew.length <= 500 && dataOld.length <= 500 && log.length <= 500) { 
 			var url = "/openmrs/ws/rest/v1/team/"+type.toLowerCase()+"log/";
 			var data = '{ "'+type+'":"'+uuid+'", "dataNew":"'+dataNew+'", "dataOld":"'+dataOld+'", "action":"'+action+'", "log":"'+log+'" }';
-			$.ajax({
+			jQuery.ajax({
 				url: url,
 				data : data,
 			 	type: "POST",
      			contentType: "application/json",
-				success : function(result) {
-					console.log("SUCCESS-SAVE "+type.toUpperCase()+" LOG"); 
+				success : function(result) { console.log("SUCCESS-SAVE "+type.toUpperCase()+" LOG"); 
 				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-SAVE "+type.toUpperCase()+" LOG"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Location(s)</p>"; }
 			});
 		}
@@ -610,7 +543,7 @@
 						<option value="${memberTeams.uuid}">${memberTeams.teamName}</option>
 					</c:forEach>
 				</select>
-				<span style="color: red">*</span>
+				<!-- <span style="color: red">*</span> -->
 			</td>
 			<td></td>
 		</tr>
@@ -625,7 +558,7 @@
 						<option value="${memberRoles.uuid}">${memberRoles.name}</option>
 					</c:forEach>
 				</select>
-				<span style="color: red">*</span>
+				<!-- <span style="color: red">*</span> -->
 			</td>
 			<td></td>
 		</tr>
@@ -655,6 +588,7 @@
 			</td>
 			<td>
 				<openmrs:fieldGen type="org.openmrs.Location" formFieldName="location" val="${selectedLocation}" />
+				<span style="color: red">*</span>
 			</td>
 			<td></td>
 		</tr>
@@ -680,7 +614,9 @@
 		<tr><td></td><td></td><td></td></tr>
 		<tr>
 			<td>
-				<a href="/openmrs/module/teammodule/teamMemberView.form">Back to Team Member List</a>
+				<a href="/openmrs/module/teammodule/teamMemberView.form">
+					Show all Team Members
+				</a>
 			</td>
 			<td></td>
 			<td></td>

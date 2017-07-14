@@ -2,7 +2,6 @@ package org.openmrs.module.teammodule.api.db;
 
 import java.util.List;
 
-import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamRole;
 
 public interface TeamRoleDAO {
@@ -21,7 +20,7 @@ public interface TeamRoleDAO {
 	
 	public TeamRole getTeamRoleByUuid(String uuid);
 
-	public List<TeamRole> getSubTeamRoles(TeamMember teamMember);
+	public List<TeamRole> getSubTeamRoles(Integer teamMemberId);
 
 	public List<TeamRole> searchTeamRoleReportBy(Integer id);
 }

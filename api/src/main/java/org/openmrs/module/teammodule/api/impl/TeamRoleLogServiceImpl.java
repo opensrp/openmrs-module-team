@@ -48,7 +48,7 @@ private final Log log = LogFactory.getLog(this.getClass());
 		return dao.searchTeamRoleLog(teamRole,offset, pageSize);
 	}
 
-	public TeamRoleLog getTeamRoleLog(int id) {
+	public TeamRoleLog getTeamRoleLog(Integer id) {
 		return dao.getTeamRoleLog(id);
 	}
 

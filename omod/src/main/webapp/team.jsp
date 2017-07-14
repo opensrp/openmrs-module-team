@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/openmrs/moduleResources/teammodule/teamModule.css?v=1.1" type="text/css">
 
 <style type="text/css">
-	#memberDialog> table, #memberDialog> table th, #memberDialog> table td {
+	/* #memberDialog> table, #memberDialog> table th, #memberDialog> table td {
 		border: 1px solid black;
 		border-collapse: collapse;
 	}
@@ -20,7 +20,7 @@
 	#supervisorTeamDetailDialog> table, #historyDialog> table th, #historyDialog> table td {
 		border: 1px solid black;
 		border-collapse: collapse;
-	}
+	} */
 	#history, #teamDetail, #teamSupervisorDetail {
 	    /* border: 1px solid black; */
 	    border-collapse: collapse;
@@ -46,6 +46,7 @@
 <script type="text/javascript" src="/openmrs/moduleResources/teammodule/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
+	var headerArrayLength = 9;
   	var allSupervisors = [];
   	$(document).ready(function(){
   		$('#historyDialog').hide();
@@ -139,7 +140,7 @@
 		else {
 	    	row = tbody.insertRow(-1);
 	        var cell = row.insertCell(-1);
-	    	cell.colSpan= headerArray.length
+	    	cell.colSpan = headerArrayLength;
 			cell.innerHTML = "<strong>No Records Found</strong>";
 	    	cell.setAttribute("style", "border: 1px solid; text-align: center; background-color: #bbccf7");
 		}
@@ -245,7 +246,7 @@
 					});
 				}
 				else if(type === "teamInfo") {
-	    			var html = "<form><table style=' width: 100%; '><tr><td style=' font-size: 18px; '>Identifier: </td><td><input style=' width: 95%; font-size: 14px; padding: 5px; ' type'text' id='teamIdentifier"+i+"' name='teamIdentifier"+i+"' value='"+teams[i].teamIdentifier+"'></td></tr><tr><td style=' font-size: 18px; '>Name: </td><td><input style=' width: 95%; font-size: 14px; padding: 5px; ' type'text' id='teamName"+i+"' name='teamName"+i+"' value='"+teams[i].teamName+"'></tr><tr><td></td><td></td></tr><tr><td></td><td><button type='button' id='teamEditClose' name='teamEditClose' onclick='editTeamClose(\""+i+"\",\""+"teamInfo"+"\");' style='float: left;'>Cancel</button><button type='button' id='teamEditSuccess' name='teamEditSuccess' onclick='editTeamSuccess(\""+i+"\",\""+"teamInfo"+"\");' style='float: right;'>Save</button></td></tr></table></form>";
+	    			var html = "<form><table style=' width: 100%; '><tr><td style=' font-size: 18px; '>Name: </td><td><input style=' width: 95%; font-size: 14px; padding: 5px; ' type'text' id='teamName"+i+"' name='teamName"+i+"' value='"+teams[i].teamName+"'></tr><tr><td style=' font-size: 18px; '>Identifier: </td><td><input style=' width: 95%; font-size: 14px; padding: 5px; ' type'text' id='teamIdentifier"+i+"' name='teamIdentifier"+i+"' value='"+teams[i].teamIdentifier+"'></td></tr><tr><td></td><td></td></tr><tr><td></td><td><button type='button' id='teamEditClose' name='teamEditClose' onclick='editTeamClose(\""+i+"\",\""+"teamInfo"+"\");' style='float: left;'>Cancel</button><button type='button' id='teamEditSuccess' name='teamEditSuccess' onclick='editTeamSuccess(\""+i+"\",\""+"teamInfo"+"\");' style='float: right;'>Save</button></td></tr></table></form>";
 	    			document.getElementById("editTeamDiv").innerHTML = html;
 		    		$("#editTeamDiv").dialog({ width: "500px", height: "auto", title: "Team - Edit" , closeText: "", modal: true, open: onDialogOpen });
 	    		}
@@ -257,7 +258,7 @@
 						else { html += "<option value='"+allSupervisors[j].uuid.toString()+"'>"+allSupervisors[j].display.toString()+" ["+allSupervisors[j].identifier.toString()+"]</option>"; } }
 					} html += "</select></td></tr><tr><td></td><td></td></tr><tr><td></td><td><button type='button' id='teamSupervisorEditClose' name='teamSupervisorEditClose' onclick='editTeamClose(\""+i+"\",\""+"teamSupervisorInfo"+"\");' style='float: left;'>Cancel</button><button type='button' id='teamSupervisorEditSuccess' name='teamSupervisorEditSuccess' onclick='editTeamSuccess(\""+i+"\",\""+"teamSupervisorInfo"+"\");' style='float: right;'>Save</button></td></tr></table></form>";
 	    			document.getElementById("editTeamSupervisorDiv").innerHTML = html;
-		    		$("#editTeamSupervisorDiv").dialog({ width: "500px", height: "auto", title: "Team - Supervisor" , closeText: "", modal: true, open: onDialogOpen });
+		    		$("#editTeamSupervisorDiv").dialog({ width: "500px", height: "auto", title: "Team - Edit" , closeText: "", modal: true, open: onDialogOpen });
 	    		}
 	    		else if(type === "teamLocationInfo") {
 		    		var allLocationNames = []; var allLocationIds = [];
@@ -268,7 +269,7 @@
 		    			else { html += "<option value='"+allLocationIds[j]+"'>"+allLocationNames[j]+"</option>"; }
 		    		} html += "</select></td></tr><tr><td></td><td></td></tr><tr><td></td><td><button type='button' id='teamLocationEditClose' name='teamLocationEditClose' onclick='editTeamClose(\""+i+"\",\""+"teamLocationInfo"+"\");' style='float: left;'>Cancel</button><button type='button' id='teamLocationEditSuccess' name='teamLocationEditSuccess' onclick='editTeamSuccess(\""+i+"\",\""+"teamLocationInfo"+"\");' style='float: right;'>Save</button></td></tr></table></form>";
 		    		document.getElementById("editTeamLocationDiv").innerHTML = html;
-		    		$("#editTeamLocationDiv").dialog({ width: "500px", height: "auto", title: "Team - Location" , closeText: "", modal: true, open: onDialogOpen });
+		    		$("#editTeamLocationDiv").dialog({ width: "500px", height: "auto", title: "Team - Edit" , closeText: "", modal: true, open: onDialogOpen });
 	    		}
 	    		else if(type === "teamVoidedInfo") {
 	    			var html = "<h3 id='voidError' name='voidError' style='color: red; display: inline'></h3><form><table style=' width: 100%; '><tr><td style=' font-size: 18px; '>Voided: </td><td><select id='teamVoided"+i+"' name='teamVoided"+i+"' style=' font-size: 14px; padding: 5px; width: 100%; '>";
@@ -297,11 +298,10 @@
 					var team = result;
 					for (var i = 0; i < teams.length; i++) {
 				    	if(teams[i].uuid.toString() === team.uuid.toString()) {
-				    		saveLog("team", teams[i].uuid.toString(), team.teamName.toString(), teams[i].teamName.toString(), "TEAM_EDITED", "");
-				    		saveLog("team", teams[i].uuid.toString(), team.teamIdentifier.toString(), teams[i].teamIdentifier.toString(), "TEAM_EDITED", "");
+				    		if(team.teamName.toString() === teams[i].teamName.toString()) {} else { saveLog("team", teams[i].uuid.toString(), team.teamName.toString(), teams[i].teamName.toString(), "TEAM_EDITED", ""); }
+				    		if(team.teamIdentifier.toString() === teams[i].teamIdentifier.toString()) {} else { saveLog("team", teams[i].uuid.toString(), team.teamIdentifier.toString(), teams[i].teamIdentifier.toString(), "TEAM_EDITED", ""); }
 				    		teams[i].teamName = team.teamName;
 				    		teams[i].teamIdentifier = team.teamIdentifier;
-							console.log(teams[i]);
 							var tbody = document.getElementById("tbody");
 							tbody.innerHTML = ""; GenerateTable(tbody);
 							document.getElementById("errorHead").innerHTML = ""; 
@@ -327,8 +327,9 @@
 					var team = result;
 					for (var i = 0; i < teams.length; i++) {
 				    	if(teams[i].uuid.toString() === team.uuid.toString()) {
-				    		saveLog("team", teams[i].uuid.toString(), team.supervisor.toString(), teams[i].supervisor.toString(), "TEAM_SUPERVISOR_CHANGED", "");
+				    		if(team.supervisor.toString() === teams[i].supervisor.toString()) {} else { saveLog("team", teams[i].uuid.toString(), team.supervisor.toString(), teams[i].supervisor.toString(), "TEAM_SUPERVISOR_CHANGED", ""); }
 				    		teams[i].supervisor = team.supervisor;
+				    		teams[i].supervisorIdentifier = team.supervisorIdentifier;
 				    		teams[i].supervisorTeam = team.supervisorTeam;
 				    		var tbody = document.getElementById("tbody");
 							tbody.innerHTML = ""; GenerateTable(tbody);
@@ -354,7 +355,7 @@
 					var team = result;
 					for (var i = 0; i < teams.length; i++) {
 				    	if(teams[i].uuid.toString() === team.uuid.toString()) {
-				    		saveLog("team", teams[i].uuid.toString(), team.location.name.toString(), teams[i].location.name.toString(), "TEAM_LOCATION_EDITED", "");
+				    		if(team.location.name.toString() === teams[i].location.name.toString()) {} else { saveLog("team", teams[i].uuid.toString(), team.location.name.toString(), teams[i].location.name.toString(), "TEAM_LOCATION_EDITED", ""); }
 				    		teams[i].location = team.location;
 				    		var tbody = document.getElementById("tbody");
 							tbody.innerHTML = ""; GenerateTable(tbody);
@@ -388,7 +389,7 @@
 						for (var i = 0; i < teams.length; i++) {
 					    	if(teams[i].uuid.toString() === team.uuid.toString()) {
 					    		if(team.voidReason === null) { team.voidReason = ""; }
-					    		saveLog("team", teams[i].uuid.toString(), team.voided.toString()+"-"+team.voidReason.toString(), teams[i].voided.toString()+"-"+teams[i].voidReason.toString(), "TEAM_VOIDED", "");
+					    		if(team.voided.toString()+"-"+team.voidReason.toString() === teams[i].voided.toString()+"-"+teams[i].voidReason.toString()) {} else { saveLog("team", teams[i].uuid.toString(), team.voided.toString()+"-"+team.voidReason.toString(), teams[i].voided.toString()+"-"+teams[i].voidReason.toString(), "TEAM_VOIDED", ""); }
 					    		teams[i].voided = team.voided;
 					    		teams[i].voidReason = teams.voidReason;
 					    		var tbody = document.getElementById("tbody");
@@ -443,8 +444,6 @@
 
 <h2 align="center">Teams</h2>
 
-<!-- <a href="/openmrs/module/teammodule/teamRole.form" style="float: right; padding: 5px;" title="View Roles">View Roles</a>
-<a href="/openmrs/module/teammodule/teamMemberView.form" style="float: right; padding: 5px;" title="View Members">View Members</a> -->
 <a href="/openmrs/module/teammodule/addTeam.form" style="float: right;" title="Add Team"><img src="/openmrs/moduleResources/teammodule/img/plus.png" style=" width: 50px; width: 50px;position: relative; top: -10px; right: 10px; " ></a>
 
 <h3 id="errorHead" style="color: red; display: inline">${error}</h3>
@@ -470,10 +469,6 @@
 		</tr>
 	</thead>
 </table>
-
-<p>
-	<a href="/openmrs/module/teammodule/team.form">Back to Team List</a>
-</p>
 
 <div id="historyDialog">
 	<table id="history">

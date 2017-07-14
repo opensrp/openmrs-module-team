@@ -8,7 +8,7 @@ public interface TeamRoleLogDAO {
 
 	public void saveTeamRoleLog(TeamRoleLog teamRoleLog);
 	
-	public TeamRoleLog getTeamRoleLog(int id);
+	public TeamRoleLog getTeamRoleLog(Integer id);
 	
 	public List<TeamRoleLog> getAllLogs(Integer offset, Integer pageSize);
 	

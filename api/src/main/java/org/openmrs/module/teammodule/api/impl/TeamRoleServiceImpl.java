@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.api.TeamRoleService;
 import org.openmrs.module.teammodule.api.db.TeamRoleDAO;
@@ -58,8 +57,8 @@ private final Log log = LogFactory.getLog(this.getClass());
 	}
 
 	@Override
-	public List<TeamRole> getSubTeamRoles(TeamMember teamMember) {
-		return dao.getSubTeamRoles(teamMember);
+	public List<TeamRole> getSubTeamRoles(Integer teamMemberId) {
+		return dao.getSubTeamRoles(teamMemberId);
 	}
 
 	@Override

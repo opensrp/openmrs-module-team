@@ -13,7 +13,8 @@
 		${project.parent.description}
 	</description>
 
-	<activator>org.openmrs.module.teammodule.BasicModuleActivator
+	<activator>
+		org.openmrs.module.teammodule.BasicModuleActivator
 	</activator>
 
 	<!-- <activator>${project.parent.groupId}.${project.parent.artifactId}.BasicModuleActivator 
@@ -25,6 +26,10 @@
 		</require_module>
 		<require_module>org.openmrs.module.webservices.rest</require_module>
 	</require_modules>
+	
+	<aware_of_modules>
+	    <aware_of_module>org.openmrs.module.legacyui</aware_of_module>
+	</aware_of_modules>
 
 	<!-- /Base Module Properties -->
 

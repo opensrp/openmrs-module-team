@@ -25,18 +25,18 @@ import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentat
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
+import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
-import org.openmrs.module.webservices.rest.web.v1_0.controller.ComplexDataDelegatingCrudResource;
 
 /**
  * @author Muhammad Safwan & Zohaib Masood
  * 
  */
 
-@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teammember", supportedClass = TeamMember.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*" })
-public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource<TeamMember> {
+@Resource(name = RestConstants.VERSION_1 + TeamModuleResourceController.TEAMMODULE_NAMESPACE + "/teammember", supportedClass = TeamMember.class, supportedOpenmrsVersions = { "1.8.*", "1.9.*, 1.10.*, 1.11.*", "1.12.*", "2.0.*", "2.1.*" })
+public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMember> {
 
 	@Override
 	public TeamMember newDelegate() {
@@ -94,25 +94,6 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 	}
 
 	@Override
-	public SimpleObject subresourceSave(TeamMember delegate, String subResource, SimpleObject post, RequestContext context) {
-		if(subResource.equals("team") && post.get("team") != null) {//post.get("team") == new team id
-			delegate.setTeam(Context.getService(TeamService.class).getTeam(Integer.parseInt(post.get("team").toString())));
-			Context.getService(TeamMemberService.class).saveTeamMember(delegate);
-			List<TeamMember> teamMembers = new ArrayList<>();
-			teamMembers.add(delegate);
-			return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
-		}
-		else if(subResource.equals("role") && post.get("role") != null) {//post.get("team") == new team id
-			delegate.setTeamRole(Context.getService(TeamRoleService.class).getTeamRoleById(Integer.parseInt(post.get("role").toString())));
-			Context.getService(TeamMemberService.class).saveTeamMember(delegate);
-			List<TeamMember> teamMembers = new ArrayList<>();
-			teamMembers.add(delegate);
-			return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
-		}
-		else { return null; }
-	}
-	
-	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("identifier");
@@ -120,10 +101,10 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 		description.addProperty("leaveDate");
 		description.addProperty("isDataProvider");
 		description.addProperty("patients");
-		description.addRequiredProperty("team");
+		description.addProperty("team");
+		description.addProperty("teamRole");
 		description.addRequiredProperty("person");
 		description.addRequiredProperty("locations");
-		description.addRequiredProperty("teamRole");
 		return description;
 	}
 	
@@ -134,6 +115,7 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 		description.addProperty("person");	
 		description.addProperty("locations");
 		description.addProperty("team");
+		description.addProperty("teamRole");
 		description.addProperty("patients");
 		description.addProperty("subTeams");
 		description.addProperty("voided");
@@ -235,11 +217,11 @@ public class TeamMemberRequestResource extends ComplexDataDelegatingCrudResource
 	
 	@PropertyGetter("subTeams")
 	public List<Team> getSubTeam(TeamMember teamMember) {
-		List<Team> teams = Context.getService(TeamService.class).getSubTeams(teamMember); if(teams == null) { return null; } return teams; 
+		List<Team> teams = Context.getService(TeamService.class).getSubTeams(teamMember.getId()); if(teams == null) { return null; } return teams; 
 	}
 	
 	@PropertyGetter("subTeamRoles")
 	public List<TeamRole> getSubTeamRole(TeamMember teamMember) { 
-		List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).getSubTeamRoles(teamMember); if(teamRoles == null) { return null; } return teamRoles; 
+		List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).getSubTeamRoles(teamMember.getId()); if(teamRoles == null) { return null; } return teamRoles; 
 	}
 }

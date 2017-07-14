@@ -36,6 +36,7 @@
 <script type="text/javascript" src="/openmrs/moduleResources/teammodule/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
+	var headerArrayLength = 9;
 	var teamRoles = [];
 	$(document).ready(function() {
 		$('#historyDialog').hide();
@@ -45,7 +46,7 @@
 		tbody= document.createElement("TBODY");
 		tbody.id= "tbody";
 		var  data = $.get("/openmrs/ws/rest/v1/team/teamrole?v=full", function(teamRoleData) {
-			teamRoles = teamRoleData.results;
+			teamRoles = teamRoleData.results; 
 			GenerateTable(tbody);
 			table.appendChild(tbody);
 			$('#general').DataTable({
@@ -119,7 +120,7 @@
     	else {
 	    	row = tbody.insertRow(-1);
 	        var cell = row.insertCell(-1);
-	    	cell.colSpan= headerArray.length
+	    	cell.colSpan = headerArrayLength;
     		cell.innerHTML = "<strong>No Records Found</strong>";
 	    	cell.setAttribute("style", "border: 1px solid; text-align: center; background-color: #bbccf7");
     	}
@@ -226,9 +227,9 @@
 				success : function(result) { var teamRole = result;
 					for (var i = 0; i < teamRoles.length; i++) {
 				    	if(teamRoles[i].uuid.toString() === teamRole.uuid.toString()) { 
-							saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.name.toString(), teamRoles[i].name.toString(), "TEAM_ROLE_EDITED", "");
-							saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.identifier.toString(), teamRoles[i].identifier.toString(), "TEAM_ROLE_EDITED", "");
-							saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.ownsTeam.toString(), teamRoles[i].ownsTeam.toString(), "TEAM_ROLE_EDITED", "");
+							if(teamRole.name.toString() === teamRoles[i].name.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.name.toString(), teamRoles[i].name.toString(), "TEAM_ROLE_EDITED", ""); } 
+							if(teamRole.identifier.toString() === teamRoles[i].identifier.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.identifier.toString(), teamRoles[i].identifier.toString(), "TEAM_ROLE_EDITED", ""); } 
+							if(teamRole.ownsTeam.toString() === teamRoles[i].ownsTeam.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.ownsTeam.toString(), teamRoles[i].ownsTeam.toString(), "TEAM_ROLE_EDITED", ""); } 
 				    		teamRoles[i].display = teamRole.display; 
 				    		teamRoles[i].name = teamRole.name; 
 				    		teamRoles[i].identifier = teamRole.identifier; 
@@ -260,8 +261,8 @@
 				success : function(result) { var teamRole = result;
 					for (var i = 0; i < teamRoles.length; i++) {
 				    	if(teamRoles[i].uuid.toString() === teamRole.uuid.toString()) { 
-							saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.reportTo.name.toString(), teamRoles[i].reportTo.name.toString(), "TEAM_ROLE_EDITED", "");
-							teamRoles[i].reportTo = teamRole.reportTo; 
+				    		if(teamRoles[i].reportTo !== null && teamRole.reportTo !== null) { if(teamRole.reportTo.name.toString() === teamRoles[i].reportTo.name.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.reportTo.name.toString(), teamRoles[i].reportTo.name.toString(), "TEAM_ROLE_EDITED", ""); } } else { var newData = ""; var oldData = ""; if(teamRoles[i].reportTo === null) { newData = teamRole.reportTo.name.toString(); oldData = ""; } if(teamRole.reportTo === null) { newData = ""; oldData = teamRoles[i].reportTo.name.toString(); } saveLog("teamRole", teamRoles[i].uuid.toString(), newData, oldData, "TEAM_ROLE_EDITED", ""); }
+				    		teamRoles[i].reportTo = teamRole.reportTo; 
 			    		}
 				    	if(teamRoles[i].name === reportBy) { (teamRoles[i].reportByName).push(teamRole.name); }
 				    	if(teamRoles[i].name === reportByName) { teamRoles[i].reportByName = remove(teamRoles[i].reportByName, teamRole.name); }
@@ -294,7 +295,7 @@
 						for (var i = 0; i < teamRoles.length; i++) {
 					    	if(teamRoles[i].uuid.toString() === teamRole.uuid.toString()) {
 					    		if(teamRole.voidReason === null) { teamRole.voidReason = ""; }
-								saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.voided.toString()+"-"+teamRole.voidReason.toString(), teamRoles[i].voided.toString()+"-"+teamRoles[i].voidReason.toString(), "TEAM_ROLE_VOIDED", "");
+								if(teamRole.voided.toString()+"-"+teamRole.voidReason.toString() === teamRoles[i].voided.toString()+"-"+teamRoles[i].voidReason.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.voided.toString()+"-"+teamRole.voidReason.toString(), teamRoles[i].voided.toString()+"-"+teamRoles[i].voidReason.toString(), "TEAM_ROLE_VOIDED", ""); }
 					    		teamRoles[i].voided = teamRole.voided;
 					    		teamRoles[i].voidReason = teamRole.voidReason;
 					    		var tbody = document.getElementById("tbody");
@@ -351,8 +352,6 @@
 
 <h2 align="center">Team Roles</h2>
 
-<!-- <a href="/openmrs/module/teammodule/teamMemberView.form" style="float: right; padding: 5px;" title="View Roles">View Members</a>
-<a href="/openmrs/module/teammodule/team.form" style="float: right; padding: 5px;" title="View Teams">View Team</a> -->
 <a href="/openmrs/module/teammodule/addRole.form" style="float: right;" title="Add Team Member"><img src="/openmrs/moduleResources/teammodule/img/plus.png" style=" width: 50px; width: 50px;position: relative; top: -10px; right: 10px; " ></a>
 
 <h3 id="errorHead" style="color: red; display: inline">${error}</h3>

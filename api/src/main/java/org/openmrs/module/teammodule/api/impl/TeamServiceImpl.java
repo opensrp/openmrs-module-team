@@ -7,11 +7,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Location;
 import org.openmrs.api.impl.BaseOpenmrsService;
 //import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.Team;
-import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.api.db.TeamDAO;
 
@@ -69,13 +67,13 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		return dao.searchTeam(name);
 	}
 	
-	public Team getTeamBySupervisor(TeamMember teamSupervisor) {
-		return dao.getTeamBySupervisor(teamSupervisor);
+	public Team getTeamBySupervisor(Integer teamSupervisorId) {
+		return dao.getTeamBySupervisor(teamSupervisorId);
 	}
 
 	@Override
-	public List<Team> getTeambyLocation(Location locationId, Integer offset, Integer pageSize) {
-		return dao.getTeambyLocation(locationId,offset, pageSize);
+	public List<Team> getTeamByLocation(Integer locationId, Integer offset, Integer pageSize) {
+		return dao.getTeamByLocation(locationId,offset, pageSize);
 	}
 
 	@Override
@@ -84,12 +82,12 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 	}
 
 	@Override
-	public Team getTeam(String teamName, int locationid) {
-		return dao.getTeam(teamName,locationid);
+	public Team getTeam(String teamName, Integer locationid) {
+		return dao.getTeam(teamName, locationid);
 	}
 
 	@Override
-	public List<Team> getSubTeams(TeamMember teamSupervisor) {
-		return dao.getSubTeams(teamSupervisor);
+	public List<Team> getSubTeams(Integer teamSupervisorId) {
+		return dao.getSubTeams(teamSupervisorId);
 	}
 }
