@@ -1,20 +1,11 @@
+Team Management Module 
+======================
 
-*** Team Management Module ***
-Contributors: IHS Software
-Type: Free, Open-source 
-Requires: OpenMRS 1.9.2 or higher, OpenMRS UI Framework 3.2 or higher, HTML Form Entry 2.3 or higher License: GPLv3
+**Contributors:** IHS (Interactive Health Solutions)
+**License:** GPL-3.0 - http://www.gnu.org/licenses/gpl-3.0.html
+**Wiki:** https://wiki.openmrs.org/display/docs/Team+Management+Module
 
-*** Description *** This module allows the user to manage data providers and users in teams. Each team has members and only one team lead. User can easily transfer member to another team, make new team lead, add members, view history etc.
+**Description:** Team Management module is an OpenMRS module that extends OpenMRS to allow management of multiple teams of a project. It allows users to add/edit/delete team role, team and team members. Each team hierarchy can own any team, team has only one supervisor. User can easily transfer member to another team/team hierarchy, make a new team supervisor, make new team hierarchy supervisor (which itself would be another team hierarchy), view team hierarchy/members/teams, view team hierarchy/team/team members history.
 
-*** Installation ***
+**REST Cookbook:** https://wiki.openmrs.org/display/docs/Team+Management+Module+For+Developers
 
-JDK 1.7
-Install OpenMRS 1.9.2 or higher
-*** Required Modules ***
-
-OpenMRS UI Framework 3.2 or higher
-HTML Form Entry 2.3 or higher
-*** Re-usability ***
-It's a general module that can be attached to any project that contains teams and can be modified as per requirements.
-=======
-# openmrs-module-team
