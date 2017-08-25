@@ -213,7 +213,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 				.getCurrentSession()
 				.createQuery(
 						"FROM TeamMember tm join tm.person p join tm.team t "
-						+ " where t.teamName = :id or t.teamIdentifier = :id or t.uuid = :id")
+						+ " where (t.teamName = :id or t.teamIdentifier = :id or t.uuid = :id) AND tm.voided <> true")
 				.setString("id", teamIdentifier).setResultTransformer(new ResultTransformer() {
 					private static final long serialVersionUID = 1L;
 
