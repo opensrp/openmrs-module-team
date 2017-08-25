@@ -203,7 +203,7 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamMember> searchMemberByTeam(String name, int teamId) {
+	public List<TeamMember> searchMemberByTeam(String teamIdentifier) {
 		/*
 		 * return sessionFactory.getCurrentSession().createQuery(
 		 * "from TeamMember tm join tm.person p join p.names pn where pn.givenName like :name"
@@ -212,17 +212,13 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		return sessionFactory
 				.getCurrentSession()
 				.createQuery(
-						"from TeamMember tm join tm.person p join p.names pn join tm.team t where pn.givenName like :name or pn.familyName like :name or tm.identifier like :name and t.teamId = :teamId")
-				.setString("name", "%" + name + "%").setInteger("teamId", teamId).setResultTransformer(new ResultTransformer() {
-					@SuppressWarnings("rawtypes")
-					final Map<Integer, Date> tmMap = new LinkedHashMap();
-
+						"FROM TeamMember tm join tm.person p join tm.team t "
+						+ " where t.teamName = :id or t.teamIdentifier = :id or t.uuid = :id")
+				.setString("id", teamIdentifier).setResultTransformer(new ResultTransformer() {
 					private static final long serialVersionUID = 1L;
 
 					public Object transformTuple(Object[] result, String[] aliases) {
 						TeamMember tm = (TeamMember) result[0];
-						tmMap.put(tm.getTeamMemberId(), tm.getJoinDate());
-						// Put in map so we can attach comment count later
 						return tm;
 					}
 

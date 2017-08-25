@@ -103,6 +103,11 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 
 	@Override
 	public SimpleObject search(RequestContext context) {
+		if(context.getParameter("team") != null){
+			List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchMemberByTeam(context.getParameter("team"));
+			return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
+		}
+		
 		List<TeamMember> memberList = Context.getService(TeamMemberService.class).searchMember(context.getParameter("q"));
 		return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
 	}

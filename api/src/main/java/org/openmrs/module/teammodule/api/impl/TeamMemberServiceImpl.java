@@ -94,8 +94,8 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 		return dao.searchMember(name);
 	}
 	
-	public List<TeamMember> searchMemberByTeam(String name,int teamId){
-		return dao.searchMemberByTeam(name, teamId);
+	public List<TeamMember> searchMemberByTeam(String teamIdentifier){
+		return dao.searchMemberByTeam(teamIdentifier);
 	}
 	
 	public TeamMember getTeamMember(String uuid){

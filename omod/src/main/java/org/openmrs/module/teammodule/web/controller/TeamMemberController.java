@@ -92,7 +92,7 @@ public class TeamMemberController {
 			if (memberName == null) {
 				teamMember = Context.getService(TeamMemberService.class).getTeamMembers(team, null, null, null);
 			} else {
-				teamMember = Context.getService(TeamMemberService.class).searchMemberByTeam(memberName, Integer.parseInt(teamId));
+				teamMember = Context.getService(TeamMemberService.class).searchMemberByTeam(team.getUuid());
 			}
 			for (int i = 0; i < teamMember.size(); i++) {
 				/*
