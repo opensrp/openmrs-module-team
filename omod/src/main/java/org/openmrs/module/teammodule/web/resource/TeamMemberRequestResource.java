@@ -6,6 +6,7 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.Person;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.api.TeamMemberService;
@@ -13,6 +14,7 @@ import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceContro
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
@@ -64,6 +66,7 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 				description.addProperty("uuid");
 				description.addProperty("location");
 				description.addProperty("team");
+				description.addProperty("user");				
 				description.addProperty("patients", Representation.REF);
 			}
 		}
@@ -112,4 +115,9 @@ public class TeamMemberRequestResource extends DelegatingCrudResource<TeamMember
 		return new NeedsPaging<TeamMember>(memberList, context).toSimpleObject(this);
 	}
 	
+	@PropertyGetter("user")
+	public User getUser(TeamMember member){
+		List<User> user = Context.getUserService().getUsersByPerson(member.getPerson(), false);
+		return user.size()>0?user.get(0):null;
+	}
 }
