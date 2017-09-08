@@ -74,47 +74,50 @@
 	function GenerateTable(tbody) {
     	if(teamRoles.length > 0) {
 			for(var i=0;i<teamRoles.length;i++) {
-				row = tbody.insertRow(-1); row.setAttribute("role", "row"); 
-		    	if(i%2 === 0) { row.setAttribute("class", "odd"); } else { row.setAttribute("class", "even"); }
-				/* Edit */
-				var cell = row.insertCell(-1);
-		        cell.innerHTML = "<a id='editTeamRoleLink' name='editTeamRoleLink' title='Edit Team Role' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleInfo"+"\");' ><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: left;' ></a>";
-				/* Identifier */ 
-				var cell = row.insertCell(-1);
-				cell.innerHTML = "<a id='editTeamRoleIdentifierLink' name='editTeamRoleIdentifierLink' title='Team Role Detail' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleDetail"+"\");'>"+teamRoles[i].identifier+"</a>";
-				/* Name */
-				var cell = row.insertCell(-1);
-				cell.innerHTML = teamRoles[i].name;
-				/* Owns Team */
-				var cell = row.insertCell(-1);
-				cell.innerHTML = teamRoles[i].ownsTeam;
-				/* Report To */
-				var cell = row.insertCell(-1);
-				if(teamRoles[i].reportTo === null) { cell.innerHTML = "<a id='editTeamRoleReportToLink' name='editTeamRoleReportToLink' title='Edit Team Role Report To' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleReportToInfo"+"\");'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: right;' ></a>"; } 
-				else { cell.innerHTML = teamRoles[i].reportTo.name + "<a id='editTeamRoleReportToLink' name='editTeamRoleReportToLink' title='Edit Team Role Report To' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleReportToInfo"+"\");'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: right;' ></a>"; }
-				/* Report By */
-				var cell = row.insertCell(-1);
-				if(teamRoles[i].reportByName !== null) { 
-					var reportBy = ""; 
-					for(var j=0; j<teamRoles[i].reportByName.length; j++) { 
-						if(j===teamRoles[i].reportByName.length-1) { reportBy += "<li>" + teamRoles[i].reportByName[j] + "</li>"; } 
-						else { reportBy += "<li>" + teamRoles[i].reportByName[j] + "</li>"; } 
-					} 
-					if(teamRoles[i].reportByName.length > 0) { cell.innerHTML = reportBy; } 
-					else { cell.innerHTML = reportBy; } 
+				if(teamRoles[i].voided === true) { }
+				else {
+					row = tbody.insertRow(-1); row.setAttribute("role", "row"); 
+			    	if(i%2 === 0) { row.setAttribute("class", "odd"); } else { row.setAttribute("class", "even"); }
+					/* Edit */
+					var cell = row.insertCell(-1);
+			        cell.innerHTML = "<a id='editTeamRoleLink' name='editTeamRoleLink' title='Edit Team Role' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleInfo"+"\");' ><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: left;' ></a>";
+					/* Identifier */ 
+					var cell = row.insertCell(-1);
+					cell.innerHTML = "<a id='editTeamRoleIdentifierLink' name='editTeamRoleIdentifierLink' title='Team Role Detail' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleDetail"+"\");'>"+teamRoles[i].identifier+"</a>";
+					/* Name */
+					var cell = row.insertCell(-1);
+					cell.innerHTML = teamRoles[i].name;
+					/* Owns Team */
+					var cell = row.insertCell(-1);
+					cell.innerHTML = teamRoles[i].ownsTeam;
+					/* Report To */
+					var cell = row.insertCell(-1);
+					if(teamRoles[i].reportTo === null) { cell.innerHTML = "<a id='editTeamRoleReportToLink' name='editTeamRoleReportToLink' title='Edit Team Role Report To' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleReportToInfo"+"\");'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: right;' ></a>"; } 
+					else { cell.innerHTML = teamRoles[i].reportTo.name + "<a id='editTeamRoleReportToLink' name='editTeamRoleReportToLink' title='Edit Team Role Report To' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleReportToInfo"+"\");'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: right;' ></a>"; }
+					/* Report By */
+					var cell = row.insertCell(-1);
+					if(teamRoles[i].reportByName !== null) { 
+						var reportBy = ""; 
+						for(var j=0; j<teamRoles[i].reportByName.length; j++) { 
+							if(j===teamRoles[i].reportByName.length-1) { reportBy += "<li>" + teamRoles[i].reportByName[j] + "</li>"; } 
+							else { reportBy += "<li>" + teamRoles[i].reportByName[j] + "</li>"; } 
+						} 
+						if(teamRoles[i].reportByName.length > 0) { cell.innerHTML = reportBy; } 
+						else { cell.innerHTML = reportBy; } 
+					}
+					else { cell.innerHTML = ""; }
+					/* Voided */
+					var cell = row.insertCell(-1);
+					cell.innerHTML = teamRoles[i].voided + "<a id='editTeamRoleVoidedLink' name='editTeamRoleVoidedLink' title='Void Team Role' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleVoidedInfo"+"\");'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: right;' ></a>";;
+					/* Total Members */
+			        var cell = row.insertCell(-1);
+			        if(teamRoles[i].members === 0) { cell.innerHTML = ""; } else { cell.innerHTML = "<a id='teamRoleMemberLink' name='teamRoleMemberLink' title='Team Role Members' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleMemberInfo"+"\");'>"+teamRoles[i].members+"</a> Members"; }
+					/* History */
+					var cell = row.insertCell(-1);
+			        cell.innerHTML = "<a id='teamRoleHistoryLink' name='teamRoleHistoryLink' title='Team Role History' style='cursor:pointer' onClick='teamsHierarchyHistory(\""+teamRoles[i].uuid+"\")'><img src='/openmrs/moduleResources/teammodule/img/history.png' style=' width: 20px; height: 20px; padding-right: 10%; float: right;' ></a>";
+				
+	    	    	if(teamRoles[i].voidReason === null) { teamRoles[i].voidReason = ""; }
 				}
-				else { cell.innerHTML = ""; }
-				/* Voided */
-				var cell = row.insertCell(-1);
-				cell.innerHTML = teamRoles[i].voided + "<a id='editTeamRoleVoidedLink' name='editTeamRoleVoidedLink' title='Void Team Role' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleVoidedInfo"+"\");'><img src='/openmrs/moduleResources/teammodule/img/edit.png' style=' width: 20px; height: 20px; padding-left: 10%; float: right;' ></a>";;
-				/* Total Members */
-		        var cell = row.insertCell(-1);
-		        if(teamRoles[i].members === 0) { cell.innerHTML = ""; } else { cell.innerHTML = "<a id='teamRoleMemberLink' name='teamRoleMemberLink' title='Team Role Members' style='cursor:pointer' onclick='editTeamRole(\""+teamRoles[i].uuid+"\",\""+"roleMemberInfo"+"\");'>"+teamRoles[i].members+"</a> Members"; }
-				/* History */
-				var cell = row.insertCell(-1);
-		        cell.innerHTML = "<a id='teamRoleHistoryLink' name='teamRoleHistoryLink' title='Team Role History' style='cursor:pointer' onClick='teamsHierarchyHistory(\""+teamRoles[i].uuid+"\")'><img src='/openmrs/moduleResources/teammodule/img/history.png' style=' width: 20px; height: 20px; padding-right: 10%; float: right;' ></a>";
-			
-    	    	if(teamRoles[i].voidReason === null) { teamRoles[i].voidReason = ""; }
 			}
     	}
     	else {
@@ -177,7 +180,7 @@
 		    		$("#detailTeamRoleDiv").dialog({ width: "500px", height: "auto", title: "Team Role Detail" , closeText: "", modal: true, open: onDialogOpen });
 				}
 				else if(type === "roleInfo") {
-					var html = "<form><table style=' width: 100%; '><tr><td style=' font-size: 18px; '>Name: </td><td><input style=' width: 95%; font-size: 14px; padding: 5px; ' type'text' id='teamRoleName"+i+"' name='teamRoleName"+i+"' value='"+teamRoles[i].name+"'></td></tr><td style=' font-size: 18px; '>Identifier: </td><td><input style=' width: 95%; font-size: 14px; padding: 5px; ' type'text' id='teamRoleIdentifier"+i+"' name='teamRoleIdentifier"+i+"' value='"+teamRoles[i].identifier+"'></td></tr><tr><td style=' font-size: 18px; '>Owns Team: </td><td><select style=' font-size: 14px; padding: 5px; width: 100%; ' id='teamRoleOwnsTeam"+i+"' name='teamRoleOwnsTeam"+i+"' title='Owns Team'>";
+					var html = "<h3 id='infoError' name='infoError' style='color: red; display: inline'></h3><form><table style=' width: 100%; '><tr><td style=' font-size: 18px; '>Name: </td><td><input style=' width: 95%; font-size: 14px; padding: 5px; ' type'text' id='teamRoleName"+i+"' name='teamRoleName"+i+"' value='"+teamRoles[i].name+"' maxlength='45' ></td></tr><tr><td style=' font-size: 18px; '>Identifier: </td><td><input style=' width: 95%; font-size: 14px; padding: 5px; ' type'text' id='teamRoleIdentifier"+i+"' name='teamRoleIdentifier"+i+"' value='"+teamRoles[i].identifier+"' maxlength='45' ></td></tr><tr><td style=' font-size: 18px; '>Owns Team: </td><td><select style=' font-size: 14px; padding: 5px; width: 100%; ' id='teamRoleOwnsTeam"+i+"' name='teamRoleOwnsTeam"+i+"' title='Owns Team'>";
 					if(teamRoles[i].ownsTeam) { html += "<option value='true' selected>True</option><option value='false' >False</option>"; }
 					else { html += "<option value='true' >True</option><option value='false' selected>False</option>"; }
 					html += "</select></tr><tr><td></td><td></td></tr><tr><td></td><td><button type='button' id='teamRoleEditClose' name='teamRoleEditClose' onclick='editTeamRoleClose(\""+i+"\",\""+"roleInfo"+"\");' style='float: left;'>Cancel</button><button type='button' id='teamRoleEditSuccess' name='teamRoleEditSuccess' onclick='editTeamRoleSuccess(\""+i+"\",\""+"roleInfo"+"\");' style='float: right;'>Save</button></td></tr></table></form>";
@@ -201,11 +204,11 @@
 					$("#editTeamRoleReportToDiv").dialog({ width: "500px", height: "auto", title: "Team Role - Edit" , closeText: "", modal: true, open: onDialogOpen });
 				}
 				else if(type === "roleVoidedInfo") {
-	    			var html = "<h3 id='voidError' name='voidError' style='color: red; display: inline'></h3><form><table style=' width: 100%; '><tr><td style=' font-size: 18px; '>Voided: </td><td><select id='teamRoleVoided"+i+"' name='teamRoleVoided"+i+"' style=' font-size: 14px; padding: 5px; width: 100%; '>";
+	    			var html = "<h3 id='voidError' name='voidError' style='color: red; display: inline'></h3><form><table style=' width: 100%; '><tr><td style=' font-size: 18px; '>Voided: </td><td><select id='teamRoleVoided"+i+"' name='teamRoleVoided"+i+"' style=' font-size: 14px; padding: 5px; width: 100%; ' onchange='voidReasonView(\""+i+"\");'>";
 	    			if(teamRoles[i].voided == true) { html += "<option value='"+teamRoles[i].voided+"' selected >"+teamRoles[i].voided+"</option><option value='false' >false</option>"; }
 	    			else if(teamRoles[i].voided == false) { html += "<option value='true' >true</option><option value='"+teamRoles[i].voided+"' selected >"+teamRoles[i].voided+"</option>"; }
-	    			html += "</select></td></tr><tr><td style=' font-size: 18px; '>Void Reason: </td><td><textarea style=' width: 95%; font-size: 14px; padding: 5px; ' id='teamRoleVoidReason"+i+"' name='teamRoleVoidReason"+i+"' value='"+teamRoles[i].voidReason+"'></textarea></td></tr><tr><td></td><td></td></tr><tr><td></td><td><button type='button' id='teamRoleVoidedEditClose' name='teamRoleVoidedEditClose' onclick='editTeamRoleClose(\""+i+"\",\""+"roleVoidedInfo"+"\");' style='float: left;'>Cancel</button><button type='button' id='teamRoleVoidedEditSuccess' name='teamRoleVoidedEditSuccess' onclick='editTeamRoleSuccess(\""+i+"\",\""+"roleVoidedInfo"+"\");' style='float: right;'>Save</button></td></tr></table></form>";	    			
-	    			document.getElementById("editTeamRoleVoidedDiv").innerHTML = html;
+	    			html += "</select></td></tr><tr><td style=' font-size: 18px; '>Void Reason: </td><td><textarea style=' width: 95%; font-size: 14px; padding: 5px; ' id='teamRoleVoidReason"+i+"' name='teamRoleVoidReason"+i+"' value='"+teamRoles[i].voidReason+"' maxlength='255' rows='5' ></textarea></td></tr><tr><td></td><td></td></tr><tr><td></td><td><button type='button' id='teamRoleVoidedEditClose' name='teamRoleVoidedEditClose' onclick='editTeamRoleClose(\""+i+"\",\""+"roleVoidedInfo"+"\");' style='float: left;'>Cancel</button><button type='button' id='teamRoleVoidedEditSuccess' name='teamRoleVoidedEditSuccess' onclick='editTeamRoleSuccess(\""+i+"\",\""+"roleVoidedInfo"+"\");' style='float: right;'>Save</button></td></tr></table></form>";	    			
+	    			document.getElementById("editTeamRoleVoidedDiv").innerHTML = html; voidReasonView(i);
 		    		$("#editTeamRoleVoidedDiv").dialog({ width: "500px", height: "auto", title: "Team Role - Void" , closeText: "", modal: true, open: onDialogOpen });
 	    		}
 			}
@@ -213,34 +216,45 @@
 	}
 	function editTeamRoleSuccess(index, type) {
 		if(type === "roleInfo") {
-			var uuid = teamRoles[index].uuid;
-			var name = document.getElementById("teamRoleName"+index).value;
-			var identifier = document.getElementById("teamRoleIdentifier"+index).value;
-	    	var ownsTeam = document.getElementById("teamRoleOwnsTeam"+index).value;
-	    	var url = "/openmrs/ws/rest/v1/team/teamrole/"+uuid;
-			var data = '{ "name" : "' + name + '", "identifier" : "' + identifier + '", "ownsTeam" : "' + ownsTeam + '" }';
-			$.ajax({
-				url : url,
-				data : data,
-			 	type: "POST",
-     			contentType: "application/json",
-				success : function(result) { var teamRole = result;
-					for (var i = 0; i < teamRoles.length; i++) {
-				    	if(teamRoles[i].uuid.toString() === teamRole.uuid.toString()) { 
-							if(teamRole.name.toString() === teamRoles[i].name.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.name.toString(), teamRoles[i].name.toString(), "TEAM_ROLE_EDITED", ""); } 
-							if(teamRole.identifier.toString() === teamRoles[i].identifier.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.identifier.toString(), teamRoles[i].identifier.toString(), "TEAM_ROLE_EDITED", ""); } 
-							if(teamRole.ownsTeam.toString() === teamRoles[i].ownsTeam.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.ownsTeam.toString(), teamRoles[i].ownsTeam.toString(), "TEAM_ROLE_EDITED", ""); } 
-				    		teamRoles[i].display = teamRole.display; 
-				    		teamRoles[i].name = teamRole.name; 
-				    		teamRoles[i].identifier = teamRole.identifier; 
-				    		teamRoles[i].ownsTeam = teamRole.ownsTeam; 
-			    		}
-					} var tbody = document.getElementById("tbody");
-					tbody.innerHTML = ""; GenerateTable(tbody);
-					document.getElementById("errorHead").innerHTML = ""; 
-					document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>"; 
-					$('#editTeamRoleDiv').dialog('close'); 
-				}
+			var otherTeamRoleNames = []; var otherTeamRoleIdentifiers = [];
+			jQuery.ajax({
+				url: "/openmrs/ws/rest/v1/team/teamrole?v=full",
+				success : function(test) { var otherTeamRoles = test.results; 
+					for (var i = 0; i < otherTeamRoles.length; i++) { if(otherTeamRoles[i].uuid.toString() !== teamRoles[index].uuid.toString()) { otherTeamRoleNames.push(otherTeamRoles[i].name.toString()); otherTeamRoleIdentifiers.push(otherTeamRoles[i].identifier.toString()); } }
+					var uuid = teamRoles[index].uuid;
+					var name = document.getElementById("teamRoleName"+index).value;
+				 	var identifier = document.getElementById("teamRoleIdentifier"+index).value;
+			    	var ownsTeam = document.getElementById("teamRoleOwnsTeam"+index).value;
+			    	if((!(otherTeamRoleNames.includes(name))) && (!(otherTeamRoleIdentifiers.includes(identifier)))) {
+			    		var url = "/openmrs/ws/rest/v1/team/teamrole/"+uuid;
+						var data = '{ "name" : "' + name + '", "identifier" : "' + identifier + '", "ownsTeam" : "' + ownsTeam + '" }';
+						$.ajax({
+							url : url,
+							data : data,
+						 	type: "POST",
+			     			contentType: "application/json",
+							success : function(result) { var teamRole = result;
+								for (var i = 0; i < teamRoles.length; i++) {
+							    	if(teamRoles[i].uuid.toString() === teamRole.uuid.toString()) { 
+										if(teamRole.name.toString() === teamRoles[i].name.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.name.toString(), teamRoles[i].name.toString(), "TEAM_ROLE_EDITED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>"; } 
+										if(teamRole.identifier.toString() === teamRoles[i].identifier.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.identifier.toString(), teamRoles[i].identifier.toString(), "TEAM_ROLE_EDITED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>"; } 
+										if(teamRole.ownsTeam.toString() === teamRoles[i].ownsTeam.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.ownsTeam.toString(), teamRoles[i].ownsTeam.toString(), "TEAM_ROLE_EDITED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>"; } 
+							    		teamRoles[i].display = teamRole.display; 
+							    		teamRoles[i].name = teamRole.name; 
+							    		teamRoles[i].identifier = teamRole.identifier; 
+							    		teamRoles[i].ownsTeam = teamRole.ownsTeam; 
+						    		}
+								} var tbody = document.getElementById("tbody");
+								tbody.innerHTML = ""; GenerateTable(tbody);
+								$('#editTeamRoleDiv').dialog('close'); 
+							}
+						});
+			    	}
+					else { var str = "";
+						if(otherTeamRoleNames.includes(name)) { str += "Name must be unique."; if(otherTeamRoleIdentifiers.includes(identifier)) { str += " Identifier must be unique."; } }
+						else if(otherTeamRoleIdentifiers.includes(identifier)) { str += "Identifier must be unique."; } document.getElementById("infoError").innerHTML = str;
+					}
+				}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-ALL-TEAMS"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Reading All Team Roles</p>"; }
 			});
 		}
 		else if(type === "roleReportToInfo") {
@@ -261,15 +275,19 @@
 				success : function(result) { var teamRole = result;
 					for (var i = 0; i < teamRoles.length; i++) {
 				    	if(teamRoles[i].uuid.toString() === teamRole.uuid.toString()) { 
-				    		if(teamRoles[i].reportTo !== null && teamRole.reportTo !== null) { if(teamRole.reportTo.name.toString() === teamRoles[i].reportTo.name.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.reportTo.name.toString(), teamRoles[i].reportTo.name.toString(), "TEAM_ROLE_EDITED", ""); } } else { var newData = ""; var oldData = ""; if(teamRoles[i].reportTo === null) { newData = teamRole.reportTo.name.toString(); oldData = ""; } if(teamRole.reportTo === null) { newData = ""; oldData = teamRoles[i].reportTo.name.toString(); } saveLog("teamRole", teamRoles[i].uuid.toString(), newData, oldData, "TEAM_ROLE_EDITED", ""); }
+				    		if(teamRoles[i].reportTo !== null && teamRole.reportTo !== null) { 
+				    			if(teamRole.reportTo.name.toString() === teamRoles[i].reportTo.name.toString()) {} 
+				    			else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.reportTo.name.toString(), teamRoles[i].reportTo.name.toString(), "TEAM_ROLE_EDITED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>"; } 
+			    			}
+				    		else if(teamRoles[i].reportTo === null && teamRole.reportTo !== null) { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.reportTo.name.toString(), "", "TEAM_ROLE_EDITED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>"; }
+				    		else if(teamRoles[i].reportTo !== null && teamRole.reportTo === null) { saveLog("teamRole", teamRoles[i].uuid.toString(), "", teamRoles[i].reportTo.name.toString(), "TEAM_ROLE_EDITED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>"; } 
+				    		else { } 
 				    		teamRoles[i].reportTo = teamRole.reportTo; 
 			    		}
 				    	if(teamRoles[i].name === reportBy) { (teamRoles[i].reportByName).push(teamRole.name); }
 				    	if(teamRoles[i].name === reportByName) { teamRoles[i].reportByName = remove(teamRoles[i].reportByName, teamRole.name); }
 					} var tbody = document.getElementById("tbody");
 					tbody.innerHTML = ""; GenerateTable(tbody);
-					document.getElementById("errorHead").innerHTML = ""; 
-					document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>"; 
 					$('#editTeamRoleReportToDiv').dialog('close'); 
 				}
 			});
@@ -295,13 +313,11 @@
 						for (var i = 0; i < teamRoles.length; i++) {
 					    	if(teamRoles[i].uuid.toString() === teamRole.uuid.toString()) {
 					    		if(teamRole.voidReason === null) { teamRole.voidReason = ""; }
-								if(teamRole.voided.toString()+"-"+teamRole.voidReason.toString() === teamRoles[i].voided.toString()+"-"+teamRoles[i].voidReason.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.voided.toString()+"-"+teamRole.voidReason.toString(), teamRoles[i].voided.toString()+"-"+teamRoles[i].voidReason.toString(), "TEAM_ROLE_VOIDED", ""); }
+								if(teamRole.voided.toString()+"-"+teamRole.voidReason.toString() === teamRoles[i].voided.toString()+"-"+teamRoles[i].voidReason.toString()) {} else { saveLog("teamRole", teamRoles[i].uuid.toString(), teamRole.voided.toString()+"-"+teamRole.voidReason.toString(), teamRoles[i].voided.toString()+"-"+teamRoles[i].voidReason.toString(), "TEAM_ROLE_VOIDED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Role Voided Successfully</p>"; }
 					    		teamRoles[i].voided = teamRole.voided;
 					    		teamRoles[i].voidReason = teamRole.voidReason;
 					    		var tbody = document.getElementById("tbody");
 								tbody.innerHTML = ""; GenerateTable(tbody);
-								document.getElementById("errorHead").innerHTML = ""; 
-								document.getElementById("saveHead").innerHTML = "<p>Team Role Voided Successfully</p>";  
 								$('#editTeamRoleVoidedDiv').dialog('close'); 
 							}
 						}
@@ -339,6 +355,9 @@
 		var dialogHeads = document.getElementsByClassName("ui-dialog-title");  for (var loop = 0; loop < dialogHeads.length; loop++) {  dialogHeads[loop].setAttribute("style", "font-size: 18px;"); } 
 		var dialogCloseBtns = document.getElementsByClassName("ui-button-icon ui-icon ui-icon-closethick"); for (var loop = 0; loop < dialogCloseBtns.length; loop++) {  dialogCloseBtns[loop].setAttribute("style", "top: 0; left: 0; right: 0; bottom: 0;"); } 
 	}
+	function voidReasonView(id) {
+		if(document.getElementById("teamRoleVoided"+id).value === "true") { document.getElementById("teamRoleVoidReason"+id).disabled=false; } else { document.getElementById("teamRoleVoidReason"+id).disabled=true; }
+	}
 </script>
 
 <ul id="menu">
@@ -352,7 +371,7 @@
 
 <h2 align="center">Team Roles</h2>
 
-<a href="/openmrs/module/teammodule/addRole.form" style="float: right;" title="Add Team Member"><img src="/openmrs/moduleResources/teammodule/img/plus.png" style=" width: 50px; width: 50px;position: relative; top: -10px; right: 10px; " ></a>
+<a href="/openmrs/module/teammodule/addRole.form" style="float: right;" title="Add Team Role"><img src="/openmrs/moduleResources/teammodule/img/plus.png" style=" width: 50px; width: 50px;position: relative; top: -10px; right: 10px; " ></a>
 
 <h3 id="errorHead" style="color: red; display: inline">${error}</h3>
 <h3 id="saveHead" align="center" style="color: green">${saved}</h3>

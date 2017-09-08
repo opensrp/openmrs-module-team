@@ -58,8 +58,7 @@
 							success: function(data,status) { var myIdentifiers = []; 
 								for(var i=0; i<data.results.length; i++) { myIdentifiers.push(data.results[i].teamIdentifier); }
 								if(myIdentifiers.includes(id)) { str += "<br>Identifier must be unique"; }
-								document.getElementById("saveButton").disabled = false;
-								alertify.alert(str);
+								document.getElementById("saveButton").disabled = false; alertify.alert(str);
 							}, error: function(jqXHR, textStatus, errorThrown) { console.log(jqXHR); }
 						});
 					}
@@ -68,7 +67,7 @@
 							url:"/openmrs/ws/rest/v1/team/team?v=full&q="+id,
 							success: function(data,status) { var myIdentifiers = []; 
 								for(var i=0; i<data.results.length; i++) { myIdentifiers.push(data.results[i].teamIdentifier); }
-								if(myIdentifiers.includes(id)) { alertify.alert("Identifier must be unique"); alertify.alert(str); }
+								if(myIdentifiers.includes(id)) { str += "Identifier must be unique"; document.getElementById("saveButton").disabled = false; alertify.alert(str); }
 								else {
 									var url = "/openmrs/ws/rest/v1/team/team";
 									var data = '{ "teamName": "'+name+'", "location": "'+selectedValue+'", "teamIdentifier": "'+id+'", "supervisor": "'+supervisor+'" }';
@@ -77,7 +76,7 @@
 										data: data,
 										type: "POST",
 										contentType: "application/json",
-										success : function(result) { console.log("SUCCESS-TEAM"); resetForm();  saveLog("team", result.uuid.toString(), "", result.teamName.toString(), "TEAM_ADDED", ""); document.getElementById("saveButton").disabled = false; document.getElementById("errorHead").innerHTML = ""; document.getElementById("savedHead").innerHTML = "<p>Team Created Successfully</p>";
+										success : function(result) { console.log("SUCCESS-TEAM"); resetForm();  saveLog("team", result.uuid.toString(), result.teamName.toString(), "", "TEAM_ADDED", ""); document.getElementById("saveButton").disabled = false; document.getElementById("errorHead").innerHTML = ""; document.getElementById("savedHead").innerHTML = "<p>Team Created Successfully</p>";
 										}, error: function(jqXHR, textStatus, errorThrown) { console.log(jqXHR); document.getElementById("errorHead").innerHTML = "Error Occured While Creating Team"; document.getElementById("savedHead").innerHTML = ""; document.getElementById("saveButton").disabled = false; }
 									});
 								}

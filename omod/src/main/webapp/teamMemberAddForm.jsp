@@ -260,7 +260,7 @@
 											data : data,
 											type: "POST",
 											contentType: "application/json",
-											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); resetForm(); saveLog("teamMember", result.uuid.toString(), "", result.display.toString(), "TEAM_MEMBER_ADDED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
+											success : function(result) { console.log("SUCCESS-TEAM MEMBER"); resetForm(); saveLog("teamMember", result.uuid.toString(), result.display.toString(), "", "TEAM_MEMBER_ADDED", ""); document.getElementById("errorHead").innerHTML = ""; document.getElementById("saveHead").innerHTML = "<p>Team Member Created Successfully</p>";
 											}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-TEAM MEMBER"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
 										});
 									}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-PERSON IF"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Creating Team Member</p>"; }
