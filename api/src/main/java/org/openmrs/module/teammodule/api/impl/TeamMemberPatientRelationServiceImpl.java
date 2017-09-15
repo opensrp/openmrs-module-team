@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Location;
+import org.openmrs.Patient;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberPatientRelation;
@@ -37,8 +39,8 @@ public class TeamMemberPatientRelationServiceImpl extends BaseOpenmrsService imp
 		return dao.getTeamMemberPatientRelation(id);
 	}
 
-	public TeamMemberPatientRelation getTeamMemberPatientRelation(String uuid) {
-		return dao.getTeamMemberPatientRelation(uuid);
+	public TeamMemberPatientRelation getTeamMemberPatientRelationByUUID(String uuid) {
+		return dao.getTeamMemberPatientRelationByUUID(uuid);
 	}
 
 	public void updateTeamMemberPatientRelation(TeamMemberPatientRelation tmpr) {
@@ -49,8 +51,12 @@ public class TeamMemberPatientRelationServiceImpl extends BaseOpenmrsService imp
 		return dao.getTeamMemberPatientRelations(id);
 	}
 	
-	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(TeamMember tm) {
-		return dao.getTeamMemberPatientRelations(tm);
+	@Override
+	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(Integer teamMember, Integer patient,
+			String status,Integer location, Integer offset, Integer pageSize) {
+		
+		return dao.getTeamMemberPatientRelations(teamMember,patient,status,location, offset, pageSize);
+
 	}
 	
 }

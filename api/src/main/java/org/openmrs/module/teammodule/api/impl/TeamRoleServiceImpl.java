@@ -36,7 +36,7 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.updateTeamRole(TeamRole);
 	}
 
-	public List<TeamRole> getAllTeamRole(boolean ownsTeam, boolean voided, Integer offset, Integer pageSize) {
+	public List<TeamRole> getAllTeamRole(Boolean ownsTeam, Boolean voided, Integer offset, Integer pageSize) {
 		return dao.getAllTeamRole(ownsTeam, voided, offset, pageSize);
 	}
 
@@ -44,8 +44,8 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.purgeTeamRole(TeamRole);
 	}
 
-	public List<TeamRole> searchTeamRoleByRole(String role) {
-		return dao.searchTeamRoleByRole(role);
+	public List<TeamRole> searchTeamRole(String role) {
+		return dao.searchTeamRole(role);
 	}
 
 	public TeamRole getTeamRoleById(Integer id) {
@@ -62,7 +62,8 @@ private final Log log = LogFactory.getLog(this.getClass());
 	}
 
 	@Override
-	public List<TeamRole> searchTeamRoleReportBy(Integer id) {
-		return dao.searchTeamRoleReportBy(id);
+	public List<TeamRole> searchTeamRoleBySupervisorTeamRole(Integer teamRoleId) {
+		// TODO Auto-generated method stub
+		return dao.searchTeamRoleReportBy(teamRoleId);
 	}
 }

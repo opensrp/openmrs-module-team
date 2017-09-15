@@ -3,8 +3,10 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.teammodule.TeamLog;
 import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.TeamRoleLog;
+import org.openmrs.module.teammodule.api.TeamLogService;
 import org.openmrs.module.teammodule.api.TeamRoleLogService;
 import org.openmrs.module.teammodule.api.TeamRoleService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
@@ -85,10 +87,15 @@ public class TeamRoleLogRequestResource extends DataDelegatingCrudResource<TeamR
 	}
 
 	@Override
-	public TeamRoleLog save(TeamRoleLog delegate) {
+	public TeamRoleLog save(TeamRoleLog teamRoleLog) {
 		try {
-			if(delegate.getId() != null && delegate.getId() > 0) { Context.getService(TeamRoleLogService.class).updateTeamRoleLog(delegate); return delegate; }
-			else { Context.getService(TeamRoleLogService.class).saveTeamRoleLog(delegate); return delegate; }
+			if (teamRoleLog.getId() != null && teamRoleLog.getId() > 0) {
+				Context.getService(TeamRoleLogService.class).updateTeamRoleLog(teamRoleLog);
+				return teamRoleLog;
+			} else {
+				Context.getService(TeamRoleLogService.class).saveTeamRoleLog(teamRoleLog);
+				return teamRoleLog;
+			}
 		}
 		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }
 	}
@@ -105,14 +112,12 @@ public class TeamRoleLogRequestResource extends DataDelegatingCrudResource<TeamR
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		if(context.getParameter("q") != null) {
-			List<TeamRoleLog> teamRoleLogs = Context.getService(TeamRoleLogService.class).searchTeamRoleLog(Integer.parseInt(context.getParameter("q")),null,null);
-			return new NeedsPaging<TeamRoleLog>(teamRoleLogs, context).toSimpleObject(this);
-		} else if(context.getParameter("teamRole")!=null) {
-			TeamRole teamRole = Context.getService(TeamRoleService.class).getTeamRoleByUuid(context.getParameter("teamRole"));
+		if(context.getParameter("q")!=null) {
+			TeamRole teamRole = Context.getService(TeamRoleService.class).getTeamRoleByUuid(context.getParameter("q"));
 			List<TeamRoleLog> teamRoleLogs = Context.getService(TeamRoleLogService.class).searchTeamRoleLog(teamRole.getId(),null,null);
 			return new NeedsPaging<TeamRoleLog>(teamRoleLogs, context).toSimpleObject(this);
-		} else { return null; }
+		} 
+		return null; 
 	}
 
 	@PropertyGetter("display")
@@ -124,20 +129,24 @@ public class TeamRoleLogRequestResource extends DataDelegatingCrudResource<TeamR
 	
 	@Override
 	public TeamRoleLog getByUniqueId(String uuid) {
-		TeamRoleLog teamRoleLog = Context.getService(TeamRoleLogService.class).getTeamRoleLog(uuid);
+		TeamRoleLog teamRoleLog = Context.getService(TeamRoleLogService.class).getTeamRoleLogbyUuid(uuid);
 		if(teamRoleLog != null) { return teamRoleLog; }
 		else { return null; }
 	}
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
-		List<TeamRoleLog> teamRoleLogs = Context.getService(TeamRoleLogService.class).getAllLogs(0, 100);
-		return new NeedsPaging<TeamRoleLog>(teamRoleLogs, context);	
+		List<TeamRoleLog> teamRoleLogs;
+		
+		if(context.getParameter("offset")!=null && context.getParameter("size")!=null)
+		{
+			int offset=Integer.parseInt(context.getParameter("offset"));
+			int size=Integer.parseInt(context.getParameter("size"));
+			teamRoleLogs = Context.getService(TeamRoleLogService.class).getAllLogs(offset, size);
+			return new NeedsPaging<TeamRoleLog>(teamRoleLogs, context);	
+		}
+		teamRoleLogs = Context.getService(TeamRoleLogService.class).getAllLogs(null, null);
+		return new NeedsPaging<TeamRoleLog>(teamRoleLogs, context);
 	}
 	
-	@Override
-	public SimpleObject getAll(RequestContext context) throws ResponseException {
-		List<TeamRoleLog> teamRoleLogs = Context.getService(TeamRoleLogService.class).getAllLogs(null, null);
-		return new NeedsPaging<TeamRoleLog>(teamRoleLogs, context).toSimpleObject(this);
-	}
 }

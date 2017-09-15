@@ -59,7 +59,7 @@ public class TeamMemberResponsibilityController {
 		m=new HashedMap();
 		
 		/*List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember.get(i));*/
-		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamMemberPatientRelations(teamMember.get(i));
+		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamMemberPatientRelations(teamMember.get(i).getId(), null, null, null, null, null);
 		
 		m.put("size", tprs.size());
 		m.put("size", 0);
@@ -82,7 +82,7 @@ public class TeamMemberResponsibilityController {
 		model.addAttribute("memberName", teamMember.getPerson().getNames());
 		
 		/*List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamPatientRelations(teamMember);*/
-		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamMemberPatientRelations(teamMember);
+		List<TeamMemberPatientRelation> tprs =Context.getService(TeamMemberPatientRelationService.class).getTeamMemberPatientRelations(Integer.valueOf(memberId), null, null, null, null, null);
 		for(int i=0;i<tprs.size();i++)
 		{
 			m=new HashedMap();

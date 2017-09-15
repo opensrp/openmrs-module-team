@@ -39,7 +39,7 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 		
 	}
 
-	public TeamLog getTeamLog(Integer id) {
+	public TeamLog getTeamLog(int id) {
 		return (TeamLog) getCurrentSession().createQuery("from TeamLog teamLog where teamLog.logId = :id").setInteger("id", id).uniqueResult();
 	}
 
@@ -64,7 +64,7 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamLog> searchTeamLogByTeam(Integer team, Integer offset, Integer pageSize) {
+	public List<TeamLog> searchTeamLogByTeam(int team, Integer offset, Integer pageSize) {
 		Query createQuery=getCurrentSession().createQuery("from TeamLog teamLog where teamLog.team = :team").setInteger("team", team);
 		if( offset != null) {
 			createQuery.setFirstResult(offset);
@@ -75,7 +75,7 @@ public class HibernateTeamLogDAO implements TeamLogDAO{
 		return (List<TeamLog>) createQuery.list();
 	}
 
-	public TeamLog getTeamLog(String uuid) {
+	public TeamLog getTeamLogByUUID(String uuid) {
 		return (TeamLog) getCurrentSession().createQuery("from TeamLog teamLog where teamLog.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 

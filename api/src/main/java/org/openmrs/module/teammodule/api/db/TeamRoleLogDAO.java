@@ -18,7 +18,7 @@ public interface TeamRoleLogDAO {
 	
 	public List<TeamRoleLog> searchTeamRoleLog(String teamRole, Integer offset, Integer pageSize);
 
-	public TeamRoleLog getTeamRoleLog(String uuid);
+	public TeamRoleLog getTeamRoleLogByUuid(String uuid);
 
 	public List<TeamRoleLog> searchTeamRoleLog(Integer teamRoleId, Integer offset, Integer pageSize);
 }

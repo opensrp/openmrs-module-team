@@ -15,7 +15,7 @@ public interface TeamMemberLogService extends OpenmrsService {
 
 	public TeamMemberLog getTeamMemberLog(Integer id);
 	
-	public TeamMemberLog getTeamMemberLog(String uuid);
+	public TeamMemberLog getTeamMemberLogByUUID(String uuid);
 
 	public List<TeamMemberLog> getAllLogs(Integer offset, Integer pageSize);
 	

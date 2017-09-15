@@ -43,14 +43,14 @@ public class HibernateTeamRoleDAO implements TeamRoleDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamRole> getAllTeamRole(boolean ownsTeam, boolean voided, Integer offset, Integer pageSize) {
+	public List<TeamRole> getAllTeamRole(Boolean ownsTeam, Boolean voided, Integer offset, Integer pageSize) {
 		Criteria criteria = getCurrentSession().createCriteria(TeamRole.class);
-		if (!ownsTeam) {
-			criteria.add(Restrictions.eq("ownsTeam", false));
+		if (ownsTeam!=null) {//TODO != null
+			criteria.add(Restrictions.eq("ownsTeam", ownsTeam));
 		}
 		
-		if (!voided) {
-			criteria.add(Restrictions.eq("voided", false));
+		if (voided!=null) {//TODO != null
+			criteria.add(Restrictions.eq("voided", voided));
 		}
 		
 		if (offset != null) {
@@ -68,8 +68,8 @@ public class HibernateTeamRoleDAO implements TeamRoleDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TeamRole> searchTeamRoleByRole(String role) {
-		return (List<TeamRole>) getCurrentSession().createQuery("from TeamRole teamRole where teamRole.name like :role or teamRole.identifier like :role").setString("role", role).list();
+	public List<TeamRole> searchTeamRole(String role) {
+		return (List<TeamRole>) getCurrentSession().createQuery("from TeamRole teamRole where teamRole.name = :role or teamRole.identifier = :role").setString("role", role).list();
 	}
 	
 	public TeamRole getTeamRoleByUuid(String uuid) {
@@ -78,8 +78,8 @@ public class HibernateTeamRoleDAO implements TeamRoleDAO{
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<TeamRole> getSubTeamRoles(Integer teamMemberId) {
-		return (List<TeamRole>) getCurrentSession().createQuery("from TeamRole teamRole where teamRole.reportTo = :id").setInteger("id", teamMemberId).list();
+	public List<TeamRole> getSubTeamRoles(Integer teamRoleId) {
+		return (List<TeamRole>) getCurrentSession().createQuery("from TeamRole teamRole where teamRole.reportTo = :id").setInteger("id", teamRoleId).list();
 	}
 	
 	@SuppressWarnings("unchecked")

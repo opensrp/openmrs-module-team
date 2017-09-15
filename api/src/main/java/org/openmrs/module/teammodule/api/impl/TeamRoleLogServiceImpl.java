@@ -52,8 +52,8 @@ private final Log log = LogFactory.getLog(this.getClass());
 		return dao.getTeamRoleLog(id);
 	}
 
-	public TeamRoleLog getTeamRoleLog(String uuid) {
-		return dao.getTeamRoleLog(uuid);
+	public TeamRoleLog getTeamRoleLogbyUuid(String uuid) {
+		return dao.getTeamRoleLogByUuid(uuid);
 	}
 
 	public List<TeamRoleLog> searchTeamRoleLog(Integer teamRoleId,Integer offset, Integer pageSize) {

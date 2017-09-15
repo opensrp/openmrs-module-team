@@ -51,7 +51,7 @@ public class TeamMemberViewForm {
 	public String showForm(Model model, HttpServletRequest request) {
 		try {
 			model.addAttribute("allTeams", Context.getService(TeamService.class).getAllTeams(false, 0, 1000));
-			model.addAttribute("allSupervisors", Context.getService(TeamMemberService.class).searchTeamMember(null, null, null, null, null, 0, 1000));
+			model.addAttribute("allSupervisors", Context.getService(TeamMemberService.class).searchTeamMember(null, null, null, null, null, null, null, null, null, 0, 1000));
 			model.addAttribute("allTeamRoles", Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null));
 			model.addAttribute("allLocations", Context.getLocationService().getAllLocations());
 			model.addAttribute("allTeamMembers", Context.getService(TeamMemberService.class).getAllTeamMember(null, true, null, null));
@@ -92,7 +92,7 @@ public class TeamMemberViewForm {
 			} else { model.addAttribute("supervisorId", ""); }
 			if(teamId != null) { 
 				if(teamId.matches("^[+-]?\\d+$")) { model.addAttribute("teamId", (Context.getService(TeamService.class).getTeam(Integer.parseInt(teamId))).getId()); } 
-				else { model.addAttribute("teamId", (Context.getService(TeamService.class).getTeam(teamId)).getId()); } 
+				else { model.addAttribute("teamId", (Context.getService(TeamService.class).getTeamByUuid(teamId)).getId()); } 
 			} else { model.addAttribute("teamId", ""); }
 			if(teamRoleId != null) { 
 				if(teamRoleId.matches("^[+-]?\\d+$")) { model.addAttribute("teamRoleId", (Context.getService(TeamRoleService.class).getTeamRoleById(Integer.parseInt(teamRoleId))).getId()); } 
@@ -104,7 +104,7 @@ public class TeamMemberViewForm {
 			} else { model.addAttribute("locationId", ""); }
 			
 			model.addAttribute("allTeams", Context.getService(TeamService.class).getAllTeams(false, 0, 1000));
-			model.addAttribute("allSupervisors", Context.getService(TeamMemberService.class).searchTeamMember(null, null, null, null, null, 0, 1000));
+			model.addAttribute("allSupervisors", Context.getService(TeamMemberService.class).searchTeamMember(null, null, null, null, null, null, null, null, null, 0, 1000));
 			model.addAttribute("allTeamRoles", Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null));
 			model.addAttribute("allLocations", Context.getLocationService().getAllLocations());
 			model.addAttribute("allTeamMembers", Context.getService(TeamMemberService.class).getAllTeamMember(null, true, null, null));

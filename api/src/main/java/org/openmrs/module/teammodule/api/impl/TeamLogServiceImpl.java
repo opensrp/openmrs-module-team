@@ -44,15 +44,15 @@ private final Log log = LogFactory.getLog(this.getClass());
 		dao.updateTeamLog(TeamLog);
 	}
 
-	public List<TeamLog> searchTeamLogByTeam(Integer team,Integer offset, Integer pageSize) {
+	public List<TeamLog> searchTeamLogByTeam(int team,Integer offset, Integer pageSize) {
 		return dao.searchTeamLogByTeam(team, offset, pageSize);
 	}
 
-	public TeamLog getTeamLog(Integer id) {
+	public TeamLog getTeamLog(int id) {
 		return dao.getTeamLog(id);
 	}
 
-	public TeamLog getTeamLog(String uuid) {
-		return dao.getTeamLog(uuid);
+	public TeamLog getTeamLogByUUID(String uuid) {
+		return dao.getTeamLogByUUID(uuid);
 	}
 }

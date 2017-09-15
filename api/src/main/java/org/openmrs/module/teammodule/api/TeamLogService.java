@@ -11,7 +11,7 @@ public interface TeamLogService extends OpenmrsService {
 
 	public void saveTeamLog(TeamLog teamLog);
 	
-	public TeamLog getTeamLog(Integer id);
+	public TeamLog getTeamLog(int id);
 	
 	public List<TeamLog> getAllLogs(Integer offset, Integer pageSize);
 	
@@ -19,7 +19,7 @@ public interface TeamLogService extends OpenmrsService {
 	
 	public void updateTeamLog(TeamLog teamLog);
 
-	public List<TeamLog> searchTeamLogByTeam(Integer team, Integer offset, Integer pageSize);
+	public List<TeamLog> searchTeamLogByTeam(int team, Integer offset, Integer pageSize);
 
-	public TeamLog getTeamLog(String uuid);
+	public TeamLog getTeamLogByUUID(String uuid);
 }

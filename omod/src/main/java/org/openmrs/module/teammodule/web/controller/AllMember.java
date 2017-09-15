@@ -101,7 +101,7 @@ public class AllMember {
 			if (searchedMember != null) {
 				
 				/*allMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(searchedMember);*/
-				allMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(null, null, searchedMember, null, null);
+				allMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).searchTeamMember(null,null,null,null,null,null, null, searchedMember,null, null, null);
 				
 				for (int i = 0; i < allMembers.size(); i++) {
 					if (allMembers.get(i).getJoinDate() != null) {
@@ -117,7 +117,7 @@ public class AllMember {
 			} else {
 				
 				/*dateSearch = Context.getService(TeamMemberService.class).getTeamMemberByDate(joinFrom, joinTo);*/
-				dateSearch = Context.getService(TeamMemberService.class).searchTeamMember(joinFrom, joinTo, null, null, null);
+				dateSearch = Context.getService(TeamMemberService.class).searchTeamMember(null,null,null,null,null,joinFrom, joinTo,null, null, null, null);
 				
 				for (int i = 0; i < dateSearch.size(); i++) {
 					if (dateSearch.get(i).getJoinDate() != null) {

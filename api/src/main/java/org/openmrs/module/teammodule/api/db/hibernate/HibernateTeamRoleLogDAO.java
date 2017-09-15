@@ -76,7 +76,7 @@ public class HibernateTeamRoleLogDAO implements TeamRoleLogDAO{
 		return (List<TeamRoleLog>) createQuery.list();
 	}
 
-	public TeamRoleLog getTeamRoleLog(String uuid) {
+	public TeamRoleLog getTeamRoleLogByUuid(String uuid) {
 		Query createQuery= getCurrentSession().createQuery("from TeamRoleLog teamRoleLog where teamRoleLog.uuid = :uuid").setString("uuid", uuid);
 		return (TeamRoleLog) createQuery.uniqueResult();
 	}

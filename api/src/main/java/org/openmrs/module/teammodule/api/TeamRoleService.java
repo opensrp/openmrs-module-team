@@ -15,15 +15,15 @@ public interface TeamRoleService extends OpenmrsService {
 
 	public TeamRole getTeamRoleById(Integer id);
 	
-	public List<TeamRole> getAllTeamRole(boolean ownsTeam, boolean voided, Integer offset, Integer pageSize);
+	public List<TeamRole> getAllTeamRole(Boolean ownsTeam, Boolean voided, Integer offset, Integer pageSize);
 	
 	public void purgeTeamRole(TeamRole TeamRole);
 	
-	public List<TeamRole> searchTeamRoleByRole(String role);
+	public List<TeamRole> searchTeamRole(String role);
 		
 	public TeamRole getTeamRoleByUuid(String uuid);
 
-	public List<TeamRole> getSubTeamRoles(Integer teamMemberId);		
+	public List<TeamRole> getSubTeamRoles(Integer teamRoleId);		
 
-	public List<TeamRole> searchTeamRoleReportBy(Integer id);
+	public List<TeamRole> searchTeamRoleBySupervisorTeamRole(Integer teamRoleId);
 }

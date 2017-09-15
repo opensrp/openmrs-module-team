@@ -77,27 +77,25 @@ public class TeamMemberServiceImpl extends BaseOpenmrsService implements TeamMem
 	}
 	
 	@Override
-	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name, Integer offset, Integer pageSize) {
-		return this.dao.searchTeamMember(joinDateFrom, joinDateTo, name, offset, pageSize);
-	}
-	
-	@Override
 	public List<TeamMember> searchTeamMemberByTeam(Integer teamId) {
 		return this.dao.searchTeamMemberByTeam(teamId);
 	}
 	
 	@Override
-	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamRole teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize) {
-		return this.dao.searchTeamMember(identifier, supervisorId, teamRoleId, teamId, locationId, offset, pageSize);
+	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, Integer teamRoleId, Integer teamId, Integer locationId, Date joinDateFrom, Date joinDateTo, String name, Boolean isdataprovider, Integer offset, Integer pageSize) {
+		return this.dao.searchTeamMember(identifier, supervisorId, teamRoleId, teamId,
+				locationId, joinDateFrom, joinDateTo, name,
+				isdataprovider,
+				offset, pageSize);
 	}
 
 	@Override
-	public int countTeam(Integer teamId) {
-		return this.dao.countTeam(teamId);
+	public int countTeamMemberByTeam(Integer teamId) {
+		return this.dao.countTeamMemberByTeam(teamId);
 	}
 
 	@Override
-	public int countTeamRole(Integer teamRoleId) {
-		return this.dao.countTeamRole(teamRoleId);
+	public int countTeamMemberByTeamRole(Integer teamRoleId) {
+		return this.dao.countTeamMemberByTeamRole(teamRoleId);
 	}
 }

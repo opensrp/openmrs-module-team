@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamRoleService;
+import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -94,14 +96,22 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	public TeamRole newDelegate() {
 		return new TeamRole();
 	}
-
+	
 	@Override
-	public TeamRole save(TeamRole delegate) {
+	public TeamRole save(TeamRole teamRole) {
 		try {
-			if(delegate.getId() != null && delegate.getId() > 0) { Context.getService(TeamRoleService.class).updateTeamRole(delegate); return delegate; }
-			else { Context.getService(TeamRoleService.class).saveTeamRole(delegate); return delegate; }
+			if (teamRole.getId() != null && teamRole.getId() > 0) {
+				Context.getService(TeamRoleService.class).updateTeamRole(teamRole);
+				return teamRole;
+			} else {
+				Context.getService(TeamRoleService.class).saveTeamRole(teamRole);
+				return teamRole;
+			}
 		}
-		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }
+		catch(Exception e) { 
+			e.printStackTrace();
+			throw new RuntimeException(e);
+			}
 	}
 
 	@Override
@@ -117,25 +127,43 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	@Override
 	public SimpleObject search(RequestContext context) {
 		if(context.getParameter("q") != null) {
-			List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).searchTeamRoleByRole(context.getParameter("q"));
+			List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).searchTeamRole(context.getParameter("q"));
 			return new NeedsPaging<TeamRole>(teamRoles, context).toSimpleObject(this);
-		}
-		else { return null; }
+	}
+		 return null;
 	}
 	
 	@PropertyGetter("display")
 	public String getDisplayString(TeamRole teamRole) {
-		if(teamRole == null) { return ""; } return teamRole.getName();
+		if (teamRole == null) {
+			return "";
+		}
+		return teamRole.getName();
 	}
 	
 	@PropertyGetter("reportByName")
 	public List<String> getReportByName(TeamRole teamRole) {
-		if(teamRole == null) { return null; } List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).searchTeamRoleReportBy(teamRole.getTeamRoleId()); if(teamRoles == null) { return null; }  else { List<String> reportByNames = new ArrayList<>(); for (TeamRole tr : teamRoles) { reportByNames.add(tr.getName()); } return reportByNames; }
+		if (teamRole == null) {
+			return null;
+		}
+		List<TeamRole> teamRoles = Context.getService(TeamRoleService.class).searchTeamRoleBySupervisorTeamRole(teamRole.getTeamRoleId());
+		if (teamRoles == null) {
+			return null;
+		} else {
+			List<String> reportByNames = new ArrayList<>();
+			for (TeamRole tr : teamRoles) {
+				reportByNames.add(tr.getName());
+			}
+			return reportByNames;
+		}
 	}
 	
 	@PropertyGetter("members")
 	public int getNumberOfMember(TeamRole teamRole) {
-		if (teamRole == null) { return 0; } return Context.getService(TeamMemberService.class).countTeamRole(teamRole.getTeamRoleId());
+		if (teamRole == null) {
+			return 0;
+		}
+		return Context.getService(TeamMemberService.class).countTeamMemberByTeamRole(teamRole.getTeamRoleId());
 	}
 	
 	@Override
@@ -145,15 +173,20 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
-		System.out.println("doGetAll TeamRole");
-		List<TeamRole> teamsHierarchies = Context.getService(TeamRoleService.class).getAllTeamRole(true, false, 0, 25);
+		int offset,size;
+		Boolean ownsTeam = Boolean.getBoolean(context.getParameter("ownsTeam"));
+		List<TeamRole> teamsHierarchies;
+		
+		if(context.getParameter("offset")!=null && context.getParameter("size")!=null && context.getParameter("ownsTeam")!=null)
+		{
+			offset=Integer.parseInt(context.getParameter("offset"));
+			size= Integer.parseInt(context.getParameter("size"));
+			teamsHierarchies = Context.getService(TeamRoleService.class).getAllTeamRole(ownsTeam, false, offset, size);
+			return new NeedsPaging<TeamRole>(teamsHierarchies, context);
+		}
+		
+		teamsHierarchies = Context.getService(TeamRoleService.class).getAllTeamRole(ownsTeam,false, null, null);
 		return new NeedsPaging<TeamRole>(teamsHierarchies,context);	
 	}
 	
-	@Override
-	public SimpleObject getAll(RequestContext context) throws ResponseException {
-		System.out.println("getAll TeamRole");
-		List<TeamRole> teamsHierarchies = Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null);
-		return new NeedsPaging<TeamRole>(teamsHierarchies,context).toSimpleObject(this);	
-	}
 }

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional 
 public interface TeamService extends OpenmrsService {
 	
-	//public void setTeamDAO(TeamDAO dao);
+	public Team getTeamByUUID(String uuid);
 
 	public void saveTeam(Team team);
 	
@@ -24,17 +24,17 @@ public interface TeamService extends OpenmrsService {
 	
 	public Team getTeamBySupervisor(Integer teamSupervisorId);
 
-	public Team getTeam(String uuid);
+	public Team getTeamByUuid(String uuid);
 	
 	public List<Team> getTeamByLocation(Integer locationId, Integer offset, Integer pageSize);
 	
 	public void updateTeam(Team team);
 	
-	public List<Team> getAllTeams(boolean voided, Integer offset, Integer pageSize);
+	public List<Team> getAllTeams(Boolean voided, Integer offset, Integer pageSize);
 	
 	public void purgeTeam(Team team);
 	
-	public List<Team> searchTeam(String name);
+	public List<Team> searchTeam(String nameOrIdentifier);
 
-	public List<Team> getSubTeams(Integer teamMemberId);
+	public List<Team> getSubTeams(Integer teamSupervisorId);
 }

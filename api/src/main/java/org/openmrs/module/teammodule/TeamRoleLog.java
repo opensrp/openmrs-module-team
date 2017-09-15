@@ -24,8 +24,6 @@ public class TeamRoleLog extends BaseOpenmrsData implements Serializable{
 
 	@JsonProperty
 	private String log;
-	
-	private String uuid;
 
 	public Integer getLogId() {
 		return logId;
@@ -91,11 +89,4 @@ public class TeamRoleLog extends BaseOpenmrsData implements Serializable{
 		this.creator = creator;
 	}
 
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
 }

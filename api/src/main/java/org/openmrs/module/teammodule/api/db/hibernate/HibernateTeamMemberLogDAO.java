@@ -48,7 +48,7 @@ public class HibernateTeamMemberLogDAO implements TeamMemberLogDAO{
 		return (TeamMemberLog) getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.logId = :id").setInteger("id", id).uniqueResult();
 	}
 
-	public TeamMemberLog getTeamMemberLog(String uuid) {
+	public TeamMemberLog getTeamMemberLogByUUID(String uuid) {
 		return (TeamMemberLog) getCurrentSession().createQuery("from TeamMemberLog teamMemberLog where teamMemberLog.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 	

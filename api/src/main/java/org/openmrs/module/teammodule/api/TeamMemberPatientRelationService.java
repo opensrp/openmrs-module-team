@@ -2,6 +2,8 @@ package org.openmrs.module.teammodule.api;
 
 import java.util.List;
 
+import org.openmrs.Location;
+import org.openmrs.Patient;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberPatientRelation;
@@ -16,9 +18,10 @@ public interface TeamMemberPatientRelationService extends OpenmrsService {
 
 	public TeamMemberPatientRelation getTeamMemberPatientRelation(Integer id);
 	
-	public TeamMemberPatientRelation getTeamMemberPatientRelation(String uuid);
+	public TeamMemberPatientRelation getTeamMemberPatientRelationByUUID(String uuid);
 
 	public void updateTeamMemberPatientRelation(TeamMemberPatientRelation teamMemberPatientRelation);
 
-	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(TeamMember teamMember);
+	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(Integer teamMember, Integer patient,
+			String status,Integer location, Integer offset, Integer pageSize);
 }

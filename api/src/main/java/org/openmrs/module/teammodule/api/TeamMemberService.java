@@ -34,13 +34,11 @@ public interface TeamMemberService extends OpenmrsService {
 	
 	public void updateTeamMember(TeamMember teamMember);
 	
-	public List<TeamMember> searchTeamMember(Date joinDateFrom, Date joinDateTo, String name, Integer offset, Integer pageSize);
-
 	public List<TeamMember> searchTeamMemberByTeam(Integer teamId);
 
-	public List<TeamMember> searchTeamMember(String identifier, TeamMember supervisorId, TeamRole teamRoleId, Team teamId, Location locationId, Integer offset, Integer pageSize);
+	public List<TeamMember> searchTeamMember(String identifier, Integer supervisorId, Integer teamRoleId, Integer teamId, Integer locationId, Date joinDateFrom, Date joinDateTo, String name,Boolean isdataprovider, Integer offset, Integer pageSize);
 
-	public int countTeam(Integer teamId);
+	public int countTeamMemberByTeam(Integer teamId);
 
-	public int countTeamRole(Integer teamRoleId);
+	public int countTeamMemberByTeamRole(Integer teamRoleId);
 }

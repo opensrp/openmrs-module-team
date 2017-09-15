@@ -52,7 +52,7 @@ private final Log log = LogFactory.getLog(this.getClass());
 		return dao.getTeamMemberLog(id);
 	}
 
-	public TeamMemberLog getTeamMemberLog(String uuid) {
-		return dao.getTeamMemberLog(uuid);
+	public TeamMemberLog getTeamMemberLogByUUID(String uuid) {
+		return dao.getTeamMemberLogByUUID(uuid);
 	}
 }

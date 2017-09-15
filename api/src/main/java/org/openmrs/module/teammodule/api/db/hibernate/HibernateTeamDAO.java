@@ -54,13 +54,13 @@ public class HibernateTeamDAO implements TeamDAO {
 	}
 
 	@Override
-	public Team getTeam(String uuid) {
+	public Team getTeamByUuid(String uuid) {
 		return (Team) getCurrentSession().createQuery("from Team team where team.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Team> getAllTeams(boolean voided, Integer offset, Integer pageSize) {
+	public List<Team> getAllTeams(Boolean voided, Integer offset, Integer pageSize) {
 		Criteria criteria = getCurrentSession().createCriteria(Team.class);
 		if (!voided) {
 			criteria.add(Restrictions.eq("voided", false));
@@ -81,8 +81,8 @@ public class HibernateTeamDAO implements TeamDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Team> searchTeam(String teamName) {
-		return (List<Team>) getCurrentSession().createQuery("from Team team where team.teamName like :teamName or team.teamIdentifier like :teamName").setString("teamName", "%" + teamName + "%").list();
+	public List<Team> searchTeam(String nameOrIdentifier) {
+		return (List<Team>) getCurrentSession().createQuery("from Team team where team.teamName like :teamName or team.teamIdentifier like :teamName").setString("teamName", "%" + nameOrIdentifier + "%").list();
 	}
 	
 	@Override
@@ -135,5 +135,12 @@ public class HibernateTeamDAO implements TeamDAO {
 				throw new RuntimeException("Failed to get the current hibernate session from HibernateTeamDAO", e);
 			}
 		}
+	}
+
+	@Override
+	public Team getTeamByUUID(String uuid) {
+		// TODO Auto-generated method stub
+		return (Team) getCurrentSession().createQuery("from Team team where team.uuid=:uuid").setString("uuid", uuid).uniqueResult();
+		
 	}
 }

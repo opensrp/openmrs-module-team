@@ -5,7 +5,11 @@ import java.util.List;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamLog;
+import org.openmrs.module.teammodule.TeamMember;
+import org.openmrs.module.teammodule.TeamMemberLog;
 import org.openmrs.module.teammodule.api.TeamLogService;
+import org.openmrs.module.teammodule.api.TeamMemberLogService;
+import org.openmrs.module.teammodule.api.TeamMemberService;
 import org.openmrs.module.teammodule.api.TeamService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
@@ -74,7 +78,7 @@ public class TeamLogRequestResource extends DataDelegatingCrudResource<TeamLog> 
 		description.addProperty("team");
 		description.addProperty("action");
 		description.addProperty("dataNew");
-		description.addProperty("dataOld");
+		description.addProperty("dataOfld");
 		description.addProperty("log");
 		return description;
 	}
@@ -85,11 +89,16 @@ public class TeamLogRequestResource extends DataDelegatingCrudResource<TeamLog> 
 	}
 
 	@Override
-	public TeamLog save(TeamLog delegate) {
+	public TeamLog save(TeamLog teamLog) {
 		try {
-			if(delegate.getId() != null && delegate.getId() > 0) { Context.getService(TeamLogService.class).updateTeamLog(delegate); return delegate; }
-			else { Context.getService(TeamLogService.class).saveTeamLog(delegate); return delegate; }
-		}
+			if (teamLog.getId() != null && teamLog.getId() > 0) {
+				Context.getService(TeamLogService.class).updateTeamLog(teamLog);
+				return teamLog;
+			} else {
+				Context.getService(TeamLogService.class).saveTeamLog(teamLog);
+				return teamLog;
+			}
+	}
 		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }
 	}
 
@@ -105,39 +114,49 @@ public class TeamLogRequestResource extends DataDelegatingCrudResource<TeamLog> 
 	
 	@Override
 	public SimpleObject search(RequestContext context) {
-		if(context.getParameter("q") != null) {
-			List<TeamLog> teamLogs = Context.getService(TeamLogService.class).searchTeamLogByTeam(Integer.parseInt(context.getParameter("q")),null,null);
+		Integer offset=null,size=null;
+		if (context.getParameter("q") != null) {
+			Team team = Context.getService(TeamService.class).getTeamByUuid(context.getParameter("q"));
+			if(context.getParameter("offset")!=null && context.getParameter("size")!=null)
+			{
+				offset=Integer.parseInt(context.getParameter("offset"));
+				size=Integer.parseInt(context.getParameter("size"));
+			}
+			List<TeamLog> teamLogs = Context.getService(TeamLogService.class).searchTeamLogByTeam(team.getId(), offset, size);
 			return new NeedsPaging<TeamLog>(teamLogs, context).toSimpleObject(this);
-		} else if(context.getParameter("team")!=null) {
-			Team team = Context.getService(TeamService.class).getTeam(context.getParameter("team"));
-			List<TeamLog> teamLogs = Context.getService(TeamLogService.class).searchTeamLogByTeam(team.getId(),null,null);
-			return new NeedsPaging<TeamLog>(teamLogs, context).toSimpleObject(this);
-		} else { return null; }
+		} 
+	
+		return null;
 	}
 	
 	@PropertyGetter("display")
 	public String getDisplayString(TeamLog teamLog) {
-		if (teamLog == null) { return ""; }
-		else if(teamLog.getTeam() == null) { return ""; }
-		else { return teamLog.getTeam().getTeamName().toString(); } 
+		if (teamLog == null) {
+			return "";
+		} else if (teamLog.getTeam() == null) {
+			return teamLog.getAction();
+		} else {
+			return teamLog.getTeam().getTeamName() + " : "+teamLog.getAction();
+		}
 	}
 	
 	@Override
 	public TeamLog getByUniqueId(String uuid) {
-		TeamLog teamLog = Context.getService(TeamLogService.class).getTeamLog(uuid);
-		if(teamLog != null) { return teamLog; }
-		else { return null; }
+		return Context.getService(TeamLogService.class).getTeamLogByUUID(uuid);
 	}
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
-		List<TeamLog> teamLogs = Context.getService(TeamLogService.class).getAllLogs(0, 100);
-		return new NeedsPaging<TeamLog>(teamLogs, context);	
-	}
-	
-	@Override
-	public SimpleObject getAll(RequestContext context) throws ResponseException {
-		List<TeamLog> teamLogs = Context.getService(TeamLogService.class).getAllLogs(null, null);
-		return new NeedsPaging<TeamLog>(teamLogs, context).toSimpleObject(this);
+		List<TeamLog> teamLogs;
+		if(context.getParameter("offset")!=null && context.getParameter("size")!=null)
+		{
+			int offset=Integer.parseInt(context.getParameter("offset"));
+			int size=Integer.parseInt(context.getParameter("size"));
+			teamLogs = Context.getService(TeamLogService.class).getAllLogs(offset, size);
+			return new NeedsPaging<TeamLog>(teamLogs, context);	
+		}
+		
+		teamLogs = Context.getService(TeamLogService.class).getAllLogs(null, null);
+		return new NeedsPaging<TeamLog>(teamLogs, context);		
 	}
 }

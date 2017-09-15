@@ -51,11 +51,11 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		return dao.getTeam(id);
 	}
 
-	public Team getTeam(String name) {
-		return dao.getTeam(name);
+	public Team getTeamByUuid(String uuid) {
+		return dao.getTeamByUuid(uuid);
 	}
 
-	public List<Team> getAllTeams(boolean voided, Integer offset, Integer pageSize) {
+	public List<Team> getAllTeams(Boolean voided, Integer offset, Integer pageSize) {
 		return dao.getAllTeams(voided,offset, pageSize);
 	}
 
@@ -63,8 +63,8 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 		dao.purgeTeam(team);
 	}
 
-	public List<Team> searchTeam(String name){
-		return dao.searchTeam(name);
+	public List<Team> searchTeam(String nameOrIdentifier){
+		return dao.searchTeam(nameOrIdentifier);
 	}
 	
 	public Team getTeamBySupervisor(Integer teamSupervisorId) {
@@ -89,5 +89,11 @@ public class TeamServiceImpl extends BaseOpenmrsService implements TeamService {
 	@Override
 	public List<Team> getSubTeams(Integer teamSupervisorId) {
 		return dao.getSubTeams(teamSupervisorId);
+	}
+
+	@Override
+	public Team getTeamByUUID(String uuid) {
+		return dao.getTeamByUUID(uuid);
+		
 	}
 }

@@ -21,7 +21,7 @@ public interface TeamRoleLogService extends OpenmrsService {
 	
 	public List<TeamRoleLog> searchTeamRoleLog(String teamRoleId,Integer offset, Integer pageSize);
 
-	public TeamRoleLog getTeamRoleLog(String uuid);
+	public TeamRoleLog getTeamRoleLogbyUuid(String uuid);
 
 	public List<TeamRoleLog> searchTeamRoleLog(Integer teamRoleId,Integer offset, Integer pageSize);
 }

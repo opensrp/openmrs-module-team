@@ -2,11 +2,14 @@ package org.openmrs.module.teammodule.web.resource;
 
 import java.util.List;
 
+import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberLog;
+import org.openmrs.module.teammodule.TeamRoleLog;
 import org.openmrs.module.teammodule.api.TeamMemberLogService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
+import org.openmrs.module.teammodule.api.TeamRoleLogService;
 import org.openmrs.module.teammodule.rest.v1_0.resource.TeamModuleResourceController;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -106,41 +109,41 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 	@Override
 	public SimpleObject search(RequestContext context) {
 		if(context.getParameter("q") != null) {
-			List<TeamMemberLog> teamMemberLogs = Context.getService(TeamMemberLogService.class).searchTeamMemberLogByTeamMember(Integer.parseInt(context.getParameter("q")), null, null);
-			return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context).toSimpleObject(this);
-		} else if(context.getParameter("teamMember")!=null) {
-			TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberByUuid(context.getParameter("teamMember"));
+			TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberByUuid(context.getParameter("q"));
 			List<TeamMemberLog> teamMemberLogs = Context.getService(TeamMemberLogService.class).searchTeamMemberLogByTeamMember(teamMember.getId(),null,null);
 			return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context).toSimpleObject(this);
 		} else { return null; }
 	}
 	
 	@PropertyGetter("display")
-	public String getDisplayString(TeamMemberLog teamMemberLog) {
-		if (teamMemberLog == null) { return ""; }
-		else if(teamMemberLog.getTeamMember() == null) { return ""; }
-		else if(teamMemberLog.getTeamMember().getPerson() == null) { return ""; }
-		else if(teamMemberLog.getTeamMember().getPerson().getPersonName() == null) { return ""; }
-		else { return teamMemberLog.getTeamMember().getPerson().getPersonName().toString(); } 
+	public PersonName getDisplayString(TeamMemberLog teamMemberLog) {
+		 if (teamMemberLog.getTeamMember().getPerson() == null) {
+			return teamMemberLog.getTeamMember().getPerson().getPersonName();
+		}
+		 return null;
 	}
 	
 	@Override
 	public TeamMemberLog getByUniqueId(String uuid) {
-		TeamMemberLog teamMemberLog = Context.getService(TeamMemberLogService.class).getTeamMemberLog(uuid);
+		TeamMemberLog teamMemberLog = Context.getService(TeamMemberLogService.class).getTeamMemberLogByUUID(uuid);
 		if(teamMemberLog != null) { return teamMemberLog; }
 		else { return null; }
 	}
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
-		List<TeamMemberLog> teamMemberLogs = Context.getService(TeamMemberLogService.class).getAllLogs(0, 100);
+		List<TeamMemberLog> teamMemberLogs;
+		
+		if(context.getParameter("offset")!=null && context.getParameter("size")!=null)
+		{
+			int offset=Integer.parseInt(context.getParameter("offset"));
+			int size=Integer.parseInt(context.getParameter("size"));
+			teamMemberLogs = Context.getService(TeamMemberLogService.class).getAllLogs(offset, size);
+			return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context);	
+		}
+		teamMemberLogs = Context.getService(TeamMemberLogService.class).getAllLogs(null, null);
 		return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context);	
 	}
 	
-	@Override
-	public SimpleObject getAll(RequestContext context) throws ResponseException {
-		List<TeamMemberLog> teamMemberLogs = Context.getService(TeamMemberLogService.class).getAllLogs(null, null);
-		return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context).toSimpleObject(this);
-	}
 }
 

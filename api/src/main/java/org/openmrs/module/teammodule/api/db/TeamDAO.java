@@ -16,17 +16,19 @@ public interface TeamDAO {
 	
 	public Team getTeam(Integer id);
 	
+	public Team getTeamByUUID(String uuid);
+	
 	public Team getTeam(String teamName, Integer locationId);
 	
-	public Team getTeam(String name);
+	public Team getTeamByUuid(String name);
 	
 	public void updateTeam(Team team);
 	
-	public List<Team> getAllTeams(boolean voided, Integer offset, Integer pageSize);
+	public List<Team> getAllTeams(Boolean voided, Integer offset, Integer pageSize);
 	
 	public void purgeTeam(Team team);
 	
-	public List<Team> searchTeam(String name);
+	public List<Team> searchTeam(String nameOrIdentifier);
 
 	public Team getTeamBySupervisor(Integer teamSupervisorId);
 

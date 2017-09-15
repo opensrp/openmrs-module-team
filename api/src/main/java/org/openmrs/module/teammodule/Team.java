@@ -14,7 +14,6 @@ import org.openmrs.Location;
  * 
  */
 
- //@Access(AccessType.PROPERTY)
 @SuppressWarnings("serial")
 public class Team extends BaseOpenmrsData implements Serializable {
 
@@ -22,7 +21,7 @@ public class Team extends BaseOpenmrsData implements Serializable {
 
 	private String teamIdentifier;
 
-	private String teamName;
+	private String name;
 	
 	private TeamMember supervisor;
 	
@@ -32,7 +31,6 @@ public class Team extends BaseOpenmrsData implements Serializable {
 
 	}
 
-	//@Access(AccessType.PROPERTY)
 	public Integer getTeamId() {
 		return this.teamId;
 	}
@@ -50,11 +48,11 @@ public class Team extends BaseOpenmrsData implements Serializable {
 	}
 
 	public String getTeamName() {
-		return teamName;
+		return name;
 	}
 
 	public void setTeamName(String teamName) {
-		this.teamName = teamName;
+		this.name = teamName;
 	}
 
 	public Integer getId() {

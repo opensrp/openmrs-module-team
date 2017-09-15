@@ -9,6 +9,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Location;
+import org.openmrs.Patient;
 import org.openmrs.module.teammodule.TeamMember;
 import org.openmrs.module.teammodule.TeamMemberPatientRelation;
 import org.openmrs.module.teammodule.api.db.TeamMemberPatientRelationDAO;
@@ -52,7 +54,7 @@ public class HibernateTeamMemberPatientRelationDAO implements TeamMemberPatientR
 	}
 	
 	@Override
-	public TeamMemberPatientRelation getTeamMemberPatientRelation(String uuid) {
+	public TeamMemberPatientRelation getTeamMemberPatientRelationByUUID(String uuid) {
 		return (TeamMemberPatientRelation) getCurrentSession().createQuery("from TeamMemberPatientRelation teamMemberPatient where teamMemberPatient.uuid = :uuid").setString("uuid", uuid).uniqueResult();
 	}
 	
@@ -63,11 +65,31 @@ public class HibernateTeamMemberPatientRelationDAO implements TeamMemberPatientR
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations(TeamMember tm) {
+	public List<TeamMemberPatientRelation> getTeamMemberPatientRelations( Integer teamMember, Integer patient,
+			String status,Integer location, Integer offset, Integer pageSize) {
 		Criteria criteria = getCurrentSession().createCriteria(TeamMemberPatientRelation.class);
 
-		if (tm != null) {
-			criteria.add(Restrictions.eq("member", tm));
+		if (teamMember != null) {
+			criteria.add(Restrictions.eq("teamMember.teamMemberId", teamMember));
+		}
+		else if(patient!= null)
+		{
+			criteria.add(Restrictions.eq("patient.patientId", patient));
+		}
+		else if(location!= null)
+		{
+			criteria.add(Restrictions.eq("location.locationId", location));
+		}
+		else if(status!= null)
+		{
+			criteria.add(Restrictions.eq("status", status));
+		}
+		
+		if(offset != null) {
+			criteria.setFirstResult(offset);
+		}
+		if(pageSize != null) {
+			criteria.setMaxResults(pageSize);	
 		}
 		return (List<TeamMemberPatientRelation>) criteria.list();
 	}
