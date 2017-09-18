@@ -68,19 +68,19 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 	}
 	@Override
 	public List<TeamMember> getAllTeamMember(Integer id, Boolean voided, Integer offset, Integer pageSize) {
-			Criteria criteria = getCurrentSession().createCriteria(TeamMember.class).add(Restrictions.eq("voided", false));
+			Criteria criteria = getCurrentSession().createCriteria(TeamMember.class);
+			if(id != null)
 			criteria.add(Restrictions.eq("teamMemberId", id));
 			
 			if(voided!=null)
 			criteria.add(Restrictions.eq("voided", voided));
 			
-			if (offset != null) {
+			if (offset != null)
 				criteria.setFirstResult(offset);
-			}
 			
-			if (pageSize != null) {
+			if (pageSize != null)
 				criteria.setMaxResults(pageSize);
-			}
+				
 			return (List<TeamMember>) criteria.list();
 	}
 
@@ -166,14 +166,12 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		
 	@Override
 	public int countTeamMemberByTeam(Integer teamId) {
-		
-		return (int) getCurrentSession().createQuery("select count(*) from TeamMember teammember where team= "+ teamId).list().get(0);
+		return Integer.parseInt(String.valueOf(getCurrentSession().createQuery("select count(*) from TeamMember teammember where team= "+ teamId).list().get(0)));
 	}
 
 	@Override
 	public int countTeamMemberByTeamRole(Integer teamRoleId) {
-		return  (int) getCurrentSession().createQuery("select count(*) from TeamMember teammember where teamRole= "+ teamRoleId).list().get(0);
-			
+		return  Integer.parseInt(String.valueOf(getCurrentSession().createQuery("select count(*) from TeamMember teammember where teamRole= "+ teamRoleId).list().get(0)));		
 	}
 
 	private Session getCurrentSession() {
