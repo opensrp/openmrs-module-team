@@ -118,7 +118,7 @@
 	<li><a href="/openmrs/module/teammodule/teamMemberAddForm.form" title="New Team Member">New Team Member</a></li>
 	<li><a href="/openmrs/module/teammodule/teamRole.form" title="Manage Team Hierarchy (Roles)">Manage Team Hierarchy (Roles)</a></li>
 	<li><a href="/openmrs/module/teammodule/team.form" title="Manage Teams">Manage Teams</a></li>
-	<li><a href="/openmrs/module/teammodule/teamMemberView.form" title="Manage Team Members">Manage Team Members</a></li>
+	<li><a href="/openmrs/module/teammodule/teamMember.form" title="Manage Team Members">Manage Team Members</a></li>
 </ul>
 
 <h2 align="center">Add Role</h2>

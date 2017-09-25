@@ -3,15 +3,23 @@
  */
 package org.openmrs.module.teammodule.web.controller;
 
+//import java.util.ArrayList;
+//import java.util.List;
+
+//import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+//import net.sf.ehcache.hibernate.HibernateUtil;
+
+
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamRole;
 import org.openmrs.module.teammodule.api.TeamRoleService;
 import org.springframework.stereotype.Controller;
@@ -19,7 +27,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Muhammad Safwan
@@ -27,13 +34,13 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 
 @Controller
-@RequestMapping(value = "/module/teammodule/editRole")
-public class RoleEditFormController {
+@RequestMapping(value = "/module/teammodule/addRole")
+public class TeamRoleAddFormController {
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
 
 	/** Success form view name */
-	private final String SUCCESS_FORM_VIEW = "/module/teammodule/roleEditForm";
+	private final String SUCCESS_FORM_VIEW = "/module/teammodule/teamRoleAddForm";
 
 
 	/**
@@ -43,20 +50,12 @@ public class RoleEditFormController {
 	 * @return String form view name
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String showForm(Model model, HttpServletRequest request,@RequestParam(value = "roleId", required = true) String uuid, @ModelAttribute("teamData") Team team) {
+	public String showForm(Model model, HttpServletRequest request) {
 
-		System.out.println(uuid);
-		TeamRole roleData = Context.getService(TeamRoleService.class).getTeamRoleByUuid(uuid);
+		TeamRole teamRole= new TeamRole();
 		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null);
-
-		
-		System.out.println(uuid);
-		System.out.println(roles);
-		System.out.println(roleData);
-
-		model.addAttribute("reportsToOptions", roles);
-		model.addAttribute("reportsTo", roleData.getReportTo());
-		model.addAttribute("roleData", roleData);
+		model.addAttribute("reportsTo", roles);
+		model.addAttribute("roleData", teamRole);
 		
 		return SUCCESS_FORM_VIEW;
 
@@ -73,21 +72,17 @@ public class RoleEditFormController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String onSubmit(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
-	@ModelAttribute("roleData") TeamRole teamRole,  Model model) {
+	@ModelAttribute("roleData") TeamRole teamRole, Model model) {
 		String reportsToUuid = request.getParameter("reportsTo"); 
 		System.out.println("reportsTo: " + reportsToUuid);
 		TeamRole tr = Context.getService(TeamRoleService.class).getTeamRoleByUuid(reportsToUuid); 
 		if(tr!=null) { teamRole.setReportTo(tr); }
-		//teamRole.setUuid(UUID.randomUUID().toString());
+		teamRole.setUuid(UUID.randomUUID().toString());
 		Context.getService(TeamRoleService.class).saveTeamRole(teamRole);
-		String saved = "Role Updated Successfully";
+		String saved = "Role Saved Successfully";
 		model.addAttribute("saved", saved);
-		TeamRole roleData = Context.getService(TeamRoleService.class).getTeamRoleById(teamRole.getTeamRoleId());
-		model.addAttribute("roleData", roleData);
-		
 		List<TeamRole> roles = Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null);
 		model.addAttribute("reportsTo", roles);
-
 		return SUCCESS_FORM_VIEW;
 	}
 

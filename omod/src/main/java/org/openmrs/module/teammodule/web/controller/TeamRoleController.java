@@ -40,7 +40,7 @@ public class TeamRoleController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
-		model.addAttribute("allRoles", Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null));
+		model.addAttribute("allRoles", Context.getService(TeamRoleService.class).getAllTeamRole(null, null, null, null));
 		return SUCCESS_FORM_VIEW;
 	}
 

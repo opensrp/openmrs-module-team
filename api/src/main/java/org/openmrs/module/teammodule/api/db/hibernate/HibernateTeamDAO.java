@@ -62,8 +62,8 @@ public class HibernateTeamDAO implements TeamDAO {
 	@SuppressWarnings("unchecked")
 	public List<Team> getAllTeams(Boolean voided, Integer offset, Integer pageSize) {
 		Criteria criteria = getCurrentSession().createCriteria(Team.class);
-		if (!voided) {
-			criteria.add(Restrictions.eq("voided", false));
+		if (voided!=null) {
+			criteria.add(Restrictions.eq("voided", voided));
 		}
 		if (offset != null) {
 			criteria.setFirstResult(offset);

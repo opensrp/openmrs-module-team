@@ -45,11 +45,11 @@ public class HibernateTeamRoleDAO implements TeamRoleDAO{
 	@SuppressWarnings("unchecked")
 	public List<TeamRole> getAllTeamRole(Boolean ownsTeam, Boolean voided, Integer offset, Integer pageSize) {
 		Criteria criteria = getCurrentSession().createCriteria(TeamRole.class);
-		if (ownsTeam!=null) {//TODO != null
+		if (ownsTeam!=null) {
 			criteria.add(Restrictions.eq("ownsTeam", ownsTeam));
 		}
 		
-		if (voided!=null) {//TODO != null
+		if (voided!=null) {
 			criteria.add(Restrictions.eq("voided", voided));
 		}
 		

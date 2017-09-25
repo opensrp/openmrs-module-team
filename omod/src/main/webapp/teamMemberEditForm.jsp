@@ -270,7 +270,7 @@
 		</tr>
 		<tr>
 			<td>
-				<a href="/openmrs/module/teammodule/teamMemberView.form">
+				<a href="/openmrs/module/teammodule/teamMember.form">
 					Back to Team Member List
 				</a>
 			</td>

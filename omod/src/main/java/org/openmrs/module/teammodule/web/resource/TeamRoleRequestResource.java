@@ -100,7 +100,7 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	@Override
 	public TeamRole save(TeamRole teamRole) {
 		try {
-			if (teamRole.getId() != null && teamRole.getId() > 0) {
+			if (teamRole.getUuid() != null && teamRole.getId() > 0) {
 				Context.getService(TeamRoleService.class).updateTeamRole(teamRole);
 				return teamRole;
 			} else {
@@ -173,20 +173,22 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
-		int offset,size;
-		Boolean ownsTeam = Boolean.getBoolean(context.getParameter("ownsTeam"));
+		Integer offset=null,size=null;
+		Boolean ownsTeam=null,voided=null;
 		List<TeamRole> teamsHierarchies;
 		
-		if(context.getParameter("offset")!=null && context.getParameter("size")!=null && context.getParameter("ownsTeam")!=null)
+		if(context.getParameter("ownsTeam")!=null)
+			ownsTeam = Boolean.parseBoolean(context.getParameter("ownsTeam"));
+		if(context.getParameter("voided")!=null)
+			voided= Boolean.parseBoolean(context.getParameter("voided"));
+		if(context.getParameter("offset")!=null && context.getParameter("size")!=null)
 		{
 			offset=Integer.parseInt(context.getParameter("offset"));
 			size= Integer.parseInt(context.getParameter("size"));
-			teamsHierarchies = Context.getService(TeamRoleService.class).getAllTeamRole(ownsTeam, false, offset, size);
-			return new NeedsPaging<TeamRole>(teamsHierarchies, context);
 		}
+			teamsHierarchies = Context.getService(TeamRoleService.class).getAllTeamRole(ownsTeam, voided, offset, size);
+			return new NeedsPaging<TeamRole>(teamsHierarchies, context);
 		
-		teamsHierarchies = Context.getService(TeamRoleService.class).getAllTeamRole(ownsTeam,false, null, null);
-		return new NeedsPaging<TeamRole>(teamsHierarchies,context);	
 	}
 	
 }

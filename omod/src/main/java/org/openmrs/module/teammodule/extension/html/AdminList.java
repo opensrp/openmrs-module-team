@@ -39,7 +39,7 @@ public class AdminList extends AdministrationSectionExt {
 		map.put("module/teammodule/teamMemberAddForm.form", "New Team Member");
 		map.put("module/teammodule/teamRole.form", "Manage Team Hierarchy (Roles)");
 		map.put("module/teammodule/team.form", "Manage Teams");
-		map.put("module/teammodule/teamMemberView.form", "Manage Team Members");
+		map.put("module/teammodule/teamMember.form", "Manage Team Members");
 		return map;
 	}
 }

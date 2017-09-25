@@ -254,14 +254,17 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 	protected PageableResult doGetAll(RequestContext context)
 			throws ResponseException {
 		List<Team> teams=null;
+		Integer offset=null,size=null;
+		Boolean voided=null;
 		if(context.getParameter("offset")!=null && context.getParameter("size")!=null)
 		{
-			int offset=Integer.parseInt(context.getParameter("offset"));
-			int size= Integer.parseInt(context.getParameter("size"));
-			teams = Context.getService(TeamService.class).getAllTeams(false, offset, size);
-			return new NeedsPaging<Team>(teams, context);
+			offset=Integer.parseInt(context.getParameter("offset"));
+			size= Integer.parseInt(context.getParameter("size"));
 		}
-		teams = Context.getService(TeamService.class).getAllTeams(false, null, null);
+		if(context.getParameter("voided")!=null)
+			voided=Boolean.parseBoolean(context.getParameter("voided"));
+		
+		teams = Context.getService(TeamService.class).getAllTeams(voided, offset, size);
 		return new NeedsPaging<Team>(teams, context);
 		
 	}
