@@ -6,6 +6,7 @@ package org.openmrs.module.teammodule.web.resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
@@ -147,62 +148,46 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 
 	@Override
 	public SimpleObject search(RequestContext context) {
-		
 		if(context.getParameter("q") != null) {
 			List<TeamMember> teamMembers = Context.getService(TeamMemberService.class).searchTeamMember( null, null, null, null, null, null, null, context.getParameter("q"),null, null, null);
 			return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
 		}
-		else if(context.getParameter("uuid") != null) {
-			TeamMember teamMember = Context.getService(TeamMemberService.class).getTeamMemberByUuid(context.getParameter("uuid"));
-			List<TeamMember> teamMembers = new ArrayList<>();
-			teamMembers.add(teamMember);
-			return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
+		Integer s=null, tr=null, t=null, l=null ;
+		String identifier = "", supervisorUuid = "", teamRoleUuid = "", teamUuid = "", locationUuid = "";
+		
+		if (context.getParameter("nameOrIdentifier") != null) {
+			identifier =context.getParameter("nameOrIdentifier");
 		}
-		else if(context.getParameter("get") != null) {
-			if(context.getParameter("get").equals("all")) {
-				List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class).getAllTeamMember(null, false, null, null);
-				return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
-			}
-			else if(context.getParameter("get").equals("filter")) {
-				Integer s=null, tr=null, t=null, l=null ;
-				String identifier = "", supervisorUuid = "", teamRoleUuid = "", teamUuid = "", locationUuid = "";
-				
-				if (context.getParameter("identifier") != null) {
-					identifier =context.getParameter("identifier");
-				}
-				
-				TeamMember supervisor = null;
-				if (context.getParameter("supervisor") != null) {
-					supervisorUuid =context.getParameter("supervisor");
-					supervisor = Context.getService(TeamMemberService.class).getTeamMemberByUuid(supervisorUuid);
-					s= supervisor.getId();
-				}
-				
-				Team team = null;
-				if (context.getParameter("team") != null) {
-					teamUuid =context.getParameter("team");
-					team = Context.getService(TeamService.class).getTeamByUUID(teamUuid);
-					t=team.getId();
-				}
-				TeamRole teamRole = null;
-				if (context.getParameter("role") != null) {
-					teamRoleUuid =context.getParameter("teamRole");
-					teamRole = Context.getService(TeamRoleService.class).getTeamRoleByUuid((teamRoleUuid));
-					tr=teamRole.getId();
-				}
-				Location location = null;
-				if (context.getParameter("location") != null) {
-					locationUuid =context.getParameter("location");
-					location = Context.getLocationService().getLocationByUuid(locationUuid);
-					l=location.getId();
-				}
-				
-				List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class)
-						.searchTeamMember(identifier, s, tr, t, l, null, null, null, null, null, null);
-				return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
-			}
-			else { return null; }
-		} else { return null; }
+		
+		TeamMember supervisor = null;
+		if (context.getParameter("supervisor") != null) {
+			supervisorUuid =context.getParameter("supervisor");
+			supervisor = Context.getService(TeamMemberService.class).getTeamMemberByUuid(supervisorUuid);
+			s= supervisor.getId();
+		}
+		
+		Team team = null;
+		if (context.getParameter("team") != null) {
+			teamUuid =context.getParameter("team");
+			team = Context.getService(TeamService.class).getTeamByUUID(teamUuid);
+			t=team.getId();
+		}
+		TeamRole teamRole = null;
+		if (context.getParameter("role") != null) {
+			teamRoleUuid =context.getParameter("role");
+			teamRole = Context.getService(TeamRoleService.class).getTeamRoleByUuid((teamRoleUuid));
+			tr=teamRole.getId();
+		}
+		Location location = null;
+		if (context.getParameter("location") != null) {
+			locationUuid =context.getParameter("location");
+			location = Context.getLocationService().getLocationByUuid(locationUuid);
+			l=location.getId();
+		}
+		
+		List<TeamMember> teamMembers = (List<TeamMember>) Context.getService(TeamMemberService.class)
+				.searchTeamMember(identifier, s, tr, t, l, null, null, null, null, null, null);
+		return new NeedsPaging<TeamMember>(teamMembers, context).toSimpleObject(this);
 	}
 
 	@Override

@@ -59,11 +59,17 @@
 						jQuery.ajax({
 							url:"/openmrs/ws/rest/v1/team/teamrole?v=full&q="+identifier,
 							success: function(data,status) { var myIdentifiers = []; 
-								for(var i=0; i<data.results.length; i++) { myIdentifiers.push(data.results[i].identifier); }
-								if(myIdentifiers.includes(identifier)) { str += "Identifier must be unique"; document.getElementById("saveButton").disabled = false; alertify.alert(str); }
+								for(var i=0; i<data.results.length; i++) { 
+									myIdentifiers.push(data.results[i].identifier);
+								}
+								if(myIdentifiers.includes(identifier)) { 
+									str += "Identifier must be unique"; 
+									document.getElementById("saveButton").disabled = false; alertify.alert(str); 
+								}
 								else {
 									var url = "/openmrs/ws/rest/v1/team/teamrole";
-									var data = '{ "ownsTeam": '+document.getElementById("ownsTeam").checked+', "reportTo": "'+reportsTo+'", "name": "'+name+'" , "identifier": "'+identifier+'" }';
+									var data = '{ "ownsTeam": '+document.getElementById("ownsTeam").checked
+										+', "reportTo": "'+reportsTo+'", "name": "'+name+'" , "identifier": "'+identifier+'" }';
 									jQuery.ajax({
 										url : url,
 										data: data,

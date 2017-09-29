@@ -133,15 +133,14 @@ public class TeamMemberLogRequestResource extends DataDelegatingCrudResource<Tea
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
 		List<TeamMemberLog> teamMemberLogs;
-		
+		Integer offset=null, size=null;
+	
 		if(context.getParameter("offset")!=null && context.getParameter("size")!=null)
 		{
-			int offset=Integer.parseInt(context.getParameter("offset"));
-			int size=Integer.parseInt(context.getParameter("size"));
-			teamMemberLogs = Context.getService(TeamMemberLogService.class).getAllLogs(offset, size);
-			return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context);	
+			offset=Integer.parseInt(context.getParameter("offset"));
+			size=Integer.parseInt(context.getParameter("size"));
 		}
-		teamMemberLogs = Context.getService(TeamMemberLogService.class).getAllLogs(null, null);
+		teamMemberLogs = Context.getService(TeamMemberLogService.class).getAllLogs(offset, size);
 		return new NeedsPaging<TeamMemberLog>(teamMemberLogs, context);	
 	}
 	

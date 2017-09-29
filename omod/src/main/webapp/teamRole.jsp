@@ -35,8 +35,6 @@
 <script type="text/javascript" src="/openmrs/moduleResources/teammodule/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
-	var headerArrayLength = 9;
-	var teamRoles = [];
 	$(document).ready(function() {
 		$('#historyDialog').hide();
 		$("#editTeamRoleDiv").hide();

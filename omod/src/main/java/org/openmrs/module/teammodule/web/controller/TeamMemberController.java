@@ -50,9 +50,9 @@ public class TeamMemberController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
 		try {
-			model.addAttribute("allTeams", Context.getService(TeamService.class).getAllTeams(false, 0, 1000));
+			model.addAttribute("allTeams", Context.getService(TeamService.class).getAllTeams(null, null, null));
 			model.addAttribute("allSupervisors", Context.getService(TeamMemberService.class).searchTeamMember(null, null, null, null, null, null, null, null, null, 0, 1000));
-			model.addAttribute("allTeamRoles", Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null));
+			model.addAttribute("allTeamRoles", Context.getService(TeamRoleService.class).getAllTeamRole(null, null, null, null));
 			model.addAttribute("allLocations", Context.getLocationService().getAllLocations());
 			model.addAttribute("allTeamMembers", Context.getService(TeamMemberService.class).getAllTeamMember(null, true, null, null));
 		}

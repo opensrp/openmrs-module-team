@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -110,8 +111,8 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 			Integer team, Integer location, Date joinDateFrom, Date joinDateTo, String name,
 			Boolean isdataprovider,
 			Integer offset, Integer pageSize) {
-		Criteria criteria = getCurrentSession().createCriteria(TeamMember.class).add(Restrictions.eq("voided", false));
-		
+		Criteria criteria = getCurrentSession().createCriteria(TeamMember.class);
+	
 		List<TeamMember> data=new ArrayList<TeamMember>();
 		if (location != null) {
 			criteria.createAlias("locations", "l").add(Restrictions.eq("l.locationId", location));
@@ -120,10 +121,13 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		if (teamRole != null) {
 			criteria.add(Restrictions.eq("teamRole.teamRoleId", teamRole));
 		}
-		
-		if (nameOrIdentifier != null) {
+		if (!StringUtils.isBlank(nameOrIdentifier)) {
 			criteria.createAlias("person", "p").createAlias("p.names", "pn")
-				.add(Restrictions.or(Restrictions.like("pn.givenName", "%"+nameOrIdentifier+"%"),Restrictions.or(Restrictions.like("pn.middleName", "%"+nameOrIdentifier+"%"),Restrictions.or(Restrictions.like("pn.familyName", "%"+nameOrIdentifier+"%"),Restrictions.like("identifier", "%"+nameOrIdentifier+"%")))));
+				.add(Restrictions.disjunction()
+				.add(Restrictions.like("pn.givenName", "%"+nameOrIdentifier+"%"))
+				.add(Restrictions.like("pn.middleName", "%"+nameOrIdentifier+"%"))
+				.add(Restrictions.like("pn.familyName", "%"+nameOrIdentifier+"%"))
+				.add(Restrictions.like("identifier", "%"+nameOrIdentifier+"%")));
 		}
 		
 		if (team != null) {
@@ -144,7 +148,6 @@ public class HibernateTeamMemberDAO implements TeamMemberDAO {
 		
 		if (isdataprovider != null) {
 			criteria.add(Restrictions.eq("isdataprovider", isdataprovider));
-			System.out.println("location");
 		}
 		
 		data.addAll((List<TeamMember>) criteria.list());

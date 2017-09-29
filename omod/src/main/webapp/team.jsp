@@ -226,43 +226,37 @@ function CreateTable()
 	}
 
 	function teamDetail(uuid) {
-		$.get("/openmrs/ws/rest/v1/team/team?v=full",function(teams) {
+		$.get("/openmrs/ws/rest/v1/team/team/"+uuid+"?v=full",function(team) {
 			var supervisor = "", reportBy = "", dateCreated = "", dateChanged = "";
-			var teams = teams.results;
-			for (var i = 0; i < teams.length; i++) {
-				if (teams[i].uuid == uuid) {
-					if (teams[i].supervisor === null) {
+			
+					if (team.supervisor === null) {
 						supervisor = "";
 					} else {
-						supervisor = teams[i].supervisor.display;
+						supervisor = team.supervisor.display;
 					}
 	
-					if (teams[i].auditInfo != null) {
+					if (team.auditInfo != null) {
 	
-						if (teams[i].auditInfo.dateCreated === null)
+						if (team.auditInfo.dateCreated === null)
 							dateCreated = "";
 						else
-							dateCreated = teams[i].auditInfo.dateCreated
-									.toString().substr(0, 10);
-						if (teams[i].auditInfo.dateChanged === null)
+							dateCreated = team.auditInfo.dateCreated.toString().substr(0, 10);
+						if (team.auditInfo.dateChanged === null)
 							dateChanged = "";
 						else
-							dateChanged = teams[i].auditInfo.dateChanged
-									.toString().substr(0, 10);
+							dateChanged = team.auditInfo.dateChanged.toString().substr(0, 10);
 					}
 					$('#teamDetail tr td').children('snap').remove();
-					$("#teamDetailIdentifier").append("<snap>" + teams[i].teamIdentifier + "</snap>");
-					$("#teamDetailName").append("<snap>" + teams[i].teamName + "</snap>");
+					$("#teamDetailIdentifier").append("<snap>" + team.teamIdentifier + "</snap>");
+					$("#teamDetailName").append("<snap>" + team.teamName + "</snap>");
 					$("#teamDetailCurrentSupervisor").append("<snap>" + supervisor + "</snap>");
-					$("#teamDetailSupervisorTeam").append("<snap>" + teams[i].supervisorTeam + "</snap>");
-					$("#teamDetailLocation").append("<snap>" + teams[i].location.name + "</snap>");
-					$("#teamDetailNumberOfMember").append("<snap>" + teams[i].members + "</snap>");
-					$("#teamDetailVoided").append("<snap>" + teams[i].voided + "</snap>");
-					$("#teamDetailVoidReason").append("<snap>" + teams[i].voidReason + "</snap>");
+					$("#teamDetailSupervisorTeam").append("<snap>" + team.supervisorTeam + "</snap>");
+					$("#teamDetailLocation").append("<snap>" + team.location.name + "</snap>");
+					$("#teamDetailNumberOfMember").append("<snap>" + team.members + "</snap>");
+					$("#teamDetailVoided").append("<snap>" + team.voided + "</snap>");
+					$("#teamDetailVoidReason").append("<snap>" + team.voidReason + "</snap>");
 					$("#teamDetailDateCreated").append("<snap>" + dateCreated + "</snap>");
 					$("#teamDetailDateChanged").append("<snap>" + dateChanged + "</snap>");
-				}
-			}
 	
 			$("#TeamDetailDiv").dialog({
 				width : "500px",
