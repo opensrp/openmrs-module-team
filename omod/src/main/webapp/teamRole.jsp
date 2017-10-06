@@ -236,7 +236,7 @@
 		$("#historyDialog").dialog({
 			width : "auto",
 			height : "400",
-			title : "History",
+			title : "Team Role - History",
 			closeText : "",
 			modal : true,
 			open : onDialogOpen
@@ -310,8 +310,11 @@
 		var identifier = document.getElementById("teamRoleIdentifier").value;
 		var ownsTeam = document.getElementById("teamRoleOwnsTeam").value;
 		var url = "/openmrs/ws/rest/v1/team/teamrole/" + uuid;
-		var data = '{ "name" : "' + name + '", "identifier" : "' + identifier
-				+ '", "ownsTeam" : "' + ownsTeam + '" }';
+		var data = {};
+		data.name=name;
+		data.identifier=identifier;
+		data.ownsTeam=ownsTeam;
+		data = JSON.stringify(data);
 		$.ajax({
 			url : url,
 			data : data,
@@ -345,36 +348,41 @@
 		var reportTo = document.getElementById("teamRoleReportTo").value;
 
 		var url = "/openmrs/ws/rest/v1/team/teamrole/" + uuid;
-		var data = '{ "reportTo" : "' + reportTo + '" }';
+		var data = {};
+		if(reportTo!="")
+		{
+		data.reportTo=reportTo;	
+		}
+		data = JSON.stringify(data);
+		console.log(data);
 		$.ajax({
-					url : url,
-					data : data,
-					type : "POST",
-					contentType : "application/json",
-					success : function(result) {
-						var teamRole = result;
-						saveLog("teamRole", teamRole.uuid,teamRole.name, teamRole.name,"TEAM_ROLE_REPORT_TO_EDITED", "Reporting to: "+ reportTo);
-						document.getElementById("errorHead").innerHTML = "";
-						document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>";
-						$("#editTeamRoleReportToDiv").dialog('close');
-						$("#general").dataTable().fnDestroy();
-						CreateTable();
-						setTimeout(function() {
-							document.getElementById("saveHead").innerHTML = ""
-						}, 5000);
-
-					},
-					error : function(jqXHR, textStatus, errorThrown) {
-						console.log("ERROR-ALL-TEAMS");
-						console.log(jqXHR);
-						document.getElementById("saveHead").innerHTML = "";
-						document.getElementById("errorHead").innerHTML = "<p>Error Occured While Reading All Team Roles</p>";
-						$("#editTeamRoleReportToDiv").dialog('close');
-						setTimeout(function() {
-							document.getElementById("errorHead").innerHTML = ""
-						}, 5000);
-					}
-				});
+			url : url,
+			data : data,
+			type : "POST",
+			contentType : "application/json",
+			success : function(result) {
+				var teamRole = result;
+				saveLog("teamRole", teamRole.uuid,teamRole.name, teamRole.name,"TEAM_ROLE_REPORT_TO_EDITED", "Reporting to: "+ reportTo);
+				document.getElementById("errorHead").innerHTML = "";
+				document.getElementById("saveHead").innerHTML = "<p>Team Role Updated Successfully</p>";
+				$("#editTeamRoleReportToDiv").dialog('close');
+				$("#general").dataTable().fnDestroy();
+				CreateTable();
+				setTimeout(function() {
+					document.getElementById("saveHead").innerHTML = ""
+				}, 5000);
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log("ERROR-ALL-TEAMS");
+				console.log(jqXHR);
+				document.getElementById("saveHead").innerHTML = "";
+				document.getElementById("errorHead").innerHTML = "<p>Error Occured While Reading All Team Roles</p>";
+				$("#editTeamRoleReportToDiv").dialog('close');
+				setTimeout(function() {
+					document.getElementById("errorHead").innerHTML = ""
+				}, 5000);
+			}
+		});
 	}
 
 	function teamRoleVoidedSubmit() {
@@ -390,14 +398,15 @@
 			return;
 		} 
 
-		var data = '{';
-		if(voided != "false") 
-		{ 
-			data += '"voided":"' + voided + '", "voidReason":"' + voidReason + '"'; 
-		} else { 
-			data += '"voided":"' + voided + '"'; 
-		} 
-		data += ' }';
+		var data = {};
+
+		if (voided != "false") {
+			data.voided=voided;
+			data.voidReason=voidReason;
+		} else {
+			data.voided=voided;
+		}
+		data = JSON.stringify(data);
 
 		document.getElementById("voidError").innerHTML = "";
 		$.ajax({
@@ -437,9 +446,14 @@
 		if (action.length <= 45 && dataNew.length <= 500
 				&& dataOld.length <= 500 && log.length <= 500) {
 			var url = "/openmrs/ws/rest/v1/team/" + type.toLowerCase() + "log/";
-			var data = '{ "' + type + '":"' + uuid + '", "dataNew":"' + dataNew
-					+ '", "dataOld":"' + dataOld + '", "action":"' + action
-					+ '", "log":"' + log + '" }';
+			var data = {};
+			data[type]=uuid;
+			data.dataNew=dataNew;
+			data.dataOld=dataOld;
+			data.action=action;
+			data.log=log;
+			data = JSON.stringify(data);
+			
 			$.ajax({
 				url : url,
 				data : data,
@@ -626,24 +640,27 @@
 <div id="editTeamRoleVoidedDiv">
 	<h3 id='voidError' name='voidError' style='color: red; display: inline'></h3>
 	<form>
-		<table style='width: 100%;' id="editTeamRoleVoidedTable">
-			<tr>
-				<td style='font-size: 18px;'>Voided:</td>
-				<td>
-					<select id='teamRoleVoided'>
-						<option value='true' >True</option>
-						<option value='false' >False</option>
-					</select>
-				</td>
-				<td>
-					<textarea id='teamRoleVoidedReason'></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td><input type="hidden" id="teamRoleVoidedUuid"></td>
+	<table style='width: 100%;' id="editTeamRoleVoidedTable">
+		<tr>
+			<td style='font-size: 18px;'>Voided:</td>
+			<td><select id='teamRoleVoided' name='teamRoleVoided'>
+					<option value="true">True</option>
+					<option value="false">False</option>
+			</select></td>
+		</tr>
+		<tr>
+			<td>Void Reason:</td>
+			<td><textarea id='teamRoleVoidedReason' name='teamRoleVoidedReason'
+					style='width: 95%; font-size: 14px; padding: 5px;'>
+				</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td><input type="hidden" id="teamRoleVoidedUuid"></td>
 				<td><input type="button" onclick="teamRoleVoidedSubmit()" id="editTeamRoleVoidedSubmit" name="editTeamRoleVoidedSubmit" value="update"> </td>
-			</tr>	
-		</table>
+			
+		</tr>
+	</table>
 	</form>
 </div> 
 <form id="teamRoleForm" name="teamRoleForm" action="/openmrs/module/teammodule/teamMember.form" method="POST">

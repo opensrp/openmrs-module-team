@@ -100,7 +100,7 @@ public class TeamRoleRequestResource extends DataDelegatingCrudResource<TeamRole
 	@Override
 	public TeamRole save(TeamRole teamRole) {
 		try {
-			if (teamRole.getUuid() != null && teamRole.getId() > 0) {
+			if (teamRole.getUuid() != null && teamRole.getTeamRoleId() != null) {
 				Context.getService(TeamRoleService.class).updateTeamRole(teamRole);
 				return teamRole;
 			} else {

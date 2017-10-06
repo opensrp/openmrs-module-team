@@ -193,18 +193,20 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
 		List<TeamMember> teamMembers=null;
+		Integer offset=null;
+		Integer size= null;
+		Boolean voided=null;
+		
 		if(context.getParameter("offset")!=null && context.getParameter("size")!=null)
 		{
-			int offset=Integer.parseInt(context.getParameter("offset"));
-			int size= Integer.parseInt(context.getParameter("size"));
-			
-			if(context.getParameter("voided")!=null)
-				teamMembers =  Context.getService(TeamMemberService.class).getAllTeamMember(null,Boolean.parseBoolean(context.getParameter("voided")), offset, size);
-			else
-				teamMembers =  Context.getService(TeamMemberService.class).getAllTeamMember(null,false, offset, size);
-			return new NeedsPaging<TeamMember>(teamMembers, context);
+			offset=Integer.parseInt(context.getParameter("offset"));
+			size= Integer.parseInt(context.getParameter("size"));
 		}
-		teamMembers = Context.getService(TeamMemberService.class).getAllTeamMember(null, false, null, null);
+		if(context.getParameter("voided")!=null)
+		{
+			voided=Boolean.parseBoolean(context.getParameter("voided"));
+		}
+		teamMembers = Context.getService(TeamMemberService.class).getAllTeamMember(null, voided, offset, size);
 		return new NeedsPaging<TeamMember>(teamMembers, context);	
 	}
 	

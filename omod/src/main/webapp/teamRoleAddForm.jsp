@@ -43,48 +43,54 @@
 		} else { var str = "";
 			jQuery.ajax({
 				url:"/openmrs/ws/rest/v1/team/teamrole?v=full&q="+name,
-				success: function(data,status) { var myNames = []; 
-					for(var i=0; i<data.results.length; i++) { myNames.push(data.results[i].name); }
-					if(myNames.includes(name)) { str += "Name must be unique";
-						jQuery.ajax({
-							url:"/openmrs/ws/rest/v1/team/teamrole?v=full&q="+identifier,
-							success: function(data,status) { var myIdentifiers = []; 
-								for(var i=0; i<data.results.length; i++) { myIdentifiers.push(data.results[i].identifier); }
-								if(myIdentifiers.includes(identifier)) { str += "<br>Identifier must be unique"; }
-								document.getElementById("saveButton").disabled = false; alertify.alert(str);
-							}, error: function(jqXHR, textStatus, errorThrown) { console.log(jqXHR); }
-						});
+				success: function(data,status) { 
+					var NamesOrIdentifiers = []; 
+					for(var i=0; i<data.results.length; i++) { 
+						NamesOrIdentifiers.push(data.results[i].name); 
 					}
-					else {
+					if(NamesOrIdentifiers.includes(name)) { 
+						str += "Name must be unique";
+						document.getElementById("saveButton").disabled = false;
+						alertify.alert(str);
+					}
+					if(NamesOrIdentifiers.includes(identifier)) { 
+						str += "Identifier must be unique"; 
+						document.getElementById("saveButton").disabled = false; alertify.alert(str); 
+					}
+					if(!NamesOrIdentifiers.includes(identifier) && !NamesOrIdentifiers.includes(name)){
+						var data = {};
+						data.ownsTeam=document.getElementById("ownsTeam").checked.toString();
+						data.reportTo=reportsTo;
+						data.name=name;
+						data.identifier=identifier;
+						data = JSON.stringify(data);
+						console.log(data);
 						jQuery.ajax({
-							url:"/openmrs/ws/rest/v1/team/teamrole?v=full&q="+identifier,
-							success: function(data,status) { var myIdentifiers = []; 
-								for(var i=0; i<data.results.length; i++) { 
-									myIdentifiers.push(data.results[i].identifier);
-								}
-								if(myIdentifiers.includes(identifier)) { 
-									str += "Identifier must be unique"; 
-									document.getElementById("saveButton").disabled = false; alertify.alert(str); 
-								}
-								else {
-									var url = "/openmrs/ws/rest/v1/team/teamrole";
-									var data = '{ "ownsTeam": '+document.getElementById("ownsTeam").checked
-										+', "reportTo": "'+reportsTo+'", "name": "'+name+'" , "identifier": "'+identifier+'" }';
-									jQuery.ajax({
-										url : url,
-										data: data,
-										type: "POST",
-										contentType: "application/json",
-										success : function(result) { console.log("SUCCESS-TEAM ROLE"); resetForm(); var option = document.createElement("option"); option.value = result.uuid; option.text = result.name; (document.getElementById("reportsTo")).add(option); saveLog("teamRole", result.uuid.toString(), result.name.toString(), "", "TEAM_ROLE_ADDED", ""); document.getElementById("saveButton").disabled = false; document.getElementById("errorHead").innerHTML = ""; document.getElementById("savedHead").innerHTML = "<p>Team Role Created Successfully</p>";				
-										}, error: function(jqXHR, textStatus, errorThrown) { console.log(jqXHR); document.getElementById("errorHead").innerHTML = "Error Occured While Creating Team Role"; document.getElementById("savedHead").innerHTML = ""; document.getElementById("saveButton").disabled = false; }
-									});
-								}
+							url : "/openmrs/ws/rest/v1/team/teamrole",
+							data: data,
+							type: "POST",
+							contentType: "application/json",
+							success : function(result) { 
+								console.log("SUCCESS-TEAM ROLE");
+								resetForm();
+								var option = document.createElement("option");
+								option.value = result.uuid; option.text = result.name;
+								(document.getElementById("reportsTo")).add(option);
+								saveLog("teamRole", result.uuid.toString(), result.name.toString(), "", "TEAM_ROLE_ADDED", "");
+								document.getElementById("saveButton").disabled = false;
+								document.getElementById("errorHead").innerHTML = "";
+								document.getElementById("savedHead").innerHTML = "<p>Team Role Created Successfully</p>";				
+							}, error: function(jqXHR, textStatus, errorThrown) { 
+								console.log(jqXHR);
+								document.getElementById("errorHead").innerHTML = "Error Occured While Creating Team Role";
+								document.getElementById("savedHead").innerHTML = "";
+								document.getElementById("saveButton").disabled = false;
 							}
 						});
-					}			
+					}
 				}
 			});
-		}
+		}			
 	}
 	function saveLog(type, uuid, dataNew, dataOld, action, log) {
 		if(action.length <= 45 && dataNew.length <= 500 && dataOld.length <= 500 && log.length <= 500) { 

@@ -217,7 +217,7 @@ function CreateTable()
 		});
 		$("#historyDialog").dialog({
 			width : "auto",
-			height : "auto",
+			height : "400",
 			title : "Team - History",
 			closeText : "",
 			modal : true,
@@ -261,7 +261,7 @@ function CreateTable()
 			$("#TeamDetailDiv").dialog({
 				width : "500px",
 				height : "auto",
-				title : "Team Role Detail",
+				title : "Team Detail",
 				closeText : "",
 				modal : true,
 				open : onDialogOpen
@@ -408,8 +408,12 @@ function CreateTable()
 		var name = $("#editTeamName").val();
 		var identifier = $("#editTeamIdentifier").val();
 		var uuid = document.getElementById("editTeamUuid").value;
-		var data = '{ "teamName" : "' + name + '", "teamIdentifier" :"' + identifier + '" }';
-
+		var data = {};
+		data.teamName=name;
+		data.teamIdentifier=identifier;
+		data = JSON.stringify(data);
+		//var data = '{ "teamName" : "' + name + '", "teamIdentifier" :"' + identifier + '" }';
+		console.log(data);
 		$.ajax({
 			url : "/openmrs/ws/rest/v1/team/team/" + uuid,
 			data : data,
@@ -443,8 +447,11 @@ function CreateTable()
 		var supervisor = document.getElementById("editTeamSupervisor").value;
 		var uuid = document.getElementById("editTeamSupervisorUuid").value;
 		console.log(supervisor + "," + uuid);
-
-		var data = '{ "supervisor" : "' + supervisor + '" }';
+		var data = {};
+		data.supervisor=supervisor;
+		data = JSON.stringify(data);
+		
+		//var data = '{ "supervisor" : "' + supervisor + '" }';
 
 		$.ajax({
 			url : "/openmrs/ws/rest/v1/team/team/" + uuid,
@@ -474,7 +481,10 @@ function CreateTable()
 	function teamLocationInfoSubmit() {
 		var location = document.getElementById("editTeamLocation").value;
 		var uuid = document.getElementById("editTeamLocationUuid").value;
-		var data = '{ "location" : "' + location + '" }';
+		var data = {};
+		data.location=location;
+		data = JSON.stringify(data);
+		//var data = '{ "location" : "' + location + '" }';
 		$.ajax({
 			url : "/openmrs/ws/rest/v1/team/team/" + uuid,
 			data : data,
@@ -507,19 +517,19 @@ function CreateTable()
 		var voided = document.getElementById("editTeamVoided").value;
 		var voidReason = document.getElementById("editTeamVoidReason").value;
 		var uuid = document.getElementById("editTeamVoidedUuid").value;
-		var data;
-
+		var data={};
 		if (voidReason.length > 255) {
 			document.getElementById("voidError").innerHTML = "Void Reason must be 255 charachers long";
 		} else if (voided === "true" && voidReason === "") {
 			document.getElementById("voidError").innerHTML = "Void Reason Can't be Empty";
 		} else {
 			if (voided != "false") {
-				data = '{ "voided" : "' + voided + '", "voidReason" :"'
-						+ voidReason + '" }';
+				data.voided=voided;
+				data.voidReason=voidReason;
 			} else {
-				data = '{ "voided" : "' + voided + '" }';
+				data.voided=voided;
 			}
+			data = JSON.stringify(data);
 			$.ajax({
 				url : "/openmrs/ws/rest/v1/team/team/" + uuid,
 				data : data,
@@ -552,9 +562,14 @@ function CreateTable()
 		if (action.length <= 45 && dataNew.length <= 500
 				&& dataOld.length <= 500 && log.length <= 500) {
 			var url = "/openmrs/ws/rest/v1/team/" + type.toLowerCase() + "log/";
-			var data = '{ "' + type + '":"' + uuid + '", "dataNew":"' + dataNew
-					+ '", "dataOld":"' + dataOld + '", "action":"' + action
-					+ '", "log":"' + log + '" }';
+			var data = {};
+			data[type]=uuid;
+			data.dataNew=dataNew;
+			data.dataOld=dataOld;
+			data.action=action;
+			data.log=log;
+			data = JSON.stringify(data);
+			
 			$.ajax({
 				url : url,
 				data : data,

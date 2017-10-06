@@ -68,7 +68,23 @@
 		$("#editTeamMemberTeamRoleDiv").hide();
 		$("#editTeamMemberLocationDiv").hide();
 		$("#editTeamMemberDiv").hide();
-		
+		var param="";
+		var team="${team}";
+		var role="${role}";
+		if(team!="")
+		{ 
+			param += "&team=" + team;
+			$("#filterByTeam").val(team);
+			CreateTable(param)
+			return;
+		}
+		if(role!="")
+		{ 
+			param += "&role=" + role;
+			$("#filterByTeamRole").val(role);
+			CreateTable(param)
+			return;
+		}
 		CreateTable("")
 	});
 	 
@@ -226,45 +242,50 @@
 		var personUuid=$('#teamMemberPersonUuid').val();
 		var memberUuid=$('#teamMemberUuid').val();
 		var otherTeamMemberFirstNames = []; var otherTeamMemberMiddleNames = []; var otherTeamMemberFamilyNames = []; var otherTeamMemberIdentifiers = [];
+		var data={};
 		jQuery.ajax({
 			url: "/openmrs/ws/rest/v1/team/teammember/"+memberUuid,
 			success : function(test) { var otherTeamMembers = test.results; 
-				var data = '{ '; if(identifier != "") { data += '"identifier" : "' + identifier + '"'; } data += ' }';
-				$.ajax({
-					url: "/openmrs/ws/rest/v1/team/teammember/"+memberUuid,
-					data : data,
-				 	type: "POST",
-			    	contentType: "application/json",
-					success : function(result) { 
-						var teamMember = result;
-						var data1 = '{ ';
-						if(firstName != "") { data1 += ' "givenName" : "' + firstName + '", '; }
-						if(middleName != "") { data1 += ' "middleName" : "' + middleName + '", '; }
-						if(lastName != "") { data1 += ' "familyName" : "' + lastName + '" '; }
-						data1 += ' }';
-						var url1 = "/openmrs/ws/rest/v1/person/"+test.person.uuid+"/name/";
-						if(test.person.person === undefined) { url1 += test.person.preferredName.uuid; } 
-						else { url1 += teamMember.person.person.preferredName.uuid; }
-						$.ajax({
-							url: url1,
-							data : data1,
-						 	type: "POST",
-							contentType: "application/json",
-							success : function(result1) { 
-								saveLog("teamMember",memberUuid,result.display,result.display,"TEAM_MEMBER_EDITED","");
-								document.getElementById("errorHead").innerHTML = "";
-								document.getElementById("saveHead").innerHTML = "<p>Team Member Information Updated Successfully</p>";
-								$("#editTeamMemberDiv").dialog('close')
-								$("#general").dataTable().fnDestroy();
-								CreateTable("");
-								setTimeout(
-								function() {
-									document.getElementById("saveHead").innerHTML = ""
-								}, 5000);}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER INFO PERSON"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Information</p>"; }
-								});
-							}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER INFO"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Information</p>"; }
-						});
-					}
+
+			if(identifier != "") {
+				data.identifier = identifier
+			}
+			data = JSON.stringify(data);
+			$.ajax({
+				url: "/openmrs/ws/rest/v1/team/teammember/"+memberUuid,
+				data : data,
+			 	type: "POST",
+		    	contentType: "application/json",
+				success : function(result) { 
+					var teamMember = result;
+					var data1 = '{ ';
+					if(firstName != "") { data1 += ' "givenName" : "' + firstName + '", '; }
+					if(middleName != "") { data1 += ' "middleName" : "' + middleName + '", '; }
+					if(lastName != "") { data1 += ' "familyName" : "' + lastName + '" '; }
+					data1 += ' }';
+					var url1 = "/openmrs/ws/rest/v1/person/"+test.person.uuid+"/name/";
+					if(test.person.person === undefined) { url1 += test.person.preferredName.uuid; } 
+					else { url1 += teamMember.person.person.preferredName.uuid; }
+					$.ajax({
+						url: url1,
+						data : data1,
+					 	type: "POST",
+						contentType: "application/json",
+						success : function(result1) { 
+							saveLog("teamMember",memberUuid,result.display,result.display,"TEAM_MEMBER_EDITED","");
+							document.getElementById("errorHead").innerHTML = "";
+							document.getElementById("saveHead").innerHTML = "<p>Team Member Information Updated Successfully</p>";
+							$("#editTeamMemberDiv").dialog('close')
+							$("#general").dataTable().fnDestroy();
+							CreateTable("");
+							setTimeout(
+							function() {
+								document.getElementById("saveHead").innerHTML = ""
+							}, 5000);}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER INFO PERSON"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Information</p>"; }
+							});
+						}, error: function(jqXHR, textStatus, errorThrown) { console.log("ERROR-EDIT TEAM MEMBER INFO"); console.log(jqXHR); document.getElementById("saveHead").innerHTML = ""; document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Information</p>"; }
+					});
+				}
 		});
 	}
 	
@@ -297,7 +318,7 @@
 	
 	$("#historyDialog").dialog({
 			width : "auto",
-			height : "auto",
+			height : "400",
 			title : "Team Member - History",
 			closeText : "",
 			modal : true,
@@ -523,11 +544,11 @@
 	{
 		var uuid = $("#editTeamMemberTeamRolesUuid").val();
 		var role = $("#editTeamMemberTeamRolesSelect").val(); 	
-		var data = '{ "teamRole" : "';
+		var data = {};
 		if (role != "") {
-			data += role;
+			data.teamRole = role;
 		}
-		data += '" }';
+		data= JSON.stringify(data);;
 				
 		$.ajax({
 			url : "/openmrs/ws/rest/v1/team/teammember/" + uuid,
@@ -584,12 +605,13 @@
 	{
 		var uuid = $("#editTeamMemberTeamsUuid").val();
 		var team = $("#editTeamMemberTeamsSelect").val(); 	
-		var data = '{ "team" : "';
+		var data = {};
+		
 		if (team != "") {
-			data += team;
+			data.team = team;
 		}
-		data += '" }';
-				
+		data = JSON.stringify(data);
+					
 		$.ajax({
 			url : "/openmrs/ws/rest/v1/team/teammember/" + uuid,
 			data : data,
@@ -650,7 +672,8 @@
 		if (location != "") {
 			data += '{ "uuid":"' + location + '" } ';
 		}
-		data += ' ] }';		
+		data += ' ] }';
+			
 		$.ajax({
 			url : "/openmrs/ws/rest/v1/team/teammember/" + uuid,
 			data : data,
@@ -683,27 +706,30 @@
 		if (action.length <= 45 && dataNew.length <= 500
 				&& dataOld.length <= 500 && log.length <= 500) {
 			var url = "/openmrs/ws/rest/v1/team/" + type.toLowerCase() + "log/";
-			var data = '{ "' + type + '":"' + uuid + '", "dataNew":"' + dataNew
-					+ '", "dataOld":"' + dataOld + '", "action":"' + action
-					+ '", "log":"' + log + '" }';
-console.log(data);			
-					$.ajax({
-						url : url,
-						data : data,
-						type : "POST",
-						contentType : "application/json",
-						success : function(result) {
-							console.log("SUCCESS-SAVE " + type.toUpperCase()
-									+ " LOG");
-						},
-						error : function(jqXHR, textStatus, errorThrown) {
-							console.log("ERROR-SAVE " + type.toUpperCase()
-									+ " LOG");
-							console.log(jqXHR);
-							document.getElementById("saveHead").innerHTML = "";
-							document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Location(s)</p>";
-						}
-					});
+			var data = {};
+			data[type]=uuid;
+			data.dataNew=dataNew;
+			data.dataOld=dataOld;
+			data.action=action;
+			data.log=log;
+			data = JSON.stringify(data);	
+			$.ajax({
+				url : url,
+				data : data,
+				type : "POST",
+				contentType : "application/json",
+				success : function(result) {
+					console.log("SUCCESS-SAVE " + type.toUpperCase()
+							+ " LOG");
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log("ERROR-SAVE " + type.toUpperCase()
+							+ " LOG");
+					console.log(jqXHR);
+					document.getElementById("saveHead").innerHTML = "";
+					document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Location(s)</p>";
+				}
+			});
 		} else {
 			var errorStr = "";
 			if (action.length > 45) {
@@ -755,7 +781,9 @@ console.log(data);
 		var dataProvider = document.getElementById("editTeamMemberDataProvider").value;
 		var uuid = document.getElementById("editTeamMemberDataProviderUuid").value;
 		var data;
-		data = '{ "isDataProvider" : "' + dataProvider.toString() + '" }';
+		data = {}
+		data.isDataProvider= dataProvider.toString();
+		data = JSON.stringify(data);
 		$.ajax({
 			url : "/openmrs/ws/rest/v1/team/teammember/" + uuid,
 			data : data,
@@ -804,7 +832,7 @@ console.log(data);
 		var voided = document.getElementById("editTeamMemberVoided").value;
 		var voidReason = document.getElementById("editTeamMemberVoidReason").value;
 		var uuid = document.getElementById("editTeamMemberVoidedUuid").value;
-		var data;
+		var data={};
 
 		if (voidReason.length > 255) {
 			document.getElementById("voidError").innerHTML = "Void Reason must be 255 charachers long";
@@ -812,23 +840,25 @@ console.log(data);
 			document.getElementById("voidError").innerHTML = "Void Reason Can't be Empty";
 		} else {
 			if (voided != "false") {
-				data = '{ "voided" : "' + voided + '", "voidReason" :"'
-						+ voidReason + '" }';
+				data.voided=voided;
+				data.voidReason=voidReason;
 			} else {
-				data = '{ "voided" : "' + voided + '" }';
+				data.voided=voided;
 			}
+			data = JSON.stringify(data);
+			console.log(data);
 			$.ajax({
-				url : "/openmrs/ws/rest/v1/team/teamMember/" + uuid,
+				url : "/openmrs/ws/rest/v1/team/teammember/" + uuid,
 				data : data,
 				type : "POST",
 				contentType : "application/json",
 				success : function(result) {
 					var teamMember = result;
-					console.log(team);
-					saveLog("team", teamMember.uuid, teamMember.name,teamMember.name,
+					console.log(teamMember)
+					saveLog("teammember", teamMember.uuid, teamMember.display,teamMember.display,
 							"TEAM_MEMBER_VOIDED_STATUS_EDITED", "Team Member Voided Status Change to "+ voided);
 					document.getElementById("errorHead").innerHTML = "";
-					document.getElementById("saveHead").innerHTML = "<p>Team Void Status Updated Successfully</p>";
+					document.getElementById("saveHead").innerHTML = "<p>Team Member Void Status Updated Successfully</p>";
 					$("#editTeamMemberVoidedDiv").dialog('close');
 					$("#general").dataTable().fnDestroy();
 					CreateTable("");
@@ -838,10 +868,10 @@ console.log(data);
 							}, 5000);
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					console.log("ERROR-EDIT TEAM VOIDED STATUS UPDATE");
+					console.log("ERROR-EDIT TEAM MEMBER VOIDED STATUS UPDATE");
 					console.log(jqXHR);
 					document.getElementById("saveHead").innerHTML = "";
-					document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Void Status</p>";
+					document.getElementById("errorHead").innerHTML = "<p>Error Occured While Updating Team Member Void Status</p>";
 				}
 			});
 		}

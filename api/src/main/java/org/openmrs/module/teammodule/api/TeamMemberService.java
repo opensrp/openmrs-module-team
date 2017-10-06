@@ -26,7 +26,7 @@ public interface TeamMemberService extends OpenmrsService {
 	
 	public List<TeamMember> getTeamMemberByPersonId(Integer personId);
 
-	public List<TeamMember> getAllTeamMember(Integer id, boolean voided, Integer offset, Integer pageSize);
+	public List<TeamMember> getAllTeamMember(Integer id, Boolean voided, Integer offset, Integer pageSize);
 		
 	public void saveTeamMember(TeamMember teamMember);
 	
