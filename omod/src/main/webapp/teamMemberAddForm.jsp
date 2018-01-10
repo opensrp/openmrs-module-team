@@ -83,8 +83,8 @@
 		});
 		
 		jQuery("#joinDate" ).datepicker({ maxDate: new Date(), dateFormat: 'yy-mm-dd' });
-		jQuery("#leaveDate").datepicker({ dateFormat: 'yy-mm-dd' });
 		jQuery("#birthDate").datepicker({ maxDate: new Date(), dateFormat: 'yy-mm-dd' });
+		jQuery("#leaveDate").datepicker({ maxDate: new Date(), dateFormat: 'yy-mm-dd' });
 		
 		document.getElementById("location").multiple = true;
 		document.getElementById("location").size = 7;
