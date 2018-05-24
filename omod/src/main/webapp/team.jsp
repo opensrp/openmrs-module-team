@@ -413,7 +413,6 @@ function CreateTable()
 		data.teamIdentifier=identifier;
 		data = JSON.stringify(data);
 		//var data = '{ "teamName" : "' + name + '", "teamIdentifier" :"' + identifier + '" }';
-		console.log(data);
 		$.ajax({
 			url : "/openmrs/ws/rest/v1/team/team/" + uuid,
 			data : data,
@@ -765,13 +764,13 @@ function CreateTable()
 			<tr>
 				<td style='font-size: 18px;'>Name:</td>
 				<td><input style='width: 95%; font-size: 14px; padding: 5px;'
-					type='text' id='editTeamName' name='editTeamName' maxlength='45'>
+					type='text' id='editTeamName' name='editTeamName' maxlength='20'>
 				</td>
 			</tr>
 			<tr>
 				<td style='font-size: 18px;'>Identifier:</td>
 				<td><input style='width: 95%; font-size: 14px; padding: 5px;'
-					type='text' id='editTeamIdentifier' name='editTeamIdentifier' maxlength='45'>
+					type='text' id='editTeamIdentifier' name='editTeamIdentifier' maxlength='20'>
 				</td>
 			</tr>
 			<tr>
