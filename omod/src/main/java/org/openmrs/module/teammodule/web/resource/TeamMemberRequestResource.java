@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openmrs.Encounter;
 import org.openmrs.Location;
+import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.PersonAttribute;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
 import org.openmrs.module.teammodule.TeamRole;
@@ -216,6 +219,11 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 		if (teamMember == null || teamMember.getPerson() == null || teamMember.getPerson().getPersonName() == null) {
 			return "";
 		}
+		Patient patient = null;
+		Encounter encounter;
+		
+		patient.getPerson().removeAttribute(patient.getAttribute(Context.getPersonService().getPersonAttributeTypeByName("Treatment Supporter")));
+		Context.getPatientService().savePatient(patient);
 		return teamMember.getPerson().getPersonName().toString();
 	}
 	
