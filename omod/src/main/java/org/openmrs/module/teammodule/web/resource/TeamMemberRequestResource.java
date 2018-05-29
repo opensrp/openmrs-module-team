@@ -219,11 +219,6 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 		if (teamMember == null || teamMember.getPerson() == null || teamMember.getPerson().getPersonName() == null) {
 			return "";
 		}
-		Patient patient = null;
-		Encounter encounter;
-		
-		patient.getPerson().removeAttribute(patient.getAttribute(Context.getPersonService().getPersonAttributeTypeByName("Treatment Supporter")));
-		Context.getPatientService().savePatient(patient);
 		return teamMember.getPerson().getPersonName().toString();
 	}
 	
