@@ -95,7 +95,12 @@
 	function saveLog(type, uuid, dataNew, dataOld, action, log) {
 		if(action.length <= 45 && dataNew.length <= 500 && dataOld.length <= 500 && log.length <= 500) { 
 			var url = "/openmrs/ws/rest/v1/team/"+type.toLowerCase()+"log/";
-			var data = '{ "'+type+'":"'+uuid+'", "dataNew":"'+dataNew+'", "dataOld":"'+dataOld+'", "action":"'+action+'", "log":"'+log+'" }';
+			var data={}
+			data.type=uuid;
+			data.dataNew=dataNew;
+			data.dataOld=dataOld;
+			data.action=action;
+			data.log=log;
 			jQuery.ajax({
 				url: url,
 				data : data,

@@ -10,7 +10,7 @@
 <script type="text/javascript" src="/openmrs/moduleResources/teammodule/alertify.min.js"></script>
 
 <script type="text/javascript">
-	\$j=jQuery;
+	$j=jQuery;
 	jQuery(document).ready(function() {
 		jQuery("#nameTip").hide();
 		jQuery("#idTip").hide();
@@ -70,7 +70,12 @@
 								if(myIdentifiers.includes(id)) { str += "Identifier must be unique"; document.getElementById("saveButton").disabled = false; alertify.alert(str); }
 								else {
 									var url = "/openmrs/ws/rest/v1/team/team";
-									var data = '{ "teamName": "'+name+'", "location": "'+selectedValue+'", "teamIdentifier": "'+id+'", "supervisor": "'+supervisor+'" }';
+									var data = {};
+									data.teamName=name;
+									data.location=selectedValue;
+									data.teamIdentifier=id;
+									data.supervisor=supervisor;
+									data= JSON.stringify(data)
 									jQuery.ajax({
 										url : url,
 										data: data,
@@ -90,7 +95,13 @@
 	function saveLog(type, uuid, dataNew, dataOld, action, log) {
 		if(action.length <= 45 && dataNew.length <= 500 && dataOld.length <= 500 && log.length <= 500) { 
 			var url = "/openmrs/ws/rest/v1/team/"+type.toLowerCase()+"log/";
-			var data = '{ "'+type+'":"'+uuid+'", "dataNew":"'+dataNew+'", "dataOld":"'+dataOld+'", "action":"'+action+'", "log":"'+log+'" }';
+			var data = {}
+			data.type=uuid
+			data.dataNew=dataNew
+			data.dataOld=dataOld
+			data.action=action
+			data.log=log;
+			data = JSON.stringify(data)
 			jQuery.ajax({
 				url: url,
 				data : data,

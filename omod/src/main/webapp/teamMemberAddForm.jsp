@@ -15,7 +15,7 @@
 <script type="text/javascript" src="/openmrs/moduleResources/teammodule/alertify.min.js"></script>
 
 <script type="text/javascript">
-	\$j = jQuery;
+	$j = jQuery;
 	var locations = [];
 	var userRoles = [];
 	var allLocationIds = []; 
@@ -144,8 +144,6 @@
 			else{
 				if (gName == null || gName == "") { mustSelectMessage += "Name can't be empty."; }
 				if (!regexp.test(gName)) { dataTypeMessage += "<br>Min 3, max 20 All data types and either [- . Or _ ] are allowed for text field."; }
-				if (mName == null || mName == "") { mustSelectMessage += "<br>Middle Name can't be empty."; }
-				if (!regexp.test(mName)) { dataTypeMessage += "<br>Middle Name can contain [alphabets,.,-] min 3, max 20."; }
 				if (fName == null || fName == "") { mustSelectMessage += "<br>Family Name can't be empty."; }
 				if (!regexp.test(fName)) { dataTypeMessage += "<br>Family Name can contain [alphabets,.,-] min 3, max 20."; }
 				if (selectedValue == 0) { mustSelectMessage += "<br>Please select a gender."; }
@@ -195,17 +193,19 @@
 							var person = "";
 							if(!choice) {
 								var url3 = "/openmrs/ws/rest/v1/person";
-								var names = '[{ ';
-								if(givenName != "") { names += '"givenName":"' + givenName + '", '; }
-								if(middleName != "") { names += '"middleName":"' + middleName + '", '; }
-								if(familyName != "") { names += '"familyName":"' + familyName + '", '; }
-								if(gender==="M") { names += '"prefix":"Mr.", '; } else if(gender==="F") { names += '"prefix":"Ms.", '; }
-								names += '"preferred":"true"'; names += ' }]';
-								var data3 = '{ ';
-								if(names != "") { data3 += '"names":' + names + ', '; }
-								if(gender != "") { data3 += '"gender":"' + gender + '", '; }
-								if(birthDate != "") { data3 += '"birthdate":"' + birthDate + '"'; }
-								data3 += ' }';
+								var names=[]
+								var name={}
+								if(givenName != "") { name.givenName=givenName; }
+								if(middleName != "") { name.middleName=middleName; }
+								if(familyName != "") { name.familyName=familyName; }
+								if(gender==="M") { name.prefix="Mr."; } else if(gender==="F") { name.prefix="Ms."; }
+								name.preferred=true;
+								names.push(name)
+								var data3={};
+								if(names != "") { data3.names=names; }
+								if(gender != "") { data3.gender=gender; }
+								if(birthDate != "") { data3.birthdate=birthDate; }
+								data3=JSON.stringify(data3);
 								jQuery.ajax({
 									url: url3,
 									data : data3,
@@ -215,13 +215,26 @@
 										person = result.uuid;
 										if(loginChoice) {
 											var url2 = "/openmrs/ws/rest/v1/user";
-											var data2 = '{ ';
-											if(userName != "") { data2 += '"username":"' + userName + '", '; }
-											if(password != "") { data2 += '"password":"' + password + '", '; }
-											if(roleOption != "") { data2 += '"roles":['; for(var k = 0; k < userRoles.length; k++) { if(k === userRoles.length-1) { data2 += '{"uuid":"'+userRoles[k]+'"} '; } else { data2 += '{"uuid":"'+userRoles[k]+'"}, '; } } data2 += '], '; }
-											data2 += '"person":{"uuid":"' + person + '"}, ';
-											data2 += '"systemId":"' + userName + '"';
-											data2 += ' }';
+											var data2={}
+											if(userName != "") { data2.username=userName; }
+											if(password != "") { data2.password=password; }
+											if(roleOption != "") { 
+												data2.roles=[]
+												for(var k = 0; k < userRoles.length; k++) { 
+													var role={};
+													if(k === userRoles.length-1) { 
+														role.uuid=userRoles[k]; } 
+													else { 
+														role.uuid=userRoles[k]; } 
+													data2.roles.push(role)
+												} 
+												 
+											}
+											data2.person={};
+											data2.person.uuid=person;
+											data2.systemId=userName;
+											data2=JSON.stringify(data2);
+											
 											jQuery.ajax({
 												url: url2,
 												data : data2,
@@ -232,29 +245,37 @@
 											});
 										}
 										var url = "/openmrs/ws/rest/v1/team/teammember";
-										var data = '{ '; 
-										if(identifier != "") { data += '"identifier":"' + identifier + '", '; }
+										var data={};
+										if(identifier != "") { data.identifier=identifier; }
 										if(location != "") {
 											console.log(location);
-											data += '"locations":['; 
+											data.locations=[]; 
 											for(var k = 0; k < locations.length; k++) { 
+												var loc={}
 												if(k === locations.length-1) { 
-													data += '{"uuid":"'+locations[k]+'"}'; 
+													loc.uuid=locations[k]; 
 												} 
 												else { 
-													data += '{"uuid":"'+locations[k]+'"}, '; 
+													loc.uuid=locations[k]; 
 												}
-											} 
-											data += '], '; 
+												data.locations.push(loc);
+											}  
 										}
-										if(joinDate != "") { data += '"joinDate":"' + joinDate + '", '; }
-										if(leaveDate != "") { data += '"leaveDate":"' + leaveDate + '", '; }
-										if(teamOption != "0") { data += '"team":{"uuid":"' + teamOption + '"}, '; }
-										if(teamRoleOption != "0") { data += '"teamRole":{"uuid":"' + teamRoleOption + '"}, '; }
-										data += '"person":{"uuid":"' + person + '"}, ';
-										data += '"isDataProvider":"' + isDataProvider + '"';
-										data += ' }';
+										if(joinDate != "") { data.joinDate=joinDate; }
+										if(leaveDate != "") { data.leaveDate=leaveDate; }
+										if(teamOption != "0") { 
+											data.team={}
+											data.team.uuid=teamOption; 
+										}
+										if(teamRoleOption != "0") { 
+										data.teamRole={};
+										data.teamRole.uuid=teamRoleOption; }
+										data.person={};
+										data.person.uuid=person;
+										data.isDataProvider=isDataProvider;
 										console.log(data);
+										data=JSON.stringify(data);
+										
 										jQuery.ajax({
 											url: url,
 											data : data,
@@ -272,17 +293,35 @@
 									success : function(result) { console.log("SUCCESS-PERSON ELSE"); 
 										for(var p=0; p<result.results.length; p++) { if(pId === result.results[p].display) { person = result.results[p].uuid; } }
 										var url = "/openmrs/ws/rest/v1/team/teammember";
-										var data = '{ '; 
-										if(identifier != "") { data += '"identifier":"' + identifier + '", '; }
-										if(location != "") { data += '"locations":['; for(var k = 0; k < locations.length; k++) { if(k === locations.length-1) { data += '{"uuid":"'+locations[k]+'"}'; } else { data += '{"uuid":"'+locations[k]+'"}, '; } } data += '], '; }
-										if(joinDate != "") { data += '"joinDate":"' + joinDate + '", '; }
-										if(leaveDate != "") { data += '"leaveDate":"' + leaveDate + '", '; }
-										if(teamOption != "0") { data += '"team":{"uuid":"' + teamOption + '"}, '; }
-										if(teamRoleOption != "0") { data += '"teamRole":{"uuid":"' + teamRoleOption + '"}, '; }
-										data += '"person":{"uuid":"' + person + '"}, ';
-										data += '"isDataProvider":"' + isDataProvider + '"';
-										data += ' }';
+										var data = {}; 
+										if(identifier != "") { data.identifier=identifier; }
+										if(location != "") { 
+											data.locations=[];
+											for(var k = 0; k < locations.length; k++) { 
+												var loc={}
+												if(k === locations.length-1) { 
+													loc.uuid=locations[k]; } 
+												else { 
+													loc.uuid=locations[k]; } 
+												data.locations.push(loc);
+											}; 
+										}
+										if(joinDate != "") { data.joinDate=joinDate; }
+										if(leaveDate != "") { data.leaveDate=leaveDate; }
+										if(teamOption != "0") { 
+											data.team={};
+											data.team.uuid=teamOption; 
+										}
+										if(teamRoleOption != "0") { 
+										data.teamRole={}
+										data.teamRole.uuid=teamRoleOption; 
+										}
+										data.person={};
+										data.person.uuid=person;
+										data.isDataProvider=isDataProvider;
 										console.log(data);
+										data=JSON.stringify(data);
+										
 										jQuery.ajax({
 											url: url,
 											data : data,
@@ -344,7 +383,14 @@
 	function saveLog(type, uuid, dataNew, dataOld, action, log) {
 		if(action.length <= 45 && dataNew.length <= 500 && dataOld.length <= 500 && log.length <= 500) { 
 			var url = "/openmrs/ws/rest/v1/team/"+type.toLowerCase()+"log/";
-			var data = '{ "'+type+'":"'+uuid+'", "dataNew":"'+dataNew+'", "dataOld":"'+dataOld+'", "action":"'+action+'", "log":"'+log+'" }';
+			var data={}
+			data.type=uuid;
+			data.dataNew=dataNew;
+			data.dataOld=dataOld;
+			data.action=action
+			data.log=log;
+			data=JSON.stringify(data);
+			
 			jQuery.ajax({
 				url: url,
 				data : data,
@@ -424,7 +470,6 @@
 			</td>
 			<td>
 				<form:input id="middleName" path="person.names[0].middleName" onfocus="jQuery('#mNameTip').show();" onblur="jQuery('#mNameTip').hide();" maxlength="20" />
-				<span style="color: red">*</span>
 				<span id="mNameTip">Min 3 and max 20.Alphabets,[-.] are allowed</span>
 			</td>
 			<td></td>

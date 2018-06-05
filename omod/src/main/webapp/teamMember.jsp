@@ -258,14 +258,14 @@
 		    	contentType: "application/json",
 				success : function(result) { 
 					var teamMember = result;
-					var data1 = '{ ';
-					if(firstName != "") { data1 += ' "givenName" : "' + firstName + '", '; }
-					if(middleName != "") { data1 += ' "middleName" : "' + middleName + '", '; }
-					if(lastName != "") { data1 += ' "familyName" : "' + lastName + '" '; }
-					data1 += ' }';
+					var data1 = {};
+					if(firstName != "") { data1.givenName=firstName; }
+					if(middleName != "") { data1.middleName=middleName; }
+					if(lastName != "") { data1.familyName=lastName; }
 					var url1 = "/openmrs/ws/rest/v1/person/"+test.person.uuid+"/name/";
 					if(test.person.person === undefined) { url1 += test.person.preferredName.uuid; } 
 					else { url1 += teamMember.person.person.preferredName.uuid; }
+					data1=JSON.stringify(data1);
 					$.ajax({
 						url: url1,
 						data : data1,
@@ -668,11 +668,13 @@
 	{
 		var uuid = $("#editTeamMemberLocationsUuid").val();
 		var location = $("#editTeamMemberLocationsSelect").val(); 	
-		var data = '{ "locations" : [ ';
+		var data ={};
 		if (location != "") {
-			data += '{ "uuid":"' + location + '" } ';
+			data.locations=[];
+			var loc={};
+			loc.uuid=location;
+			locations.push(loc)
 		}
-		data += ' ] }';
 			
 		$.ajax({
 			url : "/openmrs/ws/rest/v1/team/teammember/" + uuid,
