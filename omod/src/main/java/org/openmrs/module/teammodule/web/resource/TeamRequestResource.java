@@ -96,7 +96,52 @@ public class TeamRequestResource extends DataDelegatingCrudResource<Team> {
 				description.addProperty("location", Representation.FULL);
 				description.addProperty("auditInfo");
 				description.addSelfLink();
+			}else {
+				String customRepresentation = rep.getRepresentation();
+
+				if(customRepresentation.contains("display"))
+					description.addProperty("display");
+
+				if(customRepresentation.contains("teamName"))
+					description.addProperty("teamName");
+
+				if(customRepresentation.contains("uuid"))
+					description.addProperty("uuid");
+
+				if(customRepresentation.contains("teamIdentifier"))
+					description.addProperty("teamIdentifier");
+
+				if(customRepresentation.contains("supervisor"))
+					description.addProperty("supervisor");
+
+				if(customRepresentation.contains("supervisorUuid"))
+					description.addProperty("supervisorUuid");
+
+				if(customRepresentation.contains("supervisorTeam"))
+					description.addProperty("supervisorTeam");
+
+				if(customRepresentation.contains("supervisorTeamUuid"))
+					description.addProperty("supervisorTeamUuid");
+
+				if(customRepresentation.contains("supervisorIdentifier"))
+					description.addProperty("supervisorIdentifier");
+
+				if(customRepresentation.contains("members"))
+					description.addProperty("members");
+
+				if(customRepresentation.contains("voided"))
+					description.addProperty("voided");
+
+				if(customRepresentation.contains("voidReason"))
+					description.addProperty("voidReason");
+
+				if(customRepresentation.contains("location"))
+					description.addProperty("location", Representation.DEFAULT);
+
+				if(customRepresentation.contains("auditInfo"))
+					description.addProperty("auditInfo");
 			}
+
 		}
 		return description;
 	}
