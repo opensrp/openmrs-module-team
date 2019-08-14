@@ -97,7 +97,52 @@ public class TeamMemberRequestResource extends DataDelegatingCrudResource<TeamMe
 				description.addProperty("patients", Representation.FULL);
 				description.addProperty("auditInfo");
 				description.addSelfLink();
+			}else {
+				String customRepresentation = rep.getRepresentation();
+
+				if(customRepresentation.contains("display"))
+					description.addProperty("display");
+
+				if(customRepresentation.contains("identifier"))
+					description.addProperty("identifier");
+
+				if(customRepresentation.contains("uuid"))
+					description.addProperty("uuid");
+
+				if(customRepresentation.contains("voided"))
+					description.addProperty("voided");
+
+				if(customRepresentation.contains("voidReason"))
+					description.addProperty("voidReason");
+
+				if(customRepresentation.contains("isDataProvider"))
+					description.addProperty("isDataProvider");
+
+				if(customRepresentation.contains("subTeams"))
+					description.addProperty("subTeams");
+
+				if(customRepresentation.contains("subTeamRoles"))
+					description.addProperty("subTeamRoles");
+
+				if(customRepresentation.contains("person"))
+					description.addProperty("person", Representation.DEFAULT);
+
+				if(customRepresentation.contains("team"))
+					description.addProperty("team", Representation.DEFAULT);
+
+				if(customRepresentation.contains("teamRole"))
+					description.addProperty("teamRole", Representation.DEFAULT);
+
+				if(customRepresentation.contains("locations"))
+					description.addProperty("locations", Representation.DEFAULT);
+
+				if(customRepresentation.contains("patients"))
+					description.addProperty("patients", Representation.DEFAULT);
+
+				if(customRepresentation.contains("auditInfo"))
+					description.addProperty("auditInfo");
 			}
+
 		}
 		return description;
 	}
