@@ -3,13 +3,17 @@
  */
 package org.openmrs.module.teammodule.web.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.Team;
+import org.openmrs.module.webservices.rest.web.v1_0.search.openmrs1_8.LocationSearchHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,7 +44,11 @@ public class TeamController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
 		try {
-			model.addAttribute("allLocations", Context.getLocationService().getAllLocations());
+			List<Location> locations = Context.getLocationService().getAllLocations();
+			for(Location location:locations) {
+				location.setName(location.getName().replace("\"", "'"));
+			}
+			model.addAttribute("allLocations", locations);
 		}
 		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }
 		
