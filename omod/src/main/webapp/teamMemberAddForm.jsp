@@ -271,7 +271,7 @@
 									contentType: "application/json",
 									success : function(result) { console.log("SUCCESS-PERSON ELSE");
                                         result = result.filter(function(e){return e});
-										for(var p=0; p<result.results.length; p++) { if(pId === result.results[p].display) { person = result.results[p].uuid; } }
+										for(var p=0; p<result.results.length; p++) { if(pId === result.results[p].display) { person = result.results[p].uuid; break; } }
 										var url = "/openmrs/ws/rest/v1/team/teammember";
 										var data = '{ '; 
 										if(identifier != "") { data += '"identifier":"' + identifier + '", '; }
