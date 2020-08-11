@@ -4,9 +4,12 @@
 
 package org.openmrs.module.teammodule.web.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.teammodule.api.TeamRoleService;
 import org.openmrs.module.teammodule.api.TeamMemberService;
@@ -50,10 +53,14 @@ public class TeamMemberViewForm {
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(Model model, HttpServletRequest request) {
 		try {
+			List<Location> locations = Context.getLocationService().getAllLocations();
+			for(Location location:locations) {
+				location.setName(location.getName().replace("\"", "'"));
+			}
 			model.addAttribute("allTeams", Context.getService(TeamService.class).getAllTeams(false, 0, 1000));
 			model.addAttribute("allSupervisors", Context.getService(TeamMemberService.class).searchTeamMember(null, null, null, null, null, 0, 1000));
 			model.addAttribute("allTeamRoles", Context.getService(TeamRoleService.class).getAllTeamRole(true, false, null, null));
-			model.addAttribute("allLocations", Context.getLocationService().getAllLocations());
+			model.addAttribute("allLocations", locations);
 			model.addAttribute("allTeamMembers", Context.getService(TeamMemberService.class).getAllTeamMember(null, true, null, null));
 		}
 		catch(Exception e) { e.printStackTrace(); throw new RuntimeException(e); }

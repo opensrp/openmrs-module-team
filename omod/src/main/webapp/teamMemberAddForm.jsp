@@ -133,7 +133,7 @@
 			var selectedValue = gender.options[gender.selectedIndex].value;
 			var selectedMemberRoleValue = teamRoleOption.options[teamRoleOption.selectedIndex].value;
 			var selectedMemberValue = teamOption.options[teamOption.selectedIndex].value;
-			var regexp = /^[a-z/i][a-z.\- ]*[a-z/i]{2,}$/i;
+			var regexp = /^[a-zA-Z0-9]{3,20}$/i;
 			var idRegExp = /^[a-z|0-9]+[a-z.\-_]*[a-z|0-9]{2,}$/i;
 			var mustSelectMessage = "";
 			var dataTypeMessage = "";
@@ -158,7 +158,7 @@
 			//if (selectedMemberValue == 0) { mustSelectMessage += "<br>Please select a Member Team."; }
 			if(document.getElementById("loginChoice").checked) {
 				if (user == null || user == "") { mustSelectMessage += "<br>UserName can't be empty."; }
-				if (!regexp.test(user)) { dataTypeMessage += "<br>In UserName Min 3, max 20 All data types and either [- . Or _ ] are allowed for text field."; }
+				if (!regexp.test(user)) { dataTypeMessage += user+"<br>In ---- UserName Min 3, max 20 All data types and either [- . Or _ ] are allowed for text field."; }
 			}
 			if(mustSelectMessage != ""){ alertify.alert(mustSelectMessage); }
 			else if(dataTypeMessage != ""){ alertify.alert(dataTypeMessage); } 
